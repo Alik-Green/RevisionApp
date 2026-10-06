@@ -702,3 +702,37 @@ composes the bar or rail around the screen directly.
 experimental API because there is no local compiler and each opt-in is a chance to
 break the build invisibly; a sheet is worth one, taken explicitly at the call site
 rather than file-wide, so the blast radius is named.
+
+---
+
+## D35. Search scans the snapshot instead of using SQLite FTS5
+
+**Decision.** `LibrarySearch` filters the in-memory `LibrarySnapshot`. There is no
+FTS table, no index and no query.
+
+**Why.** The brief prefers FTS5 "if available on both platforms". It is — SQLite
+ships it on Android and in the desktop JDBC driver — but it buys nothing here and
+costs a way to be wrong. Every topic, tag and card is already loaded into the
+snapshot, because the topic tree needs aggregate counts and the filter sheet needs
+tag frequencies over the current subtree. So the data is in memory before any
+search happens, and a scan of a few hundred cards is faster than a round trip to
+the database.
+
+The real argument is staleness. An FTS index is a second copy of the truth that
+has to be kept in step with `card`, `topic` and `tag` through every path that
+writes them: user edits, deletions, re-parenting, and above all a content sync,
+which deletes and re-inserts a whole pack inside one transaction. Miss one path
+and search quietly returns cards that no longer exist, or misses cards that do —
+a bug nobody notices until they search for something. A scan over the snapshot
+cannot disagree with the library, because it *is* the library.
+
+It also keeps the diacritic folding in one place. FTS5's default tokenizer does
+not fold `é` to `e`, so "resume" would not find "résumé" without a custom
+tokenizer, which SQLDelight cannot declare portably.
+
+**What it costs.** Search is O(cards) per keystroke rather than O(log n). At this
+scale that is invisible — the four seed packs are 201 cards, and the results are
+capped at 40 per section. It would need revisiting at roughly ten thousand cards,
+and the seam is already in the right place: `LibrarySearch.search` takes a
+snapshot and returns sections, so swapping its body for a query changes nothing at
+the call site.
