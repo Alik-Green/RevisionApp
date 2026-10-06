@@ -3,6 +3,7 @@ package com.revisionapp.domain.check
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class TextNormalisingTest {
@@ -48,6 +49,15 @@ class TextNormalisingTest {
         assertEquals("doesnt", TextNormaliser.normalise("Doesn't"))
         assertEquals("force mass acceleration", TextNormaliser.normalise("Force, mass & acceleration!"))
         assertEquals("well known effect", TextNormaliser.normalise("well-known effect"))
+    }
+
+    @Test
+    fun aMathsPrimeIsKeptWhileAContractionApostropheIsDropped() {
+        // "Doesn't" must stay "doesnt" so the negation guard still sees it, but
+        // f'(a) is a different function from f(a) and must not collapse into it.
+        assertEquals("doesnt", TextNormaliser.normalise("Doesn't"))
+        assertNotEquals(TextNormaliser.normalise("f(a)"), TextNormaliser.normalise("f'(a)"))
+        assertNotEquals(TextNormaliser.normalise("a"), TextNormaliser.normalise("-a"))
     }
 
     @Test

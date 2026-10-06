@@ -29,7 +29,7 @@ object McqQuestionFactory {
         if (distractors == null || distractors.size < Mcq.MIN_DISTRACTORS) return null
 
         val options = (listOf(correct) + distractors)
-            .distinctBy { TextNormaliser.normalise(it) }
+            .distinctBy { displayKey(it) }
         if (options.size != Mcq.OPTION_COUNT) return null
 
         val shuffled = options.shuffled(random).mapIndexed { index, text ->
@@ -42,16 +42,30 @@ object McqQuestionFactory {
     }
 
     private fun siblingDistractors(card: Card, siblings: List<Card>, random: Random): List<String>? {
-        val correct = TextNormaliser.normalise(card.back)
+        val correct = displayKey(card.back)
         val candidates = siblings.asSequence()
             .filter { it.id != card.id }
             .filter { it.answerType == card.answerType }
             .map { it.back.trim() }
             .filter { it.isNotEmpty() }
-            .filter { TextNormaliser.normalise(it) != correct }
-            .distinctBy { TextNormaliser.normalise(it) }
+            .filter { displayKey(it) != correct }
+            .distinctBy { displayKey(it) }
             .toList()
         if (candidates.size < Mcq.MIN_DISTRACTORS) return null
         return candidates.shuffled(random).take(Mcq.MIN_DISTRACTORS)
     }
 }
+
+/**
+ * Two options are duplicates only if a student would read them as the same text.
+ *
+ * [TextNormaliser.normalise] is deliberately lossy - it exists for grading, so it
+ * drops apostrophes and signs - and using it here collapsed `f(a)` with `f'(a)`
+ * and `-a` with `a`, which quietly dropped whole cards out of multiple-choice
+ * mode. This keeps LaTeX flattened to the same plain text the UI renders, so
+ * `\frac{1}{2}` and `(1)/(2)` still count as one option.
+ */
+private val WHITESPACE_RUN = Regex("""\s+""")
+
+private fun displayKey(option: String): String =
+    WHITESPACE_RUN.replace(TextNormaliser.toPlainText(option).lowercase(), " ").trim()

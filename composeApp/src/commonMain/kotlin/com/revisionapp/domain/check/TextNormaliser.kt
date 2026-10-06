@@ -365,8 +365,10 @@ object TextNormaliser {
             val character = plain[index]
             when {
                 character.isLetterOrDigit() -> builder.append(character)
-                // doesn't -> doesnt, so that contractions keep their negation.
-                character == '\'' -> Unit
+                // doesn't -> doesnt, so that contractions keep their negation, but
+                // f'(x) keeps its prime: in maths it changes the meaning, and losing
+                // it would make "f(a)" and "f'(a)" the same answer.
+                character == '\'' -> if (isPrime(plain, index)) builder.append('\'')
                 // A hyphen only survives inside a number: "well-known" becomes two
                 // tokens but "-4.5" and "5-3" stay intact.
                 character == '-' -> if (isNumericHyphen(plain, index, builder)) builder.append('-') else builder.append(' ')
@@ -378,6 +380,12 @@ object TextNormaliser {
             }
         }
         return WHITESPACE_RUN.replace(builder.toString(), " ").trim()
+    }
+
+    /** An apostrophe is a prime unless another letter follows it. */
+    private fun isPrime(text: String, index: Int): Boolean {
+        val next = text.getOrNull(index + 1) ?: return true
+        return !next.isLetter()
     }
 
     private fun isDecimalPoint(text: String, index: Int, builder: StringBuilder): Boolean {

@@ -275,6 +275,23 @@ class QuestionDerivationTest {
     }
 
     @Test
+    fun optionsDifferingOnlyByAPrimeOrASignAreNotDuplicates() {
+        // normalise() drops apostrophes and signs, so grading two of these as the
+        // same option would silently remove the card from MCQ mode.
+        val primed = card(
+            id = "c",
+            back = "f(a)",
+            mcq = Mcq("f(a)", listOf("f'(a)", "-a", "f(-a)")),
+        )
+
+        val question = McqQuestionFactory.create(primed, emptyList(), Random(3))
+
+        assertNotNull(question)
+        assertEquals(4, question.options.size)
+        assertEquals(1, question.options.count { it.isCorrect })
+    }
+
+    @Test
     fun mcqGradingIsAllOrNothing() {
         val question = McqQuestionFactory.create(shortCard, siblings, Random(5))
 
@@ -349,7 +366,7 @@ class QuestionDerivationTest {
 
     @Test
     fun mixedModeProducesTheBestFitQuestion() {
-        val question = QuestionFactory.create(shortCard, StudyMode.MIXED, siblings, Random(1))
+        val question = QuestionFactory.create(shortCard, StudyMode.MIXED, siblings, random = Random(1))
 
         assertIs<Question.Tiles>(question)
     }
