@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
@@ -37,14 +37,37 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Configure
+        shell: bash
+        run: |
+          mkdir -p logs
+          set -o pipefail
+          ./gradlew projects --stacktrace 2>&1 | tee logs/00-configure.log
+
       - name: Unit tests (commonTest on the JVM target)
-        run: ./gradlew :composeApp:desktopTest --stacktrace
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :composeApp:desktopTest --stacktrace 2>&1 | tee logs/10-test.log
 
       - name: Lint (ktlint)
-        run: ./gradlew ktlintCheck --stacktrace
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew ktlintCheck --stacktrace 2>&1 | tee logs/20-lint.log
 
       - name: Build desktop app
-        run: ./gradlew :desktopApp:build --stacktrace
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :desktopApp:build --stacktrace 2>&1 | tee logs/30-desktop.log
+
+      - name: Report failure
+        if: failure()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./.github/report-failure.sh "${{ github.job }}"
 
       - name: Test reports
         if: always()
@@ -52,8 +75,8 @@ jobs:
         with:
           name: test-reports
           path: |
+            logs/
             composeApp/build/reports/tests/
-            composeApp/build/test-results/
           if-no-files-found: ignore
           retention-days: 14
 
@@ -74,6 +97,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Accept Android SDK licences and install the compile SDK
+        shell: bash
         run: |
           set -u
           SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
@@ -92,7 +116,18 @@ jobs:
             echo "::warning::could not pre-install platforms;android-37"
 
       - name: Assemble debug APK
-        run: ./gradlew :androidApp:assembleDebug --stacktrace
+        shell: bash
+        run: |
+          mkdir -p logs
+          set -o pipefail
+          ./gradlew :androidApp:assembleDebug --stacktrace 2>&1 | tee logs/40-android.log
+
+      - name: Report failure
+        if: failure()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./.github/report-failure.sh "${{ github.job }}"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
