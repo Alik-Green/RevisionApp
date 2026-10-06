@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.check.Verdict
@@ -388,21 +389,25 @@ private fun VerdictPanel(verdict: Verdict) {
                 fontWeight = FontWeight.Bold,
                 color = colour,
             )
-            Text(VerdictPresentation.describe(verdict.reason), style = MaterialTheme.typography.bodyMedium)
-            if (verdict.matchedKeyPoints.isNotEmpty()) {
-                Text(
-                    "Covered: " + verdict.matchedKeyPoints.joinToString(", "),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-            if (verdict.missedKeyPoints.isNotEmpty()) {
-                Text(
-                    "Missing: " + verdict.missedKeyPoints.joinToString(", "),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            MathText(VerdictPresentation.describe(verdict.reason), style = MaterialTheme.typography.bodyMedium)
+            KeyPointLine("Covered", verdict.matchedKeyPoints, MaterialTheme.typography.bodySmall, Color.Unspecified)
+            KeyPointLine(
+                "Missing",
+                verdict.missedKeyPoints,
+                MaterialTheme.typography.bodySmall,
+                MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
+    }
+}
+
+/** "Covered: a, b" with the key points themselves rendered as maths. */
+@Composable
+private fun KeyPointLine(label: String, points: List<String>, style: TextStyle, colour: Color) {
+    if (points.isEmpty()) return
+    Row {
+        Text("$label: ", style = style, color = colour)
+        MathText(points.joinToString(", "), style = style, color = colour)
     }
 }
 

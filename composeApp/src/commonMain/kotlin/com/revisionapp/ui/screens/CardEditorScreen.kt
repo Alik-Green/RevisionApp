@@ -46,6 +46,7 @@ import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
+import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 
@@ -225,6 +226,17 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
                 enabled = !builtIn,
                 minLines = 2,
                 hint = "The newton, N",
+            )
+
+            HorizontalDivider()
+            SectionLabel("Preview")
+            MathText(
+                draft.value.front.ifBlank { "The question as the student will see it" },
+                style = MaterialTheme.typography.titleMedium,
+            )
+            MathText(
+                draft.value.back.ifBlank { "The model answer as the student will see it" },
+                style = MaterialTheme.typography.bodyLarge,
             )
 
             SectionLabel("Answer type")

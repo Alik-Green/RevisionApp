@@ -28,6 +28,7 @@ import com.revisionapp.ui.Route
 import com.revisionapp.ui.TopicAccuracyRow
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.StatTile
 import com.revisionapp.ui.session.VerdictPresentation
@@ -86,11 +87,10 @@ private fun AccuracyRow(row: TopicAccuracyRow) {
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
+            MathText(
                 row.topicName,
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                 maxLines = 1,
             )
             Text(

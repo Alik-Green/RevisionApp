@@ -242,7 +242,7 @@ private fun Breadcrumbs(state: AppState, snapshot: LibrarySnapshot, filter: Card
             for (crumb in snapshot.tree.breadcrumbs(focus)) {
                 Text(">", style = MaterialTheme.typography.bodySmall)
                 TextButton(onClick = { state.focusTopic(crumb.id) }) {
-                    Text(crumb.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    MathText(crumb.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
         }
