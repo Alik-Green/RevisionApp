@@ -1,0 +1,217 @@
+{
+  "topic": "algorithm-complexity",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What does Big O notation describe?",
+      "back": "How the number of operations, or the resources needed, grow as the size of the input grows. It describes the worst case and ignores constant factors and lower-order terms.",
+      "keyPoints": [
+        {
+          "text": "how resource use grows with input size",
+          "synonyms": [
+            "growth rate"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "worst case",
+          "mustInclude": true
+        },
+        {
+          "text": "constant factors are ignored",
+          "synonyms": [
+            "lower-order terms dropped"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Ignoring constants is what makes Big O a statement about growth rather than about a particular machine or implementation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Order these from slowest growing to fastest: O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n).",
+      "back": "O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n).",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "constant then logarithmic then linear",
+          "synonyms": [
+            "O",
+            "(",
+            "1",
+            ")",
+            ",",
+            " ",
+            "O",
+            "(",
+            "l",
+            "o",
+            "g",
+            " ",
+            "n",
+            ")",
+            ",",
+            " ",
+            "O",
+            "(",
+            "n",
+            ")"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "then n log n then n squared then exponential",
+          "synonyms": [
+            "O",
+            "(",
+            "n",
+            " ",
+            "l",
+            "o",
+            "g",
+            " ",
+            "n",
+            ")",
+            ",",
+            " ",
+            "O",
+            "(",
+            "n",
+            "^",
+            "2",
+            ")",
+            ",",
+            " ",
+            "O",
+            "(",
+            "2",
+            "^",
+            "n",
+            ")"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The gap between O(n log n) and O(n^2) is what makes the choice of sorting algorithm matter for large data sets.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What is the time complexity of two nested loops that each run n times?",
+      "back": "O(n^2)",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "O(n^2)",
+          "synonyms": [
+            "n squared",
+            "quadratic"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "quadratic"
+      ],
+      "mcq": {
+        "correct": "O(n^2)",
+        "distractors": [
+          "O(n)",
+          "O(2n)",
+          "O(n log n)"
+        ]
+      },
+      "explanation": "The inner loop body runs n times for each of the n outer iterations, so n x n = n^2 operations. O(2n) is just O(n), which is the trap here.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Why does Big O ignore constant factors such as the 2 in 2n?",
+      "back": "Because it describes how quickly running time grows as the input becomes large, and multiplying by a constant does not change that growth rate: 2n and n both double when n doubles, so they are the same class.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "it describes growth rate for large inputs",
+          "mustInclude": true
+        },
+        {
+          "text": "a constant multiple does not change the growth rate",
+          "synonyms": [
+            "2n and n are the same class"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "This is why an O(n) algorithm with a large constant will eventually beat an O(n^2) algorithm with a small one, even if it is slower on small inputs.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "An O(n log n) algorithm takes 2 seconds for n = 1000. Estimate how long it takes for n = 2000, using log base 2.",
+      "back": "4.4 s",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "4.4",
+          "synonyms": [
+            "about 4.4 seconds",
+            "4.4 s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "4.4 s",
+        "distractors": [
+          "2.2 s",
+          "4.0 s",
+          "8.0 s"
+        ]
+      },
+      "explanation": "Doubling n doubles the n factor and adds one to log2 n, from about 10 to about 11, so the work grows by a factor of about 2.2 and 2 s becomes roughly 4.4 s. The 4.0 s answer treats it as plain O(n).",
+      "numeric": {
+        "value": 4.4,
+        "tolerance": 0.05,
+        "unit": "s"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    }
+  ]
+}

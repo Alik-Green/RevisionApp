@@ -1,0 +1,187 @@
+{
+  "topic": "algorithm-design-techniques",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Describe the divide and conquer technique and give an example.",
+      "back": "Split a problem into independent sub-problems of the same kind, solve each one, then combine their solutions. Merge sort and binary search both work this way.",
+      "keyPoints": [
+        {
+          "text": "split into independent sub-problems",
+          "synonyms": [
+            "divide into smaller instances"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "solve each and combine the results",
+          "synonyms": [
+            "conquer and combine"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a valid example",
+          "synonyms": [
+            "merge sort",
+            "binary search",
+            "quick sort"
+          ]
+        }
+      ],
+      "explanation": "Divide and conquer is why merge sort reaches O(n log n): the work splits in half at each level.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is dynamic programming, and when is it better than plain recursion?",
+      "back": "Solving a problem by storing the results of sub-problems and reusing them instead of recomputing them. It beats plain recursion when the sub-problems overlap, turning an exponential recursion into a polynomial one.",
+      "keyPoints": [
+        {
+          "text": "stores the results of sub-problems",
+          "synonyms": [
+            "memoisation",
+            "caching results"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "reuses them instead of recomputing",
+          "mustInclude": true
+        },
+        {
+          "text": "helps when sub-problems overlap",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "memoisation"
+      ],
+      "explanation": "The standard example is the naive Fibonacci recursion, which recomputes the same values exponentially many times.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What is backtracking?",
+      "back": "Building a solution step by step and abandoning a partial candidate as soon as it cannot possibly lead to a valid solution, returning to the last point that still had an untried alternative.",
+      "keyPoints": [
+        {
+          "text": "builds a solution incrementally",
+          "mustInclude": true
+        },
+        {
+          "text": "abandons a partial candidate that cannot work",
+          "synonyms": [
+            "prunes"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "returns to the last alternative",
+          "synonyms": [
+            "tries another branch"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "It is a systematic form of trial and error, used for the n-queens problem and Sudoku.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What does a finite state machine consist of?",
+      "back": "A finite set of states, a set of possible inputs, transitions that depend on the current state and the input, a defined start state, and one or more accepting states.",
+      "keyPoints": [
+        {
+          "text": "a finite set of states",
+          "mustInclude": true
+        },
+        {
+          "text": "a set of inputs",
+          "synonyms": [
+            "an alphabet"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "transitions determined by state and input",
+          "mustInclude": true
+        },
+        {
+          "text": "a start state",
+          "mustInclude": true
+        },
+        {
+          "text": "one or more accepting states",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A machine is deterministic when at most one transition exists for each state and input pair.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A machine has two states: Even (the start and only accepting state) and Odd. Every 1 toggles the state and every 0 leaves it unchanged. What is the final state for the input 1011, and is the input accepted?",
+      "back": "Odd, so the input is rejected. Reading 1, 0, 1, 1 from Even gives Odd, Odd, Even, Odd. There are three 1s, an odd count, so the machine accepts exactly the strings containing an even number of 1s.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the final state is Odd",
+          "mustInclude": true
+        },
+        {
+          "text": "the input is rejected",
+          "synonyms": [
+            "not accepted"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the trace is correct",
+          "synonyms": [
+            "Odd, Odd, Even, Odd"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Tracing one symbol at a time and writing the state down after each step is the reliable method; trying to hold it in your head is where the error appears.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    }
+  ]
+}

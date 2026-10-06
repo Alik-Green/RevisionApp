@@ -1,0 +1,193 @@
+{
+  "topic": "software-classification",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Distinguish between system software and application software.",
+      "back": "System software runs and manages the computer itself, providing a platform for other programs, such as an operating system, a driver or a utility. Application software carries out tasks for the user, such as a spreadsheet or a game.",
+      "keyPoints": [
+        {
+          "text": "system software manages the computer and provides a platform",
+          "synonyms": [
+            "runs the hardware"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "application software performs tasks for the user",
+          "mustInclude": true
+        },
+        {
+          "text": "an example of each",
+          "synonyms": [
+            "operating system and word processor"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "System software runs and manages the computer itself, providing a platform for other programs, such as an operating system, a driver or a utility. Application software carries out tasks for the user, such as a spreadsheet or a game.",
+        "distractors": [
+          "System software is written by the user and application software by the manufacturer",
+          "System software is always stored in ROM and application software in RAM",
+          "Application software manages hardware while system software performs user tasks"
+        ]
+      },
+      "explanation": "The distinction is about purpose, not about who wrote it or where it is stored: both kinds can be installed and updated.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is meant by the operating system acting as a resource manager?",
+      "back": "It allocates the processor, memory, storage and peripherals between competing programs, deciding which program runs when and how much of each resource it gets.",
+      "keyPoints": [
+        {
+          "text": "allocates processor time",
+          "synonyms": [
+            "schedules processes"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "allocates memory",
+          "mustInclude": true
+        },
+        {
+          "text": "manages peripherals or storage",
+          "synonyms": [
+            "through device drivers"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Without arbitration, two programs could write to the same memory or send output to the same device at the same time.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define a software library and give one advantage of using one.",
+      "back": "A collection of pre-written, tested routines that a program can call rather than implement itself. An advantage is that less code has to be written and debugged, and the routines are reusable across programs.",
+      "keyPoints": [
+        {
+          "text": "pre-written reusable routines or classes",
+          "synonyms": [
+            "a collection of code that can be called"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "less code to write and test",
+          "synonyms": [
+            "faster development",
+            "already tested"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "module"
+      ],
+      "explanation": "A library is linked in at translation time, unlike a web API which is called over a network at run time.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "How does open-source software differ from proprietary software?",
+      "back": "Open-source software makes its source code available to read, modify and redistribute, usually under a licence that sets the terms. Proprietary software is distributed in compiled form with the source kept secret and copying or modification restricted.",
+      "keyPoints": [
+        {
+          "text": "source code is available to inspect and modify",
+          "mustInclude": true
+        },
+        {
+          "text": "can be redistributed",
+          "synonyms": [
+            "shared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "proprietary software keeps the source secret",
+          "synonyms": [
+            "distributed as compiled code"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Free of charge and open source are different things: open source is about the licence and the source code, not the price.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Give three functions performed by an operating system.",
+      "back": "Any three of: memory management, process scheduling, file and disk management, device management through drivers, providing a user interface, and managing security and access rights.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "memory management",
+          "synonyms": [
+            "allocating RAM"
+          ]
+        },
+        {
+          "text": "process scheduling",
+          "synonyms": [
+            "managing the processor"
+          ]
+        },
+        {
+          "text": "file or disk management"
+        },
+        {
+          "text": "device management",
+          "synonyms": [
+            "drivers"
+          ]
+        },
+        {
+          "text": "security and access rights",
+          "synonyms": [
+            "user accounts"
+          ]
+        }
+      ],
+      "explanation": "Three of these are enough for full credit; the point is that they are all things no application can be trusted to do for itself.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    }
+  ]
+}

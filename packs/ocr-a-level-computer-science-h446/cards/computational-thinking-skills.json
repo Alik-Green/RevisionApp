@@ -1,0 +1,168 @@
+{
+  "topic": "computational-thinking-skills",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define abstraction in computational thinking and say why it matters.",
+      "back": "Removing detail that is not needed for the task at hand so that only what matters remains. It makes a problem tractable, and a model built this way can be reused for other purposes.",
+      "keyPoints": [
+        {
+          "text": "removing unnecessary detail",
+          "synonyms": [
+            "ignoring irrelevant detail"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "keeping only what matters for the task",
+          "mustInclude": true
+        },
+        {
+          "text": "makes the problem simpler or the model reusable",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The London Underground map is the classic example: it distorts geography deliberately because only the connections matter.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is decomposition?",
+      "back": "Breaking a complex problem or system into smaller, more manageable parts that can be understood, solved or built separately, then combining the results.",
+      "keyPoints": [
+        {
+          "text": "breaking into smaller parts",
+          "synonyms": [
+            "dividing into sub-problems"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "parts are easier to handle separately",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "divide the problem into sub-tasks"
+      ],
+      "mcq": {
+        "correct": "Breaking a complex problem or system into smaller, more manageable parts that can be understood, solved or built separately, then combining the results.",
+        "distractors": [
+          "Removing unnecessary detail from a problem",
+          "Reusing a solution from a similar problem",
+          "Writing the steps of a solution in order"
+        ]
+      },
+      "explanation": "Those three options are abstraction, pattern recognition and algorithmic thinking: the four skills are easy to confuse in an exam.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define algorithmic thinking.",
+      "back": "Working out a clear, ordered sequence of steps that solves a problem, including the decisions and repetitions needed, so precisely that it could be carried out by a machine or by someone else.",
+      "keyPoints": [
+        {
+          "text": "an ordered sequence of steps",
+          "mustInclude": true
+        },
+        {
+          "text": "includes decisions and repetition",
+          "synonyms": [
+            "branching and looping"
+          ]
+        },
+        {
+          "text": "precise enough to be carried out mechanically",
+          "synonyms": [
+            "unambiguous"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A recipe is algorithmic; 'cook something nice' is not, because the steps are not definite.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What is pattern recognition, and how does it help solve a problem?",
+      "back": "Spotting similarities or trends within a problem, or between it and problems already solved, so that a known technique or an existing solution can be reused instead of starting from scratch.",
+      "keyPoints": [
+        {
+          "text": "finding similarities or trends",
+          "mustInclude": true
+        },
+        {
+          "text": "within the problem or between problems",
+          "mustInclude": true
+        },
+        {
+          "text": "lets an existing approach be reused",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Recognising that a task is really a search or a sort lets you reuse a known algorithm and its known complexity.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A train timetable shows only the departure and arrival time at each station, not the colour of the train or the driver's name. Which thinking skill is this, and why is it useful?",
+      "back": "Abstraction. Only the details needed for the task are kept, which makes the model simpler to reason about and lets the same timetable serve other purposes, such as planning a journey or checking a connection.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "abstraction",
+          "mustInclude": true
+        },
+        {
+          "text": "irrelevant detail has been removed",
+          "mustInclude": true
+        },
+        {
+          "text": "the model is simpler or reusable",
+          "synonyms": [
+            "easier to use for planning"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The test for abstraction is always the same: does the missing detail change any answer the model is used for? Here it does not.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    }
+  ]
+}

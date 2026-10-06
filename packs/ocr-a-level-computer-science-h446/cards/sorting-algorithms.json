@@ -1,0 +1,176 @@
+{
+  "topic": "sorting-algorithms",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Describe the bubble sort algorithm.",
+      "back": "Make repeated passes through the list, comparing each adjacent pair and swapping any pair that is out of order, until a complete pass makes no swaps at all.",
+      "keyPoints": [
+        {
+          "text": "compare adjacent items",
+          "mustInclude": true
+        },
+        {
+          "text": "swap any pair that is out of order",
+          "mustInclude": true
+        },
+        {
+          "text": "repeat passes until no swaps occur",
+          "synonyms": [
+            "the largest value bubbles to the end"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "After the first pass the largest item is guaranteed to be in its final position, which is why each pass can ignore one more item at the end.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Describe the merge sort algorithm.",
+      "back": "Recursively split the list in half until every sublist holds a single item, then repeatedly merge pairs of sorted sublists back together in order until one sorted list remains.",
+      "keyPoints": [
+        {
+          "text": "split the list in half recursively",
+          "synonyms": [
+            "divide until single items"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "merge sorted sublists back together",
+          "mustInclude": true
+        },
+        {
+          "text": "continues until one sorted list remains",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Merging two already-sorted lists only needs one pass through each, which is why the cost per level is O(n) and there are log n levels.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State the worst-case time complexity of bubble sort and of merge sort.",
+      "back": "Bubble sort is O(n^2) and merge sort is O(n log n).",
+      "keyPoints": [
+        {
+          "text": "bubble sort is O(n^2)",
+          "synonyms": [
+            "n squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "merge sort is O(n log n)",
+          "synonyms": [
+            "n log n"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Bubble sort is O(n^2) and merge sort is O(n log n).",
+        "distractors": [
+          "Bubble sort O(n log n), merge sort O(n^2)",
+          "Both are O(n^2)",
+          "Both are O(n log n)"
+        ]
+      },
+      "explanation": "Bubble sort's nested passes over n items give n^2 comparisons; merge sort's log n levels of O(n) work give n log n.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Describe the insertion sort algorithm and say when it performs well.",
+      "back": "Take each item in turn and insert it into its correct position among the items already sorted before it, shifting them up to make room. It performs well on small lists and on lists that are already nearly sorted, where few shifts are needed.",
+      "keyPoints": [
+        {
+          "text": "insert each item into the sorted part before it",
+          "synonyms": [
+            "shift items to make room"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "works well on small lists",
+          "mustInclude": true
+        },
+        {
+          "text": "works well on nearly sorted lists",
+          "synonyms": [
+            "few swaps needed"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "On already-sorted data insertion sort makes n comparisons and no shifts, so it runs in O(n) - better than merge sort in that special case.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What does it mean for a sorting algorithm to be stable?",
+      "back": "Equal keys keep their original relative order after sorting. Bubble, insertion and merge sort are stable when implemented in the usual way; a selection sort that swaps across several items is not.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "equal items keep their original relative order",
+          "mustInclude": true
+        },
+        {
+          "text": "identifies a stable algorithm",
+          "synonyms": [
+            "bubble sort",
+            "insertion sort",
+            "merge sort"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "identifies an unstable one",
+          "synonyms": [
+            "selection sort"
+          ]
+        }
+      ],
+      "explanation": "Stability matters when sorting on a second key: sorting by name then by class keeps the names ordered within each class only if the sort is stable.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    }
+  ]
+}

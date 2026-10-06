@@ -1,0 +1,173 @@
+{
+  "topic": "networks-and-protocols",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is a network protocol, and why is one needed?",
+      "back": "An agreed set of rules defining the format, ordering, addressing and error handling of messages, so that devices made by different manufacturers can exchange data and interpret it in the same way.",
+      "keyPoints": [
+        {
+          "text": "a set of agreed rules",
+          "synonyms": [
+            "a standard"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "governing the format or ordering of messages",
+          "mustInclude": true
+        },
+        {
+          "text": "lets different devices interoperate",
+          "synonyms": [
+            "mutual understanding"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Without a shared protocol, two devices could both transmit correctly and still understand nothing.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State what TCP and IP each do in the TCP/IP suite.",
+      "back": "TCP splits data into numbered packets, ensures reliable delivery, requests retransmission of anything lost and reassembles the packets in order. IP addresses each packet and routes it across networks towards its destination.",
+      "keyPoints": [
+        {
+          "text": "TCP handles reliable delivery and reassembly",
+          "synonyms": [
+            "numbers packets",
+            "retransmission"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "IP handles addressing and routing",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "TCP splits data into numbered packets, ensures reliable delivery, requests retransmission of anything lost and reassembles the packets in order. IP addresses each packet and routes it across networks towards its destination.",
+        "distractors": [
+          "TCP routes packets and IP guarantees delivery",
+          "TCP encrypts packets and IP compresses them",
+          "Both TCP and IP are concerned only with physical cabling"
+        ]
+      },
+      "explanation": "IP alone is best effort and can drop or reorder packets; TCP is the layer that makes a byte stream reliable on top of it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What is the difference between circuit switching and packet switching?",
+      "back": "Circuit switching reserves a dedicated path with fixed bandwidth for the whole session. Packet switching splits data into packets that travel independently, possibly by different routes, and share bandwidth with other traffic.",
+      "keyPoints": [
+        {
+          "text": "circuit switching reserves a dedicated path",
+          "synonyms": [
+            "for the whole session"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "packet switching sends independent packets",
+          "synonyms": [
+            "may take different routes"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "packet switching shares bandwidth",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Packet switching makes better use of a shared network and survives a link failure, at the cost of variable delay and the need to reassemble.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What does the Domain Name System do?",
+      "back": "It translates a human-readable domain name into the IP address needed to route traffic, using a hierarchy of name servers so no single server has to hold every record.",
+      "keyPoints": [
+        {
+          "text": "translates a domain name into an IP address",
+          "mustInclude": true
+        },
+        {
+          "text": "uses a hierarchy of servers",
+          "synonyms": [
+            "distributed database",
+            "caching"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "DNS resolution"
+      ],
+      "explanation": "The hierarchy matters: a local resolver asks a root server, then the top-level domain server, then the authoritative server, caching answers along the way.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A packet carries a source address, a destination address, a sequence number and a checksum. What is each for?",
+      "back": "The destination address lets it be routed, the source address lets a reply be sent back, the sequence number lets the receiver reorder packets that arrived out of order and spot missing ones, and the checksum lets it detect corruption in transit.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "destination address for routing",
+          "mustInclude": true
+        },
+        {
+          "text": "source address so a reply can be sent",
+          "mustInclude": true
+        },
+        {
+          "text": "sequence number to reorder and detect missing packets",
+          "mustInclude": true
+        },
+        {
+          "text": "checksum to detect corruption",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Each field answers a different failure of a best-effort network: where to send it, who sent it, what order it belongs in, and whether it arrived intact.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    }
+  ]
+}

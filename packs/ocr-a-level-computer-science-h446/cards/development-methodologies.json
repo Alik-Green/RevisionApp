@@ -1,0 +1,196 @@
+{
+  "topic": "development-methodologies",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Describe the waterfall model of software development.",
+      "back": "A linear sequence of stages - requirements, design, implementation, testing, deployment and maintenance - in which each stage is completed and signed off before the next one starts.",
+      "keyPoints": [
+        {
+          "text": "linear sequence of stages",
+          "synonyms": [
+            "stages completed one after another"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each stage finished before the next begins",
+          "synonyms": [
+            "signed off"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "names several stages",
+          "synonyms": [
+            "requirements, design, implementation, testing"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "A linear sequence of stages - requirements, design, implementation, testing, deployment and maintenance - in which each stage is completed and signed off before the next one starts.",
+        "distractors": [
+          "Development proceeds in short iterations that each deliver working software",
+          "Requirements are allowed to change throughout the build",
+          "Testing runs continuously in parallel with implementation"
+        ]
+      },
+      "explanation": "Those three options all describe iterative or Agile approaches, which is the point of contrasting them with waterfall.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State one advantage and one disadvantage of the waterfall model.",
+      "back": "Advantage: the stages and their documentation are clear, so the project is easy to plan and manage when the requirements are stable. Disadvantage: it copes badly with change, because working software appears only at the end and a requirement error found in testing is expensive to fix.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "clear stages and documentation",
+          "synonyms": [
+            "easy to manage",
+            "well defined milestones"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "poor at handling change",
+          "synonyms": [
+            "working software only at the end"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "late errors are expensive",
+          "synonyms": [
+            "difficult to go back"
+          ]
+        }
+      ],
+      "explanation": "The model is not wrong, just suited to projects where the requirements genuinely will not change, such as safety-critical systems.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What is the essential idea behind Agile development?",
+      "back": "Delivering working software in short iterations, welcoming changing requirements even late in development, and using continuous feedback from the customer rather than a fixed plan agreed at the start.",
+      "keyPoints": [
+        {
+          "text": "short iterations",
+          "synonyms": [
+            "increments",
+            "sprints"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "working software delivered frequently",
+          "mustInclude": true
+        },
+        {
+          "text": "change is welcomed",
+          "synonyms": [
+            "requirements can evolve"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "customer collaboration and feedback",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Agile trades the detailed up-front planning of waterfall for the ability to respond to change.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What is rapid application development?",
+      "back": "An approach that builds a system quickly through prototyping, reusing existing components and involving users throughout, accepting some loss of documentation or refinement in exchange for speed of delivery.",
+      "keyPoints": [
+        {
+          "text": "prototyping",
+          "synonyms": [
+            "building throwaway or evolving prototypes"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "reuse of existing components",
+          "mustInclude": true
+        },
+        {
+          "text": "user involvement throughout",
+          "synonyms": [
+            "iterative feedback"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "RAD suits projects where the requirement is best discovered by showing the user something that works.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why is testing not the same thing as debugging?",
+      "back": "Testing is running a program with chosen inputs to find defects and check it meets its requirements. Debugging is locating the cause of a defect that testing has revealed and fixing it.",
+      "keyPoints": [
+        {
+          "text": "testing finds defects",
+          "synonyms": [
+            "shows the presence of errors"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "debugging locates and fixes them",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Testing is running a program with chosen inputs to find defects and check it meets its requirements. Debugging is locating the cause of a defect that testing has revealed and fixing it.",
+        "distractors": [
+          "Testing removes errors while debugging only reports them",
+          "Debugging happens before testing",
+          "They are two names for the same activity"
+        ]
+      },
+      "explanation": "Testing can show that errors exist but never that they do not; debugging is the repair work that follows.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    }
+  ]
+}

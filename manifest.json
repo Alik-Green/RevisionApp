@@ -10,6 +10,14 @@
       "cardCount": 60
     },
     {
+      "id": "ocr-a-level-computer-science-h446",
+      "name": "OCR A Level Computer Science (H446)",
+      "version": 1,
+      "path": "packs/ocr-a-level-computer-science-h446",
+      "sha256": "e4df0db2a52993b38db7f4fc433a04a564ed572987b89119f18653f33b1f6288",
+      "cardCount": 50
+    },
+    {
       "id": "ocr-a-level-physics-h556",
       "name": "OCR A Level Physics (H556)",
       "version": 1,

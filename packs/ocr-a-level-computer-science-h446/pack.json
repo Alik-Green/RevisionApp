@@ -1,0 +1,149 @@
+{
+  "packId": "ocr-a-level-computer-science-h446",
+  "name": "OCR A Level Computer Science (H446)",
+  "version": 1,
+  "description": "Software and its development, exchanging data, computational thinking and algorithms, with trace and pseudocode questions as self-graded or multiple choice.",
+  "structureVerified": false,
+  "topics": [
+    {
+      "slug": "computer-science",
+      "name": "Computer Science",
+      "sortOrder": 1
+    },
+    {
+      "slug": "component-01",
+      "name": "Component 01: Components of a computer system",
+      "parent": "computer-science",
+      "sortOrder": 1
+    },
+    {
+      "slug": "software-and-software-development",
+      "name": "1.2 Software and software development",
+      "parent": "component-01",
+      "sortOrder": 2
+    },
+    {
+      "slug": "software-classification",
+      "name": "Types of software and the operating system",
+      "parent": "software-and-software-development",
+      "sortOrder": 1
+    },
+    {
+      "slug": "translators",
+      "name": "Translators: compilers, interpreters and assemblers",
+      "parent": "software-and-software-development",
+      "sortOrder": 2
+    },
+    {
+      "slug": "development-methodologies",
+      "name": "Development methodologies and testing",
+      "parent": "software-and-software-development",
+      "sortOrder": 3
+    },
+    {
+      "slug": "exchanging-data",
+      "name": "1.3 Exchanging data",
+      "parent": "component-01",
+      "sortOrder": 3
+    },
+    {
+      "slug": "networks-and-protocols",
+      "name": "Networks, protocols and packet switching",
+      "parent": "exchanging-data",
+      "sortOrder": 1
+    },
+    {
+      "slug": "encryption-and-compression",
+      "name": "Encryption and compression",
+      "parent": "exchanging-data",
+      "sortOrder": 2
+    },
+    {
+      "slug": "component-02",
+      "name": "Component 02: Algorithms and programming",
+      "parent": "computer-science",
+      "sortOrder": 2
+    },
+    {
+      "slug": "computational-thinking",
+      "name": "2.1 Computational thinking",
+      "parent": "component-02",
+      "sortOrder": 1
+    },
+    {
+      "slug": "computational-thinking-skills",
+      "name": "The four thinking skills",
+      "parent": "computational-thinking",
+      "sortOrder": 1
+    },
+    {
+      "slug": "algorithm-design-techniques",
+      "name": "Algorithm design techniques and state machines",
+      "parent": "computational-thinking",
+      "sortOrder": 2
+    },
+    {
+      "slug": "algorithms",
+      "name": "2.3 Algorithms",
+      "parent": "component-02",
+      "sortOrder": 3
+    },
+    {
+      "slug": "searching-algorithms",
+      "name": "Searching algorithms",
+      "parent": "algorithms",
+      "sortOrder": 1
+    },
+    {
+      "slug": "sorting-algorithms",
+      "name": "Sorting algorithms",
+      "parent": "algorithms",
+      "sortOrder": 2
+    },
+    {
+      "slug": "algorithm-complexity",
+      "name": "Complexity of algorithms",
+      "parent": "algorithms",
+      "sortOrder": 3
+    }
+  ],
+  "tags": [
+    {
+      "slug": "ocr",
+      "group": "board",
+      "name": "OCR"
+    },
+    {
+      "slug": "a-level",
+      "group": "level",
+      "name": "A Level"
+    },
+    {
+      "slug": "computer-science",
+      "group": "subject",
+      "name": "Computer Science"
+    },
+    {
+      "slug": "component-01",
+      "group": "paper",
+      "name": "Component 01: Computer systems"
+    },
+    {
+      "slug": "component-02",
+      "group": "paper",
+      "name": "Component 02: Algorithms and programming"
+    }
+  ],
+  "cardFiles": [
+    "algorithm-complexity.json",
+    "algorithm-design-techniques.json",
+    "computational-thinking-skills.json",
+    "development-methodologies.json",
+    "encryption-and-compression.json",
+    "networks-and-protocols.json",
+    "searching-algorithms.json",
+    "software-classification.json",
+    "sorting-algorithms.json",
+    "translators.json"
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "topic": "encryption-and-compression",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define encryption and state what it protects against.",
+      "back": "Encoding plaintext into ciphertext using a key so that only someone holding the right key can recover it. It protects confidentiality, both for data in transit and data at rest.",
+      "keyPoints": [
+        {
+          "text": "plaintext is encoded into ciphertext",
+          "synonyms": [
+            "scrambles the data"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a key is needed to decrypt",
+          "mustInclude": true
+        },
+        {
+          "text": "protects confidentiality",
+          "synonyms": [
+            "prevents unauthorised reading"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Encryption does not by itself prove who sent a message or that it is unchanged; that needs hashing or a signature as well.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "How does symmetric encryption differ from asymmetric encryption?",
+      "back": "Symmetric encryption uses the same secret key to encrypt and to decrypt. Asymmetric encryption uses a pair: a public key to encrypt and a different private key to decrypt.",
+      "keyPoints": [
+        {
+          "text": "symmetric uses the same key both ways",
+          "synonyms": [
+            "one shared secret key"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "asymmetric uses a public and a private key",
+          "mustInclude": true
+        },
+        {
+          "text": "the public key encrypts and the private key decrypts",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Symmetric encryption uses the same secret key to encrypt and to decrypt. Asymmetric encryption uses a pair: a public key to encrypt and a different private key to decrypt.",
+        "distractors": [
+          "Symmetric encryption uses a public key and asymmetric uses a shared secret",
+          "Asymmetric encryption is faster than symmetric encryption for bulk data",
+          "Symmetric encryption cannot be broken in principle"
+        ]
+      },
+      "explanation": "Asymmetric solves the key-distribution problem but is far slower, so real systems use it to agree a symmetric key and then encrypt the data with that.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "How can asymmetric encryption be used to create a digital signature?",
+      "back": "The sender hashes the message and encrypts the hash with their own private key. Anyone can decrypt it with the sender's public key and compare it with a hash they compute themselves, which proves who sent the message and that it has not been altered.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "hash the message",
+          "mustInclude": true
+        },
+        {
+          "text": "encrypt the hash with the sender's private key",
+          "mustInclude": true
+        },
+        {
+          "text": "verify with the sender's public key",
+          "mustInclude": true
+        },
+        {
+          "text": "proves origin and that the message is unchanged",
+          "synonyms": [
+            "integrity and authenticity"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Note the keys are used the opposite way round from encryption: here the private key signs and the public key verifies.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What is the difference between lossy and lossless compression?",
+      "back": "Lossless compression reduces file size with no loss of information, so the original data is recovered exactly. Lossy compression permanently discards data judged unnecessary, giving much smaller files at the cost of quality.",
+      "keyPoints": [
+        {
+          "text": "lossless recovers the original exactly",
+          "synonyms": [
+            "no information lost"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "lossy permanently removes data",
+          "synonyms": [
+            "quality is reduced"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "lossy gives smaller files",
+          "synonyms": [
+            "higher compression ratio"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "Lossless compression reduces file size with no loss of information, so the original data is recovered exactly. Lossy compression permanently discards data judged unnecessary, giving much smaller files at the cost of quality.",
+        "distractors": [
+          "Lossy compression can be reversed to recover the original exactly",
+          "Lossless compression always gives a smaller file than lossy",
+          "Lossy compression is required for text files"
+        ]
+      },
+      "explanation": "Text and executables must be compressed losslessly, because a single changed bit breaks them; images, audio and video tolerate loss.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Describe how run-length encoding compresses data, and give an example.",
+      "back": "It replaces a run of repeated values with a count and the value, so AAAAABB becomes 5A2B. It is lossless and works best on data containing long runs of identical values.",
+      "keyPoints": [
+        {
+          "text": "stores a count and the repeated value",
+          "synonyms": [
+            "number of repeats then the value"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a correct worked example",
+          "synonyms": [
+            "AAAAABB becomes 5A2B"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is lossless",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "RLE"
+      ],
+      "explanation": "RLE can expand data as well as compress it: alternating values such as ABABAB need two characters per pair instead of one.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    }
+  ]
+}

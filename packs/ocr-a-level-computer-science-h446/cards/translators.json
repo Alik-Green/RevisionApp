@@ -1,0 +1,204 @@
+{
+  "topic": "translators",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is the difference between a compiler and an interpreter?",
+      "back": "A compiler translates the whole source program into object or machine code before it runs, producing an executable. An interpreter translates and executes the program one statement at a time and produces no standalone executable.",
+      "keyPoints": [
+        {
+          "text": "compiler translates the whole program first",
+          "synonyms": [
+            "into object code",
+            "into machine code"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "interpreter translates and executes line by line",
+          "synonyms": [
+            "statement by statement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a compiler produces an executable",
+          "synonyms": [
+            "no executable from an interpreter"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "A compiler translates the whole source program into object or machine code before it runs, producing an executable. An interpreter translates and executes the program one statement at a time and produces no standalone executable.",
+        "distractors": [
+          "A compiler runs the program directly while an interpreter produces object code",
+          "An interpreter translates the whole program first, a compiler works line by line",
+          "A compiler only works on high-level languages and an interpreter only on assembly"
+        ]
+      },
+      "explanation": "The difference is when translation happens: all at once, before execution, or repeatedly, during it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is an assembler?",
+      "back": "A translator that converts assembly language into machine code. Assembly is a low-level language with essentially a one-to-one correspondence between its mnemonics and the processor's instructions.",
+      "keyPoints": [
+        {
+          "text": "translates assembly language into machine code",
+          "mustInclude": true
+        },
+        {
+          "text": "one-to-one correspondence with machine instructions",
+          "synonyms": [
+            "low-level language"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "assembler translates mnemonics"
+      ],
+      "explanation": "A compiler works on a high-level language where one statement typically becomes many instructions, so an assembler is not just a compiler for assembly.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State one advantage and one disadvantage of compiling rather than interpreting a program.",
+      "back": "Advantage: the object code is translated once, so it runs faster and can be distributed without the source. Disadvantage: every change needs a full recompile, so the edit-test cycle is slower and platform-specific builds are needed.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "faster execution",
+          "synonyms": [
+            "translated once",
+            "runs at machine speed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "source code is not needed at run time",
+          "synonyms": [
+            "can be distributed"
+          ]
+        },
+        {
+          "text": "slower development cycle",
+          "synonyms": [
+            "must recompile after each change"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the executable is platform specific"
+        }
+      ],
+      "explanation": "The trade-off is run-time speed against development speed, which is why large systems are compiled and scripts are interpreted.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Name the main stages a compiler passes a source program through.",
+      "back": "Lexical analysis, syntax analysis, semantic analysis, intermediate code generation, optimisation and target code generation.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "lexical analysis",
+          "synonyms": [
+            "tokenising"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "syntax analysis",
+          "synonyms": [
+            "parsing"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "semantic analysis",
+          "synonyms": [
+            "type checking"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "intermediate code generation"
+        },
+        {
+          "text": "optimisation"
+        },
+        {
+          "text": "target code generation",
+          "synonyms": [
+            "code generation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Lexical analysis turns characters into tokens, syntax analysis checks they form valid structures, and semantic analysis checks they mean something, such as types matching.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What do the linker and the loader each do?",
+      "back": "The linker combines separately compiled object files and libraries into one executable, resolving references between them. The loader copies that executable into memory so the processor can run it.",
+      "keyPoints": [
+        {
+          "text": "linker combines object files and libraries",
+          "synonyms": [
+            "resolves external references"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "produces a single executable",
+          "mustInclude": true
+        },
+        {
+          "text": "loader places the executable in memory",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Linking is why a program can call a library routine it never contained the source for.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "topic": "searching-algorithms",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Describe the linear search algorithm.",
+      "back": "Start at the first item and compare each item in turn with the target, stopping when it is found or when the end of the list is reached and it is known to be absent.",
+      "keyPoints": [
+        {
+          "text": "examine each item in turn",
+          "synonyms": [
+            "from the start"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "stop when found or when the list is exhausted",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "sequential search"
+      ],
+      "mcq": {
+        "correct": "Start at the first item and compare each item in turn with the target, stopping when it is found or when the end of the list is reached and it is known to be absent.",
+        "distractors": [
+          "Compare with the middle item and discard half the list",
+          "Sort the list first, then compare adjacent items",
+          "Compare only the first and last items"
+        ]
+      },
+      "explanation": "Linear search needs no ordering, which is both its advantage and the reason it is slow on large lists.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What precondition must be satisfied before binary search can be used?",
+      "back": "The data must already be sorted into order by the key being searched.",
+      "keyPoints": [
+        {
+          "text": "the data must be sorted",
+          "synonyms": [
+            "ordered by the search key"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "the list must be ordered"
+      ],
+      "mcq": {
+        "correct": "The data must already be sorted into order by the key being searched.",
+        "distractors": [
+          "The data must be stored in a linked list",
+          "The data must contain no duplicate values",
+          "The data must fit in memory twice over"
+        ]
+      },
+      "explanation": "Discarding half the list is only valid if being greater than the middle item guarantees the target is not in the lower half.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Describe the binary search algorithm.",
+      "back": "Compare the target with the middle item of the current range. If it matches, stop. Otherwise discard the half that cannot contain the target and repeat on the remaining half, stopping when the target is found or the range is empty.",
+      "keyPoints": [
+        {
+          "text": "compare with the middle item",
+          "mustInclude": true
+        },
+        {
+          "text": "discard the half that cannot contain the target",
+          "mustInclude": true
+        },
+        {
+          "text": "repeat until found or the range is empty",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Each step halves the search space, which is where the O(log n) complexity comes from.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What is the maximum number of comparisons binary search needs on a sorted list of 1024 items?",
+      "back": "10",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "10",
+          "synonyms": [
+            "1",
+            "0",
+            " ",
+            "c",
+            "o",
+            "m",
+            "p",
+            "a",
+            "r",
+            "i",
+            "s",
+            "o",
+            "n",
+            "s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "10",
+        "distractors": [
+          "512",
+          "11",
+          "100"
+        ]
+      },
+      "explanation": "Each comparison halves the range, so the answer is log2(1024) = 10. The 512 answer comes from halving once instead of repeating.",
+      "numeric": {
+        "value": 10,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why is linear search still useful when binary search is faster?",
+      "back": "Linear search works on unsorted data and on structures that can only be read sequentially, such as a linked list or a data stream, where jumping to the middle item is not possible.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "works on unsorted data",
+          "mustInclude": true
+        },
+        {
+          "text": "works where random access is not available",
+          "synonyms": [
+            "linked list",
+            "streaming data"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Binary search needs the middle element in constant time, so an array is fine but a linked list would cost O(n) to reach it, removing the advantage.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    }
+  ]
+}
