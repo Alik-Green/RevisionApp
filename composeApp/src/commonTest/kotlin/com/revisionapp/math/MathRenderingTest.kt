@@ -60,6 +60,17 @@ class MathRenderingTest {
     }
 
     @Test
+    fun anUnbracedScriptTakesASignAndItsDigits() {
+        // Strict LaTeX would read 10^-19 as a superscript minus followed by 19.
+        // Hand-authored revision content means 10 to the power of minus 19, so
+        // the parser reads the sign and the digits together, while x^2y stays
+        // x squared times y.
+        assertEquals("10⁻¹⁹", renderer.render("10^-19"))
+        assertEquals("x²y", renderer.render("x^2y"))
+        assertEquals("xⁿ", renderer.render("x^n"))
+    }
+
+    @Test
     fun aScriptNeedsBracketsOnlyWhenItContainsAnOperator() {
         assertEquals("s^-1", renderer.canonical("s^{-1}"))
         assertEquals("x^(n+1)", renderer.canonical("x^{n+1}"))
@@ -134,7 +145,7 @@ class MathRenderingTest {
         assertEquals("(a)/(b)", renderer.render(maths("\\frac{a}{b}")))
         assertEquals("(a)/(b)", renderer.render(maths("\\dfrac{a}{b}")))
         assertEquals("(x²)/(2)", renderer.render(maths("\\frac{x^{2}}{2}")))
-        assertEquals("(n(n+1))/(2)", renderer.render(maths("\\frac{n(n + 1)}{2}")))
+        assertEquals("(n(n + 1))/(2)", renderer.render(maths("\\frac{n(n + 1)}{2}")))
     }
 
     @Test

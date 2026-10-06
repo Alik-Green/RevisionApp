@@ -74,7 +74,18 @@ object MathParser {
                 nodes
             }
 
-            else -> listOf(MathNode.Run(cursor.take().toString()))
+            else -> {
+                // An unbraced script takes an optional sign and the digits after
+                // it, so `10^-19` reads the way its author meant it rather than
+                // the way strict LaTeX would (a single token, giving 10⁻19). A
+                // letter still takes exactly one character, so `x^2y` stays x²y.
+                val start = cursor.index
+                val first = cursor.peek()
+                if (first == '-' || first == '+') cursor.take()
+                while (!cursor.done && cursor.peek().isDigit()) cursor.take()
+                if (cursor.index == start) cursor.take()
+                listOf(MathNode.Run(cursor.text.substring(start, cursor.index)))
+            }
         }
     }
 

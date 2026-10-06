@@ -1,5 +1,6 @@
 package com.revisionapp.ui.render
 
+import com.revisionapp.domain.check.TextNormaliser
 import com.revisionapp.math.MathNode
 import com.revisionapp.math.MathParser
 import com.revisionapp.math.MathPlainText
@@ -51,8 +52,11 @@ class UnicodeRichTextRenderer : RichTextRenderer {
     override fun render(source: String): String =
         if (source.isEmpty()) source else MathPlainText.render(parse(source), ScriptStyle.UNICODE)
 
-    override fun canonical(source: String): String =
-        if (source.isEmpty()) source else MathPlainText.render(parse(source), ScriptStyle.ASCII)
+    // Delegated to the checker rather than reimplemented: the canonical form has
+    // to fold typed Unicode scripts and map symbols back to ASCII, and a second
+    // implementation of that is exactly how display and comparison drifted apart
+    // in the first place.
+    override fun canonical(source: String): String = TextNormaliser.toPlainText(source)
 
     override fun hasMaths(source: String): Boolean = source.any { character ->
         character == MATH_DELIMITER ||

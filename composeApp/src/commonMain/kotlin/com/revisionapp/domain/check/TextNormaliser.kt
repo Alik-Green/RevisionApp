@@ -256,5 +256,4 @@ object TextNormaliser {
         while (end - start > 1 && token[start].let { !it.isLetterOrDigit() && it != '-' && it != '+' }) start++
         return token.substring(start, end)
     }
-
 }
