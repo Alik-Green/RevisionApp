@@ -3,9 +3,9 @@ package com.revisionapp.data.content
 import kotlinx.serialization.Serializable
 
 /**
- * The wire format of the `content` branch. These DTOs mirror `schema/*.json` on
- * that branch one for one; [ContentMapper] turns them into domain models, so the
- * domain never sees a serialisation annotation.
+ * The wire format of the `content` branch. These DTOs mirror the JSON Schema
+ * files in that branch's `schema` directory one for one; [ContentMapper] turns
+ * them into domain models, so the domain never sees a serialisation annotation.
  */
 
 @Serializable
