@@ -1,0 +1,16 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the definition",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED",
+      "keyPoints": [
+        {
+          "text": "the \beta value"
+        }
+      ]
+    }
+  ]
+}

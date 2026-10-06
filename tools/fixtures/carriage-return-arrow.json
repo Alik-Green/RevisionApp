@@ -1,0 +1,11 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Prove $P \rightarrow Q$ by contrapositive",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED"
+    }
+  ]
+}

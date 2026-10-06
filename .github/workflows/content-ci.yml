@@ -37,6 +37,13 @@ jobs:
       - name: Validate every pack
         run: python tools/validate
 
+      # The validator checks itself against tools/fixtures: one file per defect it
+      # is supposed to catch, plus a valid control that must produce nothing. A
+      # rule that stops firing then fails CI instead of silently letting corrupt
+      # content through.
+      - name: Prove the validator catches what it claims to
+        run: python tools/validate --selftest
+
       # The manifest promises a hash per pack; a stale one makes the app reject
       # the download, so recompute it and fail if the committed copy disagrees.
       - name: Confirm the committed hashes are current

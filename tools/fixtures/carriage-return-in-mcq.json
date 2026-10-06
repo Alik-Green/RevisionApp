@@ -1,0 +1,19 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Which arrow?",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED",
+      "mcq": {
+        "correct": "P \rightarrow Q",
+        "distractors": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    }
+  ]
+}

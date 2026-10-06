@@ -1,0 +1,11 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Reduce $\\frac{a}{b$ fully",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED"
+    }
+  ]
+}

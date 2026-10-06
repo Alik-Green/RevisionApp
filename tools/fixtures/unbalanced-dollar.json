@@ -1,0 +1,11 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "The value is $5 and the answer is 6",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED"
+    }
+  ]
+}

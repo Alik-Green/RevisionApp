@@ -1,0 +1,11 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "The \beta particle is an electron",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED"
+    }
+  ]
+}

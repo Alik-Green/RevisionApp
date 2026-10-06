@@ -1,0 +1,11 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Simplify $x\t^2$ now",
+      "back": "x",
+      "reviewStatus": "AI_UNREVIEWED"
+    }
+  ]
+}

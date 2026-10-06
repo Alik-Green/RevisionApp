@@ -1,0 +1,29 @@
+{
+  "topic": "fixture",
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Reduce $\\frac{x^{2}}{2}$ and show that $P \\Rightarrow Q$ when $x \\leq y$.",
+      "back": "$x^{2}/2$",
+      "reviewStatus": "AI_UNREVIEWED",
+      "explanation": "Note the \\Rightarrow, the bare x^2 outside a span, and a \\beta here.",
+      "keyPoints": [
+        {
+          "text": "$x^2$",
+          "synonyms": [
+            "x squared"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}$",
+        "distractors": [
+          "$\\frac{1}{3}$",
+          "$2$",
+          "$\\sqrt{2}$"
+        ]
+      }
+    }
+  ]
+}

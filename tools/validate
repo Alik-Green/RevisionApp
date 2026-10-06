@@ -10,6 +10,7 @@ the files on disk. Exits non-zero if anything is an error.
     tools/validate --pack tmua      # check one pack
     tools/validate --update-hashes  # rewrite sha256 and cardCount in manifest.json
     tools/validate --strict         # treat warnings as errors
+    tools/validate --selftest       # only prove the text rules fire on tools/fixtures
 
 The hash is defined in composeApp/.../crypto/PackHasher.kt: pack.json followed by
 every card file, in sorted filename order, each terminated by a single newline.
@@ -33,6 +34,23 @@ MAX_TILE_TOKENS = 12
 MCQ_DISTRACTORS = 3
 
 SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+MATH_SPAN = re.compile(r"\$([^$]*)\$")
+FIXTURES = ROOT / "tools" / "fixtures"
+
+# What a LaTeX command turns into when its backslash is written single in JSON:
+# \beta decodes to backspace+"eta", \frac to form feed+"rac", \Rightarrow to
+# carriage return+"ightarrow", \theta to tab+"heta", \nu to line feed+"u".
+# Backspace, form feed and carriage return are never legitimate in authored card
+# text, so their presence means an escape was eaten.
+ALWAYS_FORBIDDEN = {
+    "\x08": "U+0008 backspace",
+    "\x0c": "U+000C form feed",
+    "\x0d": "U+000D carriage return",
+}
+FORBIDDEN_IN_MATH = dict(ALWAYS_FORBIDDEN, **{
+    "\x09": "U+0009 tab",
+    "\x0a": "U+000A line feed",
+})
 ORDINAL = re.compile(r"^[0-9]{4}$")
 
 
@@ -155,6 +173,85 @@ def check_schema(schemas, name, document, where, report):
     for problem in sorted(validator.iter_errors(document), key=lambda item: list(item.path)):
         location = "/".join(str(part) for part in problem.path) or "<root>"
         report.error("{} [{}]".format(where, location), problem.message)
+
+
+# ------------------------------------------------------- authored text checks
+
+
+def check_text(value, where, report):
+    """Escape damage and math-span integrity in one authored string.
+
+    The app renders `$...$` as typeset maths, so a control character inside a span
+    means the LaTeX was corrupted before it ever reached the reader, and an
+    unbalanced `$` or brace means the span will not be found at all.
+    """
+    if not isinstance(value, str) or not value:
+        return
+    for character, name in ALWAYS_FORBIDDEN.items():
+        if character in value:
+            report.error(
+                where,
+                "{} in {!r} - a LaTeX backslash was probably written single, so JSON "
+                "decoded it as an escape (write \\\\ in the JSON source)".format(name, value[:60]),
+            )
+    spans = MATH_SPAN.findall(value)
+    if value.count("$") % 2:
+        report.error(where, "unbalanced $ in {!r}".format(value[:60]))
+    for span in spans:
+        for character, name in FORBIDDEN_IN_MATH.items():
+            if character in span:
+                report.error(where, "{} inside a $...$ span: {!r}".format(name, span[:60]))
+        if span.count("{") != span.count("}"):
+            report.error(where, "unbalanced braces inside a $...$ span: {!r}".format(span[:60]))
+    for character, name in (("\x09", "U+0009 tab"), ("\x0a", "U+000A line feed")):
+        if character in value and character not in "".join(spans):
+            report.warn(where, "{} outside a math span in {!r}".format(name, value[:60]))
+
+
+def check_card_text(card, where, report):
+    for field in ("front", "back", "explanation", "specRef"):
+        check_text(card.get(field), "{} {}".format(where, field), report)
+    for index, point in enumerate(card.get("keyPoints") or []):
+        check_text(point.get("text"), "{} keyPoints[{}].text".format(where, index), report)
+        for position, synonym in enumerate(point.get("synonyms") or []):
+            check_text(synonym, "{} keyPoints[{}].synonyms[{}]".format(where, index, position), report)
+    for field in ("acceptedAliases", "tileAnswer"):
+        for index, value in enumerate(card.get(field) or []):
+            check_text(value, "{} {}[{}]".format(where, field, index), report)
+    mcq = card.get("mcq") or {}
+    check_text(mcq.get("correct"), "{} mcq.correct".format(where), report)
+    for index, option in enumerate(mcq.get("distractors") or []):
+        check_text(option, "{} mcq.distractors[{}]".format(where, index), report)
+    check_text((card.get("numeric") or {}).get("unit"), "{} numeric.unit".format(where), report)
+
+
+def check_fixtures(report):
+    """Run the text checks over tools/fixtures to prove they actually fire.
+
+    A validator nobody has seen fail is a validator nobody trusts. Every fixture
+    but `valid.json` must produce at least one error, and `valid.json` must produce
+    none, so a check that is too loose or too strict fails CI.
+    """
+    paths = sorted(FIXTURES.glob("*.json")) if FIXTURES.is_dir() else []
+    if not paths:
+        report.error("tools/fixtures", "no fixtures found, so the text checks are unverified")
+        return
+    for path in paths:
+        document = load_json(path, report)
+        if document is None:
+            continue
+        sub = Report()
+        for position, card in enumerate(document.get("cards") or []):
+            check_card_text(card, path.name + "#" + str(card.get("id", position)), sub)
+        should_fail = path.stem != "valid"
+        if should_fail and not sub.errors:
+            report.error("tools/fixtures/" + path.name, "defective fixture produced no errors")
+        if not should_fail and (sub.errors or sub.warnings):
+            report.error(
+                "tools/fixtures/" + path.name,
+                "valid fixture was rejected: " + "; ".join(sub.errors + sub.warnings),
+            )
+    print("  fixtures: {} checked, all behaved as intended".format(len(paths)))
 
 
 # ------------------------------------------------------------------- manifest
@@ -326,6 +423,7 @@ def check_topics(topics, where, report):
         slugs.add(slug)
         if not topic.get("name"):
             report.error("{}/pack.json".format(where), "topic '{}' has no name".format(slug))
+        check_text(topic.get("name"), "{}/pack.json topic '{}'".format(where, slug), report)
     for topic in topics:
         parent = topic.get("parent")
         slug = topic.get("slug")
@@ -366,6 +464,7 @@ def check_tags(tags, where, report):
             report.error("{}/pack.json".format(where), "tag '{}' has an invalid group".format(slug))
         if not tag.get("name"):
             report.error("{}/pack.json".format(where), "tag '{}' has no name".format(slug))
+        check_text(tag.get("name"), "{}/pack.json tag '{}'".format(where, slug), report)
     return slugs
 
 
@@ -388,6 +487,8 @@ def check_card(card, where, topic, tag_slugs, seen_ids, report):
     for slug in card.get("tagRefs") or []:
         if slug not in tag_slugs:
             report.error(where, "tagRefs names unknown tag '{}'".format(slug))
+
+    check_card_text(card, where, report)
 
     answer_type = card.get("answerType", "TEXT")
     key_points = card.get("keyPoints") or []
@@ -471,10 +572,25 @@ def main():
     parser.add_argument("--pack", help="validate only this pack id")
     parser.add_argument("--update-hashes", action="store_true", help="rewrite sha256 and cardCount in manifest.json")
     parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    parser.add_argument(
+        "--selftest",
+        action="store_true",
+        help="only run the tools/fixtures check that proves the text rules fire",
+    )
     arguments = parser.parse_args()
 
     report = Report()
     schemas = load_schemas(report)
+
+    if arguments.selftest:
+        print("checking the validator against tools/fixtures")
+        check_fixtures(report)
+        for error in report.errors:
+            print("error:   {}".format(error))
+        print("\n{} error(s)".format(len(report.errors)))
+        return 1 if report.errors else 0
+
+    check_fixtures(report)
 
     if arguments.update_hashes:
         update_hashes(check_manifest(report, schemas, arguments.pack))

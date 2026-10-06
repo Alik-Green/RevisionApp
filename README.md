@@ -58,6 +58,44 @@ endings or add a trailing blank line without re-running the updater. Both the
 app (`composeApp/.../crypto/PackHasher.kt`) and `tools/validate` implement this
 identically.
 
+## Escaping LaTeX in JSON
+
+This is the one rule that silently corrupts content, so it is worth stating twice.
+
+**A LaTeX backslash must be written `\\` inside a JSON string.** JSON reads `\`
+as the start of an escape sequence, and several LaTeX commands begin with a letter
+that is also a JSON escape:
+
+| written in JSON | JSON decodes it to | the card then says |
+| --- | --- | --- |
+| `"\theta"` | tab + `heta` | a gap, then "heta" |
+| `"\nu"` | line feed + `u` | a line break, then "u" |
+| `"\frac{a}{b}"` | form feed + `rac{a}{b}` | "rac{a}{b}" |
+| `"\beta"` | backspace + `eta` | "eta" |
+| `"\Rightarrow"` | **invalid escape** | the file will not parse at all |
+
+Correct:
+
+```json
+"back": "$\\frac{x^{2}}{2}$, so $P \\Rightarrow Q$"
+```
+
+The corruption is invisible in a diff and easy to miss by eye, so `tools/validate`
+checks for it after decoding: backspace, form feed and carriage return are errors
+anywhere in authored text, tab and line feed are errors inside a `$...$` span and
+warnings elsewhere, an odd number of `$` is an error, and unbalanced braces inside
+a span are an error. `tools/fixtures/` holds one file per defect plus a valid
+control, and every run of the validator checks them, so a rule that stops firing
+fails CI rather than quietly letting corrupt content through.
+
+Two further conventions:
+
+- Bare `x^2` and `log_3` outside `$...$` are rendered correctly - the app's parser
+  does not require delimiters - but wrapping real maths in `$...$` says plainly
+  what is maths and what is prose, and is what a future typesetter would need.
+- `$` is also the currency symbol. The app strips every `$` when it parses, so a
+  price in a card should be written out ("5 dollars") rather than as "$5".
+
 ## Validating
 
 ```bash
@@ -65,6 +103,7 @@ python3 -m pip install jsonschema     # optional but recommended
 tools/validate                        # check everything, fails on errors
 tools/validate --pack tmua            # check one pack
 tools/validate --strict               # also fail on warnings
+tools/validate --selftest             # only prove the text rules fire on the fixtures
 tools/validate --update-hashes        # recompute sha256 and cardCount
 ```
 
@@ -86,6 +125,10 @@ Errors (these fail CI):
 - a `NUMERIC` card with no expected value anywhere
 - fewer than five cards in a leaf topic
 - a `sha256` or `cardCount` that does not match the files
+- a control character in authored text, which means a LaTeX backslash was written
+  single and JSON ate it
+- an odd number of `$`, or unbalanced braces inside a `$...$` span
+- a fixture in `tools/fixtures/` that no longer behaves as intended
 
 Warnings (reported, and fatal under `--strict`):
 
