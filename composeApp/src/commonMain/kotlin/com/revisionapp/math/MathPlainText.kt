@@ -94,15 +94,20 @@ object MathPlainText {
             }
             return
         }
-        append(
-            when (index) {
-                null, "2" -> "\u221A"
-                "3" -> "\u221B"
-                "4" -> "\u221C"
-                else -> (MathUnicode.superscript(index) ?: "^$index") + "\u221A"
-            },
-        )
+        append(radicalSymbol(index))
         if (body.length > 1) append("(").append(body).append(")") else append(body)
+    }
+
+    /**
+     * The radical sign for a root: `sqrt`, `cbrt` and the fourth root exist as
+     * single characters, and anything else is written as a prefixed square root.
+     * Public because the Compose renderer must choose the same glyph.
+     */
+    fun radicalSymbol(index: String?): String = when (index) {
+        null, "2" -> "\u221A"
+        "3" -> "\u221B"
+        "4" -> "\u221C"
+        else -> (MathUnicode.superscript(index) ?: "^$index") + "\u221A"
     }
 
     /**

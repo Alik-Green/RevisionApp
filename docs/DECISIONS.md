@@ -581,3 +581,61 @@ unpinnable. Both are now on under a `RevisionApp` menu group.
 for a JDK module outside the defaults needs a matching `modules(...)` entry and
 an addition to the release check — which is the point of failing the build rather
 than shipping.
+
+---
+
+## D32. Maths is typeset by a small custom engine, not by JLatexMath
+
+**Decision.** `com.revisionapp.math` holds an AST (`MathNode`), a recursive-descent
+`MathParser`, the `MathUnicode` tables and `MathPlainText`. `ui/components/MathText`
+lays the AST out as an `AnnotatedString`: Unicode scripts where every character has
+one, smaller baseline-shifted text where it does not, and stacked fractions placed
+as inline content sized by exact `TextMeasurer` measurement. There is no new
+dependency, no `expect`/`actual` and no platform code.
+
+**Why not a LaTeX library.** The obvious candidates were rejected on evidence, not
+taste:
+
+- *JLatexMath* (`org.scilab.forge:jlatexmath`) with `ru.noties:jlatexmath-android`.
+  Both are unmaintained (2017 and 2018). They draw into an AWT `Graphics2D` or an
+  Android `Canvas`, so each platform needs a bitmap bridge to a Compose
+  `ImageBitmap`, which means `expect`/`actual` and two failure modes instead of
+  none. The output is a raster, so following the theme's colour, text size and
+  light/dark scheme means re-rendering and caching bitmaps per style — the thing
+  text layout gets for free. And Maven Central is unreachable from this sandbox
+  (D1), so the API surface could not be checked before shipping: an unverifiable
+  dependency, on two platforms, behind the one feature that cannot be seen during
+  development, is the least robust option available.
+- *A WebView running KaTeX.* Compose Multiplatform has no common WebView, and
+  bridging one would put platform types in the way of `commonMain`.
+- *Skia paragraph APIs directly.* Desktop-only.
+
+**Why a subset is enough.** The four content packs were measured rather than
+guessed at: 465 `$...$` spans across 201 cards use exactly **39 distinct
+commands** — `frac`, `sqrt`, `theta`, `alpha`, `beta`, `gamma`, `det`, `lambda`,
+`int`, `cos`, `sin`, `pi`, `cosh`, `sinh`, `Rightarrow`, `left`, `right`, `neg`,
+`mathbf`, `ge`, `le`, `ne`, `neq`, `times`, `sum`, `pm`, `forall`, `exists`,
+`arctan`, `log`, `ln`, `tan`, `circ`, `text`, `Delta`, `Sigma`, `approx`, `cdot`,
+`wedge`. `MathUnicode` covers all 39, plus the arrows, relations, logic symbols
+and both Greek cases that were missing before and caused `\Rightarrow` to render
+as the word "Rightarrow". Anything unlisted degrades to its name, so new content
+can never produce a raw backslash.
+
+**One parser, two outputs.** `TextNormaliser.toPlainText` runs the same parser and
+re-emits it in ASCII, instead of keeping the 124-line replacement table it had.
+That is what makes "what the user sees is what gets compared" true: the two had
+drifted apart, and drift is how a symbol ends up displayed as a word. It also
+removes the ordering hazard that made `\leq` have to be listed before `\le` —
+commands are now looked up by parsed name.
+
+**Caching.** `remember(source)` per composition slot. A process-wide cache would
+need synchronisation `commonMain` has no primitive for, and parsing a card-sized
+string is microseconds.
+
+**What it costs.** Fractions nested inside fractions or radicals degrade to
+`(a)/(b)` rather than stacking twice; radicals get no vinculum (the bar over the
+radicand); there are no matrices, no `\begin{...}` environments and no italic
+variables. Every one of those is absent from the measured content, and each
+degrades to readable text rather than to nothing. `$` is also stripped everywhere,
+so a literal currency amount in a card would lose its symbol — the content README
+now says to write prices out.

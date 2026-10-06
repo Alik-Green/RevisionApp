@@ -89,60 +89,68 @@ private fun GalleryRow(source: String, renderer: RichTextRenderer) {
 }
 
 /**
+ * Wraps [body] in the `$...$` delimiters the content packs use. Written with
+ * `\u0024` because a literal `$` in a Kotlin string starts a template.
+ */
+private fun maths(body: String): String = "\u0024" + body + "\u0024"
+
+/**
  * Scripts, fractions, roots, every symbol class, nesting, bare maths written
  * without delimiters, and one unsupported command to show graceful degradation.
  */
 private val GALLERY: List<String> = listOf(
     // Scripts, braced and bare.
-    "$x^2$",
-    "$x^{2}$",
-    "$x^{n+1}$",
-    "$x^{-1}$",
-    "$10^{-19}$",
-    "$m/s^2$",
-    "$3.2 m s^-1$",
-    "$x^{abc}$",
-    "$\\log_3 x$",
-    "$x_{n+1}$",
-    "$a_i$",
-    "$H_2O$",
-    // Fractions.
-    "$\\frac{a}{b}$",
-    "$\\frac{x^{2}}{2}$",
-    "$\\frac{n(n + 1)}{2}$",
-    "$\\frac{1}{a}\\arctan\\frac{x}{a}$",
-    "$\\frac{e^2 + 1}{4}$",
-    // Roots, including one with a fraction inside.
-    "$\\sqrt{2}$",
-    "$\\sqrt[3]{x}$",
-    "$\\sqrt{\\frac{1}{2}}$",
-    "$T = 2\\pi\\sqrt{\\frac{l}{g}}$",
-    // Arrows: the reported bug was \Rightarrow showing as the word "Rightarrow".
-    "$P \\Rightarrow Q$",
-    "$\\neg Q \\Rightarrow \\neg P$",
-    "$A \\Leftrightarrow B$",
-    "$x \\rightarrow y$",
-    "$a \\mapsto f(a)$",
+    maths("x^2"),
+    maths("x^{2}"),
+    maths("x^{n+1}"),
+    maths("x^{-1}"),
+    maths("10^{-19}"),
+    maths("m/s^2"),
+    maths("3.2 m s^-1"),
+    maths("x^{abc}"),
+    maths("\\log_3 x"),
+    maths("x_{n+1}"),
+    maths("a_i"),
+    maths("H_2O"),
+    // Fractions, including one whose numerator carries a script.
+    maths("\\frac{a}{b}"),
+    maths("\\frac{x^{2}}{2}"),
+    maths("\\frac{n(n + 1)}{2}"),
+    maths("\\frac{1}{a}\\arctan\\frac{x}{a}"),
+    maths("\\frac{e^2 + 1}{4}"),
+    // Roots, including a fraction inside one.
+    maths("\\sqrt{2}"),
+    maths("\\sqrt[3]{x}"),
+    maths("\\sqrt{\\frac{1}{2}}"),
+    maths("T = 2\\pi\\sqrt{\\frac{l}{g}}"),
+    // Arrows. The reported bug was \Rightarrow showing as the word "Rightarrow".
+    maths("P \\Rightarrow Q"),
+    maths("\\neg Q \\Rightarrow \\neg P"),
+    maths("A \\Leftrightarrow B"),
+    maths("x \\rightarrow y"),
+    maths("a \\mapsto f(a)"),
+    maths("P \\implies Q"),
     // Relations and operators.
-    "$a \\leq b$",
-    "$x \\neq 0$",
-    "$a \\approx b$",
-    "$3 \\times 10^{8}$",
-    "$a \\cdot b \\pm c$",
-    "$x \\in S$",
-    // Greek and big operators.
-    "$\\alpha + \\beta + \\gamma$",
-    "$\\theta, \\lambda, \\omega, \\Delta, \\Omega$",
-    "$\\sum_{r=1}^{n} r$",
-    "$\\int \\frac{1}{x^2 + a^2}\\,dx$",
-    "$\\forall x, \\exists y$",
-    // Real card text, bare and delimited.
-    "$v^2 = u^2 + 2as$",
-    "$\\cosh^2 x - \\sinh^2 x = 1$",
-    "$e^{i\\pi} + 1 = 0$",
+    maths("a \\leq b"),
+    maths("x \\neq 0"),
+    maths("a \\approx b"),
+    maths("3 \\times 10^{8}"),
+    maths("a \\cdot b \\pm c"),
+    maths("x \\in S"),
+    // Greek, big operators and quantifiers.
+    maths("\\alpha + \\beta + \\gamma"),
+    maths("\\theta, \\lambda, \\omega, \\Delta, \\Omega"),
+    maths("\\sum_{r=1}^{n} r"),
+    maths("\\int \\frac{1}{x^2 + a^2}\\,dx"),
+    maths("\\forall x, \\exists y"),
+    // Real card text.
+    maths("v^2 = u^2 + 2as"),
+    maths("\\cosh^2 x - \\sinh^2 x = 1"),
+    maths("e^{i\\pi} + 1 = 0"),
+    // Bare maths with no delimiters at all, as the physics packs write it.
     "9.81 m/s^2",
     "O(n^2)",
-    "The area is $\\frac{1}{2}\\int r^2 d\\theta$ in polar coordinates.",
+    "The area is " + maths("\\frac{1}{2}\\int r^2 d\\theta") + " in polar coordinates.",
     // Degradation: an unsupported command shows its name, never a backslash.
-    "$\\frobnicate{x}$",
+    maths("\\frobnicate{x}"),
 )
