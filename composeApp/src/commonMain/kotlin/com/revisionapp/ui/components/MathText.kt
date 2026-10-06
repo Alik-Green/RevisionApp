@@ -200,14 +200,17 @@ private class MathWriter(
         val measuredNumerator = measurer.measure(numerator, fractionStyle)
         val measuredDenominator = measurer.measure(denominator, fractionStyle)
         val barHeight = with(density) { FRACTION_BAR_DP.dp.toPx() }
-        val width = maxOf(measuredNumerator.size.width, measuredDenominator.size.width)
-        val height = measuredNumerator.size.height + measuredDenominator.size.height + barHeight * 3
+        val widthPx = maxOf(measuredNumerator.size.width, measuredDenominator.size.width)
+        val heightPx = measuredNumerator.size.height + measuredDenominator.size.height + barHeight * 3
 
         val id = "fraction-" + inline.size
         inline[id] = InlineTextContent(
+            // Sized in sp, not dp: the box must grow with the user's font scale
+            // exactly as the surrounding text does, or a large text size would
+            // clip the fraction.
             placeholder = Placeholder(
-                width = with(density) { width.toDp() },
-                height = with(density) { height.toDp() },
+                width = with(density) { widthPx.toSp() },
+                height = with(density) { heightPx.toSp() },
                 placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter,
             ),
         ) {
