@@ -15,7 +15,7 @@ ktlint_code_style = intellij_idea
 
 # Compose uses PascalCase for @Composable functions, which the ktlint
 # function-naming rule would otherwise reject.
-ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_function_naming_ignore_when_annotated_with = Composable,Test
 
 # Formatting rules that fight the hand-written layout of Compose UI code.
 # Correctness rules (unused imports, wildcard imports, trailing whitespace,

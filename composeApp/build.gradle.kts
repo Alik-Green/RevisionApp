@@ -35,7 +35,7 @@ kotlin {
             api(compose.foundation)
             api(compose.material3)
             api(compose.ui)
-            implementation(compose.materialIconsExtended)
+            implementation(compose.materialIconsCore)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
@@ -57,7 +57,9 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
 
-        desktopMain.dependencies {
+        // A custom-named jvm target has no generated `desktopMain` accessor,
+        // so the source set has to be looked up by name.
+        named("desktopMain").dependencies {
             implementation(compose.desktop.common)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.sqldelight.sqlite.driver)
