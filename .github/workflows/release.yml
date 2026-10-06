@@ -79,25 +79,29 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path logs | Out-Null
           $required = @('java.base', 'java.desktop', 'java.logging', 'java.sql', 'jdk.crypto.ec')
-          $found = @(Get-ChildItem -Recurse -Path desktopApp/build/compose -Filter java.exe -ErrorAction SilentlyContinue)
-          $out = @("java.exe candidates under desktopApp/build/compose: $($found.Count)")
-          $out += $found | ForEach-Object { $_.FullName }
-          $missing = @()
-          if ($found.Count -gt 0) {
-            $java = $found[0].FullName
-            $available = @(& $java --list-modules 2>&1 | ForEach-Object { "$_" })
-            $out += "bundled runtime: $java"
-            $out += "modules reported: $($available.Count)"
-            $out += $available
-            $missing = @($required | Where-Object { $n = $_; -not ($available | Where-Object { $_ -eq $n -or $_ -like "$n@*" }) })
-          } else {
-            $out += "no java.exe; directory tree under desktopApp/build/compose:"
-            $out += Get-ChildItem -Recurse -Path desktopApp/build/compose -ErrorAction SilentlyContinue |
-              ForEach-Object { $_.FullName }
-          }
+          # jlink writes a legal/<module> directory for every module it links, so
+          # that listing is the authoritative record of what the packaged app runs
+          # on. Asserting on it does not depend on locating the runtime image,
+          # which an earlier version of this check did and got wrong.
+          $linked = @(Get-ChildItem -Recurse -Path desktopApp/build/compose -Directory -ErrorAction SilentlyContinue |
+            Where-Object { $_.Parent.Name -eq 'legal' } |
+            ForEach-Object { $_.Name } | Sort-Object -Unique)
+          $missing = @($required | Where-Object { $_ -notin $linked })
+          $out = @()
+          $out += "modules linked into the packaged runtime: $($linked.Count)"
+          $out += $linked
+          $out += "required: $($required -join ', ')"
           $out += "MISSING: $(if ($missing.Count) { $missing -join ', ' } else { '(none)' })"
+          $java = Get-ChildItem -Recurse -Path desktopApp/build/compose -Filter java.exe -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+          if ($java) {
+            $out += "bundled launcher: $($java.FullName)"
+            $out += @(& $java.FullName --list-modules 2>&1 | ForEach-Object { "$_" })
+          } else {
+            $out += 'no java.exe found under desktopApp/build/compose (informational only)'
+          }
           $out | Tee-Object -FilePath logs/50-windows-runtime.log | Out-Null
-          if ($found.Count -eq 0) { throw 'no bundled java.exe found under desktopApp/build/compose' }
+          if ($linked.Count -eq 0) { throw 'no jlink runtime image found under desktopApp/build/compose' }
           if ($missing.Count -gt 0) { throw "bundled runtime is missing: $($missing -join ', ')" }
           Write-Host "all required modules present: $($required -join ', ')"
 

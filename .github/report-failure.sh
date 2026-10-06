@@ -63,8 +63,13 @@ PY
     echo "#### \`$f\`"
     echo
     echo '```text'
-    grep -nE "^(e|w): |error:|FAILURE:|What went wrong|Caused by:|Execution failed|A problem occurred|Could not |Unresolved reference|Compilation error|FAILED|Lint error|^\* " "$f" \
+    grep -nE "^(e|w): |error:|FAILURE:|What went wrong|Caused by:|Execution failed|A problem occurred|Could not |Unresolved reference|Compilation error|FAILED|Lint error|MISSING:|^\* " "$f" \
       | head -n 100
+    # Diagnostic logs written by the workflows themselves put their conclusion at
+    # the top, and the grep above matches none of their lines, so show the head as
+    # well as the tail or the useful part is lost to the byte cap.
+    echo "--- head ---"
+    head -n 60 "$f"
     echo "--- tail ---"
     tail -n 80 "$f"
     echo '```'
