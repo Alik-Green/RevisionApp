@@ -44,6 +44,12 @@ ktlint_standard_no-empty-first-line-in-method-block = disabled
 ktlint_standard_statement-wrapping = disabled
 ktlint_standard_when-entry-bracing = disabled
 
+# With max_line_length off this rule cannot know where a line "fits", so it
+# rejects deliberately packed constant tables (the SHA-256 round constants) that
+# read worse with 64 arguments on 64 lines. Every call site in the app either
+# fits on one line or puts one argument per line anyway.
+ktlint_standard_argument-list-wrapping = disabled
+
 [*.{yml,yaml,json}]
 indent_size = 2
 

@@ -194,7 +194,7 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
 
     Column(Modifier.fillMaxSize()) {
         AppHeader(
-            title = if (existing == null) "New card" else if (builtIn) "Built-in card" else "Edit card",
+            title = editorTitle(existing == null, builtIn, "card"),
             subtitle = if (builtIn) "Read-only - duplicate it to make your own editable copy" else id.value,
             onBack = { state.back() },
             trailing = {
@@ -298,6 +298,13 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
             Spacer(Modifier.height(16.dp))
         }
     }
+}
+
+/** "New card" / "Built-in card" / "Edit card", and the same for topics and tags. */
+private fun editorTitle(isNew: Boolean, isBuiltIn: Boolean, noun: String): String = when {
+    isNew -> "New " + noun
+    isBuiltIn -> "Built-in " + noun
+    else -> "Edit " + noun
 }
 
 private fun answerTypeHint(type: AnswerType): String = when (type) {

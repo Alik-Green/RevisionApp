@@ -122,6 +122,14 @@ fun BrowseScreen(state: AppState) {
 private fun toggle(current: Set<TopicId>, id: TopicId): Set<TopicId> =
     if (id in current) current - id else current + id
 
+/** The tree expander glyph. A `when` rather than a nested if/else, which ktlint
+ * would otherwise want wrapped in braces. */
+private fun expanderLabel(isLeaf: Boolean, isOpen: Boolean): String = when {
+    isLeaf -> " "
+    isOpen -> "-"
+    else -> "+"
+}
+
 /** Wide-screen right-hand pane: the study bar plus a lazy list of cards. */
 @Composable
 private fun CardColumn(
@@ -263,7 +271,7 @@ private fun TopicRows(
                     .clickable(enabled = !node.isLeaf) { onExpand(node.id) },
                 contentAlignment = Alignment.Center,
             ) {
-                Text(if (node.isLeaf) "" else if (isOpen) "-" else "+", style = MaterialTheme.typography.labelLarge)
+                Text(expanderLabel(node.isLeaf, isOpen), style = MaterialTheme.typography.labelLarge)
             }
             Text(
                 node.name,

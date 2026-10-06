@@ -462,8 +462,9 @@ class AppState(
     }
 
     private fun describe(result: SyncResult): String = when (result) {
-        is SyncResult.Completed -> "Updated ${result.report.updated.size}, unchanged ${result.report.unchanged.size}, " +
-            "errors ${result.report.errors.size}"
+        is SyncResult.Completed ->
+            "Updated ${result.report.updated.size}, unchanged ${result.report.unchanged.size}, " +
+                "errors ${result.report.errors.size}"
 
         is SyncResult.Fatal -> "Failed: ${result.error.describe()}"
     }

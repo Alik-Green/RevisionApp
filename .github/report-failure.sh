@@ -41,12 +41,17 @@ PY
 
   # ktlint writes one line per violation into its own report, and none of them
   # match the compiler-error patterns below, so they need their own section.
-  for report in composeApp/build/reports/ktlint/*/*.txt */build/reports/ktlint/*/*.txt; do
+  # Colours are stripped and generated sources dropped: the report is capped, and
+  # spending that budget on build/generated would hide real violations.
+  shopt -s nullglob
+  for report in */build/reports/ktlint/*/*.txt; do
     [ -s "$report" ] || continue
     echo "#### \`$(basename "$report")\`"
     echo
     echo '```text'
-    sed "s|${GITHUB_WORKSPACE:-/home/runner/work/RevisionApp/RevisionApp}/||" "$report" | head -n 200
+    sed -e "s|${GITHUB_WORKSPACE:-/home/runner/work/RevisionApp/RevisionApp}/||" \
+        -e 's/\x1b\[[0-9;]*m//g' "$report" |
+      grep -v "/build/generated/" | head -n 400
     echo '```'
     echo
   done

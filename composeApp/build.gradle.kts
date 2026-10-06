@@ -84,5 +84,11 @@ ktlint {
     filter {
         exclude("**/build/**")
         exclude("**/generated/**")
+        // SQLDelight generates Kotlin into build/generated and adds it to the
+        // commonMain source set, so the per-source-set ktlint tasks pick it up.
+        // The path patterns above did not match those absolute paths, so the
+        // generated output is filtered on the resolved file as well - linting
+        // code nobody wrote only hides violations in code that was.
+        exclude { element -> element.file.path.replace('\\', '/').contains("/build/") }
     }
 }
