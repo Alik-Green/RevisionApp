@@ -5,21 +5,24 @@ package com.revisionapp.domain.model
  * [Card] — there is no separate question entity — so one card can power every
  * mode.
  */
-enum class StudyMode(val title: String) {
+enum class StudyMode(val title: String, val difficultyRank: Int) {
     /** Flip, then self-rate Again / Hard / Good / Easy. */
-    FLASHCARD("Flashcards"),
+    FLASHCARD("Flashcards", 0),
 
     /** Type the answer; graded by the answer checker, always overridable. */
-    TYPED("Typed answer"),
+    TYPED("Typed answer", 3),
 
     /** Order shuffled tiles to rebuild the answer (short answers only). */
-    TILES("Word tiles"),
+    TILES("Word tiles", 2),
 
     /** Four options with immediate feedback and the explanation. */
-    MCQ("Multiple choice"),
+    MCQ("Multiple choice", 1),
 
-    /** Picks the best-fit concrete mode per card. */
-    MIXED("Mixed"),
+    /**
+     * Picks the best-fit concrete mode per card. Always resolved to a concrete
+     * mode before grading, so its rank is only a placeholder.
+     */
+    MIXED("Mixed", 0),
     ;
 
     /** Modes a session can actually present a card in. */

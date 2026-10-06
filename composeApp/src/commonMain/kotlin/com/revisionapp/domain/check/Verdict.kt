@@ -28,6 +28,8 @@ sealed interface VerdictReason {
     data object ExpressionUndecidable : VerdictReason
     data object SelfGrade : VerdictReason
     data class Similarity(val cosine: Double) : VerdictReason
+    data class TilePlacement(val correctPositions: Int, val totalPositions: Int) : VerdictReason
+    data class McqSelection(val selectedIndex: Int, val correctIndex: Int) : VerdictReason
 }
 
 /**

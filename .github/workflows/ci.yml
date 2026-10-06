@@ -37,30 +37,30 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Configure
+      # Every check runs even if an earlier one fails, so a single push reports
+      # compile errors, test failures and lint violations together. Feedback here
+      # costs a whole CI round trip, so batching it matters. See docs/DECISIONS.md D1.
+      - name: Configure, test, lint and build
         shell: bash
         run: |
           mkdir -p logs
-          set -o pipefail
-          ./gradlew projects --stacktrace 2>&1 | tee logs/00-configure.log
-
-      - name: Unit tests (commonTest on the JVM target)
-        shell: bash
-        run: |
-          set -o pipefail
-          ./gradlew :composeApp:desktopTest --stacktrace 2>&1 | tee logs/10-test.log
-
-      - name: Lint (ktlint)
-        shell: bash
-        run: |
-          set -o pipefail
-          ./gradlew ktlintCheck --stacktrace 2>&1 | tee logs/20-lint.log
-
-      - name: Build desktop app
-        shell: bash
-        run: |
-          set -o pipefail
-          ./gradlew :desktopApp:build --stacktrace 2>&1 | tee logs/30-desktop.log
+          status=0
+          run_step() {
+            name="$1"; shift
+            echo "::group::$name"
+            if "$@" 2>&1 | tee "logs/$name.log"; then
+              echo "$name: OK"
+            else
+              echo "$name: FAILED"
+              status=1
+            fi
+            echo "::endgroup::"
+          }
+          run_step 00-configure ./gradlew projects --stacktrace
+          run_step 10-test ./gradlew :composeApp:desktopTest --stacktrace
+          run_step 20-lint ./gradlew ktlintCheck --stacktrace
+          run_step 30-desktop ./gradlew :desktopApp:build --stacktrace
+          exit $status
 
       - name: Report failure
         if: failure()
@@ -119,7 +119,6 @@ jobs:
         shell: bash
         run: |
           mkdir -p logs
-          set -o pipefail
           ./gradlew :androidApp:assembleDebug --stacktrace 2>&1 | tee logs/40-android.log
 
       - name: Report failure

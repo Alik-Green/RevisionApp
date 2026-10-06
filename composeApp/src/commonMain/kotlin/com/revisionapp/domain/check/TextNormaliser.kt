@@ -95,6 +95,7 @@ object TextNormaliser {
         "\\log" to "log",
         "\\exp" to "exp",
         "\\cap" to "intersection",
+        "\\cup" to "union",
         "\\div" to "/",
         "\\pm" to "+/-",
         "\\mp" to "-/+",
@@ -254,11 +255,13 @@ object TextNormaliser {
     fun toPlainText(raw: String): String {
         if (raw.isEmpty()) return raw
 
-        var text = raw.replace("$", " ")
+        var text = raw.replace("$", "")
         text = ENVIRONMENTS.replace(text, " ")
         text = expandBracedCommands(text)
         for ((command, replacement) in LATEX_COMMANDS) {
-            if (text.contains(command)) text = text.replace(command, replacement)
+            // Padded with spaces so that "2\pi r" becomes "2 pi r" rather than
+            // "2pi r"; runs of whitespace are collapsed at the end.
+            if (text.contains(command)) text = text.replace(command, " $replacement ")
         }
         text = text.replace("\\\\", " ")
         text = SUPERSCRIPT_GROUP.replace(text) { "^" + group(it.groupValues[1]) }

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Posts the interesting parts of the captured Gradle logs as a commit comment.
+# Posts the interesting parts of a failed CI run as a commit comment.
 #
-# The CI sandbox this project is developed from can reach api.github.com but not
+# The sandbox this project is developed from can reach api.github.com but not
 # results-receiver.actions.githubusercontent.com, so `gh run view --log` cannot
-# be used to read a failed build. Commit comments travel over api.github.com and
-# are therefore the one channel that works in both directions.
+# read a failed build. Commit comments travel over api.github.com and are
+# therefore the one channel that works in both directions.
 set -uo pipefail
 
 JOB="${1:-unknown}"
@@ -18,31 +18,49 @@ BODY="$(mktemp)"
   echo "Run: ${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
   echo
 
+  # Test failures straight out of the JUnit XML: message plus the first lines of
+  # the stack, which is where the assertion detail lives.
   shopt -s nullglob
+  for xml in composeApp/build/test-results/*/TEST-*.xml; do
+    python3 - "$xml" <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+
+tree = ET.parse(sys.argv[1])
+for case in tree.getroot().iter("testcase"):
+    problems = list(case.iter("failure")) + list(case.iter("error"))
+    if not problems:
+        continue
+    print(f"FAILED TEST {case.get('classname')}.{case.get('name')}")
+    for problem in problems:
+        text = (problem.get("message") or "") + "\n" + (problem.text or "")
+        print("\n".join(text.splitlines()[:10]))
+    print()
+PY
+  done
+
   for f in logs/*.log; do
-    if grep -qE "BUILD SUCCESSFUL" "$f" 2>/dev/null; then
+    if grep -qE "BUILD SUCCESSFUL" "$f" 2>/dev/null && ! grep -qE "FAILED" "$f" 2>/dev/null; then
       continue
     fi
     echo "#### \`$f\`"
     echo
     echo '```text'
-    # Kotlin/Java compiler errors, Gradle's own diagnostics and the failure
-    # summary are the parts worth reading; everything else is progress noise.
-    grep -nE "^(e|w): |error:|FAILURE:|What went wrong|Caused by:|Execution failed|A problem occurred|Could not |Unresolved reference|Deprecated Gradle|Compilation error|FAILED|^\* |^> Task .* FAILED" "$f" \
-      | head -n 80
+    grep -nE "^(e|w): |error:|FAILURE:|What went wrong|Caused by:|Execution failed|A problem occurred|Could not |Unresolved reference|Compilation error|FAILED|Lint error|^\* " "$f" \
+      | head -n 100
     echo "--- tail ---"
-    tail -n 100 "$f"
+    tail -n 80 "$f"
     echo '```'
     echo
   done
 } > "$BODY"
 
-# GitHub caps comment bodies; keep the head (which holds the compiler errors).
+# GitHub caps comment bodies; keep the head, which holds the compiler errors.
 if [ "$(wc -c < "$BODY")" -gt "$MAX_BYTES" ]; then
   head -c "$MAX_BYTES" "$BODY" > "$BODY.trim" && mv "$BODY.trim" "$BODY"
 fi
 
 gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/comments" \
-  -f body="$(cat "$BODY")" >/dev/null && echo "Posted failure log to ${GITHUB_SHA}"
+  -f body="$(cat "$BODY")" >/dev/null && echo "Posted failure log for ${GITHUB_SHA}"
 
 rm -f "$BODY"
