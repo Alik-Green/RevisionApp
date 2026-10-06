@@ -64,7 +64,7 @@ private const val CHIPS_PER_ROW = 3
  * sessions, which is why it lives in [AppState] rather than in this screen.
  */
 @Composable
-fun BrowseScreen(state: AppState) {
+fun LibraryScreen(state: AppState) {
     val snapshot = state.snapshot.collectAsState().value
     val filter = state.filter.collectAsState().value
     val cards = remember(snapshot, filter) { snapshot.filtered(filter) }
@@ -72,7 +72,7 @@ fun BrowseScreen(state: AppState) {
 
     Column(Modifier.fillMaxSize()) {
         AppHeader(
-            title = "Browse",
+            title = "Library",
             subtitle = cards.size.toString() + " of " + snapshot.cards.size + " cards shown, " +
                 snapshot.dueCount(filter) + " due",
             trailing = {

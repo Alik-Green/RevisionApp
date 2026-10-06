@@ -30,6 +30,7 @@ import com.revisionapp.ui.session.SessionCard
 import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
 import com.revisionapp.ui.session.StudySession
+import com.revisionapp.ui.theme.ThemeMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +45,7 @@ import kotlin.time.Instant
 
 /** Destinations. Hand-rolled rather than a navigation library: see DECISIONS.md D6. */
 sealed interface Route {
-    data object Browse : Route
+    data object Library : Route
     data object Study : Route
     data object Stats : Route
     data object Settings : Route
@@ -88,9 +89,11 @@ data class SettingsUi(
     val baseUrl: String,
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
 ) {
     companion object {
-        fun initial(): SettingsUi = SettingsUi(ContentSync.DEFAULT_BASE_URL, DEFAULT_RETENTION, emptyList())
+        fun initial(): SettingsUi =
+            SettingsUi(ContentSync.DEFAULT_BASE_URL, DEFAULT_RETENTION, emptyList(), ThemeMode.SYSTEM)
 
         const val DEFAULT_RETENTION: Double = 0.9
         const val MIN_RETENTION: Double = 0.7
@@ -124,7 +127,7 @@ class AppState(
     private val graph: AppGraph,
     private val scope: CoroutineScope,
 ) {
-    private val _route = MutableStateFlow<Route>(Route.Browse)
+    private val _route = MutableStateFlow<Route>(Route.Library)
     val route: StateFlow<Route> = _route.asStateFlow()
 
     private val _snapshot = MutableStateFlow(LibrarySnapshot.Empty)
@@ -204,7 +207,7 @@ class AppState(
 
     fun back() {
         val previous = backStack.removeLastOrNull()
-        _route.value = previous ?: Route.Browse
+        _route.value = previous ?: Route.Library
         if (_route.value != Route.Study) session = null
     }
 
@@ -311,7 +314,7 @@ class AppState(
         session = null
         _sessionState.value = SessionState.Empty
         backStack.removeAll { it == Route.Study }
-        _route.value = Route.Browse
+        _route.value = Route.Library
         refresh()
     }
 
@@ -504,6 +507,14 @@ class AppState(
         }
     }
 
+    /** Light, dark or follow the system. Applied by `InkPaperTheme` at the root. */
+    fun setThemeMode(mode: ThemeMode) {
+        scope.launch(Dispatchers.Default) {
+            graph.settings.write(SettingKeys.THEME_MODE, mode.name)
+            loadSettingsInto()
+        }
+    }
+
     fun loadSettings() {
         scope.launch(Dispatchers.Default) { loadSettingsInto() }
     }
@@ -515,11 +526,12 @@ class AppState(
             desiredRetention = graph.settings.read(SettingKeys.DESIRED_RETENTION)?.toDoubleOrNull()
                 ?: SettingsUi.DEFAULT_RETENTION,
             packs = graph.packs.installed(),
+            themeMode = ThemeMode.fromStored(graph.settings.read(SettingKeys.THEME_MODE)),
         )
     }
 
     companion object {
         /** The four tabs. Editors are pushed on top of them, never beside them. */
-        private val TopLevelTabs: Set<Route> = setOf(Route.Browse, Route.Study, Route.Stats, Route.Settings)
+        private val TopLevelTabs: Set<Route> = setOf(Route.Library, Route.Study, Route.Stats, Route.Settings)
     }
 }

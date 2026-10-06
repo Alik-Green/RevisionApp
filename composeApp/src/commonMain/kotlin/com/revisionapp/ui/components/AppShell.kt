@@ -1,84 +1,99 @@
 package com.revisionapp.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Badge
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.nav.Destination
+import com.revisionapp.ui.nav.WindowSizeClass
+import com.revisionapp.ui.session.SessionState
 
 /**
- * The top-level tab bar, plus the due count that is visible from everywhere.
- * Hand-rolled for the same reason as [AppHeader]: no experimental Material 3 APIs.
+ * The adaptive navigation shell: a bottom bar on compact widths, a rail from
+ * medium upwards, and nothing at all during a live session, which gets the whole
+ * window.
+ *
+ * Both are driven by [Destination.entries], so the bar and the rail can never
+ * disagree about what exists or in what order. The due count lives on the Study
+ * destination as a badge — it used to float at the top right of every screen,
+ * outside any tab, which read as a global notification rather than as a property
+ * of studying.
  */
 @Composable
-fun NavBar(state: AppState, current: Route) {
+fun AppShell(state: AppState, current: Route, screen: @Composable () -> Unit) {
+    val session = state.sessionState.collectAsState().value
+    val immersive = current == Route.Study &&
+        session !is SessionState.Empty &&
+        session !is SessionState.Finished
+    if (immersive) {
+        screen()
+        return
+    }
+
     val snapshot = state.snapshot.collectAsState().value
     val filter = state.filter.collectAsState().value
     val due = snapshot.dueCount(filter)
+    val selected = Destination.owning(current)
 
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f))
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        NavButton("Browse", current == Route.Browse, Modifier.weight(1f)) { state.switchTab(Route.Browse) }
-        NavButton("Study", current == Route.Study, Modifier.weight(1f)) { state.switchTab(Route.Study) }
-        NavButton("Stats", current == Route.Stats, Modifier.weight(1f)) { state.switchTab(Route.Stats) }
-        NavButton("Settings", current == Route.Settings, Modifier.weight(1f)) { state.switchTab(Route.Settings) }
-        Box(
-            Modifier
-                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
-                .padding(horizontal = 10.dp, vertical = 4.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                due.toString() + " due",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        if (WindowSizeClass.fromWidth(maxWidth.value).usesBottomBar) {
+            Column(Modifier.fillMaxSize()) {
+                Box(Modifier.fillMaxWidth().weight(1f)) { screen() }
+                NavigationBar {
+                    for (destination in Destination.entries) {
+                        NavigationBarItem(
+                            selected = destination == selected,
+                            onClick = { state.switchTab(destination.route) },
+                            icon = { Icon(destination.icon, contentDescription = destination.label) },
+                            label = { Text(destination.label) },
+                            badge = dueBadge(destination, due),
+                        )
+                    }
+                }
+            }
+        } else {
+            Row(Modifier.fillMaxSize()) {
+                NavigationRail {
+                    for (destination in Destination.entries) {
+                        NavigationRailItem(
+                            selected = destination == selected,
+                            onClick = { state.switchTab(destination.route) },
+                            icon = { Icon(destination.icon, contentDescription = destination.label) },
+                            label = { Text(destination.label) },
+                            badge = dueBadge(destination, due),
+                        )
+                    }
+                }
+                Box(Modifier.fillMaxWidth().weight(1f)) { screen() }
+            }
         }
     }
 }
 
+/** The Study badge, or null so no empty badge is drawn at all. */
 @Composable
-private fun NavButton(label: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
-    val shape = RoundedCornerShape(8.dp)
-    val background = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
-    val foreground = if (selected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
+private fun dueBadge(destination: Destination, due: Int): (@Composable () -> Unit)? =
+    if (destination == Destination.Study && due > 0) {
+        {
+            Badge { Text(dueLabel(due)) }
+        }
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        null
     }
-    Box(
-        modifier
-            .background(background, shape)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 6.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            label,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-            color = foreground,
-            maxLines = 1,
-        )
-    }
-}
+
+/** A three-digit due count would not fit a badge, and precision stops mattering. */
+private fun dueLabel(due: Int): String = if (due > 99) "99+" else due.toString()

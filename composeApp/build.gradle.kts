@@ -35,6 +35,12 @@ kotlin {
             api(compose.foundation)
             api(compose.material3)
             api(compose.ui)
+            // The full Material icon set. The brief asks for a consistent icon set
+            // across the redesigned UI; material3 only brings the ~50 core icons,
+            // which has no folder, book, chart or sync glyph. This accessor is
+            // pinned by the Compose plugin to a frozen 1.7.3 and, unlike the other
+            // compose.* accessors, is not deprecated. See docs/DECISIONS.md D33.
+            api(compose.materialIconsExtended)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)

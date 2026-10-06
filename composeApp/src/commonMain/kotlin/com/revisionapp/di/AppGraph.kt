@@ -25,6 +25,7 @@ import kotlin.time.Clock
 object SettingKeys {
     const val CONTENT_BASE_URL: String = "content.baseUrl"
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
+    const val THEME_MODE: String = "appearance.themeMode"
     const val LAST_SYNC_AT: String = "sync.lastAt"
     const val LAST_SYNC_SUMMARY: String = "sync.lastSummary"
 }

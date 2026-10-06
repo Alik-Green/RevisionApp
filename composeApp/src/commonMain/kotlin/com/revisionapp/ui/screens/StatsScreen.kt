@@ -44,7 +44,7 @@ fun StatsScreen(state: AppState) {
             title = "Stats",
             subtitle = stats.totalCards.toString() + " cards, " + stats.userCards.toString() + " of them yours",
             trailing = {
-                TextButton(onClick = { state.navigate(Route.Browse) }) { Text("Browse") }
+                TextButton(onClick = { state.navigate(Route.Library) }) { Text("Library") }
             },
         )
         Column(

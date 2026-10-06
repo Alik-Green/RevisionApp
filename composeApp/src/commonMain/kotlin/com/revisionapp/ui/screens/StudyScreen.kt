@@ -83,7 +83,7 @@ private fun ModePicker(state: AppState) {
             title = "Study",
             subtitle = due.toString() + " card(s) due with the current filters",
             trailing = {
-                TextButton(onClick = { state.navigate(Route.Browse) }) { Text("Browse") }
+                TextButton(onClick = { state.navigate(Route.Library) }) { Text("Library") }
             },
         )
         Column(
@@ -92,10 +92,10 @@ private fun ModePicker(state: AppState) {
         ) {
             EmptyMessage(
                 if (due == 0) {
-                    "Nothing is due right now. Loosen the filters on the Browse screen, or start a " +
+                    "Nothing is due right now. Loosen the filters on the Library screen, or start a " +
                         "session anyway - it will simply be empty."
                 } else {
-                    "Filters are shared with the Browse screen: a session only ever contains cards the " +
+                    "Filters are shared with the Library screen: a session only ever contains cards the " +
                         "current topic and tag selection allows. Cards the chosen mode cannot present - " +
                         "a long paragraph in tile mode, a topic with too few siblings for multiple " +
                         "choice - drop out silently."

@@ -639,3 +639,66 @@ variables. Every one of those is absent from the measured content, and each
 degrades to readable text rather than to nothing. `$` is also stripped everywhere,
 so a literal currency amount in a card would lose its symbol — the content README
 now says to write prices out.
+
+---
+
+## D33. The full Material icon set, reversing D20's "no icon set"
+
+**Decision.** `composeApp` declares `api(compose.materialIconsExtended)`.
+
+**Why.** D20 declined an icon set because nothing needed one: the first UI used
+words on buttons and had no folders, no chevrons and no status glyphs. The
+redesign does — a Library of folders needs a folder, a breadcrumb needs a
+chevron, a sync status needs three distinguishable states, and a navigation rail
+with labels but no icons looks unfinished. Hand-drawing those as vectors would be
+more code than the dependency and less consistent than the set every other
+Material app uses.
+
+The accessor is pinned by the Compose plugin to a frozen
+`org.jetbrains.compose.material:material-icons-extended:1.7.3` and, unlike the
+other `compose.*` accessors in ComposePlugin 1.12.1, is *not* marked deprecated —
+checked in the plugin source rather than assumed, because the alternatives were
+guessing at a coordinate Maven Central could not be reached to verify.
+
+**What it costs.** A large artifact, most of which tree-shaking removes at the
+R8/jlink stage but which still lengthens dependency resolution. D20's other half —
+no experimental Material 3 APIs — still stood when this was written, and is
+revisited in D34.
+
+---
+
+## D34. Ink & Paper, an adaptive shell, and one deliberate experimental opt-in
+
+**Decision.** `ui/theme/InkPaper.kt` holds the light and dark `ColorScheme` and a
+separate `ExtendedColors` for the three verdicts, exposed through a
+`staticCompositionLocalOf`. `AppShell` renders a `NavigationBar` below 600dp and a
+`NavigationRail` from 600dp up, both driven by one `Destination` enum, and renders
+nothing at all during a live session. The due count is a badge on the Study
+destination.
+
+**Why the verdict colours are not in `ColorScheme`.** Material 3 has no slot for
+"correct / partly right / incorrect". Putting them in secondary and tertiary would
+make amber mean both "due soon" and "partly right", which is exactly the ambiguity
+a semantic palette exists to remove. `ExtendedColors` keeps them separate and
+gives each a container and an on-container colour, so coloured text always sits on
+its own container at AA contrast rather than as white on a mid-tone — the failure
+mode of a hand-picked green or amber.
+
+**Why the due count moved.** Floating at the top right of every screen it read as
+a global notification, unattached to anything, and it competed with each screen's
+own title. As a badge on Study it says what it means: this is how much work that
+tab holds. It also disappears when there is none, instead of showing "0 due"
+forever.
+
+**Why `NavigationBar` and `NavigationRail` but not `Scaffold`.** Both items are
+stable API and both take a `badge` slot, which is what the due count needs.
+`Scaffold` would add a slot layout this app does not want: each screen owns its
+own header, because a Library header carries a search field and a breadcrumb while
+a session header carries a progress bar and an exit button. The shell therefore
+composes the bar or rail around the screen directly.
+
+**The opt-in.** Bottom sheets for scoped filters and for post-answer feedback need
+`ModalBottomSheet`, which is `@ExperimentalMaterial3Api`. D20 avoided every
+experimental API because there is no local compiler and each opt-in is a chance to
+break the build invisibly; a sheet is worth one, taken explicitly at the call site
+rather than file-wide, so the blast radius is named.
