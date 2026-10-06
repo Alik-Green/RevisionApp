@@ -1,0 +1,288 @@
+{
+  "topic": "paper-2-mathematical-reasoning",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is the contrapositive of the statement 'if $n$ is even then $n^2$ is even'?",
+      "back": "If $n^2$ is odd then $n$ is odd.",
+      "keyPoints": [
+        {
+          "text": "negate both parts",
+          "mustInclude": true
+        },
+        {
+          "text": "reverse them",
+          "synonyms": [
+            "swap the hypothesis and conclusion"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "if n^2 is odd then n is odd",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "If $n^2$ is odd then $n$ is odd.",
+        "distractors": [
+          "If $n^2$ is even then $n$ is even.",
+          "If $n$ is odd then $n^2$ is odd.",
+          "If $n$ is even then $n^2$ is odd."
+        ]
+      },
+      "explanation": "The contrapositive of $P \\Rightarrow Q$ is $\\neg Q \\Rightarrow \\neg P$. Option 2 is the converse and option 3 is the inverse; note that the inverse is logically equivalent to the contrapositive but is not the contrapositive, which is specifically the negated statement read backwards. A statement and its contrapositive always have the same truth value.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: contrapositive",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is the converse of 'if it rains, the ground is wet', and must it be true?",
+      "back": "'If the ground is wet, it rains.' It need not be true: the ground could be wet for another reason, such as a sprinkler.",
+      "keyPoints": [
+        {
+          "text": "swap the hypothesis and the conclusion",
+          "synonyms": [
+            "if the ground is wet then it rains"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the converse need not be true",
+          "synonyms": [
+            "not logically equivalent"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a valid alternative explanation",
+          "synonyms": [
+            "sprinkler",
+            "a hose",
+            "flooding"
+          ]
+        }
+      ],
+      "explanation": "A statement and its converse are independent: either can be true or false regardless of the other. Confusing them is the fallacy of affirming the consequent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: converse",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Negate the statement 'all prime numbers are odd'.",
+      "back": "There is at least one prime number that is not odd. In other words, some prime numbers are not odd - and 2 is the example that proves it.",
+      "keyPoints": [
+        {
+          "text": "there exists a prime that is not odd",
+          "synonyms": [
+            "some primes are not odd",
+            "at least one prime is even"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the negation is existential, not universal",
+          "synonyms": [
+            "not 'no primes are odd'"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "There is at least one prime number that is not odd. In other words, some prime numbers are not odd - and 2 is the example that proves it.",
+        "distractors": [
+          "All prime numbers are even.",
+          "No prime number is odd.",
+          "All odd numbers are prime."
+        ]
+      },
+      "explanation": "The negation of $\\forall x, P(x)$ is $\\exists x, \\neg P(x)$: it takes only one exception to falsify a universal claim, so the negation asserts that such an exception exists. 'No prime is odd' is far stronger than the negation requires.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: negation and quantifiers",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Negate the statement 'if $x > 2$ then $x^2 > 4$'.",
+      "back": "There is a value of $x$ with $x > 2$ and $x^2 \\le 4$.",
+      "keyPoints": [
+        {
+          "text": "the hypothesis is kept",
+          "synonyms": [
+            "x > 2 still holds"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the conclusion is negated",
+          "synonyms": [
+            "x^2 is not greater than 4",
+            "x^2 <= 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it asserts that such a case exists",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "There is a value of $x$ with $x > 2$ and $x^2 \\le 4$.",
+        "distractors": [
+          "If $x \\le 2$ then $x^2 \\le 4$.",
+          "If $x^2 \\le 4$ then $x \\le 2$.",
+          "If $x > 2$ then $x^2 \\le 4$ for every $x$."
+        ]
+      },
+      "explanation": "The negation of $P \\Rightarrow Q$ is $P \\wedge \\neg Q$, not another implication. An implication is false only when its hypothesis holds and its conclusion fails, so the negation says exactly that such a case exists.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: negation of an implication",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What is the difference between a necessary condition and a sufficient condition?",
+      "back": "A is sufficient for B means that A guarantees B, so A implies B. A is necessary for B means B cannot happen without A, so B implies A. A condition can be one, both or neither.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "sufficient means it guarantees the other",
+          "synonyms": [
+            "A implies B"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "necessary means the other cannot hold without it",
+          "synonyms": [
+            "B implies A"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a condition can be necessary but not sufficient, or both",
+          "synonyms": [
+            "necessary and sufficient"
+          ]
+        }
+      ],
+      "explanation": "Being over 18 is necessary but not sufficient for a driving licence in the UK; passing the test is sufficient. When both hold, the two statements are equivalent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: necessary and sufficient",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0006",
+      "front": "A student is asked to prove 'if n squared is even then n is even'. They write: suppose n is even, so n = 2k, then n squared = 4k squared, which is even. What is wrong?",
+      "back": "They have proved the converse. The task was to start from n squared being even and deduce that n is even, but they assumed n was even instead, which is the conclusion they were supposed to reach.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "they proved the converse instead",
+          "mustInclude": true
+        },
+        {
+          "text": "they assumed what they needed to prove",
+          "synonyms": [
+            "started from the conclusion",
+            "circular"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the proof should begin with n squared even",
+          "synonyms": [
+            "the hypothesis is n squared is even"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The correct argument usually goes by contrapositive: suppose n is odd, so n = 2k + 1, then n squared = 4k squared + 4k + 1, which is odd. That proves the contrapositive, which is equivalent to the original statement.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: spotting errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What is assumed at the start of a proof by contradiction that $\\sqrt{2}$ is irrational?",
+      "back": "That $\\sqrt{2}$ is rational, so $\\sqrt{2} = \\frac{a}{b}$ for integers $a$ and $b$ with no common factor other than 1.",
+      "keyPoints": [
+        {
+          "text": "assume the opposite: that root 2 is rational",
+          "mustInclude": true
+        },
+        {
+          "text": "write it as a fraction a/b in lowest terms",
+          "synonyms": [
+            "coprime",
+            "no common factor"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The condition that a and b share no common factor is what makes the contradiction possible: the argument ends by showing both are even, so they share the factor 2.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: proof by contradiction",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Negate the statement 'there is an integer $n$ such that $n^2 = 2$'.",
+      "back": "For every integer $n$, $n^2 \\ne 2$.",
+      "keyPoints": [
+        {
+          "text": "the quantifier changes from exists to for all",
+          "synonyms": [
+            "existential becomes universal"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the condition is negated",
+          "synonyms": [
+            "n^2 is not equal to 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "For every integer $n$, $n^2 \\ne 2$.",
+        "distractors": [
+          "There is an integer $n$ such that $n^2 \\ne 2$.",
+          "For every integer $n$, $n^2 = 2$.",
+          "There is no real number $x$ with $x^2 = 2$."
+        ]
+      },
+      "explanation": "The negation of $\\exists x, P(x)$ is $\\forall x, \\neg P(x)$. Note the last distractor changes the domain from integers to reals, which makes it a different and false statement.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: negation and quantifiers",
+      "tagRefs": [
+        "tmua",
+        "paper-2"
+      ]
+    }
+  ]
+}

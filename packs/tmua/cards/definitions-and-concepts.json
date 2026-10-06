@@ -1,0 +1,328 @@
+{
+  "topic": "definitions-and-concepts",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define the contrapositive of a conditional statement.",
+      "back": "The contrapositive of $P \\Rightarrow Q$ is $\\neg Q \\Rightarrow \\neg P$. It is always logically equivalent to the original statement.",
+      "keyPoints": [
+        {
+          "text": "negate Q then negate P",
+          "synonyms": [
+            "not Q implies not P"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the two are reversed",
+          "mustInclude": true
+        },
+        {
+          "text": "logically equivalent to the original",
+          "synonyms": [
+            "same truth value"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "\u00acQ \u21d2 \u00acP"
+      ],
+      "explanation": "Because they always share a truth value, proving the contrapositive is a legitimate way to prove the original statement.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Define the converse of a conditional statement.",
+      "back": "The converse of $P \\Rightarrow Q$ is $Q \\Rightarrow P$. It is not logically equivalent to the original, so it may have a different truth value.",
+      "keyPoints": [
+        {
+          "text": "swap the hypothesis and the conclusion",
+          "synonyms": [
+            "Q implies P"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "not equivalent to the original statement",
+          "synonyms": [
+            "can have a different truth value"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Asserting the converse because the original is true is the fallacy of affirming the consequent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define the inverse of a conditional statement, and say what it is equivalent to.",
+      "back": "The inverse of $P \\Rightarrow Q$ is $\\neg P \\Rightarrow \\neg Q$. It is equivalent to the converse, and not to the original statement.",
+      "keyPoints": [
+        {
+          "text": "negate both parts without reversing them",
+          "synonyms": [
+            "not P implies not Q"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "equivalent to the converse",
+          "mustInclude": true
+        },
+        {
+          "text": "not equivalent to the original",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The inverse of the contrapositive is the original statement, which is why the four forms fall into two equivalent pairs.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Define a necessary condition.",
+      "back": "A is necessary for B when B cannot be true without A, that is $B \\Rightarrow A$. A may hold on its own without B holding.",
+      "keyPoints": [
+        {
+          "text": "B cannot hold without A",
+          "mustInclude": true
+        },
+        {
+          "text": "B implies A",
+          "mustInclude": true
+        },
+        {
+          "text": "A alone does not guarantee B",
+          "synonyms": [
+            "not sufficient"
+          ]
+        }
+      ],
+      "explanation": "Being a mammal is necessary for being a dog, but not sufficient: plenty of mammals are not dogs.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Define a sufficient condition.",
+      "back": "A is sufficient for B when A guarantees B, that is $A \\Rightarrow B$. B may also be brought about some other way.",
+      "keyPoints": [
+        {
+          "text": "A guarantees B",
+          "mustInclude": true
+        },
+        {
+          "text": "A implies B",
+          "mustInclude": true
+        },
+        {
+          "text": "B can happen without A",
+          "synonyms": [
+            "not necessary"
+          ]
+        }
+      ],
+      "explanation": "Passing a driving test is sufficient for holding a licence, but not necessary in the sense that other conditions must also hold, such as being old enough.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0006",
+      "front": "Define a counterexample.",
+      "back": "A single case in which a statement fails. One counterexample is enough to prove a universal statement false, though no number of examples can prove it true.",
+      "keyPoints": [
+        {
+          "text": "a case where the statement fails",
+          "synonyms": [
+            "an exception"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "one is enough to disprove a universal claim",
+          "mustInclude": true
+        },
+        {
+          "text": "examples cannot prove a universal claim true",
+          "synonyms": [
+            "testing cases is not a proof"
+          ]
+        }
+      ],
+      "explanation": "'All prime numbers are odd' is disproved instantly by the single counterexample 2.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Describe proof by contradiction.",
+      "back": "Assume the negation of what you want to prove, reason from it until you reach something impossible or already known to be false, and conclude that the assumption was wrong, so the original statement must be true.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "assume the negation of the statement",
+          "synonyms": [
+            "assume the opposite"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "derive a contradiction",
+          "synonyms": [
+            "reach something impossible"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "conclude the original statement is true",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "It works because a statement is either true or false: if its negation leads to an impossibility, the statement itself must hold.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the structure of a proof by mathematical induction.",
+      "back": "Prove the base case, usually n = 1. Assume the statement holds for n = k. Using that assumption, prove it holds for n = k + 1. Conclude that it holds for all positive integers n.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case",
+          "synonyms": [
+            "true for n = 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "inductive assumption for n = k",
+          "mustInclude": true
+        },
+        {
+          "text": "prove the n = k + 1 case using that assumption",
+          "mustInclude": true
+        },
+        {
+          "text": "state the conclusion",
+          "synonyms": [
+            "holds for all n"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The base case starts the chain and the inductive step extends it, so together they reach every integer.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "What does 'if and only if' mean?",
+      "back": "That both implications hold: $P \\Rightarrow Q$ and $Q \\Rightarrow P$. The two statements are then logically equivalent, and each is necessary and sufficient for the other.",
+      "keyPoints": [
+        {
+          "text": "both directions hold",
+          "synonyms": [
+            "P implies Q and Q implies P"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the statements are equivalent",
+          "synonyms": [
+            "necessary and sufficient"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "iff"
+      ],
+      "explanation": "Writing 'if' when you mean 'if and only if' is a common way to lose a mark: it claims only one direction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What do the quantifiers $\\forall$ and $\\exists$ mean, and how does negation affect them?",
+      "back": "$\\forall$ means 'for all' and $\\exists$ means 'there exists'. Negation swaps them: the negation of $\\forall x, P(x)$ is $\\exists x, \\neg P(x)$, and the negation of $\\exists x, P(x)$ is $\\forall x, \\neg P(x)$.",
+      "keyPoints": [
+        {
+          "text": "for all and there exists",
+          "synonyms": [
+            "universal and existential"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "negation swaps the quantifier",
+          "mustInclude": true
+        },
+        {
+          "text": "and negates the condition",
+          "synonyms": [
+            "not P(x)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "'Not all swans are white' means 'there is a swan that is not white', not 'no swan is white'.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "packId": "tmua",
+  "name": "TMUA",
+  "version": 1,
+  "description": "Original multiple-choice questions and logic and proof practice for the Test of Mathematics for University Admission, with worked explanations for every question.",
+  "structureVerified": false,
+  "topics": [
+    {
+      "slug": "tmua",
+      "name": "TMUA",
+      "sortOrder": 1
+    },
+    {
+      "slug": "paper-1-mathematical-thinking",
+      "name": "Paper 1: Mathematical Thinking",
+      "parent": "tmua",
+      "sortOrder": 1
+    },
+    {
+      "slug": "paper-2-mathematical-reasoning",
+      "name": "Paper 2: Mathematical Reasoning",
+      "parent": "tmua",
+      "sortOrder": 2
+    },
+    {
+      "slug": "definitions-and-concepts",
+      "name": "Definitions and concepts",
+      "parent": "tmua",
+      "sortOrder": 3
+    }
+  ],
+  "tags": [
+    {
+      "slug": "tmua",
+      "group": "subject",
+      "name": "TMUA"
+    },
+    {
+      "slug": "paper-1",
+      "group": "paper",
+      "name": "Paper 1: Mathematical Thinking"
+    },
+    {
+      "slug": "paper-2",
+      "group": "paper",
+      "name": "Paper 2: Mathematical Reasoning"
+    }
+  ],
+  "cardFiles": [
+    "definitions-and-concepts.json",
+    "paper-1-mathematical-thinking.json",
+    "paper-2-mathematical-reasoning.json"
+  ]
+}

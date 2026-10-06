@@ -24,6 +24,14 @@
       "path": "packs/ocr-a-level-physics-h556",
       "sha256": "5a5a0473fea83b8f8a46f125055b708243f89e23759a5d06dca58cea6acc56bf",
       "cardCount": 65
+    },
+    {
+      "id": "tmua",
+      "name": "TMUA",
+      "version": 1,
+      "path": "packs/tmua",
+      "sha256": "3dbe702346c2d79d9efc9c05da82db6a95f56a72297fdf4f866a8b4fb5d1e5fb",
+      "cardCount": 26
     }
   ]
 }

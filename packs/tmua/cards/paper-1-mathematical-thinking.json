@@ -1,0 +1,272 @@
+{
+  "topic": "paper-1-mathematical-thinking",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "A function is defined by $f(x) = 2x + 3$. What is $f(f(2))$?",
+      "back": "17",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "17",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "17",
+        "distractors": [
+          "10",
+          "13",
+          "34"
+        ]
+      },
+      "explanation": "$f(2) = 7$, then $f(7) = 2 \\times 7 + 3 = 17$. The answer 10 stops after adding 3 once, 13 applies $f$ to 2 twice by adding rather than composing, and 34 doubles the result by applying $f$ a third time.",
+      "numeric": {
+        "value": 17,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: functions and composition",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "A geometric progression has first term 8 and common ratio $\\frac{1}{2}$. What is the sum to infinity?",
+      "back": "16",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "16",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "16",
+        "distractors": [
+          "4",
+          "8",
+          "32"
+        ]
+      },
+      "explanation": "$|r| = \\frac{1}{2} < 1$, so the sum to infinity exists and is $\\frac{a}{1 - r} = \\frac{8}{1/2} = 16$. The answer 4 is $\\frac{a}{1+r}$, a sign slip, and 32 doubles it.",
+      "numeric": {
+        "value": 16,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: sequences and series",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Simplify $\\frac{x^2 - 9}{x^2 - 6x + 9}$.",
+      "back": "$\\frac{x + 3}{x - 3}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "(x + 3)/(x - 3)",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "(x+3)/(x-3)"
+      ],
+      "mcq": {
+        "correct": "$\\frac{x + 3}{x - 3}$",
+        "distractors": [
+          "$\\frac{x - 3}{x + 3}$",
+          "$x + 3$",
+          "$\\frac{x + 3}{x^2 - 9}$"
+        ]
+      },
+      "explanation": "The numerator is a difference of two squares, $(x-3)(x+3)$, and the denominator is a perfect square, $(x-3)^2$. Cancelling one $(x-3)$ leaves $\\frac{x+3}{x-3}$. The first distractor cancels the wrong factor.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: algebraic fractions",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "A bag holds 3 red and 2 blue counters. Two counters are drawn at random without replacement. What is the probability that both are red?",
+      "back": "0.3",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "0.3",
+          "synonyms": [
+            "3/10",
+            "6/20"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "3/10"
+      ],
+      "mcq": {
+        "correct": "0.3",
+        "distractors": [
+          "0.36",
+          "0.6",
+          "0.5"
+        ]
+      },
+      "explanation": "Without replacement the second draw is from four counters, so the probability is $\\frac{3}{5} \\times \\frac{2}{4} = \\frac{6}{20} = 0.3$. The answer 0.36 is $\\left(\\frac{3}{5}\\right)^2$, which is the with-replacement calculation.",
+      "numeric": {
+        "value": 0.3,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: probability",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What is $\\log_2 32 + \\log_3 27$?",
+      "back": "8",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "8",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "8",
+        "distractors": [
+          "6",
+          "15",
+          "59"
+        ]
+      },
+      "explanation": "$\\log_2 32 = 5$ because $2^5 = 32$, and $\\log_3 27 = 3$ because $3^3 = 27$, so the sum is 8. The answer 15 multiplies the two logarithms instead of adding them.",
+      "numeric": {
+        "value": 8,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: logarithms and indices",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0006",
+      "front": "Find the coordinates of the minimum point of $y = x^2 - 4x + 5$.",
+      "back": "(2, 1)",
+      "keyPoints": [
+        {
+          "text": "x coordinate is 2",
+          "mustInclude": true
+        },
+        {
+          "text": "y coordinate is 1",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "(2,1)"
+      ],
+      "mcq": {
+        "correct": "(2, 1)",
+        "distractors": [
+          "(-2, 1)",
+          "(2, -1)",
+          "(4, 5)"
+        ]
+      },
+      "explanation": "Completing the square gives $y = (x - 2)^2 + 1$, so the minimum is $(2, 1)$. Equivalently the turning point of $ax^2 + bx + c$ has $x = -\\frac{b}{2a} = 2$. The answer $(-2, 1)$ takes the sign of $b$ the wrong way.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: quadratics",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A triangle has sides of length 5, 12 and 13. What is its area?",
+      "back": "30",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "30",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "30",
+        "distractors": [
+          "65",
+          "32.5",
+          "78"
+        ]
+      },
+      "explanation": "$5^2 + 12^2 = 25 + 144 = 169 = 13^2$, so the triangle is right-angled with the two shorter sides as base and height: area $= \\frac{1}{2} \\times 5 \\times 12 = 30$. The answer 65 forgets the factor of a half.",
+      "numeric": {
+        "value": 30,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: geometry",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Solve $2^{x+1} = 32$.",
+      "back": "x = 4",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "4",
+          "synonyms": [
+            "x",
+            " ",
+            "=",
+            " ",
+            "4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "x = 4"
+      ],
+      "mcq": {
+        "correct": "x = 4",
+        "distractors": [
+          "x = 5",
+          "x = 3",
+          "x = 16"
+        ]
+      },
+      "explanation": "$32 = 2^5$, so $x + 1 = 5$ and $x = 4$. The answer $x = 5$ equates the exponent with 5 and forgets the $+1$.",
+      "numeric": {
+        "value": 4,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: indices",
+      "tagRefs": [
+        "tmua",
+        "paper-1"
+      ]
+    }
+  ]
+}
