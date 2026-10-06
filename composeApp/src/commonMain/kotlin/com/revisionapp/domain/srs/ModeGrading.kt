@@ -26,15 +26,16 @@ object ModeGrading {
 
     /**
      * The rating to store when the user overrides the automatic verdict with
-     * "I was right" / "I was wrong". An override is authoritative, so a claimed
-     * correct answer is graded as if it had been typed.
+     * "I was right" / "I was wrong".
+     *
+     * An override is deliberately *not* weighted by [mode]. The user is disputing
+     * a grade the app has no way to re-check, so a claimed correct answer earns
+     * the same increase a correct typed answer would, and a claimed wrong one
+     * earns AGAIN in every mode. [mode] is still taken because a session always
+     * has it at the call site and the two functions are used side by side.
      */
     fun ratingForOverride(mode: StudyMode, userSaysCorrect: Boolean): Rating =
-        if (userSaysCorrect) {
-            ratingFor(mode, VerdictKind.CORRECT)
-        } else {
-            Rating.AGAIN
-        }
+        if (userSaysCorrect) Rating.EASY else Rating.AGAIN
 
     private const val TYPED_RANK = 3
 }

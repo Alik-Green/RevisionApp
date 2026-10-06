@@ -9,10 +9,11 @@ package com.revisionapp.domain.check
  *    readable text (`\frac{a}{b}` -> `(a)/(b)`, `\theta` -> `theta`, `^{2}` ->
  *    `^2`). This is also what the Unicode [com.revisionapp.ui.render.RichTextRenderer]
  *    uses for display, so what the user sees is what gets compared.
- * 2. [normalise] — lowercases, maps unicode maths symbols, drops apostrophes and
- *    turns every other punctuation mark into a space, then collapses runs of
- *    whitespace. Operators that carry meaning in an answer (`+ - * / ^ = < > % .`)
- *    are kept.
+ * 2. [normalise] — lowercases, maps unicode maths symbols, turns punctuation into
+ *    spaces and collapses the runs, while keeping what changes an answer's
+ *    meaning: the operators `+ * / ^ = < > % _`, a decimal point, a minus sign
+ *    (as opposed to a word hyphen) and a prime (as opposed to the apostrophe in a
+ *    contraction).
  * 3. [matchTokens] — splits, maps number words to digits and applies [Stemmer].
  */
 object TextNormaliser {
@@ -369,9 +370,9 @@ object TextNormaliser {
                 // f'(x) keeps its prime: in maths it changes the meaning, and losing
                 // it would make "f(a)" and "f'(a)" the same answer.
                 character == '\'' -> if (isPrime(plain, index)) builder.append('\'')
-                // A hyphen only survives inside a number: "well-known" becomes two
-                // tokens but "-4.5" and "5-3" stay intact.
-                character == '-' -> if (isNumericHyphen(plain, index, builder)) builder.append('-') else builder.append(' ')
+                // A hyphen survives when it is a sign rather than a word joiner:
+                // "-4.5", "5-3" and "= -a" stay intact, "well-known" splits.
+                character == '-' -> if (isSign(plain, index, builder)) builder.append('-') else builder.append(' ')
                 // Likewise a full stop only survives as a decimal point, so that a
                 // model answer ending in "." still matches one that does not.
                 character == '.' -> if (isDecimalPoint(plain, index, builder)) builder.append('.') else builder.append(' ')
@@ -394,11 +395,20 @@ object TextNormaliser {
         return next.isDigit() && previous.isDigit()
     }
 
-    private fun isNumericHyphen(text: String, index: Int, builder: StringBuilder): Boolean {
+    /**
+     * True when the hyphen at [index] is a minus sign rather than a word joiner.
+     *
+     * Between two word characters it joins them, so "well-known" and
+     * "centre-seeking" split into two tokens. Anywhere else in front of a term it
+     * is a sign and carries meaning: "-4.5", "5-3", "s^-1" and, importantly for
+     * maths content, "= -a", which must not collapse into "= a".
+     */
+    private fun isSign(text: String, index: Int, builder: StringBuilder): Boolean {
         val next = text.getOrNull(index + 1) ?: return false
-        if (!next.isDigit()) return false
+        if (!next.isLetterOrDigit() && next != '(') return false
         val previous = builder.lastOrNull() ?: return true
-        return previous == ' ' || previous.isDigit() || previous == '^' || previous == '_'
+        if (previous.isLetter()) return false
+        return previous == ' ' || previous.isDigit() || previous in "=({[+*/^_"
     }
 
     /** Splits [raw] into tokens, trimming punctuation that only ends a sentence. */

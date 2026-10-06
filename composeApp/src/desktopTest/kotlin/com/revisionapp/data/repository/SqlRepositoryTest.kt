@@ -39,6 +39,7 @@ class SqlRepositoryTest {
 
     private val now: Instant = Instant.fromEpochMilliseconds(1_800_000_000_000L)
     private val packId = PackId("sample")
+    private val builtInParentTopicId = TopicId("builtin:sample:physics")
     private val builtInTopicId = TopicId("builtin:sample:circular-motion")
     private val builtInTagId = TagId("builtin:tag:board:ocr")
     private val builtInCardId = CardId("builtin:sample:circular-motion:0001")
@@ -79,8 +80,8 @@ class SqlRepositoryTest {
     )
 
     private fun sampleTopics(): List<Topic> = listOf(
-        Topic(TopicId("builtin:sample:physics"), "Physics", null, 0, ContentSource.BUILTIN, packId),
-        Topic(builtInTopicId, "Circular motion", TopicId("builtin:sample:physics"), 1, ContentSource.BUILTIN, packId),
+        Topic(builtInParentTopicId, "Physics", null, 0, ContentSource.BUILTIN, packId),
+        Topic(builtInTopicId, "Circular motion", builtInParentTopicId, 1, ContentSource.BUILTIN, packId),
     )
 
     private fun sampleTags(): List<Tag> = listOf(
@@ -125,7 +126,7 @@ class SqlRepositoryTest {
 
         assertEquals(sampleTopics().map { it.id }.toSet(), library.topics().map { it.id }.toSet())
         assertEquals("Circular motion", library.topics().first { it.id == builtInTopicId }.name)
-        assertEquals(builtInTopicId, library.topics().first { it.id == builtInTopicId }.parentId)
+        assertEquals(builtInParentTopicId, library.topics().first { it.id == builtInTopicId }.parentId)
         assertEquals(sampleTags(), library.tags())
     }
 

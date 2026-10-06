@@ -63,10 +63,11 @@ object Sha256 {
             var h = hash[7]
 
             for (round in 0 until ROUNDS) {
-                val bigSigma1 = a.rotateRight(6) xor a.rotateRight(11) xor a.rotateRight(25)
-                val choose = (a and b) xor (a.inv() and c)
+                // Σ1 and Ch act on e, f and g; Σ0 and Maj act on a, b and c.
+                val bigSigma1 = e.rotateRight(6) xor e.rotateRight(11) xor e.rotateRight(25)
+                val choose = (e and f) xor (e.inv() and g)
                 val temp1 = h + bigSigma1 + choose + ROUND_CONSTANTS[round] + schedule[round]
-                val bigSigma0 = b.rotateRight(2) xor b.rotateRight(13) xor b.rotateRight(22)
+                val bigSigma0 = a.rotateRight(2) xor a.rotateRight(13) xor a.rotateRight(22)
                 val majority = (a and b) xor (a and c) xor (b and c)
                 val temp2 = bigSigma0 + majority
 
