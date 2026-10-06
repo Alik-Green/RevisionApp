@@ -1,0 +1,189 @@
+{
+  "topic": "partial-fractions",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What form does the decomposition of $\\frac{5x - 4}{(x - 2)(x + 1)}$ take?",
+      "back": "$\\frac{A}{x - 2} + \\frac{B}{x + 1}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "a constant over each distinct linear factor",
+          "synonyms": [
+            "A/(x-2) + B/(x+1)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "A/(x-2) + B/(x+1)"
+      ],
+      "mcq": {
+        "correct": "$\\frac{A}{x - 2} + \\frac{B}{x + 1}$",
+        "distractors": [
+          "$\\frac{A}{x - 2} \\times \\frac{B}{x + 1}$",
+          "$\\frac{Ax + B}{(x - 2)(x + 1)}$",
+          "$\\frac{A}{x - 2} + \\frac{B}{x - 2}$"
+        ]
+      },
+      "explanation": "Each distinct linear factor in the denominator contributes one fraction with a constant numerator.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What extra term is needed when the denominator contains a repeated factor $(x - 1)^2$?",
+      "back": "Both $\\frac{A}{x - 1}$ and $\\frac{B}{(x - 1)^2}$ are needed.",
+      "keyPoints": [
+        {
+          "text": "a term over (x - 1)",
+          "mustInclude": true
+        },
+        {
+          "text": "a term over (x - 1)^2",
+          "synonyms": [
+            "over the square"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "A/(x-1) + B/(x-1)^2"
+      ],
+      "mcq": {
+        "correct": "Both $\\frac{A}{x - 1}$ and $\\frac{B}{(x - 1)^2}$ are needed.",
+        "distractors": [
+          "Only $\\frac{A}{(x - 1)^2}$",
+          "Only $\\frac{A}{x - 1}$",
+          "$\\frac{A}{x - 1} + \\frac{B}{x - 1}$"
+        ]
+      },
+      "explanation": "A repeated factor of multiplicity two contributes one fraction per power, up to and including the square.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What numerator does an irreducible quadratic factor such as $x^2 + 1$ require?",
+      "back": "A linear numerator, $Ax + B$.",
+      "keyPoints": [
+        {
+          "text": "linear numerator",
+          "synonyms": [
+            "Ax + B"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "Ax + B over x^2 + 1"
+      ],
+      "mcq": {
+        "correct": "A linear numerator, $Ax + B$.",
+        "distractors": [
+          "A constant, $A$",
+          "A quadratic, $Ax^2 + Bx + C$",
+          "$Ax^2 + B$"
+        ]
+      },
+      "explanation": "The numerator is always one degree lower than its factor, so an irreducible quadratic needs $Ax + B$ rather than a constant.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Express $\\frac{5x - 4}{(x - 2)(x + 1)}$ in partial fractions.",
+      "back": "$\\frac{2}{x - 2} + \\frac{3}{x + 1}$",
+      "keyPoints": [
+        {
+          "text": "2 over (x - 2)",
+          "synonyms": [
+            "A = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3 over (x + 1)",
+          "synonyms": [
+            "B = 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{2}{x - 2} + \\frac{3}{x + 1}$",
+        "distractors": [
+          "$\\frac{3}{x - 2} + \\frac{2}{x + 1}$",
+          "$\\frac{2}{x - 2} - \\frac{3}{x + 1}$",
+          "$\\frac{1}{x - 2} + \\frac{4}{x + 1}$"
+        ]
+      },
+      "explanation": "Covering up: at $x = 2$, $A = \\frac{6}{3} = 2$; at $x = -1$, $B = \\frac{-9}{-3} = 3$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why must a fraction be proper before it is split into partial fractions, and what is done if it is not?",
+      "back": "Partial fractions only apply when the numerator's degree is less than the denominator's. Otherwise divide first, giving a polynomial plus a proper fraction, and decompose only the fraction part.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "numerator degree must be lower than the denominator's",
+          "synonyms": [
+            "proper fraction"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "divide first",
+          "synonyms": [
+            "algebraic division",
+            "long division"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "polynomial plus a proper fraction",
+          "synonyms": [
+            "quotient and remainder"
+          ]
+        }
+      ],
+      "explanation": "An improper fraction has a polynomial part that no sum of proper fractions can represent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    }
+  ]
+}

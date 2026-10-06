@@ -1,0 +1,208 @@
+{
+  "topic": "complex-numbers-and-de-moivre",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State De Moivre's theorem.",
+      "back": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "(cos \u03b8 + i sin \u03b8)^n = cos n\u03b8 + i sin n\u03b8",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "[r(cos\u03b8 + i sin\u03b8)]^n = r^n(cos n\u03b8 + i sin n\u03b8)"
+      ],
+      "mcq": {
+        "correct": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$",
+        "distractors": [
+          "$(\\cos\\theta + i\\sin\\theta)^n = \\cos^n\\theta + i\\sin^n\\theta$",
+          "$(\\cos\\theta + i\\sin\\theta)^n = \\cos\\frac{\\theta}{n} + i\\sin\\frac{\\theta}{n}$",
+          "$(\\cos\\theta + i\\sin\\theta)^n = n\\cos\\theta + in\\sin\\theta$"
+        ]
+      },
+      "explanation": "Raising to the power n multiplies the argument by n and raises the modulus to the power n, so the powers of a complex number march round its Argand circle.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Write $1 + i$ in modulus-argument form.",
+      "back": "$\\sqrt{2}\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right)$",
+      "keyPoints": [
+        {
+          "text": "modulus $\\sqrt{2}$",
+          "synonyms": [
+            "root 2",
+            "1.414"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "argument $\\frac{\\pi}{4}$",
+          "synonyms": [
+            "pi/4",
+            "45 degrees"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "sqrt(2) cis(pi/4)"
+      ],
+      "mcq": {
+        "correct": "$\\sqrt{2}\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right)$",
+        "distractors": [
+          "$2\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right)$",
+          "$\\sqrt{2}\\left(\\cos\\frac{\\pi}{2} + i\\sin\\frac{\\pi}{2}\\right)$",
+          "$1\\left(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4}\\right)$"
+        ]
+      },
+      "explanation": "The modulus is $\\sqrt{1^2 + 1^2} = \\sqrt{2}$ and the point lies on the line $y = x$ in the first quadrant, so the argument is $\\pi/4$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What is the geometric effect of multiplying a complex number by $i$?",
+      "back": "An anticlockwise rotation of $90^{\\circ}$ about the origin.",
+      "keyPoints": [
+        {
+          "text": "rotation",
+          "mustInclude": true
+        },
+        {
+          "text": "90 degrees",
+          "synonyms": [
+            "pi/2",
+            "a quarter turn"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "anticlockwise",
+          "synonyms": [
+            "counter-clockwise"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "about the origin",
+          "synonyms": [
+            "modulus unchanged"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "An anticlockwise rotation of $90^{\\circ}$ about the origin.",
+        "distractors": [
+          "A clockwise rotation of $90^{\\circ}$ about the origin",
+          "A reflection in the real axis",
+          "An enlargement with scale factor i"
+        ]
+      },
+      "explanation": "Multiplying by $i$ adds $\\pi/2$ to the argument and leaves the modulus alone.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "How many $n$th roots does a non-zero complex number have, and how are they arranged on an Argand diagram?",
+      "back": "There are $n$ distinct roots, equally spaced on a circle whose radius is the $n$th root of the modulus, with arguments separated by $\\frac{2\\pi}{n}$.",
+      "keyPoints": [
+        {
+          "text": "n distinct roots",
+          "mustInclude": true
+        },
+        {
+          "text": "equally spaced on a circle",
+          "mustInclude": true
+        },
+        {
+          "text": "radius is the nth root of the modulus",
+          "synonyms": [
+            "|w|^(1/n)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "arguments differ by 2\u03c0/n",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "De Moivre applied backwards: the argument can be increased by any multiple of $2\\pi$ before dividing by $n$, and only the first $n$ choices give new roots.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Find the two square roots of $i$.",
+      "back": "$\\pm\\frac{1}{\\sqrt{2}}(1 + i)$",
+      "keyPoints": [
+        {
+          "text": "(1 + i) divided by root 2",
+          "synonyms": [
+            "1/root2 (1 + i)",
+            "0.707(1+i)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "both signs",
+          "synonyms": [
+            "plus or minus",
+            "two roots"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "\u00b1(\u221a2/2)(1 + i)"
+      ],
+      "mcq": {
+        "correct": "$\\pm\\frac{1}{\\sqrt{2}}(1 + i)$",
+        "distractors": [
+          "$\\pm(1 + i)$",
+          "$\\pm i$",
+          "$\\pm\\frac{1}{2}(1 + i)$"
+        ]
+      },
+      "explanation": "$i$ has modulus 1 and argument $\\pi/2$, so its square roots have modulus 1 and arguments $\\pi/4$ and $5\\pi/4$, which are $\\pm\\frac{1}{\\sqrt 2}(1 + i)$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    }
+  ]
+}

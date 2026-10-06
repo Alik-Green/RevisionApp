@@ -1,0 +1,190 @@
+{
+  "topic": "roots-of-polynomials",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "The cubic $x^3 + ax^2 + bx + c = 0$ has roots $\\alpha, \\beta, \\gamma$. State $\\alpha + \\beta + \\gamma$ and $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha$.",
+      "back": "$\\alpha + \\beta + \\gamma = -a$ and $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = b$",
+      "keyPoints": [
+        {
+          "text": "sum of the roots is -a",
+          "synonyms": [
+            "alpha + beta + gamma = -a"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "sum of roots taken two at a time is b",
+          "synonyms": [
+            "ab + bc + ca = b"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "\u03a3\u03b1 = -a, \u03a3\u03b1\u03b2 = b"
+      ],
+      "mcq": {
+        "correct": "$\\alpha + \\beta + \\gamma = -a$ and $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = b$",
+        "distractors": [
+          "$\\alpha + \\beta + \\gamma = a$ and $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = b$",
+          "$\\alpha + \\beta + \\gamma = -a$ and $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha = -b$",
+          "$\\alpha + \\beta + \\gamma = b$ and $\\alpha\\beta\\gamma = -c$"
+        ]
+      },
+      "explanation": "Expanding $(x - \\alpha)(x - \\beta)(x - \\gamma)$ gives $x^3 - (\\Sigma\\alpha)x^2 + (\\Sigma\\alpha\\beta)x - \\alpha\\beta\\gamma$, so the signs alternate as the degree of the symmetric sum rises.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the remainder theorem for a polynomial $f(x)$ divided by $(x - a)$.",
+      "back": "The remainder is $f(a)$.",
+      "keyPoints": [
+        {
+          "text": "remainder is f(a)",
+          "synonyms": [
+            "f of a"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "f(a)"
+      ],
+      "mcq": {
+        "correct": "The remainder is $f(a)$.",
+        "distractors": [
+          "The remainder is $f(-a)$",
+          "The remainder is $f'(a)$",
+          "The remainder is always zero"
+        ]
+      },
+      "explanation": "Writing $f(x) = (x - a)q(x) + R$ and substituting $x = a$ kills the first term and leaves $R = f(a)$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State the factor theorem.",
+      "back": "$(x - a)$ is a factor of $f(x)$ if and only if $f(a) = 0$.",
+      "keyPoints": [
+        {
+          "text": "f(a) = 0",
+          "synonyms": [
+            "f of a equals zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(x - a) is a factor",
+          "synonyms": [
+            "x minus a divides f(x)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$(x - a)$ is a factor of $f(x)$ if and only if $f(a) = 0$.",
+        "distractors": [
+          "$(x - a)$ is a factor of $f(x)$ if and only if $f(a) \\neq 0$",
+          "$(x - a)$ is a factor only when $a$ is an integer",
+          "$(x - a)$ is a factor if and only if $f'(a) = 0$"
+        ]
+      },
+      "explanation": "It is the remainder theorem with a zero remainder, and it is the standard way to test a guessed root.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "For $x^3 + ax^2 + bx + c = 0$ with roots $\\alpha, \\beta, \\gamma$, give $\\alpha\\beta\\gamma$ in terms of the coefficients.",
+      "back": "$\\alpha\\beta\\gamma = -c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "product of the roots is -c",
+          "synonyms": [
+            "\u03b1\u03b2\u03b3 = -c"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "\u03a3\u03b1\u03b2\u03b3 = -c"
+      ],
+      "mcq": {
+        "correct": "$\\alpha\\beta\\gamma = -c$",
+        "distractors": [
+          "$\\alpha\\beta\\gamma = c$",
+          "$\\alpha\\beta\\gamma = -a$",
+          "$\\alpha\\beta\\gamma = b$"
+        ]
+      },
+      "explanation": "The constant term of the expanded product is $-\\alpha\\beta\\gamma$, so it equals $c$ only with the sign flipped.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Find $k$ given that $(x - 2)$ is a factor of $f(x) = x^3 + kx^2 - 5x + 6$.",
+      "back": "$k = -1$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "-1",
+          "synonyms": [
+            "k = -1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$k = -1$",
+        "distractors": [
+          "$k = 1$",
+          "$k = -4$",
+          "$k = 4$"
+        ]
+      },
+      "explanation": "By the factor theorem $f(2) = 0$: $8 + 4k - 10 + 6 = 0$, so $4k + 4 = 0$ and $k = -1$.",
+      "numeric": {
+        "value": -1,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    }
+  ]
+}

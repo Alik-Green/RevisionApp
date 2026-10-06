@@ -104,6 +104,19 @@ def normalise(text):
     return re.sub(r"\s+", " ", "".join(out)).strip()
 
 
+def display_key(text):
+    """What a student reads on screen, used to spot duplicate MCQ options.
+
+    Deliberately lighter than normalise(): the app decides option duplicates from
+    the rendered text too, because normalise drops the prime in f'(a) and the sign
+    in "= -a", which would collapse genuinely different options. LaTeX commands
+    are left alone here, so this is a little more permissive than the app for two
+    options spelled differently in LaTeX.
+    """
+    text = text.strip().lower().replace("$", "")
+    return re.sub(r"\s+", " ", text)
+
+
 def word_count(text):
     return len(re.sub(r"[^\w\s]", " ", text.lower(), flags=re.UNICODE).split())
 
@@ -391,8 +404,8 @@ def check_card(card, where, topic, tag_slugs, seen_ids, report):
             report.error(where, "mcq needs one correct answer and exactly {} distractors".format(MCQ_DISTRACTORS))
         if any(not option.strip() for option in options):
             report.error(where, "mcq has a blank option")
-        normalised = [normalise(option) for option in options]
-        if len(set(normalised)) != len(options):
+        keys = [display_key(option) for option in options]
+        if len(set(keys)) != len(options):
             report.error(where, "mcq options are not distinct: {}".format(options))
         if not card.get("explanation"):
             report.warn(where, "mcq card has no explanation")

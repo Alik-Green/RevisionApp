@@ -1,0 +1,201 @@
+{
+  "topic": "matrices-and-determinants",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the determinant of the 2 by 2 matrix with top row a, b and bottom row c, d.",
+      "back": "$ad - bc$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "ad - bc",
+          "synonyms": [
+            "ad minus bc"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "det = ad - bc",
+        "|A| = ad - bc"
+      ],
+      "mcq": {
+        "correct": "$ad - bc$",
+        "distractors": [
+          "$ad + bc$",
+          "$ab - cd$",
+          "$bc - ad$"
+        ]
+      },
+      "explanation": "The determinant is the product of the leading diagonal minus the product of the other diagonal.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What is the condition for a square matrix to be singular?",
+      "back": "Its determinant is zero, so it has no inverse and its rows and columns are linearly dependent.",
+      "keyPoints": [
+        {
+          "text": "determinant is zero",
+          "synonyms": [
+            "det = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "no inverse",
+          "synonyms": [
+            "not invertible"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "rows or columns are linearly dependent",
+          "synonyms": [
+            "one row is a multiple of another"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "Its determinant is zero, so it has no inverse and its rows and columns are linearly dependent.",
+        "distractors": [
+          "Its determinant is one",
+          "It has more rows than columns",
+          "Its entries are all non-negative"
+        ]
+      },
+      "explanation": "A zero determinant means the transformation squashes area to nothing, so it cannot be undone.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Describe how to form the inverse of a 2 by 2 matrix with entries $a, b, c, d$ and determinant $\\Delta \\neq 0$.",
+      "back": "Swap $a$ and $d$, negate $b$ and $c$, then divide every entry by $\\Delta = ad - bc$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "swap a and d",
+          "mustInclude": true
+        },
+        {
+          "text": "change the sign of b and c",
+          "synonyms": [
+            "negate the off-diagonal entries"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "divide by the determinant",
+          "synonyms": [
+            "multiply by 1/(ad-bc)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The result is $\\frac{1}{\\Delta}$ times the adjugate matrix, and multiplying it by the original gives the identity.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "State $\\det(AB)$ in terms of $\\det(A)$ and $\\det(B)$.",
+      "back": "$\\det(AB) = \\det(A)\\det(B)$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "det(AB) = det(A) det(B)",
+          "synonyms": [
+            "|AB| = |A||B|"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "|AB| = |A||B|"
+      ],
+      "mcq": {
+        "correct": "$\\det(AB) = \\det(A)\\det(B)$",
+        "distractors": [
+          "$\\det(AB) = \\det(A) + \\det(B)$",
+          "$\\det(AB) = \\frac{\\det(A)}{\\det(B)}$",
+          "$\\det(AB) = \\det(A)\\det(B)^{-1}$"
+        ]
+      },
+      "explanation": "Determinants multiply, which is why a matrix product scales area by the product of the two scale factors. Note that AB and BA need not be equal even though their determinants are.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Describe geometrically the transformation represented by the matrix with entries 2, 0, 0, 2.",
+      "back": "An enlargement with scale factor 2, centred on the origin.",
+      "keyPoints": [
+        {
+          "text": "enlargement",
+          "synonyms": [
+            "scaling",
+            "stretch by factor 2 in both directions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "scale factor 2",
+          "mustInclude": true
+        },
+        {
+          "text": "centre at the origin",
+          "synonyms": [
+            "invariant point is the origin"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "uniform enlargement, factor 2"
+      ],
+      "mcq": {
+        "correct": "An enlargement with scale factor 2, centred on the origin.",
+        "distractors": [
+          "A stretch of scale factor 2 parallel to the x-axis only",
+          "A rotation of 90 degrees about the origin",
+          "A reflection in the line y = x"
+        ]
+      },
+      "explanation": "Both diagonal entries are 2 and the off-diagonal entries are 0, so every vector doubles in length and keeps its direction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    }
+  ]
+}

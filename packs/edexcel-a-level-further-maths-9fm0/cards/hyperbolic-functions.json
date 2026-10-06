@@ -1,0 +1,165 @@
+{
+  "topic": "hyperbolic-functions",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define $\\sinh x$ and $\\cosh x$ in terms of exponentials.",
+      "back": "$\\sinh x = \\frac{e^x - e^{-x}}{2}$ and $\\cosh x = \\frac{e^x + e^{-x}}{2}$",
+      "keyPoints": [
+        {
+          "text": "sinh x = (e^x - e^-x)/2",
+          "mustInclude": true
+        },
+        {
+          "text": "cosh x = (e^x + e^-x)/2",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "sinh x = (e^x - e^(-x))/2"
+      ],
+      "explanation": "sinh is odd and cosh is even, mirroring sine and cosine, and both are defined for every real x.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the fundamental identity linking $\\cosh x$ and $\\sinh x$.",
+      "back": "$\\cosh^2 x - \\sinh^2 x = 1$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "cosh^2 x - sinh^2 x = 1",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "cosh\u00b2x - sinh\u00b2x = 1"
+      ],
+      "mcq": {
+        "correct": "$\\cosh^2 x - \\sinh^2 x = 1$",
+        "distractors": [
+          "$\\cosh^2 x + \\sinh^2 x = 1$",
+          "$\\sinh^2 x - \\cosh^2 x = 1$",
+          "$\\cosh^2 x - \\sinh^2 x = 0$"
+        ]
+      },
+      "explanation": "Expanding both squares from the exponential definitions cancels the cross terms. Compare $\\cos^2 x + \\sin^2 x = 1$: the sign is the one difference to remember.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State $\\frac{d}{dx}\\sinh x$ and $\\frac{d}{dx}\\cosh x$.",
+      "back": "$\\frac{d}{dx}\\sinh x = \\cosh x$ and $\\frac{d}{dx}\\cosh x = \\sinh x$",
+      "keyPoints": [
+        {
+          "text": "d/dx sinh x = cosh x",
+          "mustInclude": true
+        },
+        {
+          "text": "d/dx cosh x = sinh x",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Both derivatives are positive, unlike the circular functions where one picks up a minus sign, so sinh and cosh are both increasing for large x.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "State the domain and range of $\\cosh x$.",
+      "back": "Domain: all real numbers. Range: $\\cosh x \\ge 1$.",
+      "keyPoints": [
+        {
+          "text": "domain is all real numbers",
+          "synonyms": [
+            "x \u2208 R"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "range is cosh x >= 1",
+          "synonyms": [
+            "y >= 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "range [1, \u221e)"
+      ],
+      "mcq": {
+        "correct": "Domain: all real numbers. Range: $\\cosh x \\ge 1$.",
+        "distractors": [
+          "Domain: all reals. Range: all reals.",
+          "Domain: $x \\ge 1$. Range: all reals.",
+          "Domain: all reals. Range: $\\cosh x \\ge 0$."
+        ]
+      },
+      "explanation": "$\\cosh 0 = 1$ is the minimum, since both exponential terms are positive and their sum is smallest when they are equal.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why does $\\text{arsinh}\\,x$ exist for every real $x$ while $\\text{arcosh}\\,x$ needs $x \\ge 1$?",
+      "back": "sinh is one-to-one on the whole real line, so its inverse has no restriction. cosh is not one-to-one unless its domain is restricted to $x \\ge 0$, and that restricted branch has range $y \\ge 1$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "sinh is one-to-one everywhere",
+          "synonyms": [
+            "sinh is strictly increasing"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cosh must be restricted to x >= 0",
+          "synonyms": [
+            "cosh is not one-to-one"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "that branch has range y >= 1",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Only one-to-one functions have inverses, and the restriction is what determines the domain of the inverse.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    }
+  ]
+}

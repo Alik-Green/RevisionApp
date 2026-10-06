@@ -1,0 +1,167 @@
+{
+  "packId": "edexcel-a-level-further-maths-9fm0",
+  "name": "Edexcel A Level Further Maths (9FM0)",
+  "version": 1,
+  "description": "Pure further maths across Core Pure 1, Core Pure 2, Further Pure 1 and Further Pure 2: definitions and theorems as text, formulae as expressions, worked results as numerics.",
+  "structureVerified": false,
+  "topics": [
+    {
+      "slug": "maths",
+      "name": "Maths",
+      "sortOrder": 1
+    },
+    {
+      "slug": "further-maths",
+      "name": "Further Maths",
+      "parent": "maths",
+      "sortOrder": 1
+    },
+    {
+      "slug": "core-pure-1",
+      "name": "Core Pure 1",
+      "parent": "further-maths",
+      "sortOrder": 1
+    },
+    {
+      "slug": "roots-of-polynomials",
+      "name": "Roots of polynomial equations",
+      "parent": "core-pure-1",
+      "sortOrder": 1
+    },
+    {
+      "slug": "partial-fractions",
+      "name": "Partial fractions",
+      "parent": "core-pure-1",
+      "sortOrder": 2
+    },
+    {
+      "slug": "matrices-and-determinants",
+      "name": "Matrices and determinants",
+      "parent": "core-pure-1",
+      "sortOrder": 3
+    },
+    {
+      "slug": "core-pure-2",
+      "name": "Core Pure 2",
+      "parent": "further-maths",
+      "sortOrder": 2
+    },
+    {
+      "slug": "complex-numbers-and-de-moivre",
+      "name": "Complex numbers and De Moivre",
+      "parent": "core-pure-2",
+      "sortOrder": 1
+    },
+    {
+      "slug": "eigenvalues-and-eigenvectors",
+      "name": "Eigenvalues and eigenvectors",
+      "parent": "core-pure-2",
+      "sortOrder": 2
+    },
+    {
+      "slug": "differential-equations",
+      "name": "First and second order differential equations",
+      "parent": "core-pure-2",
+      "sortOrder": 3
+    },
+    {
+      "slug": "further-pure-1",
+      "name": "Further Pure 1",
+      "parent": "further-maths",
+      "sortOrder": 3
+    },
+    {
+      "slug": "summation-of-series",
+      "name": "Summation of series",
+      "parent": "further-pure-1",
+      "sortOrder": 1
+    },
+    {
+      "slug": "polar-curves",
+      "name": "Polar curves",
+      "parent": "further-pure-1",
+      "sortOrder": 2
+    },
+    {
+      "slug": "proof-by-induction",
+      "name": "Proof by induction",
+      "parent": "further-pure-1",
+      "sortOrder": 3
+    },
+    {
+      "slug": "further-pure-2",
+      "name": "Further Pure 2",
+      "parent": "further-maths",
+      "sortOrder": 4
+    },
+    {
+      "slug": "numerical-methods",
+      "name": "Numerical methods",
+      "parent": "further-pure-2",
+      "sortOrder": 1
+    },
+    {
+      "slug": "hyperbolic-functions",
+      "name": "Hyperbolic functions",
+      "parent": "further-pure-2",
+      "sortOrder": 2
+    },
+    {
+      "slug": "further-integration",
+      "name": "Further integration",
+      "parent": "further-pure-2",
+      "sortOrder": 3
+    }
+  ],
+  "tags": [
+    {
+      "slug": "edexcel",
+      "group": "board",
+      "name": "Edexcel"
+    },
+    {
+      "slug": "a-level",
+      "group": "level",
+      "name": "A Level"
+    },
+    {
+      "slug": "further-maths",
+      "group": "subject",
+      "name": "Further Maths"
+    },
+    {
+      "slug": "core-pure-1",
+      "group": "paper",
+      "name": "Core Pure 1"
+    },
+    {
+      "slug": "core-pure-2",
+      "group": "paper",
+      "name": "Core Pure 2"
+    },
+    {
+      "slug": "further-pure-1",
+      "group": "paper",
+      "name": "Further Pure 1"
+    },
+    {
+      "slug": "further-pure-2",
+      "group": "paper",
+      "name": "Further Pure 2"
+    }
+  ],
+  "cardFiles": [
+    "complex-numbers-and-de-moivre.json",
+    "differential-equations.json",
+    "eigenvalues-and-eigenvectors.json",
+    "further-integration.json",
+    "hyperbolic-functions.json",
+    "matrices-and-determinants.json",
+    "numerical-methods.json",
+    "partial-fractions.json",
+    "polar-curves.json",
+    "proof-by-induction.json",
+    "roots-of-polynomials.json",
+    "summation-of-series.json"
+  ]
+}

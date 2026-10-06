@@ -2,6 +2,14 @@
   "schemaVersion": 1,
   "packs": [
     {
+      "id": "edexcel-a-level-further-maths-9fm0",
+      "name": "Edexcel A Level Further Maths (9FM0)",
+      "version": 1,
+      "path": "packs/edexcel-a-level-further-maths-9fm0",
+      "sha256": "1adb78182384374380f6e9efa55bdc1494a6ec4c7071b3bdd5385bedcc0f301c",
+      "cardCount": 60
+    },
+    {
       "id": "ocr-a-level-physics-h556",
       "name": "OCR A Level Physics (H556)",
       "version": 1,

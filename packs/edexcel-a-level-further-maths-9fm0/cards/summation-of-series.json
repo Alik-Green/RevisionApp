@@ -1,0 +1,170 @@
+{
+  "topic": "summation-of-series",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State a closed form for $\\sum_{r=1}^{n} r$.",
+      "back": "$\\frac{n(n + 1)}{2}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "n(n+1)/2",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "n(n + 1) over 2"
+      ],
+      "mcq": {
+        "correct": "$\\frac{n(n + 1)}{2}$",
+        "distractors": [
+          "$\\frac{n(n - 1)}{2}$",
+          "$\\frac{n^2}{2}$",
+          "$n(n + 1)$"
+        ]
+      },
+      "explanation": "Pairing the first term with the last gives n/2 pairs each summing to n + 1.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State a closed form for $\\sum_{r=1}^{n} r^2$.",
+      "back": "$\\frac{n(n + 1)(2n + 1)}{6}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "n(n+1)(2n+1)/6",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{n(n + 1)(2n + 1)}{6}$",
+        "distractors": [
+          "$\\frac{n^2(n + 1)^2}{4}$",
+          "$\\frac{n(n + 1)}{6}$",
+          "$\\frac{n(n + 1)(2n + 1)}{3}$"
+        ]
+      },
+      "explanation": "The $\\frac{n^2(n+1)^2}{4}$ form is the sum of cubes, which is a common mix-up; the sum of squares grows like $n^3/3$, which the factor of 6 in the denominator reflects.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State $\\sum_{r=1}^{n} r^3$ and its relationship to $\\sum_{r=1}^{n} r$.",
+      "back": "$\\left(\\frac{n(n + 1)}{2}\\right)^2$, which is the square of the sum of the first $n$ integers.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "[n(n+1)/2]^2",
+          "mustInclude": true
+        },
+        {
+          "text": "it is the square of the sum of the first n integers",
+          "synonyms": [
+            "(\u03a3r)^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "(\u03a3r)^2"
+      ],
+      "explanation": "$1^3 + 2^3 = 9 = 3^2$ and $1^3 + 2^3 + 3^3 = 36 = 6^2$; the identity is worth memorising because it turns a cubic sum into a square.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Evaluate $\\sum_{r=1}^{20} (3r + 2)$.",
+      "back": "670",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "670",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "670",
+        "distractors": [
+          "630",
+          "650",
+          "672"
+        ]
+      },
+      "explanation": "Linearity gives $3\\sum r + 2\\sum 1 = 3 \\times 210 + 2 \\times 20 = 630 + 40 = 670$, using $\\sum_{r=1}^{20} r = \\frac{20 \\times 21}{2} = 210$.",
+      "numeric": {
+        "value": 670,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What is the method of differences, and when does it apply?",
+      "back": "It applies when a general term can be written as $f(r) - f(r + 1)$, so that summing cancels all the interior terms and leaves only $f(1) - f(n + 1)$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the term splits into a difference of consecutive values",
+          "synonyms": [
+            "f(r) - f(r+1)",
+            "telescoping"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "interior terms cancel",
+          "mustInclude": true
+        },
+        {
+          "text": "only the first and last survive",
+          "synonyms": [
+            "f(1) - f(n+1)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "telescoping series"
+      ],
+      "explanation": "It is the standard way to sum $\\frac{1}{r(r+1)}$, which splits as $\\frac{1}{r} - \\frac{1}{r+1}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "topic": "further-integration",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the formula for integration by parts.",
+      "back": "$\\int u\\,dv = uv - \\int v\\,du$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "\u222bu dv = uv - \u222bv du",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "\u222b u (dv/dx) dx = uv - \u222b v (du/dx) dx"
+      ],
+      "mcq": {
+        "correct": "$\\int u\\,dv = uv - \\int v\\,du$",
+        "distractors": [
+          "$\\int u\\,dv = uv + \\int v\\,du$",
+          "$\\int u\\,dv = u v' - \\int v u'\\,dx$",
+          "$\\int u\\,dv = \\int u\\,dx \\int dv$"
+        ]
+      },
+      "explanation": "It is the product rule run backwards, which is why the second term keeps a minus sign.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "How would you choose $u$ and $dv$ for $\\int x e^x\\,dx$, and what is the result?",
+      "back": "Take $u = x$ so differentiating reduces it to a constant, and $dv = e^x dx$, giving $xe^x - e^x + c$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "u = x",
+          "mustInclude": true
+        },
+        {
+          "text": "dv = e^x dx",
+          "synonyms": [
+            "v = e^x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "xe^x - e^x + c",
+          "synonyms": [
+            "e^x(x - 1) + c"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Differentiating the polynomial and integrating the exponential is the standard choice: the polynomial shrinks instead of growing.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Describe how to integrate a proper rational function such as $\\frac{1}{x^2 - 1}$.",
+      "back": "Split it into partial fractions first, then integrate each term: linear factors give logarithms, and irreducible quadratics give arctan or logarithm forms.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "split into partial fractions",
+          "mustInclude": true
+        },
+        {
+          "text": "integrate each fraction separately",
+          "mustInclude": true
+        },
+        {
+          "text": "linear factors give logarithms",
+          "synonyms": [
+            "ln|x - a|"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "1/2 ln|(x-1)/(x+1)| + c"
+      ],
+      "explanation": "$\\frac{1}{x^2 - 1} = \\frac{1}{2(x - 1)} - \\frac{1}{2(x + 1)}$, which integrates to $\\frac{1}{2}\\ln\\left|\\frac{x - 1}{x + 1}\\right| + c$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Evaluate $\\int \\frac{1}{x^2 + a^2}\\,dx$.",
+      "back": "$\\frac{1}{a}\\arctan\\frac{x}{a} + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "(1/a) arctan(x/a) + c",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "1/a tan^-1(x/a) + c"
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{a}\\arctan\\frac{x}{a} + c$",
+        "distractors": [
+          "$\\arctan\\frac{x}{a} + c$",
+          "$\\frac{1}{a}\\ln(x^2 + a^2) + c$",
+          "$\\frac{1}{a}\\arctan\\frac{a}{x} + c$"
+        ]
+      },
+      "explanation": "The substitution $x = a\\tan\\theta$ turns the integrand into $\\frac{1}{a}\\,d\\theta$; the factor $\\frac{1}{a}$ outside is what most students drop.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Evaluate $\\int_0^1 x e^{2x}\\,dx$ exactly.",
+      "back": "$\\frac{e^2 + 1}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "(e^2 + 1)/4",
+          "synonyms": [
+            "1/4 (e^2 + 1)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "(e\u00b2 + 1)/4"
+      ],
+      "mcq": {
+        "correct": "$\\frac{e^2 + 1}{4}$",
+        "distractors": [
+          "$\\frac{e^2 - 1}{4}$",
+          "$\\frac{e^2 + 1}{2}$",
+          "$e^2$"
+        ]
+      },
+      "explanation": "By parts with $u = x$: $\\left[\\frac{xe^{2x}}{2}\\right]_0^1 - \\int_0^1 \\frac{e^{2x}}{2}dx = \\frac{e^2}{2} - \\left[\\frac{e^{2x}}{4}\\right]_0^1 = \\frac{e^2}{2} - \\frac{e^2 - 1}{4} = \\frac{e^2 + 1}{4}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    }
+  ]
+}

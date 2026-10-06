@@ -1,0 +1,178 @@
+{
+  "topic": "polar-curves",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the relations between Cartesian and polar coordinates.",
+      "back": "$x = r\\cos\\theta$ and $y = r\\sin\\theta$, with $r^2 = x^2 + y^2$ and $\\tan\\theta = \\frac{y}{x}$.",
+      "keyPoints": [
+        {
+          "text": "x = r cos \u03b8",
+          "mustInclude": true
+        },
+        {
+          "text": "y = r sin \u03b8",
+          "mustInclude": true
+        },
+        {
+          "text": "r^2 = x^2 + y^2",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "r is the distance from the pole and \u03b8 the angle from the initial line, so the relations are just right-angle trigonometry.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Describe the curve $r = a$ for a positive constant $a$.",
+      "back": "A circle of radius a centred on the pole.",
+      "keyPoints": [
+        {
+          "text": "circle",
+          "mustInclude": true
+        },
+        {
+          "text": "radius a",
+          "mustInclude": true
+        },
+        {
+          "text": "centred on the pole",
+          "synonyms": [
+            "centre at the origin"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A circle of radius a centred on the pole.",
+        "distractors": [
+          "A straight line through the pole",
+          "A cardioid",
+          "A circle of radius a centred on (a, 0)"
+        ]
+      },
+      "explanation": "r is the distance from the pole, so fixing it fixes every point at the same distance: a circle.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What curve does $\\theta = c$ represent, for a constant $c$?",
+      "back": "A straight line through the pole making an angle c with the initial line.",
+      "keyPoints": [
+        {
+          "text": "straight line",
+          "synonyms": [
+            "ray",
+            "half-line"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "through the pole",
+          "synonyms": [
+            "through the origin"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "at angle c to the initial line",
+          "synonyms": [
+            "angle c from the positive x-axis"
+          ]
+        }
+      ],
+      "explanation": "Fixing the angle while r varies freely sweeps out the ray from the pole in that direction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "State the formula for the area enclosed by $r = f(\\theta)$ between $\\theta = \\alpha$ and $\\theta = \\beta$.",
+      "back": "$\\frac{1}{2}\\int_{\\alpha}^{\\beta} r^2\\,d\\theta$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "half the integral of r squared d theta",
+          "synonyms": [
+            "1/2 \u222b r^2 d\u03b8"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "A = 1/2 \u222b r^2 d\u03b8"
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}\\int_{\\alpha}^{\\beta} r^2\\,d\\theta$",
+        "distractors": [
+          "$\\int_{\\alpha}^{\\beta} r\\,d\\theta$",
+          "$\\frac{1}{2}\\int_{\\alpha}^{\\beta} r\\,d\\theta$",
+          "$\\pi\\int_{\\alpha}^{\\beta} r^2\\,d\\theta$"
+        ]
+      },
+      "explanation": "Each thin sector has area $\\frac{1}{2}r^2\\,d\\theta$, the polar equivalent of the area of a circular sector.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Describe the shape of $r = a(1 + \\cos\\theta)$.",
+      "back": "A cardioid, symmetric about the initial line, with a cusp at the pole and its greatest radius 2a at \u03b8 = 0.",
+      "keyPoints": [
+        {
+          "text": "cardioid",
+          "mustInclude": true
+        },
+        {
+          "text": "symmetric about the initial line",
+          "synonyms": [
+            "symmetric about the x-axis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cusp at the pole",
+          "synonyms": [
+            "pointed at the origin"
+          ]
+        }
+      ],
+      "explanation": "$r = 0$ when $\\theta = \\pi$, which produces the cusp, and replacing $\\theta$ by $-\\theta$ leaves $r$ unchanged, which gives the symmetry.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "topic": "eigenvalues-and-eigenvectors",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define an eigenvalue and its corresponding eigenvector of a square matrix $A$.",
+      "back": "For a non-zero vector $\\mathbf{x}$, if $A\\mathbf{x} = \\lambda\\mathbf{x}$ then $\\lambda$ is an eigenvalue of $A$ and $\\mathbf{x}$ is a corresponding eigenvector.",
+      "keyPoints": [
+        {
+          "text": "Ax = \u03bbx",
+          "mustInclude": true
+        },
+        {
+          "text": "x is non-zero",
+          "mustInclude": true
+        },
+        {
+          "text": "the direction of x is unchanged",
+          "synonyms": [
+            "x is only scaled",
+            "x is an invariant direction"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "An eigenvector is a direction the transformation does not rotate; it only stretches or reverses it, by the factor \u03bb.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the characteristic equation used to find the eigenvalues of $A$.",
+      "back": "$\\det(A - \\lambda I) = 0$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "det(A - \u03bbI) = 0",
+          "synonyms": [
+            "|A - \u03bbI| = 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "|A - \u03bbI| = 0"
+      ],
+      "mcq": {
+        "correct": "$\\det(A - \\lambda I) = 0$",
+        "distractors": [
+          "$\\det(A + \\lambda I) = 0$",
+          "$\\det(A) - \\lambda = 0$",
+          "$A - \\lambda I = 0$"
+        ]
+      },
+      "explanation": "$A\\mathbf{x} = \\lambda\\mathbf{x}$ rearranges to $(A - \\lambda I)\\mathbf{x} = \\mathbf{0}$, which has a non-zero solution only when $A - \\lambda I$ is singular.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Find the two eigenvalues of the matrix with entries 4, 1 on the top row and 2, 3 on the bottom.",
+      "back": "$\\lambda = 5$ and $\\lambda = 2$",
+      "keyPoints": [
+        {
+          "text": "5",
+          "synonyms": [
+            "lambda = 5"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2",
+          "synonyms": [
+            "lambda = 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\lambda = 5$ and $\\lambda = 2$",
+        "distractors": [
+          "7 and 10",
+          "-5 and -2",
+          "6 and 1"
+        ]
+      },
+      "explanation": "The characteristic equation is $(4 - \\lambda)(3 - \\lambda) - 2 = \\lambda^2 - 7\\lambda + 10 = 0$, so $(\\lambda - 5)(\\lambda - 2) = 0$. The sum 7 is the trace and the product 10 is the determinant.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "For a 2 by 2 matrix $A$, what do the sum and the product of the eigenvalues equal?",
+      "back": "The sum equals the trace of $A$ and the product equals $\\det(A)$.",
+      "keyPoints": [
+        {
+          "text": "sum of eigenvalues = trace",
+          "synonyms": [
+            "sum = a + d"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "product of eigenvalues = determinant",
+          "synonyms": [
+            "product = det A"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "trace = sum of the diagonal entries"
+      ],
+      "mcq": {
+        "correct": "The sum equals the trace of $A$ and the product equals $\\det(A)$.",
+        "distractors": [
+          "The sum equals $\\det(A)$ and the product equals the trace",
+          "Both equal the trace",
+          "The sum equals zero and the product equals the trace"
+        ]
+      },
+      "explanation": "Expanding $\\det(A - \\lambda I)$ gives $\\lambda^2 - (\\text{trace})\\lambda + \\det A$, and the sum and product of the roots read straight off.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why is the zero vector never allowed to be an eigenvector?",
+      "back": "Because $A\\mathbf{0} = \\lambda\\mathbf{0}$ holds for every $\\lambda$, so the zero vector would make every number an eigenvalue and would tell you nothing about a direction.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "A0 = \u03bb0 holds for all \u03bb",
+          "synonyms": [
+            "trivially satisfied"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it carries no directional information",
+          "synonyms": [
+            "eigenvectors describe directions"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The definition is about invariant directions, and the origin has no direction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "topic": "numerical-methods",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the location of roots result for a continuous function.",
+      "back": "If $f$ is continuous on $[a, b]$ and $f(a)$ and $f(b)$ have opposite signs, then there is at least one root in $(a, b)$.",
+      "keyPoints": [
+        {
+          "text": "f is continuous",
+          "mustInclude": true
+        },
+        {
+          "text": "sign change between f(a) and f(b)",
+          "synonyms": [
+            "opposite signs"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "at least one root in the interval",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Continuity is essential: a function with a jump can change sign without ever being zero.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Give two reasons why a root can be missed by looking for a sign change.",
+      "back": "A root of even multiplicity touches the axis without crossing it, so there is no sign change; and an even number of distinct roots inside the interval can cancel, leaving the same sign at both ends.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "a repeated root of even multiplicity touches the axis",
+          "synonyms": [
+            "no crossing"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an even number of roots can cancel out",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$f(x) = (x - 2)^2$ has a root at 2 but is positive either side of it, so no interval around 2 shows a sign change.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Write the Newton-Raphson iteration for $f(x) = 0$.",
+      "back": "$x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "x - f(x)/f'(x)",
+          "synonyms": [
+            "Newton Raphson formula"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "x_{n+1} = x_n - f(x_n)/f'(x_n)"
+      ],
+      "mcq": {
+        "correct": "$x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$",
+        "distractors": [
+          "$x_{n+1} = x_n + \\frac{f(x_n)}{f'(x_n)}$",
+          "$x_{n+1} = x_n - f(x_n)f'(x_n)$",
+          "$x_{n+1} = \\frac{f(x_n)}{f'(x_n)}$"
+        ]
+      },
+      "explanation": "It is the x-intercept of the tangent at $x_n$, which is why the derivative must be in the denominator.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "When does the Newton-Raphson method fail?",
+      "back": "When $f'(x_n)$ is zero or very small, so the tangent is nearly horizontal and the next estimate is undefined or lands far away; it also fails if the starting value is too far from the root.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "f'(x) is zero or very small",
+          "synonyms": [
+            "stationary point",
+            "horizontal tangent"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the iteration diverges or is undefined",
+          "mustInclude": true
+        },
+        {
+          "text": "a poor starting value can send it elsewhere",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Starting on a stationary point gives division by zero, and starting either side of a turning point can send the sequence to a different root entirely.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "One iteration of $x_{n+1} = \\frac{1}{2}\\left(x_n + \\frac{5}{x_n}\\right)$ starts from $x_0 = 2$. Find $x_1$.",
+      "back": "2.25",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "2.25",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.25",
+        "distractors": [
+          "2.5",
+          "2.05",
+          "4.5"
+        ]
+      },
+      "explanation": "$x_1 = \\frac{1}{2}(2 + \\frac{5}{2}) = \\frac{1}{2}(4.5) = 2.25$. This iteration converges to $\\sqrt{5} \\approx 2.236$.",
+      "numeric": {
+        "value": 2.25,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    }
+  ]
+}

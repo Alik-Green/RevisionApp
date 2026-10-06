@@ -1,0 +1,178 @@
+{
+  "topic": "proof-by-induction",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the stages of a proof by mathematical induction.",
+      "back": "Show the statement holds for the first value of n; assume it holds for n = k; deduce from that assumption that it holds for n = k + 1; then conclude it holds for all n in the range.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case",
+          "synonyms": [
+            "true for n = 1",
+            "first value"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume true for n = k",
+          "synonyms": [
+            "inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "prove true for n = k + 1",
+          "mustInclude": true
+        },
+        {
+          "text": "state the conclusion",
+          "synonyms": [
+            "holds for all n"
+          ]
+        }
+      ],
+      "explanation": "Omitting the conclusion is the most common way to lose a mark on an otherwise correct proof.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "In the inductive step, what is the assumption actually used for?",
+      "back": "It lets you substitute the statement at $n = k$ as a known equality while manipulating the $n = k + 1$ case. A proof that never uses it is not an induction.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "substitute the n = k result",
+          "synonyms": [
+            "use the hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "while working on the n = k + 1 case",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The whole argument is that truth at $k$ forces truth at $k + 1$; if the $k$ case is never used, nothing has been forced.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Why is the base case necessary?",
+      "back": "Because without one true starting value the implication k to k + 1 has nothing to act on, so the statement could be false for every n while the inductive step still worked.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "gives a true starting point",
+          "synonyms": [
+            "starts the chain"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the implication alone does not establish anything",
+          "synonyms": [
+            "the chain never starts"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A false statement can still imply itself: if every horse in a set is the same colour, so is every horse in a larger set, yet the base case fails.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Give two kinds of result other than summations that induction proves.",
+      "back": "Divisibility results, such as $n^3 - n$ being divisible by 3, and inequalities, such as $2^n > n^2$ for $n \\ge 5$; matrix and complex-number identities also work.",
+      "keyPoints": [
+        {
+          "text": "divisibility",
+          "synonyms": [
+            "n^3 - n divisible by 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "inequalities",
+          "synonyms": [
+            "2^n > n^2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a third valid kind",
+          "synonyms": [
+            "matrix identities",
+            "De Moivre for positive integers"
+          ]
+        }
+      ],
+      "explanation": "Anything indexed by the positive integers can be proved by induction, including statements with no sum in them.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "When proving an inequality by induction, why can the $n = k + 1$ step not simply be algebraic substitution?",
+      "back": "Because an inequality is not an equality to substitute into: you have to bound one side, usually by adding or multiplying the inductive hypothesis onto a known true inequality and keeping track of the direction.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "you must bound rather than substitute",
+          "synonyms": [
+            "work with inequalities throughout"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the inductive hypothesis is used as an inequality",
+          "mustInclude": true
+        },
+        {
+          "text": "the direction of the inequality must be preserved",
+          "synonyms": [
+            "do not multiply by a negative"
+          ]
+        }
+      ],
+      "explanation": "Proving $2^n > n^2$ for $n \\ge 5$ needs $2^{k+1} = 2 \\cdot 2^k > 2k^2$ and then $2k^2 > (k+1)^2$, which only holds once $k \\ge 3$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    }
+  ]
+}
