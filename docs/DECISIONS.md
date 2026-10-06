@@ -489,3 +489,52 @@ rather than revealing them one at a time.
 watching the repository, and a reporter script that has to be maintained
 alongside the workflow. The ktlint section strips ANSI colours and drops
 generated sources because the comment body is capped.
+
+---
+
+## D29. The UI has never been executed, only compiled, linted and unit-tested
+
+**Decision.** No screen in this project has ever been rendered. There is no
+display, no JDK and no Android emulator in the sandbox it was written in, so
+"the desktop app runs" is backed by compilation, linting, the pure-logic tests
+and a successful `jpackage` run on `windows-latest` — not by anyone looking at it.
+
+**Why.** D1 explains the toolchain situation: the only compiler available is CI.
+Recording this explicitly matters because it changes what the remaining risk is.
+The risks that testing *cannot* reach here are layout and interaction problems —
+a control that overflows on a narrow phone, a scroll container nested the wrong
+way, a text field that cannot be reached. Those are real and they are unfixed
+until someone runs the app.
+
+**What stands in for running it.** The parts that carry actual logic are pure
+Kotlin in `commonMain` and are tested directly: the answer checker, the FSRS
+scheduler, question derivation for every mode, topic-tree aggregation and cycle
+handling, filter matching, the SHA-256 implementation against published vectors,
+the pack sync including hash mismatch and partial failure, the repositories
+against a real in-memory SQLite database, and the session state machine through
+all four modes. Screens contain no branching logic of their own: they render a
+sealed state with an exhaustive `when` and forward every input to `AppState`, so
+there is very little in them that can be wrong without the compiler noticing.
+
+**What it costs.** Expect to fix visual and layout problems on first run. The
+narrow-layout branch in `BrowseScreen` (filters above the list instead of beside
+it, chosen by `BoxWithConstraints`) and the hand-chunked wrapping rows that stand
+in for `FlowRow` are the two places most likely to need adjustment.
+
+---
+
+## D30. Compose Hot Reload is not enabled
+
+**Decision.** Desktop runs through the plain `:desktopApp:run` task. No hot-reload
+plugin is applied.
+
+**Why.** The brief allows skipping it if it is not stable in the current
+template, and this project is not derived from a template that ships it — the
+build files were written from the current JetBrains and AGP 9 conventions. Hot
+reload needs its own Gradle plugin and a matching toolchain version, and the one
+feedback loop available here is CI, where a misconfigured plugin would show up as
+a build failure costing several minutes and delivering no benefit, because there
+is no display to reload into.
+
+**What it costs.** Nothing in CI or in a release. A developer with a display who
+wants it adds the plugin to `desktopApp` themselves.
