@@ -10,6 +10,13 @@ and **Android**. Every line of logic and every screen is in `commonMain`; the tw
 platform source sets contain nothing but a database driver, an HTTP engine and an
 entry point.
 
+The interface is an explorer, not a control panel: you are always *in* one place in
+the topic tree, named in large type with a breadcrumb above it, and every folder,
+card, filter and count on screen is relative to that place. Navigation adapts to
+the window — a bottom bar on a phone, a rail on a tablet or desktop — and the
+number of cards due is a badge on Study rather than a counter floating over
+everything.
+
 ---
 
 ## Download
@@ -89,6 +96,28 @@ becomes multiple choice.
 Every mode writes to **one** schedule, and a correct answer in a harder mode
 counts for more: correct typed answers earn Easy, correct tile or multiple-choice
 answers earn Good, anything wrong earns Again.
+
+### Maths
+
+Cards hold LaTeX in `$...$`, and it is typeset rather than shown as source: real
+superscripts and subscripts (`x²`, `log₃`, `xₙ₊₁`, `10⁻¹⁹`), stacked fractions,
+radicals, and symbols for arrows, relations, logic and both cases of the Greek
+alphabet. Where a script has no Unicode equivalent it is drawn smaller and
+baseline-shifted, so nothing degrades into `x^2` or into a box.
+
+There are two renderers behind one interface. The main one lays out an
+`AnnotatedString` with fractions placed as inline content, sized by exact
+measurement, and inherits the current colour, text size and theme. The fallback
+produces a plain string — `(a)/(b)` instead of a stacked fraction — for search
+snippets, for anything that cannot lay text out, and as the safety net if the main
+renderer throws. Both run the same parser, which is also what the answer checker
+normalises with, so `x^2`, `x²`, `x**2` and `x^{2}` are all the same answer and
+what you see is what gets compared.
+
+Settings > Developer > **Math gallery** shows 44 expressions through both
+renderers side by side. It exists because this app is developed somewhere with no
+display: if a symbol is missing or a fraction is mis-sized, that screen is where it
+shows up first.
 
 ### Spaced repetition
 
@@ -191,6 +220,26 @@ sha256( pack.json + "\n" + cards/a.json + "\n" + cards/b.json + "\n" )
 The app (`composeApp/.../crypto/PackHasher.kt`, a pure-Kotlin SHA-256) and
 `tools/validate` compute it identically, byte for byte as served.
 
+### Escaping LaTeX in JSON
+
+**A LaTeX backslash must be written `\\` inside a JSON string.** JSON reads `\` as
+the start of an escape, and several commands begin with a letter that is also one:
+
+| written in JSON | decodes to | the card then says |
+| --- | --- | --- |
+| `"\theta"` | tab + `heta` | a gap, then "heta" |
+| `"\nu"` | line feed + `u` | a line break, then "u" |
+| `"\frac{a}{b}"` | form feed + `rac{a}{b}` | "rac{a}{b}" |
+| `"\beta"` | backspace + `eta` | "eta" |
+| `"\Rightarrow"` | **invalid escape** | the file will not parse |
+
+The damage is invisible in a diff, so `tools/validate` checks for it after
+decoding: backspace, form feed and carriage return are errors anywhere, tab and
+line feed are errors inside a `$...$` span, an odd number of `$` is an error, and
+so are unbalanced braces inside a span. `tools/fixtures/` holds one file per defect
+plus a valid control, and the validator checks them on every run — a rule that
+stops firing fails CI rather than quietly letting corrupt content through.
+
 ### Validating
 
 ```bash
@@ -199,6 +248,7 @@ tools/validate                      # fails on errors
 tools/validate --pack tmua          # one pack
 tools/validate --strict             # also fail on warnings
 tools/validate --update-hashes      # recompute sha256 and cardCount
+tools/validate --selftest           # only prove the text rules fire on the fixtures
 ```
 
 The `Content` workflow runs this on every push and pull request to the `content`
@@ -247,6 +297,20 @@ embedded in the base URL, or a proxy that adds the header. The base URL is
 editable on the settings screen; the app stores no credentials.
 
 ---
+
+## What is not built yet
+
+- **User-data sync.** Content packs download from the `content` branch and the app
+  is offline afterwards, but there is no sync of *your* cards, topics, tags, review
+  log or settings between devices, and no zip export/import. Nothing in the data
+  layer blocks it: user content is namespaced separately from built-in content and
+  progress lives in its own table.
+- **Notes.** The Library shows a `Cards | Notes` control with Notes disabled behind
+  `FeatureFlags.NOTES_ENABLED`. `LibraryItem`, `SearchSection` and the scoped-filter
+  counting are sealed and generic over item types so notebooks are one case each,
+  but no notebook model, storage or editor exists.
+- **A released Android build.** The APK in Releases is a debug build signed with the
+  debug key.
 
 ## Architecture
 
