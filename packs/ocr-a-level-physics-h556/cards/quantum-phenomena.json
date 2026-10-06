@@ -1,0 +1,179 @@
+{
+  "topic": "quantum-phenomena",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define the electronvolt.",
+      "back": "The kinetic energy gained by an electron accelerated through a potential difference of one volt, equal to 1.60 x 10^-19 J.",
+      "keyPoints": [
+        {
+          "text": "kinetic energy gained by an electron",
+          "mustInclude": true
+        },
+        {
+          "text": "accelerated through a potential difference of one volt",
+          "mustInclude": true
+        },
+        {
+          "text": "1.60 x 10^-19 J",
+          "synonyms": [
+            "1.6e-19 J"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "1 eV = 1.6 x 10^-19 J"
+      ],
+      "explanation": "It is an energy, not a voltage: eV = (1.60 x 10^-19 C) x 1 V = 1.60 x 10^-19 J.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Describe the photoelectric effect.",
+      "back": "The emission of electrons from a metal surface when electromagnetic radiation of high enough frequency falls on it.",
+      "keyPoints": [
+        {
+          "text": "emission of electrons",
+          "synonyms": [
+            "electrons are released"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "from a metal surface",
+          "mustInclude": true
+        },
+        {
+          "text": "radiation above a threshold frequency",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "photoemission"
+      ],
+      "explanation": "Below the threshold frequency no electrons are emitted at all, however bright the source, which a wave model cannot explain.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define the work function of a metal.",
+      "back": "The minimum energy needed to release an electron from the surface of that metal.",
+      "keyPoints": [
+        {
+          "text": "minimum energy",
+          "mustInclude": true
+        },
+        {
+          "text": "release an electron from the surface",
+          "synonyms": [
+            "escape the metal"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "phi",
+        "\u03a6"
+      ],
+      "explanation": "Electrons deeper in the metal need more energy than this, so the work function sets the threshold frequency through hf = phi.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Write Einstein's photoelectric equation.",
+      "back": "hf = phi + 1/2 mv^2(max)",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "hf = phi + maximum kinetic energy",
+          "synonyms": [
+            "photon energy equals work function plus KE max"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "hf = phi + KE max",
+        "hf = work function + 1/2 mv^2"
+      ],
+      "mcq": {
+        "correct": "hf = phi + 1/2 mv^2(max)",
+        "distractors": [
+          "hf = phi - 1/2 mv^2(max)",
+          "h/f = phi + 1/2 mv^2(max)",
+          "hf = phi"
+        ]
+      },
+      "explanation": "One photon gives all of its energy hf to one electron; the work function pays for the escape and whatever is left becomes the electron's kinetic energy.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Why does the maximum kinetic energy of photoelectrons not increase when the radiation is made brighter?",
+      "back": "Because each electron absorbs one photon. Increasing intensity increases the number of photons per second and so the number of electrons released, but each photon still carries the same energy hf.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "one photon is absorbed by one electron",
+          "synonyms": [
+            "one-to-one interaction"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "photon energy hf is unchanged",
+          "synonyms": [
+            "energy per photon stays the same"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "intensity changes the number of photons",
+          "synonyms": [
+            "more electrons released"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "This is the observation that forced the particle model of light: a wave model predicts that a brighter source would eventually give electrons more energy.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    }
+  ]
+}

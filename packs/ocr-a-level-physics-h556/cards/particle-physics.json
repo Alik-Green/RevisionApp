@@ -1,0 +1,200 @@
+{
+  "topic": "particle-physics",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is a hadron, and what are its two families?",
+      "back": "A particle made of quarks that feels the strong interaction. The two families are baryons, made of three quarks, and mesons, made of a quark and an antiquark.",
+      "keyPoints": [
+        {
+          "text": "made of quarks",
+          "mustInclude": true
+        },
+        {
+          "text": "feels the strong interaction",
+          "synonyms": [
+            "experiences the strong force"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "baryons are three quarks",
+          "mustInclude": true
+        },
+        {
+          "text": "mesons are a quark and an antiquark",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Leptons such as the electron are not hadrons, because they do not feel the strong interaction at all.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the quark composition of a proton and of a neutron.",
+      "back": "A proton is uud and a neutron is udd.",
+      "keyPoints": [
+        {
+          "text": "proton uud",
+          "synonyms": [
+            "u",
+            "p",
+            " ",
+            "u",
+            "p",
+            " ",
+            "d",
+            "o",
+            "w",
+            "n"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "neutron udd",
+          "synonyms": [
+            "u",
+            "p",
+            " ",
+            "d",
+            "o",
+            "w",
+            "n",
+            " ",
+            "d",
+            "o",
+            "w",
+            "n"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "proton = uud",
+        "neutron = udd"
+      ],
+      "mcq": {
+        "correct": "A proton is uud and a neutron is udd.",
+        "distractors": [
+          "Proton udd, neutron uud",
+          "Proton uud, neutron uuu",
+          "Proton u and anti-d, neutron d and anti-u"
+        ]
+      },
+      "explanation": "An up quark has charge +2/3 e and a down quark -1/3 e, so uud gives +1 e and udd gives zero.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Which particles have a lepton number of +1, and what happens to it in interactions?",
+      "back": "The electron, muon, tau and their neutrinos each have lepton number +1, and their antiparticles have -1. Lepton number is conserved in every interaction.",
+      "keyPoints": [
+        {
+          "text": "electron, muon, tau and their neutrinos",
+          "mustInclude": true
+        },
+        {
+          "text": "antiparticles have -1",
+          "mustInclude": true
+        },
+        {
+          "text": "conserved in interactions",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Conservation of lepton number is why beta-minus decay must emit an antineutrino alongside the electron.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "In beta-minus decay, what does a neutron turn into, and which two other particles are emitted?",
+      "back": "A proton, plus an electron and an electron antineutrino.",
+      "keyPoints": [
+        {
+          "text": "proton",
+          "mustInclude": true
+        },
+        {
+          "text": "electron",
+          "synonyms": [
+            "beta particle"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "electron antineutrino",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A proton, plus an electron and an electron antineutrino.",
+        "distractors": [
+          "A proton, an electron and an electron neutrino",
+          "A neutron, a positron and a neutrino",
+          "A proton and a positron only"
+        ]
+      },
+      "explanation": "At quark level a down quark becomes an up quark. The antineutrino is required to keep the lepton number at zero, since the electron carries +1.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Name the four fundamental interactions and the exchange particle of the electromagnetic interaction.",
+      "back": "Gravitational, electromagnetic, strong nuclear and weak nuclear. The electromagnetic exchange particle is the virtual photon.",
+      "keyPoints": [
+        {
+          "text": "gravitational, electromagnetic, strong and weak",
+          "mustInclude": true
+        },
+        {
+          "text": "virtual photon",
+          "synonyms": [
+            "photon"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "gamma"
+      ],
+      "explanation": "Each interaction has its own exchange particle: gluons for the strong, W and Z bosons for the weak, and the graviton is hypothesised for gravity.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    }
+  ]
+}

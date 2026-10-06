@@ -1,0 +1,201 @@
+{
+  "topic": "charge-current-and-resistance",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define electric current and give the equation for it.",
+      "back": "The rate of flow of charge, I = dQ/dt, measured in amperes.",
+      "keyPoints": [
+        {
+          "text": "rate of flow of charge",
+          "mustInclude": true
+        },
+        {
+          "text": "I = dQ/dt",
+          "synonyms": [
+            "I = Q/t"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "ampere",
+          "synonyms": [
+            "A"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "I = delta Q / delta t"
+      ],
+      "explanation": "One ampere is one coulomb passing a point each second.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the charge on one electron.",
+      "back": "1.60 x 10^-19 C",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "1.60 x 10^-19",
+          "synonyms": [
+            "1.6e-19",
+            "minus nineteen"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "coulomb",
+          "synonyms": [
+            "C"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "elementary charge",
+        "e = 1.6 x 10^-19 C"
+      ],
+      "mcq": {
+        "correct": "1.60 x 10^-19 C",
+        "distractors": [
+          "9.11 x 10^-31 C",
+          "1.60 x 10^-19 A",
+          "6.02 x 10^23 C"
+        ]
+      },
+      "explanation": "9.11 x 10^-31 kg is the electron mass and 6.02 x 10^23 is the Avogadro constant; the unit must be coulombs, not amperes.",
+      "numeric": {
+        "value": 1.6e-19,
+        "tolerance": 0.02,
+        "unit": "C"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define resistance, and state the condition under which Ohm's law holds.",
+      "back": "Resistance is the ratio of potential difference to current, R = V/I, in ohms. Ohm's law holds for a conductor kept at constant temperature, where the current is directly proportional to the potential difference.",
+      "keyPoints": [
+        {
+          "text": "ratio of potential difference to current",
+          "synonyms": [
+            "R = V/I"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "ohm",
+          "synonyms": [
+            "ohms"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "constant temperature",
+          "synonyms": [
+            "constant physical conditions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "current directly proportional to potential difference",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A filament lamp and a diode both have a resistance but are not ohmic, because the proportionality only holds while the temperature stays fixed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.2.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Write the three equations for electrical power.",
+      "back": "P = VI, and substituting V = IR gives P = I^2 R and P = V^2/R.",
+      "keyPoints": [
+        {
+          "text": "P = VI",
+          "mustInclude": true
+        },
+        {
+          "text": "P = I^2 R",
+          "mustInclude": true
+        },
+        {
+          "text": "P = V^2/R",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "P = IV"
+      ],
+      "explanation": "Choosing between I^2 R and V^2/R depends on what stays constant: series components share a current, parallel components share a potential difference.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A 12 ohm resistor carries a current of 0.50 A. Calculate the power it dissipates.",
+      "back": "3.0 W",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "3.0",
+          "synonyms": [
+            "3 W",
+            "3.0 W"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "3.0 W",
+        "distractors": [
+          "6.0 W",
+          "1.5 W",
+          "24 W"
+        ]
+      },
+      "explanation": "P = I^2 R = 0.50^2 x 12 = 3.0 W. The 6.0 W answer comes from treating V = IR = 6.0 V as if it were the power.",
+      "numeric": {
+        "value": 3.0,
+        "tolerance": 0.02,
+        "unit": "W"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    }
+  ]
+}

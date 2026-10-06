@@ -1,0 +1,179 @@
+{
+  "topic": "capacitors",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define capacitance and give its unit.",
+      "back": "The charge stored per unit potential difference, C = Q/V, in farads.",
+      "keyPoints": [
+        {
+          "text": "charge per unit potential difference",
+          "mustInclude": true
+        },
+        {
+          "text": "C = Q/V",
+          "mustInclude": true
+        },
+        {
+          "text": "farad",
+          "synonyms": [
+            "F"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "One farad is enormous in practice, so real capacitors are quoted in microfarads or picofarads.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Write the equations for the energy stored by a charged capacitor.",
+      "back": "W = 1/2 QV = 1/2 CV^2",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "1/2 QV",
+          "mustInclude": true
+        },
+        {
+          "text": "1/2 CV^2",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "E = 1/2 CV^2",
+        "W = Q^2/2C"
+      ],
+      "mcq": {
+        "correct": "W = 1/2 QV = 1/2 CV^2",
+        "distractors": [
+          "W = QV",
+          "W = 1/2 QV^2",
+          "W = CV^2"
+        ]
+      },
+      "explanation": "The factor of a half appears because the potential difference rises from zero as the capacitor charges, so the average p.d. is V/2.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "How does the charge on a discharging capacitor vary with time?",
+      "back": "It falls exponentially, Q = Q0 e^(-t/RC), reaching 37% of its initial value after one time constant RC.",
+      "keyPoints": [
+        {
+          "text": "exponential decay",
+          "synonyms": [
+            "decays exponentially"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "Q = Q0 e^(-t/RC)",
+          "mustInclude": true
+        },
+        {
+          "text": "37% after one time constant",
+          "synonyms": [
+            "1/e",
+            "0.37"
+          ]
+        }
+      ],
+      "explanation": "The same shape applies to the voltage and to the current, because all three are proportional to each other during the discharge.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Capacitors of 4.0 uF and 6.0 uF are connected in series. Calculate the combined capacitance.",
+      "back": "2.4 uF",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "2.4",
+          "synonyms": [
+            "2",
+            ".",
+            "4",
+            " ",
+            "u",
+            "F"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.4 uF",
+        "distractors": [
+          "10 uF",
+          "24 uF",
+          "1.2 uF"
+        ]
+      },
+      "explanation": "For series, 1/C = 1/4 + 1/6 = 5/12, so C = 2.4 uF. Note this is the opposite of resistors: series capacitance is smaller than either one, and 10 uF is the parallel value.",
+      "numeric": {
+        "value": 2.4,
+        "tolerance": 0.02,
+        "unit": "uF"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What is the time constant of a capacitor-resistor circuit, and what does it tell you?",
+      "back": "tau = RC. It is the time for the charge or voltage to fall to 37% of its initial value while discharging, or to rise to 63% while charging.",
+      "keyPoints": [
+        {
+          "text": "tau = RC",
+          "mustInclude": true
+        },
+        {
+          "text": "37% when discharging",
+          "synonyms": [
+            "1/e of the initial value"
+          ]
+        },
+        {
+          "text": "63% when charging"
+        }
+      ],
+      "explanation": "A larger resistance limits the current and a larger capacitance stores more charge, so either one makes the circuit take longer to change.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "topic": "work-energy-and-power",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define the work done by a force.",
+      "back": "The product of the force and the distance moved in the direction of that force, W = Fs.",
+      "keyPoints": [
+        {
+          "text": "force times distance moved in the direction of the force",
+          "mustInclude": true
+        },
+        {
+          "text": "W = Fs",
+          "synonyms": [
+            "W equals F s"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "W = F s cos(theta) when the force is at an angle"
+      ],
+      "explanation": "If the force is at an angle to the motion only the component along the motion does work, which is where the cos(theta) form comes from.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State the unit of work, and express it in SI base units.",
+      "back": "The joule, J, which is kg m^2/s^2.",
+      "keyPoints": [
+        {
+          "text": "joule",
+          "synonyms": [
+            "J"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "kg m^2/s^2",
+          "synonyms": [
+            "kg m2 s-2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "N m",
+        "newton metre"
+      ],
+      "mcq": {
+        "correct": "kg m^2/s^2",
+        "distractors": [
+          "kg m/s^2",
+          "kg m^2/s^3",
+          "kg m/s"
+        ]
+      },
+      "explanation": "J = N m and N = kg m/s^2, so J = kg m^2/s^2. The distractor kg m/s^2 is the newton and kg m^2/s^3 is the watt.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "State the principle of conservation of energy.",
+      "back": "Energy cannot be created or destroyed, only transferred from one store to another, so the total energy of an isolated system stays constant.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "cannot be created or destroyed",
+          "mustInclude": true
+        },
+        {
+          "text": "transferred between stores",
+          "synonyms": [
+            "converted from one form to another"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "total energy constant",
+          "mustInclude": true
+        }
+      ],
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Define power and give the two equations used to calculate it.",
+      "back": "The rate of doing work, or energy transferred per unit time: P = W/t and, for a force moving a body at constant speed, P = Fv.",
+      "keyPoints": [
+        {
+          "text": "rate of doing work",
+          "synonyms": [
+            "energy transferred per unit time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "P = W/t",
+          "synonyms": [
+            "P equals work over time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "P = Fv",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "watt",
+        "W"
+      ],
+      "explanation": "P = Fv follows by substituting s = vt into P = Fs/t, and it is the form used for engines and vehicles at a steady speed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A motor lifts a 5.0 kg mass through 2.0 m in 4.0 s at constant speed. Calculate its useful power output, taking g = 9.81 m/s^2.",
+      "back": "24.5 W",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "24.5",
+          "synonyms": [
+            "24.5 W",
+            "25 W"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "24.5 W",
+        "distractors": [
+          "98.1 W",
+          "6.1 W",
+          "49.1 W"
+        ]
+      },
+      "explanation": "Work done against gravity is mgh = 5.0 x 9.81 x 2.0 = 98.1 J, and power is 98.1 / 4.0 = 24.5 W. The 98.1 W answer forgets to divide by the time.",
+      "numeric": {
+        "value": 24.5,
+        "tolerance": 0.02,
+        "unit": "W"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    }
+  ]
+}

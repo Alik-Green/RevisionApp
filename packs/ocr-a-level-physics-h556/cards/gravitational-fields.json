@@ -1,0 +1,176 @@
+{
+  "topic": "gravitational-fields",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Define gravitational field strength and give its unit.",
+      "back": "The force per unit mass on a small test mass placed at that point, g = F/m, in N/kg.",
+      "keyPoints": [
+        {
+          "text": "force per unit mass",
+          "mustInclude": true
+        },
+        {
+          "text": "g = F/m",
+          "mustInclude": true
+        },
+        {
+          "text": "N/kg",
+          "synonyms": [
+            "newtons per kilogram"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "m/s^2"
+      ],
+      "explanation": "N/kg and m/s^2 are the same unit: the field strength at a point is numerically the acceleration of free fall there.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State Newton's law of gravitation.",
+      "back": "Every mass attracts every other mass with a force proportional to the product of the masses and inversely proportional to the square of the distance between their centres: F = G m1 m2 / r^2.",
+      "keyPoints": [
+        {
+          "text": "force proportional to the product of the masses",
+          "mustInclude": true
+        },
+        {
+          "text": "inversely proportional to the square of the separation",
+          "mustInclude": true
+        },
+        {
+          "text": "F = G m1 m2 / r^2",
+          "mustInclude": true
+        },
+        {
+          "text": "distance between their centres"
+        }
+      ],
+      "explanation": "The inverse-square dependence is why doubling the separation quarters the force, and r is measured between centres rather than surfaces.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define the gravitational potential at a point, and state its sign.",
+      "back": "The work done per unit mass in bringing a small test mass from infinity to that point. It is always negative.",
+      "keyPoints": [
+        {
+          "text": "work done per unit mass",
+          "mustInclude": true
+        },
+        {
+          "text": "from infinity",
+          "mustInclude": true
+        },
+        {
+          "text": "negative",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "V = -GM/r"
+      ],
+      "explanation": "Infinity is taken as zero potential and gravity is always attractive, so work is always released rather than needed and the potential is negative.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Calculate the gravitational field strength at the surface of a planet of mass 6.0 x 10^24 kg and radius 6.4 x 10^6 m, using G = 6.67 x 10^-11 N m^2/kg^2.",
+      "back": "9.8 N/kg",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "9.8",
+          "synonyms": [
+            "9.77",
+            "9.8 N/kg"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "9.8 N/kg",
+        "distractors": [
+          "6.3 x 10^7 N/kg",
+          "1.5 x 10^-6 N/kg",
+          "0.15 N/kg"
+        ]
+      },
+      "explanation": "g = GM/r^2 = (6.67 x 10^-11 x 6.0 x 10^24) / (6.4 x 10^6)^2 = 9.8 N/kg. Forgetting to square the radius gives 6.3 x 10^7 N/kg.",
+      "numeric": {
+        "value": 9.77,
+        "tolerance": 0.02,
+        "unit": "N/kg"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What three conditions must a geostationary orbit satisfy?",
+      "back": "It must be above the equator, have a period of 24 hours matching the Earth's rotation, and travel in the same direction as the Earth spins, so the satellite stays above one point on the surface.",
+      "keyPoints": [
+        {
+          "text": "above the equator",
+          "mustInclude": true
+        },
+        {
+          "text": "period of 24 hours",
+          "synonyms": [
+            "same period as the Earth's rotation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "same direction as the Earth's rotation",
+          "synonyms": [
+            "west to east"
+          ]
+        },
+        {
+          "text": "stays above the same point on the surface"
+        }
+      ],
+      "explanation": "An inclined orbit would make the satellite drift north and south each day, so only an equatorial orbit can appear stationary.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    }
+  ]
+}

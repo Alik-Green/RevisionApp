@@ -1,0 +1,176 @@
+{
+  "topic": "dc-circuits",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State Kirchhoff's first law and say which quantity it conserves.",
+      "back": "The total current entering a junction equals the total current leaving it; it expresses conservation of charge.",
+      "keyPoints": [
+        {
+          "text": "current in equals current out",
+          "synonyms": [
+            "sum of currents at a junction is zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "conservation of charge",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The total current entering a junction equals the total current leaving it; it expresses conservation of charge.",
+        "distractors": [
+          "It expresses conservation of energy",
+          "It states that the sum of the e.m.f.s equals the sum of the p.d.s",
+          "It applies only to series circuits"
+        ]
+      },
+      "explanation": "Charge cannot accumulate at a junction, so what flows in must flow out. The energy statement is Kirchhoff's second law.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State Kirchhoff's second law and say which quantity it conserves.",
+      "back": "Around any closed loop the sum of the e.m.f.s equals the sum of the potential differences; it expresses conservation of energy.",
+      "keyPoints": [
+        {
+          "text": "sum of e.m.f.s equals sum of p.d.s around a closed loop",
+          "mustInclude": true
+        },
+        {
+          "text": "conservation of energy",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A charge that goes all the way round a loop returns to its starting point, so the energy it gained from cells must equal the energy it gave up across components.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "How does the e.m.f. of a cell differ from its terminal potential difference?",
+      "back": "The e.m.f. is the energy transferred per unit charge in driving charge round the whole circuit; the terminal p.d. is the energy per unit charge delivered to the external circuit, and is lower when current flows because of lost volts across the internal resistance.",
+      "keyPoints": [
+        {
+          "text": "energy per unit charge",
+          "synonyms": [
+            "work done per coulomb"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "e.m.f. covers the whole circuit",
+          "mustInclude": true
+        },
+        {
+          "text": "terminal p.d. is lower because of internal resistance",
+          "synonyms": [
+            "lost volts",
+            "V = E - Ir"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "V = E - Ir. With no current drawn, the lost volts are zero and the terminal p.d. equals the e.m.f.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Resistors of 6.0 ohm and 3.0 ohm are connected in parallel. Calculate the combined resistance.",
+      "back": "2.0 ohm",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "2.0",
+          "synonyms": [
+            "2 ohm",
+            "2.0 ohm"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.0 ohm",
+        "distractors": [
+          "9.0 ohm",
+          "18 ohm",
+          "4.5 ohm"
+        ]
+      },
+      "explanation": "For parallel, 1/R = 1/6 + 1/3 = 1/2, so R = 2.0 ohm. The combined resistance of a parallel pair is always smaller than the smaller resistor; 9.0 ohm is the series value.",
+      "numeric": {
+        "value": 2.0,
+        "tolerance": 0.02,
+        "unit": "ohm"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "A cell of e.m.f. 6.0 V and internal resistance 1.0 ohm supplies a current of 2.0 A. Calculate the terminal potential difference.",
+      "back": "4.0 V",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "4.0",
+          "synonyms": [
+            "4 V",
+            "4.0 V"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "4.0 V",
+        "distractors": [
+          "8.0 V",
+          "6.0 V",
+          "2.0 V"
+        ]
+      },
+      "explanation": "Lost volts = Ir = 2.0 x 1.0 = 2.0 V, so terminal p.d. = 6.0 - 2.0 = 4.0 V. Adding the lost volts instead of subtracting gives 8.0 V.",
+      "numeric": {
+        "value": 4.0,
+        "tolerance": 0.02,
+        "unit": "V"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    }
+  ]
+}

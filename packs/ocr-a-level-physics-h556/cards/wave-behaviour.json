@@ -1,0 +1,173 @@
+{
+  "topic": "wave-behaviour",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "Distinguish between transverse and longitudinal waves, with an example of each.",
+      "back": "In a transverse wave the oscillations are perpendicular to the direction of energy travel, such as electromagnetic waves. In a longitudinal wave they are parallel, such as sound, and the wave shows compressions and rarefactions.",
+      "keyPoints": [
+        {
+          "text": "transverse: oscillations perpendicular to energy transfer",
+          "mustInclude": true
+        },
+        {
+          "text": "longitudinal: oscillations parallel to energy transfer",
+          "mustInclude": true
+        },
+        {
+          "text": "one valid example of each",
+          "synonyms": [
+            "light and sound"
+          ]
+        }
+      ],
+      "explanation": "Only transverse waves can be polarised, which is the standard experimental test for the difference.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Define the frequency of a wave and give its unit.",
+      "back": "The number of complete oscillations passing a point per unit time, measured in hertz.",
+      "keyPoints": [
+        {
+          "text": "number of complete oscillations per unit time",
+          "synonyms": [
+            "cycles per second"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "hertz",
+          "synonyms": [
+            "Hz"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "cycles per second"
+      ],
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Write the wave equation linking speed, frequency and wavelength.",
+      "back": "c = f * lambda",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "c = f lambda",
+          "synonyms": [
+            "wave speed equals frequency times wavelength"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "v = f lambda",
+        "c = f x wavelength"
+      ],
+      "mcq": {
+        "correct": "c = f * lambda",
+        "distractors": [
+          "c = f / lambda",
+          "c = lambda / f",
+          "c = f + lambda"
+        ]
+      },
+      "explanation": "Speed is distance per time, and one wavelength passes per period, so c = lambda / T = f lambda.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "What condition must two waves satisfy to give a stable interference pattern?",
+      "back": "They must be coherent: the same frequency and wavelength, with a constant phase difference.",
+      "keyPoints": [
+        {
+          "text": "coherent",
+          "mustInclude": true
+        },
+        {
+          "text": "same frequency",
+          "synonyms": [
+            "same wavelength"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "constant phase difference",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "They must be coherent: the same frequency and wavelength, with a constant phase difference.",
+        "distractors": [
+          "They must have the same amplitude",
+          "They must be travelling in the same direction",
+          "They must both be polarised"
+        ]
+      },
+      "explanation": "If the phase difference drifts, the positions of the maxima move and the pattern blurs out. Equal amplitudes only make the cancellation complete, they are not required for a pattern.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "State the path difference, in wavelengths, for constructive and for destructive interference.",
+      "back": "Constructive when the path difference is a whole number of wavelengths, n lambda. Destructive when it is a half-integer number, (n + 1/2) lambda.",
+      "keyPoints": [
+        {
+          "text": "constructive: n lambda",
+          "synonyms": [
+            "whole number of wavelengths"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "destructive: (n + 1/2) lambda",
+          "synonyms": [
+            "odd number of half wavelengths"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "A whole-number difference means the waves arrive in phase; an extra half wavelength puts a crest against a trough.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    }
+  ]
+}

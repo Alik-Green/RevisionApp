@@ -1,0 +1,241 @@
+{
+  "topic": "forces-and-momentum",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State Newton's first law of motion.",
+      "back": "A body remains at rest, or continues to move with uniform velocity in a straight line, unless acted on by a resultant external force.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "remains at rest or uniform velocity",
+          "synonyms": [
+            "constant velocity",
+            "no change in motion"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "in a straight line",
+          "mustInclude": true
+        },
+        {
+          "text": "unless a resultant external force acts",
+          "synonyms": [
+            "u",
+            "n",
+            "l",
+            "e",
+            "s",
+            "s",
+            " ",
+            "a",
+            "c",
+            "t",
+            "e",
+            "d",
+            " ",
+            "o",
+            "n",
+            " ",
+            "b",
+            "y",
+            " ",
+            "a",
+            " ",
+            "r",
+            "e",
+            "s",
+            "u",
+            "l",
+            "t",
+            "a",
+            "n",
+            "t",
+            " ",
+            "f",
+            "o",
+            "r",
+            "c",
+            "e"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A body remains at rest, or continues to move with uniform velocity in a straight line, unless acted on by a resultant external force.",
+        "distractors": [
+          "A body's acceleration is proportional to the resultant force on it",
+          "Every action has an equal and opposite reaction",
+          "A body at rest has no forces acting on it at all"
+        ]
+      },
+      "explanation": "The first two options are the second and third laws. The last is the classic misconception: a book on a table has forces on it, they simply balance.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "State Newton's second law in terms of momentum.",
+      "back": "The resultant force is equal to the rate of change of momentum, F = dp/dt.",
+      "keyPoints": [
+        {
+          "text": "rate of change of momentum",
+          "mustInclude": true
+        },
+        {
+          "text": "resultant force",
+          "synonyms": [
+            "net force"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "F = dp/dt",
+          "synonyms": [
+            "F equals delta p over delta t"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "F = delta p / delta t"
+      ],
+      "explanation": "The F = ma form is the special case where the mass stays constant, so the momentum form is the more general statement.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define momentum and give its unit.",
+      "back": "The product of mass and velocity, p = mv, measured in kg m/s.",
+      "keyPoints": [
+        {
+          "text": "product of mass and velocity",
+          "synonyms": [
+            "mass times velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "p = mv",
+          "mustInclude": true
+        },
+        {
+          "text": "kg m/s",
+          "synonyms": [
+            "kilogram metres per second",
+            "N s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "Ns",
+        "newton seconds"
+      ],
+      "mcq": {
+        "correct": "The product of mass and velocity, p = mv, measured in kg m/s.",
+        "distractors": [
+          "Mass times acceleration, in newtons",
+          "Force times distance, in joules",
+          "Mass divided by velocity, in kg s/m"
+        ]
+      },
+      "explanation": "Momentum is a vector, so it has the direction of the velocity. N s is the same unit written differently.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.5",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "State the principle of conservation of momentum.",
+      "back": "In a system of interacting bodies the total momentum in any given direction remains constant, provided no resultant external force acts on the system.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "total momentum remains constant",
+          "synonyms": [
+            "total momentum is conserved"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "no resultant external force",
+          "mustInclude": true
+        },
+        {
+          "text": "in any given direction",
+          "synonyms": [
+            "in a given direction"
+          ]
+        }
+      ],
+      "explanation": "The direction matters: momentum can be conserved along one axis while an external force changes it along another.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.5",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What distinguishes an elastic collision from an inelastic one?",
+      "back": "In an elastic collision kinetic energy is conserved; in an inelastic collision it is not, although momentum is conserved in both.",
+      "keyPoints": [
+        {
+          "text": "kinetic energy conserved in an elastic collision",
+          "mustInclude": true
+        },
+        {
+          "text": "kinetic energy not conserved in an inelastic collision",
+          "synonyms": [
+            "energy is transferred to other stores"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "momentum conserved in both",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "In an elastic collision kinetic energy is conserved; in an inelastic collision it is not, although momentum is conserved in both.",
+        "distractors": [
+          "Momentum is conserved only in elastic collisions",
+          "Inelastic collisions do not conserve energy at all",
+          "Elastic collisions always involve objects sticking together"
+        ]
+      },
+      "explanation": "Total energy is always conserved. In an inelastic collision some kinetic energy is transferred to internal energy, sound or deformation, and objects may stick together.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.5",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "packId": "ocr-a-level-physics-h556",
+  "name": "OCR A Level Physics (H556)",
+  "version": 1,
+  "description": "Definitions, equations, worked numerics and common misconceptions across the five content modules of OCR A Level Physics A.",
+  "structureVerified": false,
+  "topics": [
+    {
+      "slug": "physics",
+      "name": "Physics",
+      "sortOrder": 1
+    },
+    {
+      "slug": "module-2-foundations",
+      "name": "Module 2: Foundations of physics",
+      "parent": "physics",
+      "sortOrder": 2
+    },
+    {
+      "slug": "physical-quantities-and-units",
+      "name": "Physical quantities and units",
+      "parent": "module-2-foundations",
+      "sortOrder": 1
+    },
+    {
+      "slug": "module-3-forces-and-motion",
+      "name": "Module 3: Forces and motion",
+      "parent": "physics",
+      "sortOrder": 3
+    },
+    {
+      "slug": "motion",
+      "name": "Motion",
+      "parent": "module-3-forces-and-motion",
+      "sortOrder": 1
+    },
+    {
+      "slug": "forces-and-momentum",
+      "name": "Forces, Newton's laws and momentum",
+      "parent": "module-3-forces-and-motion",
+      "sortOrder": 2
+    },
+    {
+      "slug": "work-energy-and-power",
+      "name": "Work, energy and power",
+      "parent": "module-3-forces-and-motion",
+      "sortOrder": 3
+    },
+    {
+      "slug": "module-4-electrons-waves-photons",
+      "name": "Module 4: Electrons, waves and photons",
+      "parent": "physics",
+      "sortOrder": 4
+    },
+    {
+      "slug": "charge-current-and-resistance",
+      "name": "Charge, current and resistance",
+      "parent": "module-4-electrons-waves-photons",
+      "sortOrder": 1
+    },
+    {
+      "slug": "dc-circuits",
+      "name": "Direct current circuits",
+      "parent": "module-4-electrons-waves-photons",
+      "sortOrder": 2
+    },
+    {
+      "slug": "wave-behaviour",
+      "name": "Wave behaviour",
+      "parent": "module-4-electrons-waves-photons",
+      "sortOrder": 3
+    },
+    {
+      "slug": "quantum-phenomena",
+      "name": "Quantum phenomena",
+      "parent": "module-4-electrons-waves-photons",
+      "sortOrder": 4
+    },
+    {
+      "slug": "module-5-newtonian-and-astro",
+      "name": "Module 5: Newtonian world and astrophysics",
+      "parent": "physics",
+      "sortOrder": 5
+    },
+    {
+      "slug": "circular-motion",
+      "name": "Circular motion",
+      "parent": "module-5-newtonian-and-astro",
+      "sortOrder": 1
+    },
+    {
+      "slug": "simple-harmonic-motion",
+      "name": "Simple harmonic motion",
+      "parent": "module-5-newtonian-and-astro",
+      "sortOrder": 2
+    },
+    {
+      "slug": "gravitational-fields",
+      "name": "Gravitational fields",
+      "parent": "module-5-newtonian-and-astro",
+      "sortOrder": 3
+    },
+    {
+      "slug": "module-6-particles-and-medical",
+      "name": "Module 6: Particles and medical physics",
+      "parent": "physics",
+      "sortOrder": 6
+    },
+    {
+      "slug": "capacitors",
+      "name": "Capacitors",
+      "parent": "module-6-particles-and-medical",
+      "sortOrder": 1
+    },
+    {
+      "slug": "particle-physics",
+      "name": "Particle physics",
+      "parent": "module-6-particles-and-medical",
+      "sortOrder": 2
+    }
+  ],
+  "tags": [
+    {
+      "slug": "ocr",
+      "group": "board",
+      "name": "OCR"
+    },
+    {
+      "slug": "a-level",
+      "group": "level",
+      "name": "A Level"
+    },
+    {
+      "slug": "physics",
+      "group": "subject",
+      "name": "Physics"
+    },
+    {
+      "slug": "m2",
+      "group": "module",
+      "name": "Module 2: Foundations"
+    },
+    {
+      "slug": "m3",
+      "group": "module",
+      "name": "Module 3: Forces and motion"
+    },
+    {
+      "slug": "m4",
+      "group": "module",
+      "name": "Module 4: Electrons, waves and photons"
+    },
+    {
+      "slug": "m5",
+      "group": "module",
+      "name": "Module 5: Newtonian world and astrophysics"
+    },
+    {
+      "slug": "m6",
+      "group": "module",
+      "name": "Module 6: Particles and medical physics"
+    }
+  ],
+  "cardFiles": [
+    "capacitors.json",
+    "charge-current-and-resistance.json",
+    "circular-motion.json",
+    "dc-circuits.json",
+    "forces-and-momentum.json",
+    "gravitational-fields.json",
+    "motion.json",
+    "particle-physics.json",
+    "physical-quantities-and-units.json",
+    "quantum-phenomena.json",
+    "simple-harmonic-motion.json",
+    "wave-behaviour.json",
+    "work-energy-and-power.json"
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "topic": "physical-quantities-and-units",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is a base quantity in the SI, and how many are there?",
+      "back": "A quantity that is not defined in terms of any other quantity. There are seven of them.",
+      "keyPoints": [
+        {
+          "text": "not defined in terms of other quantities",
+          "synonyms": [
+            "independent of other quantities"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "seven",
+          "synonyms": [
+            "7"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "base unit"
+      ],
+      "mcq": {
+        "correct": "A quantity that is not defined in terms of any other quantity. There are seven of them.",
+        "distractors": [
+          "A quantity that is always measured in metres",
+          "A quantity with no unit attached to it",
+          "A quantity that only applies to mechanics"
+        ]
+      },
+      "explanation": "Every other unit in physics is derived from the seven base units, so base quantities are the ones that need no definition in terms of anything else.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Which SI base unit measures amount of substance?",
+      "back": "The mole, mol.",
+      "keyPoints": [
+        {
+          "text": "mole",
+          "mustInclude": true
+        },
+        {
+          "text": "mol",
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "mol"
+      ],
+      "tileAnswer": [
+        "The",
+        "mole,",
+        "mol."
+      ],
+      "mcq": {
+        "correct": "The mole, mol.",
+        "distractors": [
+          "The candela, cd",
+          "The kelvin, K",
+          "The ampere, A"
+        ]
+      },
+      "explanation": "Amount of substance is its own base quantity: one mole contains about 6.02 x 10^23 particles.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "How many micrometres are there in 0.000045 m?",
+      "back": "45",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "45",
+          "synonyms": [
+            "45 um",
+            "45 micrometres"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "45 \u00b5m"
+      ],
+      "mcq": {
+        "correct": "45",
+        "distractors": [
+          "450",
+          "4.5",
+          "0.045"
+        ]
+      },
+      "explanation": "One micrometre is 10^-6 m, so 0.000045 m = 4.5 x 10^-5 m = 45 x 10^-6 m = 45 um.",
+      "numeric": {
+        "value": 45,
+        "tolerance": 0.02,
+        "unit": "um"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "How does a vector differ from a scalar? Give one example of each.",
+      "back": "A scalar has magnitude only, a vector has magnitude and direction. For example distance is a scalar and displacement is a vector.",
+      "keyPoints": [
+        {
+          "text": "scalar has magnitude only",
+          "synonyms": [
+            "size only"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "vector has magnitude and direction",
+          "mustInclude": true
+        },
+        {
+          "text": "one correct example of each",
+          "synonyms": [
+            "distance and displacement",
+            "speed and velocity"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "A scalar has magnitude only, a vector has magnitude and direction. For example distance is a scalar and displacement is a vector.",
+        "distractors": [
+          "A vector has magnitude only and a scalar has direction",
+          "Scalars can be negative but vectors cannot",
+          "Vectors add arithmetically while scalars add by resolution"
+        ]
+      },
+      "explanation": "Direction is what separates the two: 5 m travelled and a displacement of 5 m north are different statements.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Add 4.2 m to 3.56 m and give the answer to the correct precision.",
+      "back": "7.8 m",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "7.8",
+          "synonyms": [
+            "7",
+            ".",
+            "8",
+            " ",
+            "m"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "one decimal place",
+          "synonyms": [
+            "limited by 4.2",
+            "least precise"
+          ]
+        }
+      ],
+      "mcq": {
+        "correct": "7.8 m",
+        "distractors": [
+          "7.76 m",
+          "8 m",
+          "7.80 m"
+        ]
+      },
+      "explanation": "When adding, the answer can be no more precise than the least precise measurement. 4.2 m is given to one decimal place, so the sum is 7.8 m even though the raw total is 7.76 m.",
+      "numeric": {
+        "value": 7.8,
+        "tolerance": 0.02,
+        "unit": "m"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    }
+  ]
+}

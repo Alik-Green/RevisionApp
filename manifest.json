@@ -1,4 +1,13 @@
 {
   "schemaVersion": 1,
-  "packs": []
+  "packs": [
+    {
+      "id": "ocr-a-level-physics-h556",
+      "name": "OCR A Level Physics (H556)",
+      "version": 1,
+      "path": "packs/ocr-a-level-physics-h556",
+      "sha256": "5a5a0473fea83b8f8a46f125055b708243f89e23759a5d06dca58cea6acc56bf",
+      "cardCount": 65
+    }
+  ]
 }

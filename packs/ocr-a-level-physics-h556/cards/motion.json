@@ -1,0 +1,236 @@
+{
+  "topic": "motion",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "What is the difference between distance travelled and displacement?",
+      "back": "Distance is the total path length travelled and is a scalar; displacement is the straight-line change in position from start to finish, with a direction.",
+      "keyPoints": [
+        {
+          "text": "distance is total path length",
+          "synonyms": [
+            "how far travelled"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "displacement is straight line from start to end",
+          "synonyms": [
+            "change in position"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "displacement has direction",
+          "synonyms": [
+            "vector"
+          ]
+        }
+      ],
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "What does the gradient of a displacement-time graph represent?",
+      "back": "The velocity.",
+      "keyPoints": [
+        {
+          "text": "velocity",
+          "synonyms": [
+            "speed and direction"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "speed if only the magnitude is wanted"
+      ],
+      "tileAnswer": [
+        "The",
+        "velocity."
+      ],
+      "mcq": {
+        "correct": "The velocity.",
+        "distractors": [
+          "The acceleration",
+          "The resultant force",
+          "The average speed over the whole journey"
+        ]
+      },
+      "explanation": "Velocity is the rate of change of displacement with time, which is exactly what a gradient measures. A negative gradient means motion back towards the start.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "What does the area under a velocity-time graph represent?",
+      "back": "The displacement.",
+      "keyPoints": [
+        {
+          "text": "displacement",
+          "synonyms": [
+            "change in position"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "distance travelled if the direction never reverses"
+      ],
+      "tileAnswer": [
+        "The",
+        "displacement."
+      ],
+      "mcq": {
+        "correct": "The displacement.",
+        "distractors": [
+          "The acceleration",
+          "The average velocity",
+          "The rate of change of speed"
+        ]
+      },
+      "explanation": "Area is velocity multiplied by time, which is a displacement. The gradient of the same graph would give the acceleration.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Write the suvat equation that links final velocity, initial velocity, acceleration and displacement without using time.",
+      "back": "v^2 = u^2 + 2as",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "v^2 = u^2 + 2as",
+          "synonyms": [
+            "v",
+            " ",
+            "s",
+            "q",
+            "u",
+            "a",
+            "r",
+            "e",
+            "d",
+            " ",
+            "e",
+            "q",
+            "u",
+            "a",
+            "l",
+            "s",
+            " ",
+            "u",
+            " ",
+            "s",
+            "q",
+            "u",
+            "a",
+            "r",
+            "e",
+            "d",
+            " ",
+            "p",
+            "l",
+            "u",
+            "s",
+            " ",
+            "2",
+            " ",
+            "a",
+            " ",
+            "s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "v2 = u2 + 2as"
+      ],
+      "mcq": {
+        "correct": "v^2 = u^2 + 2as",
+        "distractors": [
+          "v = u + at",
+          "s = ut + 1/2 at^2",
+          "v^2 = u^2 - 2as"
+        ]
+      },
+      "explanation": "This is the one suvat equation with no t in it, so it is the shortcut whenever time is neither given nor asked for.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "State the acceleration of free fall near the Earth's surface, with its unit.",
+      "back": "9.81 m/s^2",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "9.81",
+          "synonyms": [
+            "9.8",
+            "9.81 m/s^2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "m/s^2",
+          "synonyms": [
+            "metres per second squared"
+          ]
+        }
+      ],
+      "acceptedAliases": [
+        "g = 9.81 m/s^2",
+        "approximately 10 m/s^2"
+      ],
+      "mcq": {
+        "correct": "9.81 m/s^2",
+        "distractors": [
+          "9.81 m/s",
+          "1.62 m/s^2",
+          "9.81 kg m/s^2"
+        ]
+      },
+      "explanation": "g is an acceleration, so its unit is m/s^2, not m/s. 1.62 m/s^2 is the field strength at the Moon's surface.",
+      "numeric": {
+        "value": 9.81,
+        "tolerance": 0.02,
+        "unit": "m/s^2"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "topic": "simple-harmonic-motion",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "State the defining condition for simple harmonic motion.",
+      "back": "The acceleration is proportional to the displacement from a fixed point and is always directed towards that point, so a = -omega^2 x.",
+      "keyPoints": [
+        {
+          "text": "acceleration proportional to displacement",
+          "mustInclude": true
+        },
+        {
+          "text": "directed towards the equilibrium position",
+          "synonyms": [
+            "opposite in direction to displacement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a = -omega^2 x",
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The minus sign is the whole point: the acceleration always points back towards the centre, which is what produces an oscillation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Where in an oscillation are the speed and the acceleration each greatest?",
+      "back": "Speed is greatest at the equilibrium position, where the acceleration is zero. Acceleration is greatest at the extremes of the motion, where the speed is zero.",
+      "keyPoints": [
+        {
+          "text": "speed greatest at equilibrium",
+          "mustInclude": true
+        },
+        {
+          "text": "acceleration greatest at the extremes",
+          "synonyms": [
+            "at maximum displacement",
+            "at the amplitude"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each is zero where the other is greatest"
+        }
+      ],
+      "explanation": "Acceleration is proportional to displacement, so it peaks at maximum displacement, and energy is all potential there and all kinetic at the centre.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Write the displacement equation for an oscillator that starts at maximum displacement.",
+      "back": "x = A cos(omega t)",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "x = A cos(omega t)",
+          "synonyms": [
+            "A cos 2 pi f t"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "x = A cos(2 pi f t)"
+      ],
+      "mcq": {
+        "correct": "x = A cos(omega t)",
+        "distractors": [
+          "x = A sin(omega t)",
+          "x = A cos(omega / t)",
+          "x = omega A cos(t)"
+        ]
+      },
+      "explanation": "At t = 0 the cosine form gives x = A, the maximum displacement. The sine form would start at the equilibrium position instead.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "State the period of a mass-spring system and of a simple pendulum.",
+      "back": "T = 2 pi sqrt(m/k) for a mass on a spring, and T = 2 pi sqrt(l/g) for a simple pendulum.",
+      "keyPoints": [
+        {
+          "text": "2 pi sqrt(m/k)",
+          "synonyms": [
+            "two pi root m over k"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2 pi sqrt(l/g)",
+          "synonyms": [
+            "two pi root l over g"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Neither period depends on the amplitude, which is why both make usable clocks. The pendulum formula assumes small angles.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.2",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "What is resonance, and what condition produces it?",
+      "back": "A large increase in amplitude when a system is driven by a periodic force whose frequency matches the system's natural frequency.",
+      "keyPoints": [
+        {
+          "text": "amplitude becomes large",
+          "synonyms": [
+            "maximum amplitude"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "driving frequency equals natural frequency",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A large increase in amplitude when a system is driven by a periodic force whose frequency matches the system's natural frequency.",
+        "distractors": [
+          "When the damping force is removed entirely",
+          "When two waves of equal amplitude meet",
+          "When the driving frequency is twice the natural frequency"
+        ]
+      },
+      "explanation": "At the natural frequency energy is transferred to the oscillator most efficiently on every cycle, so the amplitude builds until damping balances the input.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    }
+  ]
+}

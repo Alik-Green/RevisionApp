@@ -1,0 +1,272 @@
+{
+  "topic": "circular-motion",
+  "tagRefs": [],
+  "cards": [
+    {
+      "id": "0001",
+      "front": "In what direction does the centripetal force act, and what effect does it have on the speed?",
+      "back": "Towards the centre of the circle, perpendicular to the velocity, so it changes the direction of motion but not the speed.",
+      "keyPoints": [
+        {
+          "text": "towards the centre",
+          "mustInclude": true
+        },
+        {
+          "text": "perpendicular to the velocity",
+          "synonyms": [
+            "at right angles to motion"
+          ]
+        },
+        {
+          "text": "changes direction not speed",
+          "synonyms": [
+            "no work is done"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Towards the centre of the circle, perpendicular to the velocity, so it changes the direction of motion but not the speed.",
+        "distractors": [
+          "Outwards from the centre, increasing the speed",
+          "Along the direction of travel, keeping the speed constant",
+          "Towards the centre, increasing the speed"
+        ]
+      },
+      "explanation": "A force at right angles to the motion does no work, so the kinetic energy and speed stay constant while the velocity keeps changing direction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0002",
+      "front": "Write the two expressions for centripetal acceleration.",
+      "back": "a = v^2/r and a = omega^2 r",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "v^2/r",
+          "synonyms": [
+            "v",
+            " ",
+            "s",
+            "q",
+            "u",
+            "a",
+            "r",
+            "e",
+            "d",
+            " ",
+            "o",
+            "v",
+            "e",
+            "r",
+            " ",
+            "r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega^2 r",
+          "synonyms": [
+            "o",
+            "m",
+            "e",
+            "g",
+            "a",
+            " ",
+            "s",
+            "q",
+            "u",
+            "a",
+            "r",
+            "e",
+            "d",
+            " ",
+            "r"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "a = v2/r = w2r"
+      ],
+      "mcq": {
+        "correct": "a = v^2/r and a = omega^2 r",
+        "distractors": [
+          "a = v r^2 and a = omega r",
+          "a = v^2 r and a = omega/r",
+          "a = r/v^2 and a = r omega^2"
+        ]
+      },
+      "explanation": "Substituting v = omega r into v^2/r turns one form into the other.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Define angular velocity and give its unit.",
+      "back": "The rate of change of angle, omega = delta theta / delta t, in radians per second.",
+      "keyPoints": [
+        {
+          "text": "rate of change of angle",
+          "mustInclude": true
+        },
+        {
+          "text": "omega = delta theta / delta t",
+          "mustInclude": true
+        },
+        {
+          "text": "radians per second",
+          "synonyms": [
+            "rad/s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "rad s^-1"
+      ],
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "A 900 kg car travels at 20 m/s round a bend of radius 50 m. Calculate the centripetal force needed.",
+      "back": "7200 N",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "7200",
+          "synonyms": [
+            "7200 N",
+            "7.2 kN"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "7200 N",
+        "distractors": [
+          "360 N",
+          "360000 N",
+          "18000 N"
+        ]
+      },
+      "explanation": "F = mv^2/r = 900 x 20^2 / 50 = 7200 N, supplied by friction between the tyres and the road.",
+      "numeric": {
+        "value": 7200,
+        "tolerance": 0.02,
+        "unit": "N"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "State the relationship between linear speed and angular velocity in circular motion.",
+      "back": "v = omega r",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "v = omega r",
+          "synonyms": [
+            "l",
+            "i",
+            "n",
+            "e",
+            "a",
+            "r",
+            " ",
+            "s",
+            "p",
+            "e",
+            "e",
+            "d",
+            " ",
+            "e",
+            "q",
+            "u",
+            "a",
+            "l",
+            "s",
+            " ",
+            "a",
+            "n",
+            "g",
+            "u",
+            "l",
+            "a",
+            "r",
+            " ",
+            "v",
+            "e",
+            "l",
+            "o",
+            "c",
+            "i",
+            "t",
+            "y",
+            " ",
+            "t",
+            "i",
+            "m",
+            "e",
+            "s",
+            " ",
+            "r",
+            "a",
+            "d",
+            "i",
+            "u",
+            "s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "v = wr"
+      ],
+      "mcq": {
+        "correct": "v = omega r",
+        "distractors": [
+          "v = omega / r",
+          "v = r / omega",
+          "v = omega^2 r"
+        ]
+      },
+      "explanation": "One full turn covers 2 pi r in a time T, and omega = 2 pi / T, so v = 2 pi r / T = omega r.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    }
+  ]
+}
