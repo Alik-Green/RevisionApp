@@ -145,6 +145,23 @@ class AppState(
     private val _sessionState = MutableStateFlow<SessionState>(SessionState.Empty)
     val sessionState: StateFlow<SessionState> = _sessionState.asStateFlow()
 
+    /**
+     * Where the user currently is in the topic tree; null is the Library root.
+     *
+     * The Library is an explorer, not a multi-select filter panel: there is always
+     * exactly one location, everything on screen is relative to it, and the topic
+     * half of [filter] is derived from it rather than chosen separately.
+     */
+    private val _location = MutableStateFlow<TopicId?>(null)
+    val location: StateFlow<TopicId?> = _location.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    /** True once the user widens a search from the current location to everywhere. */
+    private val _searchEverywhere = MutableStateFlow(false)
+    val searchEverywhere: StateFlow<Boolean> = _searchEverywhere.asStateFlow()
+
     private val _settingsUi = MutableStateFlow(SettingsUi.initial())
     val settingsUi: StateFlow<SettingsUi> = _settingsUi.asStateFlow()
 
@@ -183,6 +200,9 @@ class AppState(
         scope.launch(Dispatchers.Default) {
             val snapshot = graph.planner.snapshot(graph.clock.now())
             _snapshot.value = snapshot
+            // A sync or an edit can change which descendants the current location
+            // has, so the scope has to be re-derived from the new tree.
+            applyLocationToFilter()
             loadStatsInto(snapshot)
         }
     }
@@ -219,9 +239,41 @@ class AppState(
         }
     }
 
-    /** Narrows the topic selection to exactly one topic, or clears it. */
-    fun focusTopic(topicId: TopicId?) {
-        _filter.value = _filter.value.copy(topicIds = if (topicId == null) emptySet() else setOf(topicId))
+    /** Moves into [topicId], or out to the Library root when it is null. */
+    fun openTopic(topicId: TopicId?) {
+        _location.value = topicId
+        applyLocationToFilter()
+    }
+
+    /** Up one level. From the root this does nothing. */
+    fun navigateUp() {
+        val current = _location.value ?: return
+        openTopic(_snapshot.value.tree.find(current)?.topic?.parentId)
+    }
+
+    /** The breadcrumb path to the current location, root first. */
+    fun locationPath(): List<TopicId> {
+        val location = _location.value ?: return emptyList()
+        return _snapshot.value.tree.breadcrumbs(location).map { it.id }
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    fun setSearchEverywhere(everywhere: Boolean) {
+        _searchEverywhere.value = everywhere
+    }
+
+    /**
+     * Keeps the topic half of the filter in step with the location, including every
+     * descendant, so a session started here studies the whole subtree.
+     */
+    private fun applyLocationToFilter() {
+        val location = _location.value
+        val tree = _snapshot.value.tree
+        val ids = if (location == null) emptySet() else tree.selectedTopicIds(setOf(location))
+        _filter.value = _filter.value.copy(topicIds = ids)
     }
 
     fun toggleTag(tagId: TagId) {

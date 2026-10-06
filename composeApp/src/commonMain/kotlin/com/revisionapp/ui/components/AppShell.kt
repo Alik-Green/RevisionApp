@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -58,9 +59,8 @@ fun AppShell(state: AppState, current: Route, screen: @Composable () -> Unit) {
                         NavigationBarItem(
                             selected = destination == selected,
                             onClick = { state.switchTab(destination.route) },
-                            icon = { Icon(destination.icon, contentDescription = destination.label) },
+                            icon = { DestinationIcon(destination, due) },
                             label = { Text(destination.label) },
-                            badge = dueBadge(destination, due),
                         )
                     }
                 }
@@ -72,9 +72,8 @@ fun AppShell(state: AppState, current: Route, screen: @Composable () -> Unit) {
                         NavigationRailItem(
                             selected = destination == selected,
                             onClick = { state.switchTab(destination.route) },
-                            icon = { Icon(destination.icon, contentDescription = destination.label) },
+                            icon = { DestinationIcon(destination, due) },
                             label = { Text(destination.label) },
-                            badge = dueBadge(destination, due),
                         )
                     }
                 }
@@ -84,16 +83,23 @@ fun AppShell(state: AppState, current: Route, screen: @Composable () -> Unit) {
     }
 }
 
-/** The Study badge, or null so no empty badge is drawn at all. */
+/**
+ * The destination icon, with the due count badged onto Study.
+ *
+ * `NavigationBarItem` and `NavigationRailItem` have no `badge` parameter in this
+ * Material 3 version, so the badge is composed into the icon slot with `BadgedBox`,
+ * which is what the parameter did internally anyway.
+ */
 @Composable
-private fun dueBadge(destination: Destination, due: Int): (@Composable () -> Unit)? =
+private fun DestinationIcon(destination: Destination, due: Int) {
     if (destination == Destination.Study && due > 0) {
-        {
-            Badge { Text(dueLabel(due)) }
+        BadgedBox(badge = { Badge { Text(dueLabel(due)) } }) {
+            Icon(destination.icon, contentDescription = destination.label)
         }
     } else {
-        null
+        Icon(destination.icon, contentDescription = destination.label)
     }
+}
 
 /** A three-digit due count would not fit a badge, and precision stops mattering. */
 private fun dueLabel(due: Int): String = if (due > 99) "99+" else due.toString()
