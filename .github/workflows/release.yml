@@ -64,6 +64,25 @@ jobs:
       - name: Package the Windows installer
         run: ./gradlew.bat :desktopApp:packageExe --stacktrace
 
+      # The app runs on a jlink image containing only the modules the build file
+      # lists, so a missing module is invisible to every other check: the code
+      # compiles, `:desktopApp:run` works on the full JDK, packaging succeeds, and
+      # the installer then dies at startup. v1.0.0 shipped exactly that failure
+      # with java.sql, so assert the bundled runtime carries what the app needs.
+      - name: Verify the bundled runtime has the required modules
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $java = Get-ChildItem -Recurse -Path desktopApp/build/compose -Filter java.exe -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+          if (-not $java) { throw 'no bundled java.exe found under desktopApp/build/compose' }
+          Write-Host "bundled runtime: $($java.FullName)"
+          $available = & $java.FullName --list-modules
+          $required = @('java.base', 'java.desktop', 'java.logging', 'java.sql', 'jdk.crypto.ec')
+          $missing = $required | Where-Object { $name = $_; -not ($available | Where-Object { $_ -eq $name -or $_ -like "$name@*" }) }
+          if ($missing) { throw "bundled runtime is missing: $($missing -join ', ')" }
+          Write-Host "all required modules present: $($required -join ', ')"
+
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v7
         with:

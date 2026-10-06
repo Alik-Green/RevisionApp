@@ -36,12 +36,28 @@ compose.desktop {
             vendor = "RevisionApp"
             copyright = "© 2026 RevisionApp contributors"
 
+            // The packaged app runs on a jlink image built from exactly these
+            // modules. Compose's default set is java.base, java.desktop,
+            // java.logging and jdk.crypto.ec - no java.sql - while SQLDelight's
+            // desktop driver opens its connection through
+            // java.sql.DriverManager. The installer therefore died at startup
+            // with NoClassDefFoundError: java/sql/DriverManager while
+            // :desktopApp:run, which uses the full JDK, worked fine.
+            modules("java.sql")
+
             linux {
                 packageName = "revisionapp"
             }
             windows {
                 packageName = "RevisionApp"
                 upgradeUuid = "6f1c1e3a-9d2b-4b7a-8f31-2c0d5a4e7b91"
+                // Both of these default to false, which produced an installer
+                // that created no Start Menu entry and no desktop shortcut: the
+                // app was invisible to Windows Search and could only be launched
+                // by digging out the executable in its install folder.
+                menu = true
+                menuGroup = "RevisionApp"
+                shortcut = true
             }
         }
     }
