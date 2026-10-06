@@ -277,13 +277,215 @@ target is still fully compiled (`:androidApp:assembleDebug`), which catches any
 
 ---
 
-## D19. The `content` branch is created with git plumbing from this working branch
+## D19. The `content` branch is built in a linked worktree, never by switching this checkout
 
-**Decision.** The orphan `content` branch is built with `git hash-object` /
-`git mktree` / `git commit-tree` and pushed as `refs/heads/content`. The working
-checkout never leaves `arena/ecfda5a7-revisionapp`.
+**Decision.** `git worktree add --detach /tmp/content-wt HEAD`, then
+`git checkout --orphan content` inside that worktree and `git rm -rf .` to empty
+it. Content is committed there and pushed with
+`git push origin content:refs/heads/content`. The main checkout stays on
+`arena/ecfda5a7-revisionapp` for the whole project.
 
 **Why.** The session is pinned to one working branch, but the brief requires a
-separate orphan branch that contains *only* content. Plumbing commands produce
-exactly that — a rootless commit whose tree has no app code — without switching
-or creating a second working checkout.
+separate orphan branch holding *only* content. A linked worktree gives a real
+branch to commit and validate against — `tools/validate` needs files on disk, and
+the pack hashes need rewriting between commits — without ever moving this
+checkout off its branch. Git plumbing (`hash-object` / `mktree` / `commit-tree`)
+was the first idea and would work, but it cannot run the validator, and a content
+branch whose hashes are computed by hand is a branch whose hashes are wrong.
+
+**What it costs.** The worktree lives in `/tmp`, which is not part of the
+persisted workspace, so the branch has to be pushed after every pack. That is the
+right discipline anyway: the remote is the durable copy, and the content branch
+was rebuilt from it without loss after the sandbox was re-provisioned mid-project.
+
+---
+
+## D20. No experimental Material 3 or Layout APIs, and no icon set
+
+**Decision.** The UI is built from stable primitives only. No `Scaffold`,
+`TopAppBar`, `NavigationBar`, `FilterChip`/`AssistChip` or `FlowRow`; no
+`material-icons-extended` dependency. Headers, the tab bar, filter chips and
+wrapping rows are hand-rolled from `Row`, `Column`, `Box`, `Text`, `background`,
+`border` and `clickable`, and buttons carry words instead of icons.
+
+**Why.** Every one of those APIs is behind `ExperimentalMaterial3Api` or
+`ExperimentalLayoutApi`, and an opt-in annotation is a promise that the signature
+can change underneath you. This project has no local compiler — see D1 — so the
+only way to find out is a CI round trip that costs several minutes. Two hand-rolled
+widgets cost about sixty lines and remove the whole class of failure. The icon set
+is a separate dependency with no runtime benefit here, and it is large.
+
+**What it costs.** `ui/components/Widgets.kt` exists, and wrapping is done by
+chunking a list into rows of three or four instead of letting `FlowRow` measure.
+Chunking is fixed-width, so a very long tag name can overflow its row where a real
+`FlowRow` would move it to the next line.
+
+---
+
+## D21. `kotlin.time.Clock` and `kotlin.time.Instant`, not the kotlinx-datetime aliases
+
+**Decision.** Clocks and instants are imported from `kotlin.time`.
+`TimeZone`, `toLocalDateTime` and `atStartOfDayIn` stay in `kotlinx.datetime`.
+
+**Why.** kotlinx-datetime 0.7.0 moved `Clock` and `Instant` into the standard
+library and kept the old names as deprecated type aliases. A type alias cannot
+qualify a nested classifier, so `kotlinx.datetime.Clock.System` does not compile
+at all — `System` is a nested object of the real `kotlin.time.Clock`. Companion
+*members* such as `Instant.fromEpochMilliseconds` do resolve through an alias,
+which is why only the three `Clock.System` references failed and the rest of the
+codebase compiled untouched. Using the stdlib types removes the deprecation
+warnings as well.
+
+**What it costs.** Two import conventions in one codebase, which reads oddly
+until you know the history. A one-line comment in each affected file explains it.
+
+---
+
+## D22. Multiple-choice options are de-duplicated by what the student reads
+
+**Decision.** `McqQuestionFactory` decides whether two options are duplicates
+from a display key — `toPlainText`, lowercased, whitespace collapsed, nothing
+else — rather than from `TextNormaliser.normalise`. This matches what
+`Mcq.isUsable` in the domain model already did.
+
+**Why.** `normalise` is built for grading and is deliberately lossy: it drops
+apostrophes and, before this change, signs. Written against real Further Maths
+content, that collapsed `f(a)` with `f'(a)` and `= -a` with `= a`. With fewer
+than four distinct options the factory returns null and the card silently drops
+out of multiple-choice mode — correct behaviour for a genuinely thin option set,
+catastrophic for one a student can plainly read as four different answers. Two
+options are duplicates when they *look* the same, and `\frac{1}{2}` and `(1)/(2)`
+still count as one because the display key applies the same LaTeX flattening the
+UI renders.
+
+**What it costs.** Two options that differ only in LaTeX spelling that
+`toPlainText` happens not to unify, such as `x^{2}` and `x^2`, are now offered
+side by side instead of being collapsed.
+
+---
+
+## D23. `normalise` keeps minus signs and primes
+
+**Decision.** In `TextNormaliser.normalise` a hyphen survives whenever it is a
+sign rather than a word joiner, and an apostrophe survives whenever the next
+character is not a letter.
+
+**Why.** The old rule kept a hyphen only in front of a digit, so `= -a` and
+`= a` normalised identically and a signed answer could be graded correct against
+an unsigned model answer. The old rule dropped every apostrophe so that
+contractions kept their negation — `doesn't` must stay `doesnt` for the negation
+guard — but that also turned `f'(a)` into `f a`, which is `f(a)`. Both rules now
+turn on what follows and what precedes: between two letters a hyphen joins words
+(`well-known`, `centre-seeking`), anywhere else in front of a term it is a sign;
+an apostrophe followed by a letter is a contraction, otherwise it is a prime.
+
+**What it costs.** `3-phase` now keeps its hyphen where it previously split. No
+existing assertion changed, and the three hyphen tests in
+`TextNormalisingTest` (`well-known`, `-4.5`, `5-3`) were ported to Python and
+re-checked against the new rule before it was committed.
+
+---
+
+## D24. Overriding a verdict is not weighted by study mode
+
+**Decision.** `ModeGrading.ratingForOverride` returns EASY when the user says
+"I was right" and AGAIN when they say "I was wrong", in every mode.
+
+**Why.** Everywhere else a harder mode earns a bigger interval, and that is right:
+the app has watched you produce the answer. An override is the one case where it
+has not. The user is disputing a grade the app cannot re-check, so weighting the
+dispute by the mode it happened in would punish them for the checker's mistake in
+a mode it chose itself. EASY is also what a correct typed answer earns, which is
+the documented intent the unit test asserted and the implementation did not
+deliver.
+
+**What it costs.** A user can inflate their own intervals by overriding
+generously. That is unavoidable in any self-grading system, and the alternative —
+capping an override at the mode's own weight — only punishes the cases where the
+checker was genuinely wrong.
+
+---
+
+## D25. Seed content is original, and every pack declares `structureVerified: false`
+
+**Decision.** All 201 cards across the four seed packs are written from scratch.
+Each pack sets `"structureVerified": false` and ships a README listing what to
+check against the published specification.
+
+**Why.** The brief forbids reproducing past-paper, mark-scheme, textbook or
+specification text, and it asks for accuracy over coverage: anything uncertain is
+left out. No awarding-body website was reachable from this sandbox — only
+`github.com`, `api.github.com`, `codeload.github.com`, `pypi.org` and
+`registry.npmjs.org` are — so the topic hierarchies, the section numbers and the
+depth of treatment all come from memory. Declaring that in the data, rather than
+quietly presenting it as verified, is the honest option, and the validator
+*requires* a README whenever the flag is false so the caveat cannot be lost.
+
+**What it costs.** The packs need a review pass against the real specifications
+before anyone relies on them for exam preparation. Every card also carries
+`reviewStatus: AI_UNREVIEWED`, which the app surfaces, so nothing here presents
+itself as checked.
+
+---
+
+## D26. Packs are generated from a Python authoring script that is not committed
+
+**Decision.** Card data is written as terse Python — a `card(...)` helper with
+keyword arguments — and a generator emits the JSON, assigns the four-digit
+ordinals, writes the pack README, updates `manifest.json` and runs the validator.
+Neither the generator nor the data files are committed to the `content` branch.
+
+**Why.** JSON written by hand for 201 cards is where typos live, and a typo in a
+hash or an ordinal is invisible until a client rejects the pack. The generator
+makes the ordinals, the manifest entry, the hash and the card count impossible to
+get wrong, and it keeps the authored form small enough to review. Neither script
+is content, so neither belongs on a branch that promises to contain nothing but
+content; the committed artefacts are the JSON files and `tools/validate`, which
+checks them independently of how they were made.
+
+**What it costs.** Editing a card means editing a script that is not in the
+repository, or editing the JSON and re-running `--update-hashes`. The validator
+makes the second path safe, which is why it is strict about the manifest.
+
+---
+
+## D27. Release assets are collected with `find`, not with shell globs
+
+**Decision.** `.github/workflows/release.yml` runs `:desktopApp:packageExe` on
+`windows-latest` and `:androidApp:assembleDebug` on `ubuntu-latest`, uploads both
+as artifacts, and a third job publishes them. The publish step builds its asset
+list with `find ... -name '*.exe' -o -name '*.msi' -o -name '*.apk'`.
+
+**Why.** `packageExe` is what the brief asks for, and the `windows-latest` image
+ships WiX Toolset 3.14, which is what `jpackage` needs to produce an installer;
+the workflow puts WiX on `PATH` and falls back to installing it through
+Chocolatey. Collecting assets with `find` rather than a glob matters because an
+unmatched shell glob is passed to `gh` as a literal path and fails the step — the
+workflow uploads an `.msi` pattern it does not currently build, and a glob would
+have turned that into a broken release instead of a no-op.
+
+**What it costs.** No `.msi` is published until `packageMsi` is added to the
+Windows job. The Android asset is a debug APK, which is what the brief asks for
+and what CI can build without a signing key.
+
+---
+
+## D28. CI reports failures as commit comments
+
+**Decision.** `.github/report-failure.sh` posts the compiler diagnostics, the
+failing test details from the JUnit XML, and the ktlint report as a comment on
+the failing commit. `ci.yml` also runs every check even after one fails.
+
+**Why.** This sandbox reaches `api.github.com` but not
+`results-receiver.actions.githubusercontent.com` or the Azure blob host behind
+artifacts, so neither `gh run view --log` nor `gh run download` works here.
+Commit comments travel over `api.github.com`, which does, so they are the only
+channel that carries a failure back to the machine that has to fix it. Batching
+the checks matters for the same reason: with no local compiler, a round trip costs
+several minutes, so one push should report compilation, tests and lint together
+rather than revealing them one at a time.
+
+**What it costs.** A comment on every failing commit, which is noise for anyone
+watching the repository, and a reporter script that has to be maintained
+alongside the workflow. The ktlint section strips ANSI colours and drops
+generated sources because the comment body is capped.

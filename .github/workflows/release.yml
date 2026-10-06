@@ -160,18 +160,16 @@ jobs:
           - \`RevisionApp-android-debug.apk\` - Android debug build
 
           See \`SHA256SUMS.txt\` for checksums."
+          # Collected with find rather than shell globs: an unmatched glob would
+          # pass a literal "*.msi" to gh and fail the step, and only the .exe is
+          # built today. Whatever packaging produced is what gets published.
+          mapfile -t ASSETS < <(find dist -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.apk' \) | sort)
+          ASSETS+=("dist/SHA256SUMS.txt")
+          printf 'publishing %s asset(s)\n' "${#ASSETS[@]}"
           gh release create "$TAG" \
             --title "RevisionApp $TAG" \
             --notes "$NOTES" \
             --target "$GITHUB_SHA" \
-            dist/windows-exe/*.exe \
-            dist/windows-exe/*.msi \
-            dist/android-apk/*.apk \
-            dist/SHA256SUMS.txt \
+            "${ASSETS[@]}" \
             2>/dev/null || \
-          gh release upload "$TAG" \
-            dist/windows-exe/*.exe \
-            dist/windows-exe/*.msi \
-            dist/android-apk/*.apk \
-            dist/SHA256SUMS.txt \
-            --clobber
+          gh release upload "$TAG" "${ASSETS[@]}" --clobber
