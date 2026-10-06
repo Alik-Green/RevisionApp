@@ -538,3 +538,46 @@ is no display to reload into.
 
 **What it costs.** Nothing in CI or in a release. A developer with a display who
 wants it adds the plugin to `desktopApp` themselves.
+
+---
+
+## D31. The packaged runtime's module list has to be declared, and asserted in CI
+
+**Decision.** `desktopApp` adds `modules("java.sql")` to `nativeDistributions`,
+and the release workflow fails if the packaged runtime is missing any module the
+app needs — asserted against the `legal/<module>` directories jlink writes, not
+by running the bundled launcher.
+
+**Why.** A packaged Compose Desktop app does not run on the machine's JDK. It
+runs on a jlink image built from an explicit module list whose default is
+`java.base`, `java.desktop`, `java.logging` and `jdk.crypto.ec`. `java.sql` is
+not in it, and SQLDelight's desktop driver opens its connection through
+`java.sql.DriverManager` in the first thing this app does — so v1.0.0 installed
+cleanly and then died with `NoClassDefFoundError: java/sql/DriverManager`
+followed by "Failed to launch JVM", before a window ever appeared.
+
+Nothing in the pipeline could see it. The code compiles, `:desktopApp:build`
+passes, ktlint passes, and `:desktopApp:run` works because Gradle runs it on the
+full JDK. `packageExe` also succeeds, because jlink happily builds a runtime that
+cannot run the app. This is a defect class that only a launched installer
+reveals, which is why D29's "the UI has never been executed" was not the only
+thing that had never been executed: the *packaged* app had never been executed
+either.
+
+The first attempt at a guard ran the bundled `java.exe --list-modules`. That was
+the wrong thing to depend on — it could not locate the launcher under
+`build/compose`, threw before computing anything, and printed `MISSING: (none)`
+from an uninitialised variable, so a failed check read like a passing one.
+`legal/<module>` is what jlink actually writes for every module it links, so it
+is the authoritative record and needs no executable to be found or run.
+
+Windows shortcuts are declared for the same reason: `WindowsPlatformSettings`
+defaults both `menu` and `shortcut` to false, so v1.0.0 created no Start Menu
+entry and no desktop shortcut, which made the app invisible to Windows Search and
+unpinnable. Both are now on under a `RevisionApp` menu group.
+
+**What it costs.** A larger installer, by roughly the size of `java.sql` and the
+`java.transaction.xa` it pulls in transitively. Any new dependency that reaches
+for a JDK module outside the defaults needs a matching `modules(...)` entry and
+an addition to the release check — which is the point of failing the build rather
+than shipping.
