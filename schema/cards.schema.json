@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Alik-Green/RevisionApp/content/schema/cards.schema.json",
+  "title": "RevisionApp card file",
+  "description": "Every card belonging to one topic. The file must be named <topic-slug>.json and its topic field must match that slug.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["topic", "cards"],
+  "properties": {
+    "topic": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "tagRefs": {
+      "description": "Tag slugs applied to every card in this file, on top of the pack defaults.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/card" }
+    }
+  },
+  "$defs": {
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "front", "back"],
+      "properties": {
+        "id": {
+          "description": "Four-digit ordinal within the topic, e.g. 0012. The app builds builtin:<pack>:<topic>:0012.",
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "front": { "type": "string", "minLength": 1 },
+        "back": { "type": "string", "minLength": 1 },
+        "answerType": {
+          "enum": ["TEXT", "NUMERIC", "EXPRESSION", "SELF_GRADE"],
+          "default": "TEXT"
+        },
+        "keyPoints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/keyPoint" }
+        },
+        "acceptedAliases": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "tileAnswer": {
+          "description": "Optional authored chunks for word-tile mode. Joined with spaces they must reconstruct back exactly.",
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "mcq": { "$ref": "#/$defs/mcq" },
+        "explanation": { "type": "string" },
+        "numeric": { "$ref": "#/$defs/numeric" },
+        "reviewStatus": {
+          "enum": ["AI_UNREVIEWED", "REVIEWED"],
+          "default": "AI_UNREVIEWED"
+        },
+        "specRef": { "type": "string" },
+        "tagRefs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "keyPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "synonyms": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "mustInclude": { "type": "boolean", "default": false },
+        "weight": { "type": "number", "exclusiveMinimum": 0, "default": 1.0 }
+      }
+    },
+    "mcq": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["correct", "distractors"],
+      "properties": {
+        "correct": { "type": "string", "minLength": 1 },
+        "distractors": {
+          "description": "Exactly three plausible but clearly wrong options.",
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "numeric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": ["number", "null"] },
+        "tolerance": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "unit": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

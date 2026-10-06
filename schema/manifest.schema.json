@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Alik-Green/RevisionApp/content/schema/manifest.schema.json",
+  "title": "RevisionApp content manifest",
+  "description": "The index the app downloads first. One entry per content pack.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "packs"],
+  "properties": {
+    "schemaVersion": {
+      "description": "Wire format version. The app refuses anything newer than it understands.",
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "description": "Optional, informational only. Never hashed.",
+      "type": "string"
+    },
+    "packs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/packSummary" }
+    }
+  },
+  "$defs": {
+    "packSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "path", "sha256", "cardCount"],
+      "properties": {
+        "id": {
+          "description": "Pack id. Becomes the builtin:<pack-id>:... id namespace in the app.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "version": {
+          "description": "Bumped whenever the pack changes; the app diffs this before downloading.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "path": {
+          "description": "Directory holding pack.json and cards/, relative to the branch root.",
+          "type": "string",
+          "pattern": "^packs/[a-z0-9][a-z0-9-]*$"
+        },
+        "sha256": {
+          "description": "Hex SHA-256 of pack.json followed by every card file, each terminated by a newline, in sorted filename order.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cardCount": {
+          "description": "Total cards across every card file; the app rejects a pack that delivers a different number.",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

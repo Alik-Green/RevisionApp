@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Alik-Green/RevisionApp/content/schema/pack.schema.json",
+  "title": "RevisionApp content pack",
+  "description": "The topic tree, the tags and the list of card files one pack owns.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["packId", "name", "version", "topics", "tags", "cardFiles"],
+  "properties": {
+    "packId": {
+      "description": "Must equal the id this pack is listed under in manifest.json.",
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "description": { "type": "string" },
+    "structureVerified": {
+      "description": "False when the topic hierarchy was built from memory rather than from the published specification. The pack README must then list what needs checking.",
+      "type": "boolean",
+      "default": true
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/topic" }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tag" }
+    },
+    "cardFiles": {
+      "description": "Bare file names inside cards/. raw.githubusercontent.com cannot list a directory, so the pack has to declare them.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*\\.json$" }
+    }
+  },
+  "$defs": {
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "name"],
+      "properties": {
+        "slug": {
+          "description": "Unique within the pack. Used to build builtin:<pack-id>:<slug> and to name the card file.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "parent": {
+          "description": "Slug of the parent topic, or null/absent for a root. Nesting is unlimited.",
+          "type": ["string", "null"],
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "sortOrder": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "group", "name"],
+      "properties": {
+        "slug": {
+          "description": "Unique across every group in the pack, because card files reference tags by slug alone.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "group": {
+          "description": "Tags in the same group are OR-ed together; different groups are AND-ed.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

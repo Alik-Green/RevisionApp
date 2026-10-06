@@ -1,0 +1,489 @@
+#!/usr/bin/env python3
+"""Validate the RevisionApp `content` branch.
+
+Checks structure against schema/*.json, then the invariants the app depends on:
+unique ids, resolvable topic and tag references, well-formed multiple choice,
+tile answers that reconstruct the model answer, and manifest hashes that match
+the files on disk. Exits non-zero if anything is an error.
+
+    tools/validate                  # check everything
+    tools/validate --pack tmua      # check one pack
+    tools/validate --update-hashes  # rewrite sha256 and cardCount in manifest.json
+    tools/validate --strict         # treat warnings as errors
+
+The hash is defined in composeApp/.../crypto/PackHasher.kt: pack.json followed by
+every card file, in sorted filename order, each terminated by a single newline.
+Files are read as raw bytes so what is hashed is exactly what the CDN serves.
+"""
+
+import argparse
+import hashlib
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST_PATH = ROOT / "manifest.json"
+PACKS_DIRECTORY = ROOT / "packs"
+SCHEMA_DIRECTORY = ROOT / "schema"
+SCHEMA_VERSION = 1
+MIN_CARDS_PER_LEAF = 5
+MAX_TILE_TOKENS = 12
+MCQ_DISTRACTORS = 3
+
+SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+ORDINAL = re.compile(r"^[0-9]{4}$")
+
+
+# ------------------------------------------------------------------- reporting
+
+
+class Report:
+    def __init__(self):
+        self.errors = []
+        self.warnings = []
+
+    def error(self, where, message):
+        self.errors.append("{}: {}".format(where, message))
+
+    def warn(self, where, message):
+        self.warnings.append("{}: {}".format(where, message))
+
+
+def load_json(path, report):
+    try:
+        return json.loads(read_text(path))
+    except FileNotFoundError:
+        report.error(str(relative(path)), "file is missing")
+    except json.JSONDecodeError as failure:
+        report.error(str(relative(path)), "invalid JSON: {}".format(failure))
+    return None
+
+
+def read_text(path):
+    """Raw bytes decoded as UTF-8, so hashing sees exactly what is served."""
+    return path.read_bytes().decode("utf-8")
+
+
+def relative(path):
+    try:
+        return path.relative_to(ROOT)
+    except ValueError:
+        return path
+
+
+# Mirrors TextNormaliser.normalise in the app: letters and digits survive, so do
+# the operators that carry meaning, everything else becomes a space. Stripping
+# operators here would make "v^2 = u^2 + 2as" and "v^2 = u^2 - 2as" look like the
+# same multiple-choice option.
+OPERATORS = "+*/^=<>%_"
+
+
+def normalise(text):
+    out = []
+    source = text.strip().lower()
+    for index, character in enumerate(source):
+        following = source[index + 1] if index + 1 < len(source) else ""
+        previous = out[-1] if out else ""
+        if character.isalnum():
+            out.append(character)
+        elif character == "'":
+            continue
+        elif character == "-":
+            numeric = following.isdigit() and (
+                not previous or previous in " ^_" or previous.isdigit()
+            )
+            out.append("-" if numeric else " ")
+        elif character == ".":
+            out.append("." if following.isdigit() and previous.isdigit() else " ")
+        elif character in OPERATORS:
+            out.append(character)
+        else:
+            out.append(" ")
+    return re.sub(r"\s+", " ", "".join(out)).strip()
+
+
+def word_count(text):
+    return len(re.sub(r"[^\w\s]", " ", text.lower(), flags=re.UNICODE).split())
+
+
+def pack_hash(pack_text, card_texts):
+    payload = pack_text + "\n"
+    for name in sorted(card_texts):
+        payload += card_texts[name] + "\n"
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+# ------------------------------------------------------------------- schemas
+
+
+def load_schemas(report):
+    try:
+        import jsonschema  # noqa: F401
+    except ImportError:
+        report.warn("schema", "jsonschema is not installed, skipping JSON Schema validation")
+        return None
+    schemas = {}
+    for name in ("manifest", "pack", "cards"):
+        path = SCHEMA_DIRECTORY / "{}.schema.json".format(name)
+        document = load_json(path, report)
+        if document is not None:
+            schemas[name] = document
+    return schemas if schemas else None
+
+
+def check_schema(schemas, name, document, where, report):
+    if schemas is None or name not in schemas:
+        return
+    import jsonschema
+
+    validator = jsonschema.Draft202012Validator(schemas[name])
+    for problem in sorted(validator.iter_errors(document), key=lambda item: list(item.path)):
+        location = "/".join(str(part) for part in problem.path) or "<root>"
+        report.error("{} [{}]".format(where, location), problem.message)
+
+
+# ------------------------------------------------------------------- manifest
+
+
+def check_manifest(report, schemas, only_pack):
+    manifest = load_json(MANIFEST_PATH, report)
+    if manifest is None:
+        return []
+    check_schema(schemas, "manifest", manifest, "manifest.json", report)
+    if manifest.get("schemaVersion") != SCHEMA_VERSION:
+        report.error(
+            "manifest.json",
+            "schemaVersion is {}, expected {}".format(manifest.get("schemaVersion"), SCHEMA_VERSION),
+        )
+    packs = manifest.get("packs") or []
+    seen = set()
+    for entry in packs:
+        pack_id = entry.get("id", "<missing id>")
+        if pack_id in seen:
+            report.error("manifest.json", "pack '{}' is listed twice".format(pack_id))
+        seen.add(pack_id)
+    if only_pack:
+        packs = [entry for entry in packs if entry.get("id") == only_pack]
+        if not packs:
+            report.error("manifest.json", "no pack called '{}'".format(only_pack))
+    return packs
+
+
+# ---------------------------------------------------------------------- packs
+
+
+def check_pack(entry, report, schemas):
+    pack_id = entry.get("id", "<missing id>")
+    where = "packs/{}".format(pack_id)
+    directory = ROOT / entry.get("path", "packs/{}".format(pack_id))
+    pack_file = directory / "pack.json"
+    pack_text = None
+    pack = None
+    if pack_file.is_file():
+        pack_text = read_text(pack_file)
+        pack = load_json(pack_file, report)
+    else:
+        report.error("{}/pack.json".format(where), "file is missing")
+        return
+    if pack is None:
+        return
+
+    check_schema(schemas, "pack", pack, "{}/pack.json".format(where), report)
+    if pack.get("packId") != pack_id:
+        report.error(
+            "{}/pack.json".format(where),
+            "packId is '{}' but the manifest says '{}'".format(pack.get("packId"), pack_id),
+        )
+    for field in ("name", "version"):
+        if pack.get(field) != entry.get(field):
+            report.error(
+                "{}/pack.json".format(where),
+                "{} is {!r} but the manifest says {!r}".format(field, pack.get(field), entry.get(field)),
+            )
+    if entry.get("path") != "packs/{}".format(pack_id):
+        report.error("manifest.json", "pack '{}' path should be packs/{}".format(pack_id, pack_id))
+    if pack.get("structureVerified") is False:
+        readme = directory / "README.md"
+        if not readme.is_file():
+            report.error(where, "structureVerified is false but there is no README.md listing what to check")
+
+    topics = pack.get("topics") or []
+    tags = pack.get("tags") or []
+    card_files = pack.get("cardFiles") or []
+
+    topic_slugs = check_topics(topics, where, report)
+    tag_slugs = check_tags(tags, where, report)
+    cards_directory = directory / "cards"
+
+    if len(card_files) != len(set(card_files)):
+        report.error("{}/pack.json".format(where), "cardFiles lists the same file twice")
+
+    on_disk = sorted(path.name for path in cards_directory.glob("*.json")) if cards_directory.is_dir() else []
+    for orphan in set(on_disk) - set(card_files):
+        report.error(
+            "{}/cards/{}".format(where, orphan),
+            "exists on disk but is not listed in cardFiles, so the app would never download it",
+        )
+
+    card_texts = {}
+    total_cards = 0
+    cards_per_topic = {}
+    seen_ids = set()
+    for name in card_files:
+        path = cards_directory / name
+        if not path.is_file():
+            report.error("{}/cards/{}".format(where, name), "listed in cardFiles but missing")
+            continue
+        card_texts[name] = read_text(path)
+        document = load_json(path, report)
+        if document is None:
+            continue
+        check_schema(schemas, "cards", document, "{}/cards/{}".format(where, name), report)
+
+        expected_topic = name[: -len(".json")]
+        topic = document.get("topic")
+        if topic != expected_topic:
+            report.error(
+                "{}/cards/{}".format(where, name),
+                "topic is '{}' but the file name implies '{}'".format(topic, expected_topic),
+            )
+        if topic not in topic_slugs:
+            report.error("{}/cards/{}".format(where, name), "topic '{}' is not declared in pack.json".format(topic))
+
+        file_tags = document.get("tagRefs") or []
+        for slug in file_tags:
+            if slug not in tag_slugs:
+                report.error("{}/cards/{}".format(where, name), "tagRefs names unknown tag '{}'".format(slug))
+
+        cards = document.get("cards") or []
+        total_cards += len(cards)
+        cards_per_topic[topic] = cards_per_topic.get(topic, 0) + len(cards)
+        for position, card in enumerate(cards):
+            card_where = "{}/cards/{}#{}".format(where, name, card.get("id", position))
+            check_card(card, card_where, topic, tag_slugs, seen_ids, report)
+        if len(cards) < MIN_CARDS_PER_LEAF and topic in topic_slugs and not has_children(topic, topics):
+            report.error(
+                "{}/cards/{}".format(where, name),
+                "leaf topic '{}' has {} cards, at least {} are required".format(
+                    topic, len(cards), MIN_CARDS_PER_LEAF
+                ),
+            )
+
+    for slug in topic_slugs:
+        if not has_children(slug, topics) and slug not in cards_per_topic:
+            report.error(where, "leaf topic '{}' is declared but has no card file".format(slug))
+
+    actual_hash = pack_hash(pack_text, card_texts)
+    if entry.get("sha256") != actual_hash:
+        report.error(
+            "manifest.json",
+            "pack '{}' sha256 is {} but the files hash to {} (run tools/validate --update-hashes)".format(
+                pack_id, entry.get("sha256"), actual_hash
+            ),
+        )
+    if entry.get("cardCount") != total_cards:
+        report.error(
+            "manifest.json",
+            "pack '{}' cardCount is {} but {} cards were found".format(
+                pack_id, entry.get("cardCount"), total_cards
+            ),
+        )
+    print(
+        "  {:<34} {:>3} topics  {:>4} cards  sha256 {}".format(
+            pack_id, len(topic_slugs), total_cards, actual_hash[:12]
+        )
+    )
+
+
+def has_children(slug, topics):
+    return any(topic.get("parent") == slug for topic in topics)
+
+
+def check_topics(topics, where, report):
+    slugs = set()
+    for topic in topics:
+        slug = topic.get("slug")
+        if not slug or not SLUG.match(slug):
+            report.error("{}/pack.json".format(where), "topic slug {!r} is not a valid slug".format(slug))
+            continue
+        if slug in slugs:
+            report.error("{}/pack.json".format(where), "topic slug '{}' is declared twice".format(slug))
+        slugs.add(slug)
+        if not topic.get("name"):
+            report.error("{}/pack.json".format(where), "topic '{}' has no name".format(slug))
+    for topic in topics:
+        parent = topic.get("parent")
+        slug = topic.get("slug")
+        if parent is None:
+            continue
+        if parent == slug:
+            report.error("{}/pack.json".format(where), "topic '{}' is its own parent".format(slug))
+        elif parent not in slugs:
+            report.error("{}/pack.json".format(where), "topic '{}' has unknown parent '{}'".format(slug, parent))
+    # A cycle would make the app's tree builder drop nodes, so refuse it here.
+    parent_of = {topic.get("slug"): topic.get("parent") for topic in topics}
+    for slug in parent_of:
+        walked = set()
+        current = slug
+        while current is not None:
+            if current in walked:
+                report.error("{}/pack.json".format(where), "topic '{}' is part of a parent cycle".format(slug))
+                break
+            walked.add(current)
+            current = parent_of.get(current)
+    return slugs
+
+
+def check_tags(tags, where, report):
+    slugs = set()
+    for tag in tags:
+        slug = tag.get("slug")
+        if not slug or not SLUG.match(slug):
+            report.error("{}/pack.json".format(where), "tag slug {!r} is not a valid slug".format(slug))
+            continue
+        if slug in slugs:
+            report.error(
+                "{}/pack.json".format(where),
+                "tag slug '{}' is declared twice; slugs must be unique across groups".format(slug),
+            )
+        slugs.add(slug)
+        if not tag.get("group") or not SLUG.match(tag.get("group", "")):
+            report.error("{}/pack.json".format(where), "tag '{}' has an invalid group".format(slug))
+        if not tag.get("name"):
+            report.error("{}/pack.json".format(where), "tag '{}' has no name".format(slug))
+    return slugs
+
+
+def check_card(card, where, topic, tag_slugs, seen_ids, report):
+    ordinal = card.get("id")
+    if not ordinal or not ORDINAL.match(str(ordinal)):
+        report.error(where, "id {!r} must be a four-digit ordinal such as 0012".format(ordinal))
+    key = (topic, ordinal)
+    if key in seen_ids:
+        report.error(where, "ordinal '{}' is used twice in topic '{}'".format(ordinal, topic))
+    seen_ids.add(key)
+
+    front = card.get("front") or ""
+    back = card.get("back") or ""
+    if not front.strip():
+        report.error(where, "front is empty")
+    if not back.strip():
+        report.error(where, "back is empty")
+
+    for slug in card.get("tagRefs") or []:
+        if slug not in tag_slugs:
+            report.error(where, "tagRefs names unknown tag '{}'".format(slug))
+
+    answer_type = card.get("answerType", "TEXT")
+    key_points = card.get("keyPoints") or []
+    for position, point in enumerate(key_points):
+        if not (point.get("text") or "").strip():
+            report.error(where, "keyPoints[{}] has no text".format(position))
+    if answer_type == "TEXT" and not key_points:
+        report.warn(where, "TEXT card has no key points, so grading falls back to similarity")
+
+    mcq = card.get("mcq")
+    if mcq is not None:
+        options = [mcq.get("correct") or ""] + list(mcq.get("distractors") or [])
+        if len(options) != MCQ_DISTRACTORS + 1:
+            report.error(where, "mcq needs one correct answer and exactly {} distractors".format(MCQ_DISTRACTORS))
+        if any(not option.strip() for option in options):
+            report.error(where, "mcq has a blank option")
+        normalised = [normalise(option) for option in options]
+        if len(set(normalised)) != len(options):
+            report.error(where, "mcq options are not distinct: {}".format(options))
+        if not card.get("explanation"):
+            report.warn(where, "mcq card has no explanation")
+
+    tiles = card.get("tileAnswer")
+    if tiles:
+        if normalise(" ".join(tiles)) != normalise(back):
+            report.error(
+                where,
+                "tileAnswer does not reconstruct the model answer: {} vs {}".format(
+                    " ".join(tiles), back
+                ),
+            )
+        if word_count(back) > MAX_TILE_TOKENS:
+            report.warn(
+                where,
+                "model answer is {} tokens, so the app will skip tile mode for this card".format(
+                    word_count(back)
+                ),
+            )
+
+    numeric = card.get("numeric") or {}
+    if answer_type == "NUMERIC":
+        if numeric.get("value") is None and not re.search(r"-?\d", back):
+            report.error(where, "NUMERIC card has no numeric.value and no number in the model answer")
+
+    if card.get("reviewStatus", "AI_UNREVIEWED") == "REVIEWED":
+        report.warn(where, "card is marked REVIEWED; seed content should stay AI_UNREVIEWED")
+
+
+# ------------------------------------------------------------------ updating
+
+
+def update_hashes(packs):
+    manifest = json.loads(read_text(MANIFEST_PATH))
+    changed = 0
+    for entry in manifest.get("packs") or []:
+        directory = ROOT / entry.get("path", "packs/{}".format(entry.get("id")))
+        pack_file = directory / "pack.json"
+        if not pack_file.is_file():
+            continue
+        pack = json.loads(read_text(pack_file))
+        texts = {}
+        total = 0
+        for name in pack.get("cardFiles") or []:
+            path = directory / "cards" / name
+            if not path.is_file():
+                continue
+            texts[name] = read_text(path)
+            total += len((json.loads(texts[name]).get("cards")) or [])
+        digest = pack_hash(read_text(pack_file), texts)
+        if entry.get("sha256") != digest or entry.get("cardCount") != total:
+            entry["sha256"] = digest
+            entry["cardCount"] = total
+            changed += 1
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    print("updated {} pack entr{} in manifest.json".format(changed, "y" if changed == 1 else "ies"))
+    return changed
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--pack", help="validate only this pack id")
+    parser.add_argument("--update-hashes", action="store_true", help="rewrite sha256 and cardCount in manifest.json")
+    parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    arguments = parser.parse_args()
+
+    report = Report()
+    schemas = load_schemas(report)
+
+    if arguments.update_hashes:
+        update_hashes(check_manifest(report, schemas, arguments.pack))
+
+    print("validating content branch at {}".format(ROOT))
+    packs = check_manifest(report, schemas, arguments.pack)
+    for entry in packs:
+        check_pack(entry, report, schemas)
+
+    for warning in report.warnings:
+        print("warning: {}".format(warning))
+    for error in report.errors:
+        print("error:   {}".format(error))
+
+    failures = len(report.errors) + (len(report.warnings) if arguments.strict else 0)
+    print(
+        "\n{} pack(s), {} error(s), {} warning(s)".format(
+            len(packs), len(report.errors), len(report.warnings)
+        )
+    )
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

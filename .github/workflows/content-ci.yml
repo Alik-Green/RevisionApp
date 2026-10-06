@@ -1,0 +1,50 @@
+name: Content
+
+on:
+  push:
+    branches:
+      - content
+  pull_request:
+    branches:
+      - content
+  workflow_dispatch:
+
+concurrency:
+  group: content-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate content packs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install jsonschema
+        run: python -m pip install --upgrade pip jsonschema
+
+      # Structural checks, JSON Schema, unique ids, resolvable topic and tag
+      # references, well-formed MCQ, tile answers that reconstruct the model
+      # answer, and at least five cards per leaf topic.
+      - name: Validate every pack
+        run: python tools/validate
+
+      # The manifest promises a hash per pack; a stale one makes the app reject
+      # the download, so recompute it and fail if the committed copy disagrees.
+      - name: Confirm the committed hashes are current
+        run: |
+          python tools/validate --update-hashes
+          if ! git diff --quiet -- manifest.json; then
+            echo "::error::manifest.json is stale - run tools/validate --update-hashes and commit"
+            git --no-pager diff -- manifest.json
+            exit 1
+          fi
+          echo "manifest hashes are current"
