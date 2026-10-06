@@ -1,5 +1,6 @@
 package com.revisionapp.domain.srs
 
+import kotlinx.datetime.Instant
 import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
@@ -7,7 +8,6 @@ import kotlin.math.pow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
-import kotlinx.datetime.Instant
 
 /** The four buttons a flashcard review offers, in increasing order of reward. */
 enum class Rating(val value: Int) {
@@ -52,7 +52,8 @@ data class ScheduleState(
 ) {
     val isNew: Boolean get() = state == LearningState.NEW
 
-    fun isDue(now: Instant): Boolean = !dueAt.isAfter(now)
+    /** `Instant` is `Comparable`; `isAfter` was removed in kotlinx-datetime 0.8. */
+    fun isDue(now: Instant): Boolean = dueAt <= now
 
     companion object {
         /** A brand-new card is due immediately. */

@@ -7,20 +7,13 @@ CREATE TABLE topic (
     pack_id TEXT
 );
 
+-- One projection per table, with every column aliased, so that each table has
+-- exactly one generated row type and its Kotlin property names are pinned here
+-- rather than inferred.
 selectAll:
-SELECT *
+SELECT id AS id, name AS name, parent_id AS parentId, sort_order AS sortOrder,
+       source AS source, pack_id AS packId
 FROM topic
-ORDER BY sort_order ASC, name ASC;
-
-selectById:
-SELECT *
-FROM topic
-WHERE id = ?;
-
-selectBySource:
-SELECT *
-FROM topic
-WHERE source = ?
 ORDER BY sort_order ASC, name ASC;
 
 upsert:

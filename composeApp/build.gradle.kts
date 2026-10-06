@@ -58,6 +58,11 @@ kotlin {
 
         // A custom-named jvm target has no generated `desktopMain` accessor,
         // so the source set has to be looked up by name.
+        named("desktopTest").dependencies {
+            // The in-memory SQLite driver the repository integration tests use.
+            implementation(libs.sqldelight.sqlite.driver)
+        }
+
         named("desktopMain").dependencies {
             implementation(compose.desktop.common)
             implementation(libs.kotlinx.coroutines.swing)

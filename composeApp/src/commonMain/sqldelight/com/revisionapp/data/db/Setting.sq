@@ -4,13 +4,8 @@ CREATE TABLE setting (
 );
 
 selectAll:
-SELECT *
+SELECT setting_key AS settingKey, setting_value AS settingValue
 FROM setting;
-
-selectByKey:
-SELECT *
-FROM setting
-WHERE setting_key = ?;
 
 upsert:
 INSERT OR REPLACE INTO setting(setting_key, setting_value)

@@ -2,10 +2,10 @@ package com.revisionapp.domain.check
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlin.test.assertFalse
 
 /**
  * The guard is the part of the checker most likely to be wrong in either

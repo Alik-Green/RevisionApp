@@ -8,8 +8,8 @@ import com.revisionapp.domain.model.NumericSpec
 import com.revisionapp.domain.model.TopicId
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
 import kotlin.test.assertFalse
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class DefaultAnswerCheckerTest {

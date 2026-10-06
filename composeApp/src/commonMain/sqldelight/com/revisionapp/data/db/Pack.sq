@@ -8,14 +8,10 @@ CREATE TABLE pack (
 );
 
 selectAll:
-SELECT *
+SELECT id AS id, name AS name, version AS version, sha256 AS sha256,
+       card_count AS cardCount, installed_at AS installedAt
 FROM pack
 ORDER BY name ASC;
-
-selectById:
-SELECT *
-FROM pack
-WHERE id = ?;
 
 upsert:
 INSERT OR REPLACE INTO pack(id, name, version, sha256, card_count, installed_at)

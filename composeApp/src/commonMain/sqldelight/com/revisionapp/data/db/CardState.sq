@@ -11,29 +11,16 @@ CREATE TABLE card_state (
 );
 
 selectAll:
-SELECT *
+SELECT card_id AS cardId, stability AS stability, difficulty AS difficulty,
+       due_at AS dueAt, last_review_at AS lastReviewAt, reps AS reps,
+       lapses AS lapses, state AS state, mode_escalation AS modeEscalation
 FROM card_state;
-
-selectByCardId:
-SELECT *
-FROM card_state
-WHERE card_id = ?;
 
 upsert:
 INSERT OR REPLACE INTO card_state(
     card_id, stability, difficulty, due_at, last_review_at, reps, lapses, state, mode_escalation
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-
-countDueBefore:
-SELECT COUNT(*)
-FROM card_state
-WHERE due_at <= ?;
-
-countByCardIds:
-SELECT COUNT(*)
-FROM card_state
-WHERE card_id IN ? AND due_at <= ?;
 
 deleteById:
 DELETE FROM card_state

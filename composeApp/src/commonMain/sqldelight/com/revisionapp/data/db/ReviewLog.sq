@@ -13,19 +13,13 @@ insert:
 INSERT INTO review_log(card_id, mode, rating, verdict, correct, reviewed_at, day)
 VALUES (?, ?, ?, ?, ?, ?, ?);
 
-selectByCardId:
-SELECT *
-FROM review_log
-WHERE card_id = ?
-ORDER BY reviewed_at DESC;
-
 selectDistinctDays:
-SELECT DISTINCT day
+SELECT DISTINCT day AS day
 FROM review_log
 ORDER BY day DESC;
 
 countAll:
-SELECT COUNT(*)
+SELECT COUNT(*) AS total
 FROM review_log;
 
 accuracyByTopic:

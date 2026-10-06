@@ -21,37 +21,14 @@ CREATE TABLE card (
 );
 
 selectAll:
-SELECT *
+SELECT id AS id, topic_id AS topicId, front AS front, back AS back,
+       answer_type AS answerType, key_points AS keyPoints,
+       accepted_aliases AS acceptedAliases, tile_answer AS tileAnswer,
+       mcq AS mcq, explanation AS explanation, numeric_value AS numericValue,
+       numeric_tolerance AS numericTolerance, numeric_unit AS numericUnit,
+       source AS source, review_status AS reviewStatus, spec_ref AS specRef,
+       pack_id AS packId, created_at AS createdAt, updated_at AS updatedAt
 FROM card;
-
-selectById:
-SELECT *
-FROM card
-WHERE id = ?;
-
-selectByIds:
-SELECT *
-FROM card
-WHERE id IN ?;
-
-selectByTopicIds:
-SELECT *
-FROM card
-WHERE topic_id IN ?;
-
-selectBySource:
-SELECT *
-FROM card
-WHERE source = ?;
-
-countAll:
-SELECT COUNT(*)
-FROM card;
-
-countByTopicId:
-SELECT COUNT(*)
-FROM card
-WHERE topic_id = ?;
 
 upsert:
 INSERT OR REPLACE INTO card(
@@ -70,6 +47,6 @@ DELETE FROM card
 WHERE pack_id = ?;
 
 selectIdsByPack:
-SELECT id
+SELECT id AS id
 FROM card
 WHERE pack_id = ?;

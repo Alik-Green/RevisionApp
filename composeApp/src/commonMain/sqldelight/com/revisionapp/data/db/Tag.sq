@@ -6,14 +6,9 @@ CREATE TABLE tag (
 );
 
 selectAll:
-SELECT *
+SELECT id AS id, name AS name, tag_group AS tagGroup, source AS source
 FROM tag
 ORDER BY tag_group ASC, name ASC;
-
-selectById:
-SELECT *
-FROM tag
-WHERE id = ?;
 
 upsert:
 INSERT OR REPLACE INTO tag(id, name, tag_group, source)

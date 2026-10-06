@@ -5,13 +5,8 @@ CREATE TABLE card_tag (
 );
 
 selectAll:
-SELECT *
+SELECT card_id AS cardId, tag_id AS tagId
 FROM card_tag;
-
-selectByCardId:
-SELECT *
-FROM card_tag
-WHERE card_id = ?;
 
 insert:
 INSERT OR REPLACE INTO card_tag(card_id, tag_id)
