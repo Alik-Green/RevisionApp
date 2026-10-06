@@ -158,6 +158,19 @@ class AppState(
         restoreSyncState()
         refresh()
         loadSettings()
+        syncOnFirstRun()
+    }
+
+    /**
+     * Fetches the built-in packs when none are installed, so a fresh install has
+     * content without the user having to find the settings screen, and so a first
+     * sync that failed offline is retried on the next launch. Once a pack exists
+     * the app never syncs on its own again: updates stay an explicit choice.
+     */
+    private fun syncOnFirstRun() {
+        scope.launch(Dispatchers.Default) {
+            if (graph.packs.installed().isEmpty()) syncNow()
+        }
     }
 
     fun refresh() {
