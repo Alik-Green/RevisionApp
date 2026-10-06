@@ -57,6 +57,9 @@ sealed interface Route {
 
     /** Editing an existing tag, or creating a new one when [tagId] is null. */
     data class EditTag(val tagId: TagId?) : Route
+
+    /** Debug screen under Settings > Developer: both maths renderers side by side. */
+    data object MathGallery : Route
 }
 
 /** What the settings screen shows about content syncing. */

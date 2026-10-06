@@ -96,7 +96,7 @@ fun ToggleChip(
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 6.dp),
     ) {
-        Text(
+        MathText(
             label,
             style = MaterialTheme.typography.labelLarge,
             color = foreground.copy(alpha = alpha),

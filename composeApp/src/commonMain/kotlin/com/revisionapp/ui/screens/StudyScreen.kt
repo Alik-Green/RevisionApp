@@ -37,6 +37,7 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.StatTile
 import com.revisionapp.ui.components.ToggleChip
@@ -189,7 +190,7 @@ private fun SessionHeader(state: AppState, position: Int, total: Int, item: Sess
 private fun Prompt(state: AppState, item: SessionCard) {
     Panel {
         SectionLabel(if (item.mode == StudyMode.FLASHCARD) "Front" else "Question")
-        Text(state.renderer.render(item.card.front), style = MaterialTheme.typography.titleLarge)
+        MathText(item.card.front, style = MaterialTheme.typography.titleLarge)
     }
 }
 
@@ -310,10 +311,13 @@ private fun McqInput(state: AppState, question: Question.MultipleChoice) {
                     .clickable { state.onSessionEvent(SessionEvent.ChooseOption(option.index)) }
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
-                Text(
-                    (option.index + 1).toString() + ".  " + state.renderer.render(option.text),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+                Row {
+                    Text(
+                        (option.index + 1).toString() + ".  ",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                    MathText(option.text, style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
     }
@@ -345,12 +349,12 @@ private fun ModelAnswer(state: AppState, item: SessionCard) {
     val card = item.card
     Panel {
         SectionLabel("Model answer")
-        Text(state.renderer.render(card.back), style = MaterialTheme.typography.bodyLarge)
+        MathText(card.back, style = MaterialTheme.typography.bodyLarge)
         val explanation = card.explanation
         if (!explanation.isNullOrBlank()) {
             Spacer(Modifier.height(8.dp))
             SectionLabel("Why")
-            Text(state.renderer.render(explanation), style = MaterialTheme.typography.bodyMedium)
+            MathText(explanation, style = MaterialTheme.typography.bodyMedium)
         }
         if (card.specRef.isNotBlank()) {
             Spacer(Modifier.height(8.dp))

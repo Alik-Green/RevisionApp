@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.ui.AppState
+import com.revisionapp.ui.Route
 import com.revisionapp.ui.SettingsUi
 import com.revisionapp.ui.SyncUiState
 import com.revisionapp.ui.components.AppHeader
@@ -134,6 +136,17 @@ fun SettingsScreen(state: AppState) {
             MetaRow("Platform", state.platformName)
             MetaRow("Database", state.dataDirectory)
             MetaRow("Content base URL", settings.baseUrl)
+
+            HorizontalDivider()
+            SectionLabel("Developer")
+            EmptyMessage(
+                "Diagnostics for the parts of this app that cannot be seen while it is being " +
+                    "written: there is no display in the sandbox it is developed in.",
+            )
+            OutlinedButton(
+                onClick = { state.navigate(Route.MathGallery) },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Math gallery") }
             Spacer(Modifier.height(16.dp))
         }
     }

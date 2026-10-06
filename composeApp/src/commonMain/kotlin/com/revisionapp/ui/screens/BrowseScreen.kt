@@ -46,6 +46,7 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import kotlinx.datetime.TimeZone
@@ -273,11 +274,12 @@ private fun TopicRows(
             ) {
                 Text(expanderLabel(node.isLeaf, isOpen), style = MaterialTheme.typography.labelLarge)
             }
-            Text(
+            MathText(
                 node.name,
                 modifier = Modifier.weight(1f).clickable { state.toggleTopic(node.id) },
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                ),
                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -336,8 +338,8 @@ private fun CardRow(state: AppState, snapshot: LibrarySnapshot, card: Card) {
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text(
-            state.renderer.render(card.front),
+        MathText(
+            card.front,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,

@@ -1,14 +1,21 @@
 package com.revisionapp.domain.check
 
+import com.revisionapp.math.MathParser
+import com.revisionapp.math.MathPlainText
+import com.revisionapp.math.ScriptStyle
+
 /**
  * Turns authored content and typed answers into a comparable form.
  *
  * Three layers, in order:
  *
- * 1. [toPlainText] — strips the `$...$` LaTeX delimiters and rewrites maths into
- *    readable text (`\frac{a}{b}` -> `(a)/(b)`, `\theta` -> `theta`, `^{2}` ->
- *    `^2`). This is also what the Unicode [com.revisionapp.ui.render.RichTextRenderer]
- *    uses for display, so what the user sees is what gets compared.
+ * 1. [toPlainText] — parses LaTeX with the same [MathParser] the display renderer
+ *    uses and re-emits it in canonical ASCII (`\frac{a}{b}` -> `(a)/(b)`,
+ *    `\theta` -> `theta`, `x^{2}` -> `x^2`), folding Unicode scripts back to caret
+ *    notation and expanding the `**` and `+-` typing shortcuts. Sharing the parser
+ *    is what makes "what the user sees is what gets compared" true rather than a
+ *    comment: the old hand-written replacement table drifted from the renderer,
+ *    which is how `\Rightarrow` came to be displayed as the word "Rightarrow".
  * 2. [normalise] — lowercases, maps unicode maths symbols, turns punctuation into
  *    spaces and collapses the runs, while keeping what changes an answer's
  *    meaning: the operators `+ * / ^ = < > % _`, a decimal point, a minus sign
@@ -21,135 +28,27 @@ object TextNormaliser {
     /** Characters that stay inside a token because they change its meaning. */
     private const val OPERATOR_CHARACTERS = "+*/^=<>%_"
 
-    private val LATEX_COMMANDS: List<Pair<String, String>> = mapOf(
-        "\\longrightarrow" to "->",
-        "\\longleftarrow" to "<-",
-        "\\leftrightarrow" to "<->",
-        "\\rightarrow" to "->",
-        "\\leftarrow" to "<-",
-        "\\Rightarrow" to "=>",
-        "\\Leftarrow" to "<=",
-        "\\subseteq" to "subset of",
-        "\\emptyset" to "empty set",
-        "\\therefore" to "therefore",
-        "\\because" to "because",
-        "\\operatorname" to "",
-        "\\infty" to "infinity",
-        "\\propto" to "proportional to",
-        "\\notin" to "not in",
-        "\\qquad" to " ",
-        "\\degree" to "deg",
-        "\\partial" to "d",
-        "\\epsilon" to "epsilon",
-        "\\upsilon" to "upsilon",
-        "\\lambda" to "lambda",
-        "\\varphi" to "phi",
-        "\\vartheta" to "theta",
-        "\\sigma" to "sigma",
-        "\\subset" to "subset",
-        "\\nabla" to "grad",
-        "\\kappa" to "kappa",
-        "\\gamma" to "gamma",
-        "\\delta" to "delta",
-        "\\theta" to "theta",
-        "\\alpha" to "alpha",
-        "\\omega" to "omega",
-        "\\times" to "*",
-        "\\approx" to "~",
-        "\\equiv" to "=",
-        "\\Delta" to "delta",
-        "\\Gamma" to "gamma",
-        "\\Lambda" to "lambda",
-        "\\Sigma" to "sum",
-        "\\Theta" to "theta",
-        "\\right" to "",
-        "\\union" to "union",
-        "\\cdot" to "*",
-        "\\sinh" to "sinh",
-        "\\cosh" to "cosh",
-        "\\tanh" to "tanh",
-        "\\cosec" to "cosec",
-        "\\Omega" to "ohm",
-        "\\quad" to " ",
-        "\\neq" to "!=",
-        "\\leq" to "<=",
-        "\\geq" to ">=",
-        "\\int" to "integral",
-        "\\phi" to "phi",
-        "\\chi" to "chi",
-        "\\psi" to "psi",
-        "\\rho" to "rho",
-        "\\tau" to "tau",
-        "\\sum" to "sum",
-        "\\eta" to "eta",
-        "\\zeta" to "zeta",
-        "\\iota" to "iota",
-        "\\beta" to "beta",
-        "\\left" to "",
-        "\\prod" to "product",
-        "\\circ" to "deg",
-        "\\cos" to "cos",
-        "\\sin" to "sin",
-        "\\tan" to "tan",
-        "\\sec" to "sec",
-        "\\cot" to "cot",
-        "\\log" to "log",
-        "\\exp" to "exp",
-        "\\cap" to "intersection",
-        "\\cup" to "union",
-        "\\div" to "/",
-        "\\pm" to "+/-",
-        "\\mp" to "-/+",
-        "\\ne" to "!=",
-        "\\le" to "<=",
-        "\\ge" to ">=",
-        "\\pi" to "pi",
-        "\\Pi" to "pi",
-        "\\Phi" to "phi",
-        "\\Psi" to "psi",
-        "\\mu" to "mu",
-        "\\nu" to "nu",
-        "\\xi" to "xi",
-        "\\in" to "in",
-        "\\ln" to "ln",
-        "\\lg" to "lg",
-        "\\%" to "%",
-        "\\$" to "$",
-        "\\&" to "&",
-        "\\#" to "#",
-        "\\," to " ",
-        "\\;" to " ",
-        "\\:" to " ",
-        "\\!" to "",
-        "\\ " to " ",
-    ).entries.sortedByDescending { it.key.length }.map { it.key to it.value }
+    private val ENVIRONMENTS = Regex("""\\(begin|end)\{[a-zA-Z*]+\}""")
+    private val SUPERSCRIPT_RUN = Regex("[\u00B9\u00B2\u00B3\u2070-\u207F]+")
+    private val SUBSCRIPT_RUN = Regex("[\u1D62-\u1D65\u2080-\u2089\u208A-\u208E\u2090-\u209C]+")
 
-    /** Commands that take one or two `{...}` arguments, and how to rewrite them. */
-    private val BRACED_COMMANDS: Map<String, Int> = linkedMapOf(
-        "\\dfrac" to 2,
-        "\\tfrac" to 2,
-        "\\frac" to 2,
-        "\\sqrt" to 1,
-        "\\text" to 1,
-        "\\mathrm" to 1,
-        "\\mathbf" to 1,
-        "\\mathit" to 1,
-        "\\mathsf" to 1,
-        "\\mbox" to 1,
-        "\\vec" to 1,
-        "\\hat" to 1,
-        "\\bar" to 1,
-        "\\dot" to 1,
-        "\\ddot" to 1,
-        "\\overline" to 1,
-        "\\underline" to 1,
-        "\\unit" to 1,
+    private val SUPERSCRIPT_ASCII: Map<Char, Char> = mapOf(
+        '\u2070' to '0', '\u00B9' to '1', '\u00B2' to '2', '\u00B3' to '3', '\u2074' to '4',
+        '\u2075' to '5', '\u2076' to '6', '\u2077' to '7', '\u2078' to '8', '\u2079' to '9',
+        '\u207A' to '+', '\u207B' to '-', '\u207C' to '=', '\u207D' to '(', '\u207E' to ')',
+        '\u2071' to 'i', '\u207F' to 'n',
     )
 
-    private val ENVIRONMENTS = Regex("""\\(begin|end)\{[a-zA-Z*]+\}""")
-    private val SUPERSCRIPT_GROUP = Regex("""\^\{([^{}]*)\}""")
-    private val SUBSCRIPT_GROUP = Regex("""_\{([^{}]*)\}""")
-    private val UNKNOWN_COMMAND = Regex("""\\([a-zA-Z]+)""")
+    private val SUBSCRIPT_ASCII: Map<Char, Char> = mapOf(
+        '\u2080' to '0', '\u2081' to '1', '\u2082' to '2', '\u2083' to '3', '\u2084' to '4',
+        '\u2085' to '5', '\u2086' to '6', '\u2087' to '7', '\u2088' to '8', '\u2089' to '9',
+        '\u208A' to '+', '\u208B' to '-', '\u208C' to '=', '\u208D' to '(', '\u208E' to ')',
+        '\u2090' to 'a', '\u2091' to 'e', '\u2092' to 'o', '\u2093' to 'x', '\u2095' to 'h',
+        '\u2096' to 'k', '\u2097' to 'l', '\u2098' to 'm', '\u2099' to 'n', '\u209A' to 'p',
+        '\u209B' to 's', '\u209C' to 't', '\u1D62' to 'i', '\u1D63' to 'r', '\u1D64' to 'u',
+        '\u1D65' to 'v',
+    )
+
     private val WHITESPACE_RUN = Regex("""\s+""")
 
     private val UNICODE_MATHS: Map<Char, String> = mapOf(
@@ -213,26 +112,6 @@ object TextNormaliser {
         '\u03A8' to "psi",
         '\u03C9' to "omega",
         '\u03A9' to "ohm",
-        '\u00B2' to "^2",
-        '\u00B3' to "^3",
-        '\u00B9' to "^1",
-        '\u2070' to "^0",
-        '\u2074' to "^4",
-        '\u2075' to "^5",
-        '\u2076' to "^6",
-        '\u2077' to "^7",
-        '\u2078' to "^8",
-        '\u2079' to "^9",
-        '\u2080' to "_0",
-        '\u2081' to "_1",
-        '\u2082' to "_2",
-        '\u2083' to "_3",
-        '\u2084' to "_4",
-        '\u2085' to "_5",
-        '\u2086' to "_6",
-        '\u2087' to "_7",
-        '\u2088' to "_8",
-        '\u2089' to "_9",
         '\u2032' to "'",
         '\u00A0' to " ",
     )
@@ -249,110 +128,56 @@ object TextNormaliser {
     )
 
     /**
-     * Rewrites LaTeX and unicode maths into readable plain text. Operators and
-     * structure are preserved so that [ExpressionComparing] can still work on the
-     * result.
+     * Rewrites LaTeX and unicode maths into readable plain text, in the canonical
+     * ASCII form the checker compares. Operators and structure survive so that
+     * [ExpressionComparing] can still work on the result.
      */
     fun toPlainText(raw: String): String {
         if (raw.isEmpty()) return raw
 
-        var text = raw.replace("$", "")
-        text = ENVIRONMENTS.replace(text, " ")
-        text = expandBracedCommands(text)
-        for ((command, replacement) in LATEX_COMMANDS) {
-            // Padded with spaces so that "2\pi r" becomes "2 pi r" rather than
-            // "2pi r"; runs of whitespace are collapsed at the end.
-            if (text.contains(command)) text = text.replace(command, " $replacement ")
-        }
-        text = text.replace("\\\\", " ")
-        text = SUPERSCRIPT_GROUP.replace(text) { "^" + group(it.groupValues[1]) }
-        text = SUBSCRIPT_GROUP.replace(text) { "_" + group(it.groupValues[1]) }
-        text = UNKNOWN_COMMAND.replace(text) { it.groupValues[1] }
-        text = text.replace("{", " ").replace("}", " ").replace("\\", " ")
+        val withoutEnvironments = ENVIRONMENTS.replace(raw, " ")
+        val ascii = MathPlainText.render(MathParser.parse(applyShortcuts(withoutEnvironments)), ScriptStyle.ASCII)
+        val folded = foldScripts(ascii)
 
-        val builder = StringBuilder(text.length)
-        for (character in text) {
-            builder.append(UNICODE_MATHS[character] ?: character.toString())
+        val builder = StringBuilder(folded.length)
+        for (character in folded) {
+            val replacement = UNICODE_MATHS[character]
+            when {
+                replacement == null -> builder.append(character)
+                // Multi-character replacements are padded so that "2\pi r" collapses
+                // to "2 pi r" rather than "2pi r".
+                replacement.length > 1 -> builder.append(' ').append(replacement).append(' ')
+                else -> builder.append(replacement)
+            }
         }
         return WHITESPACE_RUN.replace(builder.toString(), " ").trim()
     }
 
     /**
-     * Keeps `^{2}` and `^{-1}` unparenthesised (so `s^{-1}` and `s^-1` agree) but
-     * parenthesises anything that would change meaning, e.g. `x^{n+1}` ->
-     * `x^(n+1)` rather than `x^n+1`.
+     * Typed shortcuts for maths a keyboard makes awkward. Arrows and relations need
+     * none: `->`, `=>`, `<=` and `>=` already canonicalise to exactly what
+     * `\rightarrow`, `\Rightarrow`, `\leq` and `\geq` produce.
      */
-    private fun group(body: String): String {
-        val trimmed = body.trim()
-        if (trimmed.isEmpty()) return "()"
-        val afterLeadingSign = if (trimmed[0] == '+' || trimmed[0] == '-') trimmed.substring(1) else trimmed
-        val hasOperator = afterLeadingSign.any { it == '+' || it == '-' || it == '*' || it == '/' }
-        return if (hasOperator) "($trimmed)" else trimmed
+    private fun applyShortcuts(raw: String): String = raw
+        .replace("**", "^")
+        .replace("+-", "+/-")
+
+    /**
+     * Folds runs of Unicode script characters back to caret and underscore
+     * notation, so a pasted `x²` compares equal to an authored `x^2`. Runs are
+     * folded whole because `10⁻¹⁹` has to become `10^-19`, not `10^-^1^9`.
+     */
+    private fun foldScripts(text: String): String {
+        val superscripts = SUPERSCRIPT_RUN.replace(text) { match -> script("^", match.value, SUPERSCRIPT_ASCII) }
+        return SUBSCRIPT_RUN.replace(superscripts) { match -> script("_", match.value, SUBSCRIPT_ASCII) }
     }
 
-    /** Expands `\frac{a}{b}` and friends, innermost-out, with a hard iteration cap. */
-    private fun expandBracedCommands(input: String): String {
-        var current = input
-        var iterations = 0
-        while (iterations++ < MAX_EXPANSIONS) {
-            val expanded = expandOnce(current)
-            if (expanded == current) return current
-            current = expanded
-        }
-        return current
-    }
-
-    private fun expandOnce(input: String): String {
-        for ((command, arity) in BRACED_COMMANDS) {
-            val index = input.indexOf(command)
-            if (index < 0) continue
-
-            var cursor = index + command.length
-            val arguments = ArrayList<String>(arity)
-            var complete = true
-            while (arguments.size < arity) {
-                while (cursor < input.length && input[cursor].isWhitespace()) cursor++
-                if (cursor >= input.length || input[cursor] != '{') {
-                    complete = false
-                    break
-                }
-                val braced = readBraced(input, cursor)
-                if (braced == null) {
-                    complete = false
-                    break
-                }
-                arguments.add(braced.first)
-                cursor = braced.second
-            }
-            if (!complete) continue
-
-            val replacement = when (command) {
-                "\\frac", "\\dfrac", "\\tfrac" -> "(" + arguments[0] + ")/(" + arguments[1] + ")"
-                "\\sqrt" -> "sqrt(" + arguments[0] + ")"
-                else -> arguments[0]
-            }
-            return input.substring(0, index) + replacement + input.substring(cursor)
-        }
-        return input
-    }
-
-    /** Reads `{...}` starting at [openIndex], honouring nesting. */
-    private fun readBraced(input: String, openIndex: Int): Pair<String, Int>? {
-        var depth = 0
-        var index = openIndex
-        while (index < input.length) {
-            when (input[index]) {
-                '{' -> depth++
-                '}' -> {
-                    depth--
-                    if (depth == 0) return input.substring(openIndex + 1, index) to (index + 1)
-                }
-
-                else -> Unit
-            }
-            index++
-        }
-        return null
+    /** Brackets a folded run exactly as [MathPlainText] brackets a parsed one. */
+    private fun script(marker: String, run: String, table: Map<Char, Char>): String {
+        val builder = StringBuilder(run.length)
+        for (character in run) builder.append(table[character] ?: character)
+        val body = builder.toString()
+        return marker + if (MathPlainText.needsBrackets(body)) "($body)" else body
     }
 
     /**
@@ -432,5 +257,4 @@ object TextNormaliser {
         return token.substring(start, end)
     }
 
-    private const val MAX_EXPANSIONS = 64
 }
