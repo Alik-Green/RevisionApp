@@ -1,6 +1,5 @@
 package com.revisionapp.domain.srs
 
-import kotlinx.datetime.Instant
 import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
@@ -8,6 +7,7 @@ import kotlin.math.pow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 
 /** The four buttons a flashcard review offers, in increasing order of reward. */
 enum class Rating(val value: Int) {

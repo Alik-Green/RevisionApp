@@ -14,8 +14,8 @@ import com.revisionapp.domain.srs.ScheduleState
 import com.revisionapp.domain.study.McqGrader
 import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.study.TileGrader
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /** One card in a session, with the mode and question actually derived for it. */
 data class SessionCard(

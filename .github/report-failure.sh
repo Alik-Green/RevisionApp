@@ -39,6 +39,18 @@ for case in tree.getroot().iter("testcase"):
 PY
   done
 
+  # ktlint writes one line per violation into its own report, and none of them
+  # match the compiler-error patterns below, so they need their own section.
+  for report in composeApp/build/reports/ktlint/*/*.txt */build/reports/ktlint/*/*.txt; do
+    [ -s "$report" ] || continue
+    echo "#### \`$(basename "$report")\`"
+    echo
+    echo '```text'
+    sed "s|${GITHUB_WORKSPACE:-/home/runner/work/RevisionApp/RevisionApp}/||" "$report" | head -n 200
+    echo '```'
+    echo
+  done
+
   for f in logs/*.log; do
     if grep -qE "BUILD SUCCESSFUL" "$f" 2>/dev/null && ! grep -qE "FAILED" "$f" 2>/dev/null; then
       continue

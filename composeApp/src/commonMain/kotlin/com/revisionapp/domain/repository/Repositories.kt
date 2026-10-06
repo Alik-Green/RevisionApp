@@ -13,7 +13,7 @@ import com.revisionapp.domain.model.Topic
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.srs.Rating
 import com.revisionapp.domain.srs.ScheduleState
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /** One completed review, as recorded for stats and streaks. */
 data class ReviewEntry(

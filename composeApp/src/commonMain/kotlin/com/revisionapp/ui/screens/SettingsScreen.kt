@@ -33,9 +33,9 @@ import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.MetaRow
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.session.VerdictPresentation
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 /**
  * Content sync status and controls, the retention setting and where the database

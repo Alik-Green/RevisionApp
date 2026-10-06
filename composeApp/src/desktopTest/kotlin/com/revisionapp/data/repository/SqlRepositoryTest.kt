@@ -23,12 +23,12 @@ import com.revisionapp.domain.repository.ReviewEntry
 import com.revisionapp.domain.srs.LearningState
 import com.revisionapp.domain.srs.Rating
 import com.revisionapp.domain.srs.ScheduleState
-import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.time.Instant
 
 /**
  * Integration tests against a real (in-memory) SQLite database, so the SQLDelight

@@ -15,7 +15,7 @@ import com.revisionapp.domain.repository.LibraryRepository
 import com.revisionapp.domain.repository.ProgressRepository
 import com.revisionapp.domain.repository.TopicAccuracy
 import com.revisionapp.domain.srs.ScheduleState
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * An immutable view of the whole library at one instant: the topic tree with its

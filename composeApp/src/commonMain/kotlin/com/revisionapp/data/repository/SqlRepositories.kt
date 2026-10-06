@@ -31,11 +31,11 @@ import com.revisionapp.domain.repository.SettingsStore
 import com.revisionapp.domain.repository.TopicAccuracy
 import com.revisionapp.domain.srs.LearningState
 import com.revisionapp.domain.srs.ScheduleState
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 // Every enum is stored as its name and parsed back defensively, so a value
 // written by a newer version of the app degrades instead of crashing.
