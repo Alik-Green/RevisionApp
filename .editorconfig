@@ -1,0 +1,51 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+tab_width = 4
+max_line_length = off
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+ktlint_code_style = intellij_idea
+
+# Compose uses PascalCase for @Composable functions, which the ktlint
+# function-naming rule would otherwise reject.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Formatting rules that fight the hand-written layout of Compose UI code.
+# Correctness rules (unused imports, wildcard imports, trailing whitespace,
+# indentation, final newline, ...) stay enabled.
+ktlint_standard_filename = disabled
+ktlint_standard_comment-wrapping = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_class-signature = disabled
+ktlint_standard_property-naming = disabled
+ktlint_standard_backing-property-naming = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_string-template-indent = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+ktlint_standard_context-receiver-wrapping = disabled
+ktlint_standard_condition-wrapping = disabled
+ktlint_standard_chain-method-continuation = disabled
+ktlint_standard_mixed-condition-operators = disabled
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_function-expression-body = disabled
+ktlint_standard_annotation = disabled
+ktlint_standard_annotation-parameter-list-wrapping = disabled
+ktlint_standard_blank-line-between-when-conditions = disabled
+ktlint_standard_if-else-wrapping = disabled
+ktlint_standard_no-empty-first-line-in-method-block = disabled
+ktlint_standard_statement-wrapping = disabled
+ktlint_standard_when-entry-bracing = disabled
+
+[*.{yml,yaml,json}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

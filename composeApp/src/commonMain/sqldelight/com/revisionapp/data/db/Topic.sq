@@ -1,0 +1,36 @@
+CREATE TABLE topic (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    parent_id TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    source TEXT NOT NULL,
+    pack_id TEXT
+);
+
+selectAll:
+SELECT *
+FROM topic
+ORDER BY sort_order ASC, name ASC;
+
+selectById:
+SELECT *
+FROM topic
+WHERE id = ?;
+
+selectBySource:
+SELECT *
+FROM topic
+WHERE source = ?
+ORDER BY sort_order ASC, name ASC;
+
+upsert:
+INSERT OR REPLACE INTO topic(id, name, parent_id, sort_order, source, pack_id)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM topic
+WHERE id = ?;
+
+deleteByPack:
+DELETE FROM topic
+WHERE pack_id = ?;

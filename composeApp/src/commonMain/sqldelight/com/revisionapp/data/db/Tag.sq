@@ -1,0 +1,24 @@
+CREATE TABLE tag (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    tag_group TEXT NOT NULL,
+    source TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM tag
+ORDER BY tag_group ASC, name ASC;
+
+selectById:
+SELECT *
+FROM tag
+WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO tag(id, name, tag_group, source)
+VALUES (?, ?, ?, ?);
+
+deleteById:
+DELETE FROM tag
+WHERE id = ?;

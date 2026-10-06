@@ -1,0 +1,75 @@
+CREATE TABLE card (
+    id TEXT NOT NULL PRIMARY KEY,
+    topic_id TEXT NOT NULL,
+    front TEXT NOT NULL,
+    back TEXT NOT NULL,
+    answer_type TEXT NOT NULL,
+    key_points TEXT NOT NULL DEFAULT '[]',
+    accepted_aliases TEXT NOT NULL DEFAULT '[]',
+    tile_answer TEXT,
+    mcq TEXT,
+    explanation TEXT,
+    numeric_value REAL,
+    numeric_tolerance REAL,
+    numeric_unit TEXT,
+    source TEXT NOT NULL,
+    review_status TEXT NOT NULL,
+    spec_ref TEXT NOT NULL DEFAULT '',
+    pack_id TEXT,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM card;
+
+selectById:
+SELECT *
+FROM card
+WHERE id = ?;
+
+selectByIds:
+SELECT *
+FROM card
+WHERE id IN ?;
+
+selectByTopicIds:
+SELECT *
+FROM card
+WHERE topic_id IN ?;
+
+selectBySource:
+SELECT *
+FROM card
+WHERE source = ?;
+
+countAll:
+SELECT COUNT(*)
+FROM card;
+
+countByTopicId:
+SELECT COUNT(*)
+FROM card
+WHERE topic_id = ?;
+
+upsert:
+INSERT OR REPLACE INTO card(
+    id, topic_id, front, back, answer_type, key_points, accepted_aliases,
+    tile_answer, mcq, explanation, numeric_value, numeric_tolerance, numeric_unit,
+    source, review_status, spec_ref, pack_id, created_at, updated_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM card
+WHERE id = ?;
+
+deleteByPack:
+DELETE FROM card
+WHERE pack_id = ?;
+
+selectIdsByPack:
+SELECT id
+FROM card
+WHERE pack_id = ?;

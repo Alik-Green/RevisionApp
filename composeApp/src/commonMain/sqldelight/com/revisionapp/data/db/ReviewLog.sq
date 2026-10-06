@@ -1,0 +1,35 @@
+CREATE TABLE review_log (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    card_id TEXT NOT NULL,
+    mode TEXT NOT NULL,
+    rating TEXT NOT NULL,
+    verdict TEXT,
+    correct INTEGER NOT NULL DEFAULT 0,
+    reviewed_at INTEGER NOT NULL,
+    day TEXT NOT NULL
+);
+
+insert:
+INSERT INTO review_log(card_id, mode, rating, verdict, correct, reviewed_at, day)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+selectByCardId:
+SELECT *
+FROM review_log
+WHERE card_id = ?
+ORDER BY reviewed_at DESC;
+
+selectDistinctDays:
+SELECT DISTINCT day
+FROM review_log
+ORDER BY day DESC;
+
+countAll:
+SELECT COUNT(*)
+FROM review_log;
+
+accuracyByTopic:
+SELECT c.topic_id AS topicId, COUNT(*) AS total, SUM(l.correct) AS correctCount
+FROM review_log AS l
+INNER JOIN card AS c ON c.id = l.card_id
+GROUP BY c.topic_id;
