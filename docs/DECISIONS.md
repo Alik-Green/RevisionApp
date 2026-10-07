@@ -904,3 +904,29 @@ Log lines carry enums as strings resolved by hand rather than by the
 serializer, and a line that cannot be understood is skipped and counted in
 `unreadable`. A review from a newer build, or a truncated tail from an
 interrupted copy, must cost one review rather than the history.
+
+## D46 — A folder is a legitimate sync backend, and needs no API (2026-10-07)
+
+`LocalFolderSyncProvider` implements `SyncProvider` over a directory the user
+chose. Pointed at a Google Drive, OneDrive, Dropbox or Syncthing folder it gives
+cloud sync without this app ever speaking to a cloud API -- the user's own sync
+client moves the bytes. That is why Google Drive is not a priority: the case it
+serves is already covered, and covered without an OAuth client id, a consent
+screen, or a token in the Keystore.
+
+`SyncStorage` is the whole of the platform-specific part: relative paths, list,
+read, write, delete, append. No `File`, `Uri` or `ContentResolver` reaches
+`commonMain`, so the provider is written once and tested against a map.
+
+Two things follow from a folder having no API, and both are handled rather than
+hoped away. Listing headers means reading the files, because a filename carries
+no timestamp -- the price of the transport, and the reason records are small and
+sharded. And a file can be listed before its bytes arrive, or vanish between a
+listing and a read, so `recordAt` returns null for anything missing, empty,
+corrupt or from a newer build: on a folder watched by a cloud client that is
+normal, and one unreadable record must not abort a sync.
+
+Appending a log segment is a read-modify-write, which would be unsafe under
+concurrent writers and is safe here because segments are per device: exactly one
+device ever appends to a given segment. That is a second reason the log is split
+per device rather than per library.
