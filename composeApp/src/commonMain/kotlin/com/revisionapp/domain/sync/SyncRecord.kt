@@ -8,6 +8,7 @@ package com.revisionapp.domain.sync
  * order, and so that per-device review-log segments can be attributed. See
  * docs/DECISIONS.md D41.
  */
+@JvmInline
 value class DeviceId(val value: String)
 
 /**
@@ -17,6 +18,7 @@ value class DeviceId(val value: String)
  * a topic id, a tag id). For the join and state types it is a composite, built
  * by [RecordId.of] so that the same pair of ids always produces the same key.
  */
+@JvmInline
 value class RecordId(val value: String) {
     companion object {
         /** Composite key for records that identify a relationship, not a row. */
@@ -27,6 +29,7 @@ value class RecordId(val value: String) {
 }
 
 /** Name of one append-only review-log segment, e.g. `2026-10`. */
+@JvmInline
 value class LogSegmentName(val value: String)
 
 /**
