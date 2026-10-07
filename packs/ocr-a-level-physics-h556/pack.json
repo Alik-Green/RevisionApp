@@ -1,7 +1,7 @@
 {
   "packId": "ocr-a-level-physics-h556",
   "name": "OCR A Level Physics (H556)",
-  "version": 1,
+  "version": 2,
   "description": "Definitions, equations, worked numerics and common misconceptions across the five content modules of OCR A Level Physics A.",
   "structureVerified": false,
   "topics": [

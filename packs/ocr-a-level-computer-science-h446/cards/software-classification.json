@@ -188,6 +188,344 @@
         "computer-science",
         "component-01"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Name three kinds of utility software and say what each does.",
+      "back": "For example: a disk defragmenter, which reorganises files into contiguous blocks; an antivirus scanner, which detects and removes malware; and a backup tool, which copies data for recovery.",
+      "keyPoints": [
+        {
+          "text": "disk defragmentation",
+          "synonyms": [
+            "reorganises files on the disk"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "antivirus or malware protection",
+          "synonyms": [
+            "detects and removes malicious software"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "backup or file compression",
+          "synonyms": [
+            "copies data",
+            "compresses files"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Defragmenter, antivirus, backup tool",
+        "distractors": [
+          "Word processor, spreadsheet, database",
+          "Compiler, interpreter, assembler",
+          "Operating system, device driver, firmware"
+        ]
+      },
+      "explanation": "Utilities support and maintain the computer rather than doing user work, which is what separates them from application software - the second option is a list of applications. They sit close to system software, and the boundary is genuinely fuzzy: an antivirus package is bought like an application but performs a system maintenance role.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "How does virtual memory allow a computer to run programs larger than its physical RAM?",
+      "back": "Parts of a program not currently in use are moved to disk, and the memory manager swaps pages back in when they are needed, so the address space can exceed the physical memory.",
+      "keyPoints": [
+        {
+          "text": "unused pages are moved to disk",
+          "synonyms": [
+            "swapped out",
+            "stored on secondary storage"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "pages are brought back when needed",
+          "synonyms": [
+            "swapped in",
+            "page faults are handled"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the address space can exceed physical RAM",
+          "synonyms": [
+            "programs appear larger than memory"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Unused pages go to disk and are swapped back in on demand",
+        "distractors": [
+          "The program is compressed so it fits in RAM",
+          "Extra RAM is allocated from the processor cache",
+          "The program is split and run in pieces on different cores"
+        ]
+      },
+      "explanation": "The cost is speed: a page fault means a disk access, which is orders of magnitude slower than RAM. When too many processes compete for too little memory the system spends most of its time swapping rather than working, which is thrashing. Virtual memory also gives each process its own address space, so one program cannot corrupt another's memory.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Describe round robin scheduling and state one disadvantage.",
+      "back": "Each process is given a fixed time slice in turn, and one that has not finished goes to the back of the queue. A disadvantage is that a short time slice wastes time in context switching, while a long one gives poor response.",
+      "keyPoints": [
+        {
+          "text": "each process gets a fixed time slice",
+          "synonyms": [
+            "a quantum",
+            "equal turns"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an unfinished process goes to the back of the queue",
+          "synonyms": [
+            "cyclic queue"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "too short a slice wastes time switching",
+          "synonyms": [
+            "context switching overhead",
+            "too long a slice gives poor response"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Fixed time slices in turn; switching overhead if the slice is too short",
+        "distractors": [
+          "Longest job first; short jobs may never run",
+          "Highest priority always; equal-priority jobs starve",
+          "First come first served; a long job blocks everything"
+        ]
+      },
+      "explanation": "Round robin is fair and gives predictable response, which suits time-sharing systems. The tuning problem is real: a 1 ms slice on a system where a context switch takes 0.2 ms spends a fifth of its time switching. The other options are genuine alternative schedulers, each with the disadvantage named beside it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "What is a device driver, and why is it needed?",
+      "back": "Software that lets the operating system communicate with a particular piece of hardware, translating the OS's general commands into the signals that device understands.",
+      "keyPoints": [
+        {
+          "text": "it lets the OS talk to specific hardware",
+          "synonyms": [
+            "translates OS commands to the device"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each device needs its own driver",
+          "synonyms": [
+            "hardware specific",
+            "written by the manufacturer"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the OS does not need to know the details of every device",
+          "synonyms": [
+            "abstraction",
+            "hardware independence"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Software translating OS commands into signals a specific device understands",
+        "distractors": [
+          "A physical component inside the device",
+          "A program that makes the device run faster",
+          "The cable connecting the device to the computer"
+        ]
+      },
+      "explanation": "Drivers are the layer that keeps the operating system independent of the hardware: the OS issues a general 'print this' command and the printer's driver turns it into the codes that printer accepts. This is why installing new hardware usually means installing a driver, and why an operating system upgrade can break devices whose drivers were not updated.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Where does firmware fit between hardware and software? Give an example.",
+      "back": "Firmware is software stored permanently in read-only memory on the device itself, so it behaves like hardware but can sometimes be updated. The BIOS or UEFI on a motherboard is the standard example.",
+      "keyPoints": [
+        {
+          "text": "software held permanently on the device",
+          "synonyms": [
+            "stored in ROM",
+            "not on the main disk"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it can sometimes be updated",
+          "synonyms": [
+            "flashable",
+            "firmware updates"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "BIOS or UEFI is the standard example",
+          "synonyms": [
+            "boot firmware",
+            "router firmware"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Permanent software in ROM on the device, such as BIOS or UEFI",
+        "distractors": [
+          "Software installed on the hard disk by the manufacturer",
+          "Hardware that cannot ever be changed",
+          "Application software supplied with the device"
+        ]
+      },
+      "explanation": "Firmware is what runs before there is an operating system - the BIOS or UEFI performs the power-on self test and then loads the bootloader. Router firmware is a more familiar example of the updatable kind, and the security risk of unpatched firmware is precisely that it sits below the operating system where ordinary updates cannot reach it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Give three advantages of using a software library rather than writing the code yourself.",
+      "back": "The code is already written and tested, so development is faster; it is likely to be well tested and free of common errors; and maintenance is handled by others, so bug fixes and improvements arrive without extra effort.",
+      "keyPoints": [
+        {
+          "text": "development is faster",
+          "synonyms": [
+            "the code already exists",
+            "less to write"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is tested and reliable",
+          "synonyms": [
+            "fewer bugs",
+            "well tested by many users"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "maintenance and updates are handled by others",
+          "synonyms": [
+            "security fixes",
+            "improvements arrive for free"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Faster development, proven reliability, and maintenance by others",
+        "distractors": [
+          "Smaller files, faster execution and no documentation needed",
+          "No testing needed, no licensing and full control of the code",
+          "It always runs faster than hand-written code"
+        ]
+      },
+      "explanation": "The trade-offs are worth naming as well: a library adds a dependency, may be larger than needed, and its licence may restrict commercial use. A security fault in a widely used library affects every program that includes it, which is what happened in several high-profile supply-chain incidents.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "How do the freedoms granted by an open-source licence differ from the restrictions of a proprietary EULA?",
+      "back": "An open-source licence grants the right to read, modify and redistribute the source code, usually on condition that changes are shared under the same terms. A proprietary EULA grants only the right to run the program, and normally forbids copying, modifying and reverse engineering.",
+      "keyPoints": [
+        {
+          "text": "open source allows the source to be read and modified",
+          "synonyms": [
+            "source is available",
+            "can be changed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "open source allows redistribution",
+          "synonyms": [
+            "can be shared",
+            "often under the same licence"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a proprietary EULA grants only the right to run the software",
+          "synonyms": [
+            "use only",
+            "no right to the source"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a EULA normally forbids copying and reverse engineering",
+          "synonyms": [
+            "restrictions on modification"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Open source: read, modify, redistribute. EULA: run only, no copying or modification",
+        "distractors": [
+          "Open source: free of charge. EULA: paid",
+          "Open source: no support. EULA: full support",
+          "Both allow modification, but only one allows copying"
+        ]
+      },
+      "explanation": "The distinction is about rights, not price: open-source software can be sold and proprietary software can be given away free. Note that 'free to use' is not the same as open source - freeware usually ships without its source, so none of the four freedoms apply. Copyleft licences such as the GPL add the condition that derivative works stay under the same licence.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
     }
   ]
 }

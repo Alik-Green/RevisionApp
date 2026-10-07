@@ -163,6 +163,336 @@
         "computer-science",
         "component-02"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Decompose the problem 'design a vending machine' into four sub-problems.",
+      "back": "For example: taking and validating payment, selecting and dispensing the item, managing and restocking stock, and handling faults and giving change.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "payment handling",
+          "synonyms": [
+            "taking money",
+            "validating the payment"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "dispensing the chosen item",
+          "synonyms": [
+            "selection and delivery"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "stock management",
+          "synonyms": [
+            "tracking what is left",
+            "restocking"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "fault handling or change",
+          "synonyms": [
+            "refunds",
+            "error handling"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Decomposition is judged on whether the parts are genuinely separable and together cover the whole problem. The four listed have clean interfaces between them - payment does not need to know how the motor turns - which is the test of a good split. A decomposition where every part needs to know about every other part has not actually reduced the difficulty.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Give two examples of abstraction in everyday computing, and say what is hidden in each.",
+      "back": "A file system hides the physical sectors and blocks on the disk behind names and folders; a function interface hides its implementation behind a name, parameters and a return type.",
+      "keyPoints": [
+        {
+          "text": "a file system hides physical sectors",
+          "synonyms": [
+            "names and folders hide the hardware"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a function hides its implementation",
+          "synonyms": [
+            "the interface hides how it works"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a third valid example",
+          "synonyms": [
+            "the network stack",
+            "a map",
+            "a database query language"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A file system hides sectors; a function interface hides its implementation",
+        "distractors": [
+          "A file system hides files; a function hides its parameters",
+          "Abstraction only applies to hardware, not to programs",
+          "Abstraction means writing shorter programs"
+        ]
+      },
+      "explanation": "In both cases the user works with a simplified model and cannot get the details wrong, because the details are not exposed. Abstraction is what makes layers stackable: a program can use a file without knowing about the disk, and the disk driver can change without the program changing. Confusing abstraction with merely shortening code is a common misreading.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "What three properties must a set of instructions have to count as an algorithm?",
+      "back": "It must be unambiguous, finite - it must terminate - and it must have well defined inputs and outputs.",
+      "keyPoints": [
+        {
+          "text": "unambiguous",
+          "synonyms": [
+            "each step is precisely defined",
+            "no room for interpretation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "finite",
+          "synonyms": [
+            "it must terminate",
+            "it cannot run forever"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "well defined inputs and outputs",
+          "synonyms": [
+            "clear inputs",
+            "a clear result"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Unambiguous, finite, with defined inputs and outputs",
+        "distractors": [
+          "Fast, memory efficient and correct",
+          "Written in pseudocode, tested and documented",
+          "Recursive, iterative and terminating"
+        ]
+      },
+      "explanation": "An unambiguous procedure that never stops - such as repeatedly adding 1 to a counter - is a process but not an algorithm. Termination is the property most often forgotten, and it is the one that separates a specification from a recipe. Efficiency and correctness are desirable properties of a good algorithm but not part of the definition.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "How does pattern recognition help when designing a program to check whether a string is a palindrome?",
+      "back": "Recognising that a palindrome reads the same forwards and backwards means the same comparison - first against last, second against second-last - repeats with changing indices, so a single loop with two moving pointers solves it.",
+      "keyPoints": [
+        {
+          "text": "the same comparison repeats",
+          "synonyms": [
+            "a repeated structure",
+            "compare mirrored positions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "with different indices each time",
+          "synonyms": [
+            "the pattern has a changing index"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "so a loop with two pointers does the whole job",
+          "synonyms": [
+            "a single loop",
+            "two indices moving inwards"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The comparison repeats with changing indices, so one loop suffices",
+        "distractors": [
+          "Palindromes are always even in length, so the string can be halved",
+          "Every character must be compared with every other character",
+          "The string must be sorted before it can be checked"
+        ]
+      },
+      "explanation": "Spotting the repeated structure converts what looks like $\\frac{n^2}{2}$ comparisons into $n/2$ of them. This is the practical value of pattern recognition: it does not just make a program tidier, it usually changes its complexity. Comparing every character with every other would be correct but quadratic, and sorting would destroy the order that defines a palindrome.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "State four criteria you would use to evaluate two competing algorithms for the same task.",
+      "back": "Time complexity, space complexity, correctness across all inputs including edge cases, and ease of implementation or maintenance.",
+      "keyPoints": [
+        {
+          "text": "time complexity",
+          "synonyms": [
+            "speed",
+            "how long it takes"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "space complexity",
+          "synonyms": [
+            "memory use"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "correctness including edge cases",
+          "synonyms": [
+            "handles empty or extreme inputs"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "ease of implementation or maintenance",
+          "synonyms": [
+            "readability",
+            "how hard it is to write"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Time, space, correctness on edge cases, and maintainability",
+        "distractors": [
+          "Time only",
+          "Programming language, file size, comments and author",
+          "Speed of coding, speed of running, cost and popularity"
+        ]
+      },
+      "explanation": "Evaluating on time alone misses that a fast algorithm using $O(n^2)$ memory may not run at all on the available hardware, and misses that an algorithm failing on an empty list is simply wrong. The relative weight of the criteria depends on context: an embedded device weighs memory heavily, while a one-off script weighs implementation effort.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "A program must reject a password unless it is at least 8 characters long AND contains a digit OR contains a capital letter. Write the condition and say what a password of 5 characters with a digit does.",
+      "back": "`length >= 8 AND (hasDigit OR hasCapital)`. A 5-character password with a digit is rejected, because the length condition fails.",
+      "keyPoints": [
+        {
+          "text": "length >= 8 AND (hasDigit OR hasCapital)",
+          "synonyms": [
+            "the brackets matter",
+            "AND binds the length test to the rest"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a 5-character password with a digit is rejected",
+          "synonyms": [
+            "the length condition fails",
+            "rejected"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Rejected: `length >= 8 AND (hasDigit OR hasCapital)` fails on length",
+        "distractors": [
+          "Accepted: it contains a digit",
+          "Rejected only if it has no capital as well",
+          "Accepted: 5 is close enough to 8"
+        ]
+      },
+      "explanation": "Without brackets, `length >= 8 AND hasDigit OR hasCapital` would accept a 3-character password containing a capital, since OR has the lower precedence. Bracketing the OR is what makes the length requirement unconditional. Writing the condition out and testing one boundary case against it is the fastest way to catch this class of error.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "How does generalisation differ from abstraction?",
+      "back": "Generalisation takes several specific cases and produces one rule covering them all; abstraction removes detail that is not needed for the task at hand.",
+      "keyPoints": [
+        {
+          "text": "generalisation combines specific cases into one rule",
+          "synonyms": [
+            "several examples become one statement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "abstraction removes unnecessary detail",
+          "synonyms": [
+            "hides what is irrelevant",
+            "simplifies"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "they are different processes",
+          "synonyms": [
+            "not the same thing"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Generalisation combines cases into one rule; abstraction removes irrelevant detail",
+        "distractors": [
+          "They mean the same thing",
+          "Generalisation removes detail; abstraction combines cases",
+          "Generalisation applies to data and abstraction only to hardware"
+        ]
+      },
+      "explanation": "Seeing that squares, rectangles and triangles all have an area, and writing one routine that takes a shape, is generalisation. Drawing a map that omits the colour of the buildings is abstraction. The two often happen together, which is why they are confused - but a routine can be fully general while still exposing every unnecessary detail.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
     }
   ]
 }

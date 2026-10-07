@@ -174,6 +174,354 @@
         "physics",
         "m4"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Calculate the energy of a photon of green light of wavelength 550 nm, in joules and in electronvolts.",
+      "back": "$3.6 \\times 10^{-19}\\,\\mathrm{J}$, which is $2.3\\,\\mathrm{eV}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "E = hc / lambda",
+          "synonyms": [
+            "use the wavelength form of the photon energy"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3.6 x 10^-19 J",
+          "synonyms": [
+            "about 3.62 x 10^-19 J"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2.3 eV",
+          "synonyms": [
+            "divide by 1.60 x 10^-19 to convert"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$3.6 \\times 10^{-19}\\,\\mathrm{J}$, $2.3\\,\\mathrm{eV}$",
+        "distractors": [
+          "$3.6 \\times 10^{-19}\\,\\mathrm{J}$, $2.3 \\times 10^{-19}\\,\\mathrm{eV}$",
+          "$1.1 \\times 10^{-27}\\,\\mathrm{J}$, $2.3\\,\\mathrm{eV}$",
+          "$3.6 \\times 10^{-19}\\,\\mathrm{J}$, $5.8\\,\\mathrm{eV}$"
+        ]
+      },
+      "explanation": "$E = \\frac{hc}{\\lambda} = \\frac{6.63 \\times 10^{-34} \\times 3.00 \\times 10^{8}}{550 \\times 10^{-9}} = 3.62 \\times 10^{-19}\\,\\mathrm{J}$. Dividing by $1.60 \\times 10^{-19}$ gives $2.26\\,\\mathrm{eV}$. Visible photons are of order a few electronvolts, which is a scale worth having in mind: it is why the electronvolt is the natural unit for atomic transitions and why a joule is an absurdly large one.",
+      "numeric": {
+        "value": 3.62e-19,
+        "tolerance": 1e-20
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A metal has a work function of $3.0 \\times 10^{-19}\\,\\mathrm{J}$. Calculate its threshold frequency.",
+      "back": "$4.5 \\times 10^{14}\\,\\mathrm{Hz}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "threshold frequency is when the photon energy just equals the work function",
+          "synonyms": [
+            "hf = phi"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f = phi / h",
+          "synonyms": [
+            "divide the work function by Planck's constant"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "4.5 x 10^14 Hz",
+          "synonyms": [
+            "about 4.52 x 10^14 Hz"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$4.5 \\times 10^{14}\\,\\mathrm{Hz}$",
+        "distractors": [
+          "$2.0 \\times 10^{-53}\\,\\mathrm{Hz}$",
+          "$4.5 \\times 10^{14}\\,\\mathrm{eV}$",
+          "$1.9 \\times 10^{-15}\\,\\mathrm{Hz}$"
+        ]
+      },
+      "explanation": "At the threshold the emitted electron has zero kinetic energy, so $hf_0 = \\phi$ and $f_0 = \\frac{3.0 \\times 10^{-19}}{6.63 \\times 10^{-34}} = 4.52 \\times 10^{14}\\,\\mathrm{Hz}$. Below this frequency no electrons are emitted at all, however intense the light - the observation that classical wave theory cannot explain, and the reason Einstein's photon model was needed.",
+      "numeric": {
+        "value": 452000000000000.0,
+        "tolerance": 10000000000000.0
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Radiation of frequency $1.0 \\times 10^{15}\\,\\mathrm{Hz}$ falls on a metal of work function $3.0 \\times 10^{-19}\\,\\mathrm{J}$. Find the maximum kinetic energy of the emitted electrons.",
+      "back": "$3.6 \\times 10^{-19}\\,\\mathrm{J}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "hf = work function + maximum kinetic energy",
+          "synonyms": [
+            "Einstein's photoelectric equation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "hf = 6.63 x 10^-19 J",
+          "synonyms": [
+            "the photon energy first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "subtract the work function to get 3.63 x 10^-19 J",
+          "synonyms": [
+            "about 3.6 x 10^-19 J"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$3.6 \\times 10^{-19}\\,\\mathrm{J}$",
+        "distractors": [
+          "$6.6 \\times 10^{-19}\\,\\mathrm{J}$",
+          "$9.6 \\times 10^{-19}\\,\\mathrm{J}$",
+          "$2.3\\,\\mathrm{J}$"
+        ]
+      },
+      "explanation": "$hf = 6.63 \\times 10^{-34} \\times 10^{15} = 6.63 \\times 10^{-19}\\,\\mathrm{J}$, and subtracting the work function gives $3.63 \\times 10^{-19}\\,\\mathrm{J}$, or about $2.3\\,\\mathrm{eV}$. This is the maximum, not the typical value: electrons from below the surface lose energy on the way out, so only those at the very surface emerge with the full amount.",
+      "numeric": {
+        "value": 3.63e-19,
+        "tolerance": 1e-20
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Calculate the de Broglie wavelength of an electron moving at $2.0 \\times 10^{6}\\,\\mathrm{m\\,s^{-1}}$.",
+      "back": "$3.6 \\times 10^{-10}\\,\\mathrm{m}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "lambda = h / p = h / (mv)",
+          "synonyms": [
+            "momentum is mass times velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "p = 1.82 x 10^-24 kg m s^-1",
+          "synonyms": [
+            "the momentum first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3.6 x 10^-10 m",
+          "synonyms": [
+            "about 0.36 nm",
+            "comparable with atomic spacing"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$3.6 \\times 10^{-10}\\,\\mathrm{m}$",
+        "distractors": [
+          "$3.6 \\times 10^{-16}\\,\\mathrm{m}$",
+          "$1.2 \\times 10^{-39}\\,\\mathrm{m}$",
+          "$3.6 \\times 10^{-4}\\,\\mathrm{m}$"
+        ]
+      },
+      "explanation": "$p = 9.11 \\times 10^{-31} \\times 2.0 \\times 10^{6} = 1.82 \\times 10^{-24}\\,\\mathrm{kg\\,m\\,s^{-1}}$, so $\\lambda = \\frac{6.63 \\times 10^{-34}}{1.82 \\times 10^{-24}} = 3.64 \\times 10^{-10}\\,\\mathrm{m}$. That this is the same order as the spacing between atoms in a crystal is exactly why electron diffraction works, and why an electron microscope resolves far finer detail than a light one.",
+      "numeric": {
+        "value": 3.64e-10,
+        "tolerance": 1e-11
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "How do an emission line spectrum and an absorption line spectrum of the same element differ, and what produces each?",
+      "back": "Emission is bright lines on a dark background, produced when electrons fall between levels and emit photons. Absorption is dark lines on a continuous background, produced when electrons absorb photons of exactly those energies.",
+      "keyPoints": [
+        {
+          "text": "emission: bright lines on a dark background",
+          "synonyms": [
+            "photons are emitted"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "absorption: dark lines on a continuous spectrum",
+          "synonyms": [
+            "photons are removed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "electrons falling produce emission and rising produce absorption",
+          "synonyms": [
+            "the same transitions either way"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the lines appear at the same wavelengths",
+          "synonyms": [
+            "the same energy differences"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Bright lines from falling electrons; dark lines where photons are absorbed, at the same wavelengths",
+        "distractors": [
+          "Dark lines from falling electrons; bright lines where photons are absorbed",
+          "Emission is continuous and absorption is a line spectrum",
+          "They are the same pattern, differing only in brightness"
+        ]
+      },
+      "explanation": "The lines coincide because the same energy differences are involved, just traversed in opposite directions. Absorption lines appear only for transitions starting from populated levels, which at ordinary temperatures means the ground state, so an absorption spectrum usually shows fewer lines than the emission spectrum of the same element.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "An electron falls between levels of $-1.5\\,\\mathrm{eV}$ and $-3.4\\,\\mathrm{eV}$. Find the energy of the photon emitted, in joules.",
+      "back": "$3.0 \\times 10^{-19}\\,\\mathrm{J}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "the photon energy is the difference between the levels",
+          "synonyms": [
+            "3.4 - 1.5 = 1.9 eV"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1.9 eV",
+          "synonyms": [
+            "the energy difference in electronvolts"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3.0 x 10^-19 J",
+          "synonyms": [
+            "multiply by 1.60 x 10^-19 to convert"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$3.0 \\times 10^{-19}\\,\\mathrm{J}$",
+        "distractors": [
+          "$4.9 \\times 10^{-19}\\,\\mathrm{J}$",
+          "$7.8 \\times 10^{-38}\\,\\mathrm{J}$",
+          "$1.9\\,\\mathrm{J}$"
+        ]
+      },
+      "explanation": "The energy difference is $3.4 - 1.5 = 1.9\\,\\mathrm{eV}$, and $1.9 \\times 1.60 \\times 10^{-19} = 3.04 \\times 10^{-19}\\,\\mathrm{J}$. Level energies are negative because they are measured from the ionisation level at zero, so subtracting two negatives gives a positive photon energy. The second distractor adds the magnitudes instead of taking the difference.",
+      "numeric": {
+        "value": 3.04e-19,
+        "tolerance": 1e-20
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "State two observations of the photoelectric effect that a classical wave model of light cannot explain.",
+      "back": "That no electrons are emitted below a threshold frequency however intense the light, and that the maximum kinetic energy depends on frequency rather than intensity. Emission is also instantaneous.",
+      "keyPoints": [
+        {
+          "text": "no emission below a threshold frequency",
+          "synonyms": [
+            "intensity cannot compensate for low frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "maximum kinetic energy depends on frequency, not intensity",
+          "synonyms": [
+            "brighter light does not give faster electrons"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "emission is instantaneous",
+          "synonyms": [
+            "no delay while energy accumulates"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Threshold frequency, and kinetic energy depending on frequency not intensity",
+        "distractors": [
+          "Emission depends on intensity, and there is a measurable delay",
+          "Electrons are emitted at all frequencies, and energy depends on intensity",
+          "The number of electrons depends on frequency, and their energy on intensity"
+        ]
+      },
+      "explanation": "Classically, energy arrives continuously, so a dim light of any frequency should eventually supply enough energy to free an electron - it would merely take longer. Neither prediction is observed. Einstein's model, in which energy arrives in packets of $hf$, explains both at once: a single photon below the threshold simply cannot free an electron, and a photon above it hands over $hf - \\phi$ immediately.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.5.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
     }
   ]
 }

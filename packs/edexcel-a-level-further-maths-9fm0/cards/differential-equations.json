@@ -161,6 +161,348 @@
         "further-maths",
         "core-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Solve $\\frac{dy}{dx} = x^2 y$ given that $y = 3$ when $x = 0$.",
+      "back": "$y = 3e^{x^3/3}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "separate the variables",
+          "synonyms": [
+            "dy/y = x^2 dx"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "ln|y| = x^3/3 + c",
+          "synonyms": [
+            "integrate both sides"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "c = ln 3 from the initial condition",
+          "synonyms": [
+            "y = 3 when x = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = 3e^(x^3/3)",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$y = 3e^{x^3/3}$",
+        "distractors": [
+          "$y = 3e^{x^3}$",
+          "$y = e^{x^3/3} + 3$",
+          "$y = 3e^{x^2/2}$"
+        ]
+      },
+      "explanation": "Separating gives $\\frac{dy}{y} = x^2\\,dx$, so $\\ln|y| = \\frac{x^3}{3} + c$ and $y = Ae^{x^3/3}$. The condition $y = 3$ at $x = 0$ gives $A = 3$. Check by differentiation: $\\frac{dy}{dx} = 3e^{x^3/3} \\times x^2 = x^2 y$. The answer $3e^{x^3}$ forgets to divide by 3 when integrating $x^2$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Find the general solution of $\\frac{dy}{dx} + 2y = e^{-x}$.",
+      "back": "$y = e^{-x} + Ce^{-2x}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the integrating factor is e^(2x)",
+          "synonyms": [
+            "e to the integral of 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "d/dx (y e^(2x)) = e^x",
+          "synonyms": [
+            "multiply through and recognise the product rule in reverse"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y e^(2x) = e^x + C",
+          "synonyms": [
+            "integrate both sides"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = e^-x + C e^-2x",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$y = e^{-x} + Ce^{-2x}$",
+        "distractors": [
+          "$y = e^{-x} + Ce^{2x}$",
+          "$y = -e^{-x} + Ce^{-2x}$",
+          "$y = e^{x} + Ce^{-2x}$"
+        ]
+      },
+      "explanation": "The integrating factor is $e^{\\int 2\\,dx} = e^{2x}$. Multiplying gives $\\frac{d}{dx}(ye^{2x}) = e^{x}$, so $ye^{2x} = e^x + C$ and $y = e^{-x} + Ce^{-2x}$. Check: $\\frac{dy}{dx} + 2y = (-e^{-x} - 2Ce^{-2x}) + 2(e^{-x} + Ce^{-2x}) = e^{-x}$. The sign on $Ce^{2x}$ is the usual slip - the complementary function always decays or grows according to the sign of the coefficient of $y$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Find the general solution of $\\frac{d^2y}{dx^2} + 5\\frac{dy}{dx} + 6y = 0$.",
+      "back": "$y = Ae^{-2x} + Be^{-3x}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the auxiliary equation is m^2 + 5m + 6 = 0",
+          "synonyms": [
+            "substitute y = e^(mx)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "m = -2 and m = -3",
+          "synonyms": [
+            "factorise as (m + 2)(m + 3)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = A e^-2x + B e^-3x",
+          "synonyms": [
+            "two arbitrary constants for a second order equation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$y = Ae^{-2x} + Be^{-3x}$",
+        "distractors": [
+          "$y = Ae^{2x} + Be^{3x}$",
+          "$y = (A + Bx)e^{-2x}$",
+          "$y = e^{-2x}(A\\cos 3x + B\\sin 3x)$"
+        ]
+      },
+      "explanation": "Substituting $y = e^{mx}$ gives the auxiliary equation $m^2 + 5m + 6 = 0$, so $(m + 2)(m + 3) = 0$ and $m = -2, -3$. Distinct real roots give two exponential terms with independent constants. The third option is the form for a repeated root and the fourth for complex roots, so the shape of the solution is decided entirely by the discriminant of the auxiliary equation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Solve $\\frac{d^2y}{dx^2} + 4y = 0$ given $y = 1$ and $\\frac{dy}{dx} = 6$ when $x = 0$.",
+      "back": "$y = \\cos 2x + 3\\sin 2x$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the auxiliary equation m^2 + 4 = 0 gives m = plus or minus 2i",
+          "synonyms": [
+            "complex roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = A cos 2x + B sin 2x",
+          "synonyms": [
+            "the general solution for purely imaginary roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A = 1 from y(0) = 1",
+          "synonyms": [
+            "the cosine coefficient"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "B = 3 from y'(0) = 6",
+          "synonyms": [
+            "differentiate to get 2B = 6"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$y = \\cos 2x + 3\\sin 2x$",
+        "distractors": [
+          "$y = \\cos 2x + 6\\sin 2x$",
+          "$y = \\cos 2x + 3\\sin x$",
+          "$y = 3\\cos 2x + \\sin 2x$"
+        ]
+      },
+      "explanation": "$m^2 + 4 = 0$ gives $m = \\pm 2i$, so $y = A\\cos 2x + B\\sin 2x$. Then $y(0) = A = 1$, and $\\frac{dy}{dx} = -2A\\sin 2x + 2B\\cos 2x$ gives $\\frac{dy}{dx}(0) = 2B = 6$, so $B = 3$. The factor 2 in the derivative is what makes the answer $3\\sin 2x$ rather than $6\\sin 2x$ - the most common error with a trigonometric complementary function.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Find a particular integral for $\\frac{d^2y}{dx^2} - 3\\frac{dy}{dx} + 2y = 4e^{3x}$.",
+      "back": "$y = 2e^{3x}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "try y = k e^(3x)",
+          "synonyms": [
+            "the right hand side is exponential"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "substituting gives 9k - 9k + 2k = 4",
+          "synonyms": [
+            "collect the coefficients"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k = 2, so the PI is 2e^(3x)",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2e^{3x}$",
+        "distractors": [
+          "$e^{3x}$",
+          "$4e^{3x}$",
+          "$2xe^{3x}$"
+        ]
+      },
+      "explanation": "Try $y = ke^{3x}$. Then $y' = 3ke^{3x}$ and $y'' = 9ke^{3x}$, so $9k - 9k + 2k = 4$ and $k = 2$. The $e^{3x}$ terms cancel between the first two, which is a coincidence worth noticing rather than a sign of error. Multiplying by $x$, as in the fourth option, is only needed when the trial form is already part of the complementary function - here $m = 3$ is not a root of $m^2 - 3m + 2 = 0$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Find the general solution of $\\frac{d^2y}{dx^2} + 2\\frac{dy}{dx} + 5y = 0$.",
+      "back": "$y = e^{-x}(A\\cos 2x + B\\sin 2x)$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "m^2 + 2m + 5 = 0 has complex roots",
+          "synonyms": [
+            "the discriminant is negative"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "m = -1 plus or minus 2i",
+          "synonyms": [
+            "complete the square or use the formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the exponential factor e^-x multiplies both trig terms",
+          "synonyms": [
+            "y = e^-x (A cos 2x + B sin 2x)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$y = e^{-x}(A\\cos 2x + B\\sin 2x)$",
+        "distractors": [
+          "$y = e^{x}(A\\cos 2x + B\\sin 2x)$",
+          "$y = A\\cos 2x + B\\sin 2x$",
+          "$y = e^{-x}(A\\cos 5x + B\\sin 5x)$"
+        ]
+      },
+      "explanation": "The discriminant is $4 - 20 = -16$, so $m = \\frac{-2 \\pm 4i}{2} = -1 \\pm 2i$. For roots $\\alpha \\pm \\beta i$ the general solution is $e^{\\alpha x}(A\\cos\\beta x + B\\sin\\beta x)$, giving $e^{-x}(A\\cos 2x + B\\sin 2x)$. The real part sets the decay and the imaginary part sets the frequency; dropping the $e^{-x}$ loses the damping entirely.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A cup of coffee in a room at $20^\\circ$C obeys $\\frac{dT}{dt} = -k(T - 20)$. It is $100^\\circ$C initially and $60^\\circ$C after 10 minutes. Find its temperature after 20 minutes.",
+      "back": "$40^\\circ$C",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "T - 20 = 80 e^(-kt)",
+          "synonyms": [
+            "solve the differential equation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "e^(-10k) = 1/2 from the 10 minute reading",
+          "synonyms": [
+            "40 = 80 e^(-10k)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "after 20 minutes T - 20 = 80/4 = 20",
+          "synonyms": [
+            "square the half-life factor"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "40",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$40^\\circ$C",
+        "distractors": [
+          "$20^\\circ$C",
+          "$50^\\circ$C",
+          "$30^\\circ$C"
+        ]
+      },
+      "explanation": "Solving gives $T - 20 = 80e^{-kt}$. At $t = 10$, $40 = 80e^{-10k}$, so $e^{-10k} = \\frac{1}{2}$. At $t = 20$, $e^{-20k} = \\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4}$, so $T - 20 = 20$ and $T = 40$. The excess temperature halves every 10 minutes; the answer $50^\\circ$C comes from assuming the temperature itself, rather than the excess over the room, falls by a constant amount each 10 minutes.",
+      "numeric": {
+        "value": 40,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Differential equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
     }
   ]
 }

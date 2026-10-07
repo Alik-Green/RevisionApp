@@ -171,6 +171,335 @@
         "computer-science",
         "component-02"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "How many comparisons does bubble sort make in the worst case on a list of 8 items, and how many passes is that?",
+      "back": "28 comparisons, over 7 passes: $\\frac{n(n-1)}{2} = \\frac{8 \\times 7}{2}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "28 comparisons",
+          "synonyms": [
+            "twenty-eight"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n(n-1)/2 = 28",
+          "synonyms": [
+            "the triangular number formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "7 passes",
+          "synonyms": [
+            "n - 1 passes",
+            "one fewer pass than items"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "28 comparisons over 7 passes",
+        "distractors": [
+          "28 comparisons over 8 passes",
+          "64 comparisons over 8 passes",
+          "56 comparisons over 7 passes"
+        ]
+      },
+      "explanation": "On the first pass 7 comparisons are made, on the second 6, and so on down to 1, giving $7 + 6 + \\ldots + 1 = 28$. This assumes the optimised version that does not re-examine the largest element already bubbled to the end. The answer 64 is $n^2$, which is the right order of growth but not the exact count - the distinction matters when a question asks how many.",
+      "numeric": {
+        "value": 28,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What is the space complexity of merge sort, and why does it need it?",
+      "back": "$O(n)$, because the two halves are merged into a separate array before being copied back.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "O(n)",
+          "synonyms": [
+            "linear extra space"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the merged result needs a separate array",
+          "synonyms": [
+            "a temporary array",
+            "extra storage for merging"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is not an in-place sort",
+          "synonyms": [
+            "unlike insertion or bubble sort"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$O(n)$: merging needs a temporary array",
+        "distractors": [
+          "$O(1)$: it sorts in place",
+          "$O(\\log n)$: only the recursion stack",
+          "$O(n \\log n)$: one array per level"
+        ]
+      },
+      "explanation": "Merging two sorted halves into order cannot be done in place without extra storage, so merge sort needs an array the size of the input. The recursion stack adds only $O(\\log n)$, which the $O(n)$ term dominates. This is the standard trade-off to quote: merge sort buys its guaranteed $O(n \\log n)$ worst case with linear extra memory.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Describe quick sort and state why its worst case is worse than merge sort's.",
+      "back": "A pivot is chosen, the list is partitioned into items below and above it, and each side is sorted recursively. The worst case is $O(n^2)$, which happens when the pivot is repeatedly the smallest or largest item, giving partitions of size $n - 1$ and 0.",
+      "keyPoints": [
+        {
+          "text": "choose a pivot and partition the list",
+          "synonyms": [
+            "split into two sides of the pivot"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "sort each side recursively",
+          "synonyms": [
+            "divide and conquer"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "worst case is O(n^2)",
+          "synonyms": [
+            "quadratic in the worst case"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it happens when the pivot is always an extreme value",
+          "synonyms": [
+            "already sorted list with first element as pivot",
+            "one partition is empty"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$O(n^2)$ when the pivot is repeatedly an extreme, giving one empty partition",
+        "distractors": [
+          "$O(n^2)$ because it uses $O(n)$ extra memory",
+          "It has no worst case better than merge sort",
+          "$O(n \\log n)$ always, like merge sort"
+        ]
+      },
+      "explanation": "The classic trigger is taking the first element as the pivot on an already sorted list: each partition puts $n - 1$ items on one side and nothing on the other, so the recursion is $n$ deep and the work is $1 + 2 + \\ldots + n$. Choosing the pivot at random, or using the median of three, makes this very unlikely, which is why quick sort is usually the faster choice in practice despite the worse bound.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "When does insertion sort run in $O(n)$ time, and why is that useful?",
+      "back": "When the list is already sorted or nearly so, because each item is compared with only the few before it and makes almost no swaps. It is why real sorting libraries switch to insertion sort for small or nearly sorted sections.",
+      "keyPoints": [
+        {
+          "text": "when the data is already sorted or nearly sorted",
+          "synonyms": [
+            "few inversions",
+            "almost in order"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each item moves only a short distance",
+          "synonyms": [
+            "few comparisons and swaps per item"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "libraries use it for small sections",
+          "synonyms": [
+            "combined with merge or quick sort",
+            "hybrid sorts"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "On sorted or nearly sorted data, because items barely move",
+        "distractors": [
+          "On randomly ordered data of any size",
+          "When the list has fewer than 10 items, always",
+          "Never; insertion sort is always $O(n^2)$"
+        ]
+      },
+      "explanation": "In the best case each item is compared once with the item before it and swapped not at all, giving $n - 1$ comparisons. The number of swaps equals the number of inversions in the input, which is what makes insertion sort adaptive - its cost tracks how disordered the data actually is. Merge sort does not have this property and takes the same time on sorted data as on random data.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Which of bubble sort, insertion sort, merge sort and quick sort are stable, and why does stability matter?",
+      "back": "Bubble, insertion and merge sort are stable; quick sort is not. Stability matters when sorting on more than one key, so that the order established by an earlier key is preserved.",
+      "keyPoints": [
+        {
+          "text": "bubble, insertion and merge sort are stable",
+          "synonyms": [
+            "equal items keep their relative order"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "quick sort is not stable",
+          "synonyms": [
+            "partitioning can swap equal items past each other"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "stability matters for multi-key sorting",
+          "synonyms": [
+            "preserves the previous order",
+            "sort by surname then forename"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Bubble, insertion and merge stable; quick sort not",
+        "distractors": [
+          "All four are stable",
+          "Only merge sort is stable",
+          "Bubble and quick stable; insertion and merge not"
+        ]
+      },
+      "explanation": "Stability means two records judged equal keep the order they started in. Sorting a list of people by forename and then by surname with a stable sort leaves them ordered by surname and, within each surname, by forename - the reverse order of sorting works only if the sort is stable. Quicksort's long-distance swaps break this.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "You must sort a list of 30 items that is usually almost in order. Which sort would you choose, and why?",
+      "back": "Insertion sort. On nearly sorted data it runs close to $O(n)$, it needs no extra memory and its simplicity makes it easy to implement correctly for so small a list.",
+      "keyPoints": [
+        {
+          "text": "insertion sort",
+          "synonyms": [
+            "the right choice"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is near linear on nearly sorted data",
+          "synonyms": [
+            "adaptive",
+            "almost in order is its best case"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is in place and simple",
+          "synonyms": [
+            "no extra memory",
+            "easy to get right for a small list"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Insertion sort: near-linear on nearly sorted data, in place and simple",
+        "distractors": [
+          "Merge sort: always $O(n \\log n)$",
+          "Quick sort: fastest in the average case",
+          "Bubble sort: simplest to implement"
+        ]
+      },
+      "explanation": "The asymptotic advantage of $O(n \\log n)$ does not pay off at $n = 30$, where the constant factors and the extra memory of merge sort cost more than they save. This is exactly the reasoning behind hybrid sorts, which use insertion sort below a threshold of a few dozen items. Choosing an algorithm is a decision about the data and the size, not only about the complexity class.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Trace one pass of insertion sort on the list 7, 3, 5, 1, starting from the second item.",
+      "back": "Take 3: it is less than 7, so 7 moves up and 3 goes first, giving 3, 7, 5, 1. The sorted region now holds 3 and 7.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the item being inserted is 3",
+          "synonyms": [
+            "start at the second item"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "7 shifts one place to the right",
+          "synonyms": [
+            "make room by shifting"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the list becomes 3, 7, 5, 1",
+          "synonyms": [
+            "3 is placed before 7"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Insertion sort keeps a sorted region on the left and grows it one item at a time by shifting larger items right until a gap opens. Completing it: 5 is inserted before 7 to give 3, 5, 7, 1, then 1 shifts all three up to give 1, 3, 5, 7. Notice that items shift rather than swap, which is what makes the best case $O(n)$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
     }
   ]
 }

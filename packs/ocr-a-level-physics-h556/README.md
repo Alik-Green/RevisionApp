@@ -28,9 +28,16 @@ downloaded from the sandbox this content was authored in.
 
 ## Structure
 
-Physics > Module > sub-topic. Card files are one per leaf sub-topic, five cards
-each, mixing definitions, equations with units, "explain why" questions, worked
-numerics and the misconceptions students most often fall into.
+Physics > Module > sub-topic. Card files are one per leaf sub-topic, twelve
+cards each, 156 in total, mixing definitions, equations with units, "explain why"
+questions, worked numerics and the misconceptions students most often fall into.
+
+Cards 0001 to 0005 in each file are the original definitions and standard
+calculations. Cards 0006 to 0012 were added later and carry more of the load:
+multi-step calculations, derivations from the defining equation, questions that
+ask why a model works and where it breaks down, and the sign and unit errors that
+cost marks. Every numerical answer was checked against an independent calculation
+before it was written in.
 
 Tags: `board = OCR`, `level = A Level`, `subject = Physics`, plus a `module`
 group so a whole module can be selected at once.

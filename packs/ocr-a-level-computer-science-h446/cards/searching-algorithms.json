@@ -179,6 +179,315 @@
         "computer-science",
         "component-02"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Trace binary search for the value 17 in the sorted list 2, 5, 8, 12, 17, 21, 30, 44.",
+      "back": "Low 0, high 7, mid 3 (12): 17 is greater, so low becomes 4. Mid 5 (21): 17 is smaller, so high becomes 4. Mid 4 (17): found after 3 comparisons.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the first midpoint is index 3, value 12",
+          "synonyms": [
+            "mid = (0 + 7) / 2 = 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "17 is greater than 12 so the search moves to the upper half",
+          "synonyms": [
+            "low becomes 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the value is found at index 4",
+          "synonyms": [
+            "found after three comparisons"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The three comparisons are well inside the worst case of $\\lceil\\log_2 8\\rceil = 3$ for a list of this size. Note that the midpoint is recomputed from the current low and high at every step rather than carried forward, and that the loop ends either on a match or when low passes high - both conditions must be handled or the search loops forever.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What is the maximum number of comparisons binary search needs on a sorted list of 1,000,000 items?",
+      "back": "20",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "20",
+          "synonyms": [
+            "twenty comparisons"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "log base 2 of 1000000 is about 19.93",
+          "synonyms": [
+            "round up to the next whole comparison"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each comparison halves the remaining items",
+          "synonyms": [
+            "2^20 is just over a million"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "20",
+        "distractors": [
+          "10",
+          "19",
+          "1000"
+        ]
+      },
+      "explanation": "Each comparison halves the range, so $k$ comparisons cover $2^k$ items. Since $2^{19} = 524288$ and $2^{20} = 1048576$, twenty comparisons are needed. The contrast with linear search is the point: a million items need a million comparisons linearly and twenty by binary search.",
+      "numeric": {
+        "value": 20,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the worst-case and average number of comparisons linear search makes on a list of $n$ items.",
+      "back": "Worst case $n$ comparisons; on average about $\\frac{n}{2}$ when the item is present.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "worst case is n comparisons",
+          "synonyms": [
+            "the item is last or not present"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "average is about n/2",
+          "synonyms": [
+            "half the list on average",
+            "n over 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Worst case $n$, average $\\frac{n}{2}$",
+        "distractors": [
+          "Worst case $n$, average $n$",
+          "Worst case $\\frac{n}{2}$, average $\\frac{n}{4}$",
+          "Worst case $\\log n$, average $n$"
+        ]
+      },
+      "explanation": "If the item is equally likely to be anywhere, the expected position is the middle, so about $\\frac{n}{2}$ comparisons; if it is absent, all $n$ are made. Both figures are $O(n)$, which is why the average case does not change the complexity class - it only halves the constant. Quoting the worst case alone leaves the average unaddressed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Binary search is faster than linear search, so why is it unsuitable for a singly linked list?",
+      "back": "Binary search needs random access to jump to the middle, and reaching the middle of a linked list means walking from the start, which costs $O(n)$ and removes the advantage.",
+      "keyPoints": [
+        {
+          "text": "binary search needs random access",
+          "synonyms": [
+            "must jump to the midpoint directly"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a linked list can only be traversed from the start",
+          "synonyms": [
+            "sequential access only",
+            "no direct indexing"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "finding the middle costs O(n), so the advantage is lost",
+          "synonyms": [
+            "no faster than linear search"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Linked lists have no random access, so reaching the midpoint costs $O(n)$",
+        "distractors": [
+          "Linked lists cannot store sorted data",
+          "Binary search needs more memory than a linked list has",
+          "Linked lists are always too short for binary search"
+        ]
+      },
+      "explanation": "The $O(\\log n)$ bound assumes the midpoint can be reached in constant time, which is true of an array and false of a linked list. Walking to the middle each time makes each step $O(n)$ and the whole search $O(n \\log n)$ - worse than the $O(n)$ linear search it was meant to replace. Data structure and algorithm have to be chosen together.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What is the maximum number of comparisons binary search needs on a sorted list of 20 items?",
+      "back": "5",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "5",
+          "synonyms": [
+            "five comparisons"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2^4 = 16 is not enough but 2^5 = 32 is",
+          "synonyms": [
+            "round log base 2 of 20 up to 5"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "5",
+        "distractors": [
+          "4",
+          "10",
+          "20"
+        ]
+      },
+      "explanation": "$\\log_2 20 \\approx 4.32$, and since a fraction of a comparison is not possible the answer rounds up to 5. Checking with powers of two is quicker than a calculator: $2^4 = 16$ covers fewer than 20 items, so four comparisons are not enough, while $2^5 = 32$ covers them comfortably. The answer 4 comes from rounding down.",
+      "numeric": {
+        "value": 5,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "In binary search, why is the midpoint usually written `low + (high - low) // 2` rather than `(low + high) // 2`?",
+      "back": "They give the same result mathematically, but the first cannot overflow when `low + high` exceeds the largest representable integer.",
+      "keyPoints": [
+        {
+          "text": "the two are mathematically equal",
+          "synonyms": [
+            "they compute the same midpoint"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(low + high) can overflow",
+          "synonyms": [
+            "the sum may exceed the maximum integer"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "low + (high - low) // 2 avoids the overflow",
+          "synonyms": [
+            "the subtraction keeps the value small"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "To avoid overflow when `low + high` exceeds the maximum integer",
+        "distractors": [
+          "It is faster to compute",
+          "It gives a different, more accurate midpoint",
+          "It is required by the language standard"
+        ]
+      },
+      "explanation": "This was a real and famous bug: for many years the binary search in the Java standard library used `(low + high) / 2` and silently failed on arrays of more than about a billion elements. With 64-bit indices the overflow is far harder to reach, but the safe form costs nothing. It is a good example of an algorithm being correct on paper and wrong on a machine.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "How does hashing support fast searching, and what happens when two keys hash to the same place?",
+      "back": "A hash function maps a key to an index so a record can be found directly in $O(1)$ on average. A collision is resolved by probing for the next free slot or by chaining the records in a list at that slot.",
+      "keyPoints": [
+        {
+          "text": "a hash function maps the key to an index",
+          "synonyms": [
+            "computed position",
+            "direct lookup"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "average O(1) lookup",
+          "synonyms": [
+            "constant time on average"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "collisions are handled by probing or chaining",
+          "synonyms": [
+            "open addressing",
+            "a linked list at the slot"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A hash gives the position directly in $O(1)$ on average; collisions use probing or chaining",
+        "distractors": [
+          "A hash sorts the data so binary search can be used",
+          "A hash compresses the data so it is smaller to search",
+          "Collisions cannot occur if the hash function is good"
+        ]
+      },
+      "explanation": "Collisions are unavoidable once there are more possible keys than slots, so a good hash function only makes them rare rather than impossible. Chaining keeps lookup $O(1)$ on average but degrades to $O(n)$ if every key collides, which is why load factor matters. Hashing also destroys ordering, so it cannot answer range queries - a binary search tree can.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
     }
   ]
 }

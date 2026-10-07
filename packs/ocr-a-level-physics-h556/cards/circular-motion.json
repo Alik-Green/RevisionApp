@@ -267,6 +267,353 @@
         "physics",
         "m5"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A 0.50 kg mass on a 0.80 m string is whirled at 3.0 revolutions per second. Find the tension in the string.",
+      "back": "140 N",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "convert revolutions per second to angular velocity",
+          "synonyms": [
+            "omega = 2 pi f = 18.8 rad/s"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "F = m omega^2 r",
+          "synonyms": [
+            "use the angular form of the centripetal force"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "140 N",
+          "synonyms": [
+            "about 142 N"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "140 N",
+        "distractors": [
+          "18 N",
+          "71 N",
+          "28 N"
+        ]
+      },
+      "explanation": "$\\omega = 2\\pi f = 2\\pi \\times 3.0 = 18.85\\,\\mathrm{rad\\,s^{-1}}$, so $F = m\\omega^2 r = 0.50 \\times 355 \\times 0.80 = 142\\,\\mathrm{N}$, or $140\\,\\mathrm{N}$ to two significant figures. Converting the frequency to radians per second is the step most often missed; using $f$ directly in place of $\\omega$ gives an answer too small by a factor of $4\\pi^2$.",
+      "numeric": {
+        "value": 140,
+        "tolerance": 5
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Find the minimum speed at which a car can pass over the top of a humpback bridge of radius 5.0 m without leaving the road.",
+      "back": "$7.0\\,\\mathrm{m\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "at the minimum speed the normal contact force is zero",
+          "synonyms": [
+            "the car is about to leave the road"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the weight alone provides the centripetal force",
+          "synonyms": [
+            "mg = mv^2 / r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "v = sqrt(gr) = 7.0 m/s",
+          "synonyms": [
+            "the mass cancels"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$7.0\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$49\\,\\mathrm{m\\,s^{-1}}$",
+          "$0.70\\,\\mathrm{m\\,s^{-1}}$",
+          "$70\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "At the point of leaving the road the contact force vanishes, so $mg = \\frac{mv^2}{r}$ and $v = \\sqrt{gr} = \\sqrt{9.81 \\times 5.0} = 7.0\\,\\mathrm{m\\,s^{-1}}$. The mass cancels, so the result is the same for a car and a lorry. Above this speed the required centripetal force exceeds the weight and the car leaves the surface - the same condition that governs the top of a loop-the-loop.",
+      "numeric": {
+        "value": 7.0,
+        "tolerance": 0.05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the relationship between period, frequency and angular velocity.",
+      "back": "$T = \\frac{1}{f}$ and $\\omega = 2\\pi f = \\frac{2\\pi}{T}$, with $\\omega$ in radians per second.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "T = 1/f",
+          "synonyms": [
+            "period is the reciprocal of frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega = 2 pi f",
+          "synonyms": [
+            "angular velocity is 2 pi times the frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega = 2 pi / T",
+          "synonyms": [
+            "equivalently 2 pi over the period"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$T = \\frac{1}{f}$, $\\omega = 2\\pi f = \\frac{2\\pi}{T}$",
+        "distractors": [
+          "$T = f$, $\\omega = \\frac{f}{2\\pi}$",
+          "$T = \\frac{1}{f}$, $\\omega = \\frac{f}{2\\pi}$",
+          "$T = 2\\pi f$, $\\omega = \\frac{1}{T}$"
+        ]
+      },
+      "explanation": "The factor $2\\pi$ converts revolutions to radians, since one revolution is $2\\pi$ radians. Omitting it is the standard error and gives an angular velocity too small by about 6.3. Angular velocity is measured in $\\mathrm{rad\\,s^{-1}}$ while frequency is in hertz, and the two are numerically equal only when angles are counted in revolutions.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Is centripetal force a new kind of force? Explain what it is.",
+      "back": "No. It is the name given to the resultant force towards the centre, whatever supplies it - tension, friction, gravity or a normal contact force.",
+      "keyPoints": [
+        {
+          "text": "it is not a separate force",
+          "synonyms": [
+            "not a new type of force",
+            "it is a role, not a source"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is the resultant force towards the centre",
+          "synonyms": [
+            "the net inward force"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a named force supplies it",
+          "synonyms": [
+            "tension",
+            "friction",
+            "gravity",
+            "normal contact force"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "No; it is the resultant inward force, supplied by tension, friction or gravity",
+        "distractors": [
+          "Yes; it is a fifth fundamental force",
+          "Yes; it acts outwards on a rotating body",
+          "No; it is another name for the weight"
+        ]
+      },
+      "explanation": "On a free-body diagram you never draw a force labelled 'centripetal'; you draw the real forces and identify their inward resultant. For a car on a flat bend it is friction between tyre and road, for a satellite it is gravity, and for a mass on a string it is tension. The outward 'centrifugal force' appears only in a rotating frame of reference and is not a real force.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "A conical pendulum has a bob moving in a horizontal circle. Explain which forces provide the centripetal force.",
+      "back": "The weight acts downwards and the tension acts along the string. The horizontal component of the tension provides the centripetal force, while its vertical component balances the weight.",
+      "keyPoints": [
+        {
+          "text": "the weight acts downwards",
+          "synonyms": [
+            "mg vertically"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the tension acts along the string",
+          "synonyms": [
+            "at an angle to the vertical"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the horizontal component of the tension is the centripetal force",
+          "synonyms": [
+            "T sin theta = mv^2 / r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the vertical component balances the weight",
+          "synonyms": [
+            "T cos theta = mg"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Horizontal component of tension inward; vertical component balances the weight",
+        "distractors": [
+          "The tension alone, acting along the string",
+          "The weight provides the centripetal force",
+          "An outward centrifugal force balances the tension"
+        ]
+      },
+      "explanation": "Resolving gives $T\\cos\\theta = mg$ vertically and $T\\sin\\theta = \\frac{mv^2}{r}$ horizontally, and dividing one by the other gives $\\tan\\theta = \\frac{v^2}{gr}$, which is why a faster bob swings out further. Note that the tension is not itself the centripetal force, because it is not horizontal - only its component is.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Estimate the centripetal acceleration of a person standing on the equator, taking the Earth's radius as $6.4 \\times 10^{6}\\,\\mathrm{m}$.",
+      "back": "$0.034\\,\\mathrm{m\\,s^{-2}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "the period is 24 hours = 86400 s",
+          "synonyms": [
+            "one rotation per day"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega = 2 pi / T = 7.3 x 10^-5 rad/s",
+          "synonyms": [
+            "angular velocity from the period"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a = omega^2 r = 0.034 m/s^2",
+          "synonyms": [
+            "about 0.03 m/s^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$0.034\\,\\mathrm{m\\,s^{-2}}$",
+        "distractors": [
+          "$9.8\\,\\mathrm{m\\,s^{-2}}$",
+          "$465\\,\\mathrm{m\\,s^{-2}}$",
+          "$3.4\\,\\mathrm{m\\,s^{-2}}$"
+        ]
+      },
+      "explanation": "$\\omega = \\frac{2\\pi}{86400} = 7.27 \\times 10^{-5}\\,\\mathrm{rad\\,s^{-1}}$, so $a = \\omega^2 r = 0.034\\,\\mathrm{m\\,s^{-2}}$, which is under 0.4% of $g$. That smallness is why the Earth's rotation is rarely noticed in everyday mechanics, though it is measurable: $g$ at the equator is slightly less than at the poles for this reason as well as because of the Earth's bulge.",
+      "numeric": {
+        "value": 0.034,
+        "tolerance": 0.002
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A 900 kg car rounds a flat bend of radius 60 m. The maximum friction force available is 6000 N. Find the maximum speed.",
+      "back": "$20\\,\\mathrm{m\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "friction provides the centripetal force",
+          "synonyms": [
+            "the maximum friction sets the limit"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "F = mv^2 / r so v = sqrt(Fr/m)",
+          "synonyms": [
+            "rearrange for the speed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "20 m/s",
+          "synonyms": [
+            "twenty metres per second"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$20\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$400\\,\\mathrm{m\\,s^{-1}}$",
+          "$6.7\\,\\mathrm{m\\,s^{-1}}$",
+          "$0.15\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "$v = \\sqrt{\\frac{Fr}{m}} = \\sqrt{\\frac{6000 \\times 60}{900}} = \\sqrt{400} = 20\\,\\mathrm{m\\,s^{-1}}$. Above this speed the required centripetal force exceeds what friction can supply and the car skids outwards along a tangent, not radially. This is why a wet or icy road, which lowers the friction, lowers the safe speed for the same bend.",
+      "numeric": {
+        "value": 20,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.2.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
     }
   ]
 }

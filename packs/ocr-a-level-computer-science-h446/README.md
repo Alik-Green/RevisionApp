@@ -28,7 +28,13 @@ sandbox this content was written in.
 ## Structure
 
 Computer Science > Component > specification section > sub-topic, giving four
-levels of depth. Ten leaf sub-topics with five cards each.
+levels of depth. Ten leaf sub-topics with twelve cards each, 120 in total.
+
+Cards 0001 to 0005 in each file are the original definitions. Cards 0006 to 0012
+were added later and go further into each topic: tracing an algorithm by hand,
+choosing between techniques and justifying the choice, working out a complexity
+or a comparison count, and the failure modes that separate a description from an
+understanding.
 
 Pseudocode and trace questions are SELF_GRADE, where the model answer is shown
 and the student judges their own working, or MCQ where a single wrong step makes

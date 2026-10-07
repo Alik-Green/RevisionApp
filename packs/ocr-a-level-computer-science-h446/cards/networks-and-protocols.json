@@ -168,6 +168,354 @@
         "computer-science",
         "component-01"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "What does HTTPS add to HTTP, and how does a browser know a site's certificate is genuine?",
+      "back": "It adds TLS encryption and server authentication. The browser checks the certificate's digital signature against a certificate authority it already trusts.",
+      "keyPoints": [
+        {
+          "text": "encryption of the data in transit",
+          "synonyms": [
+            "TLS",
+            "SSL"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "authentication of the server",
+          "synonyms": [
+            "the site is who it claims to be"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the certificate is signed by a trusted certificate authority",
+          "synonyms": [
+            "the CA signature is verified",
+            "a chain of trust"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "TLS encryption plus a CA-signed certificate",
+        "distractors": [
+          "Only faster transfer using compression",
+          "A different port number, with no cryptographic change",
+          "A username and password sent with every request"
+        ]
+      },
+      "explanation": "The encryption stops eavesdropping and the certificate stops impersonation; both are needed, since encrypting a conversation with an attacker is worthless. Trust works as a chain: the browser ships with a list of root CAs, and each certificate is verified back to one of them. A self-signed certificate encrypts perfectly well but cannot prove who is at the other end.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Name the four layers of the TCP/IP model and say what each is responsible for.",
+      "back": "Application (the protocol the program uses, such as HTTP), transport (TCP or UDP, ports and reliability), internet (IP, addressing and routing) and network interface (the physical transmission).",
+      "keyPoints": [
+        {
+          "text": "application layer",
+          "synonyms": [
+            "HTTP, SMTP",
+            "the user-facing protocol"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "transport layer",
+          "synonyms": [
+            "TCP or UDP",
+            "ports and reliability"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "internet layer",
+          "synonyms": [
+            "IP",
+            "addressing and routing"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "network interface layer",
+          "synonyms": [
+            "physical transmission",
+            "the link layer"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Application, transport, internet, network interface",
+        "distractors": [
+          "Physical, data link, network, transport, session, presentation, application",
+          "Hardware, software, protocol, application",
+          "Client, server, router, switch"
+        ]
+      },
+      "explanation": "The second option is the seven-layer OSI model, which is the standard confusion: TCP/IP collapses OSI's presentation and session layers into application and its physical and data link layers into network interface. Each layer only talks to the layer directly above and below, which is what makes protocols replaceable independently.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "What is the difference between an IP address and a MAC address?",
+      "back": "An IP address is a logical address assigned to a network location and can change; a MAC address is a physical address built into the network card and is intended to be permanent.",
+      "keyPoints": [
+        {
+          "text": "an IP address is logical and can change",
+          "synonyms": [
+            "assigned to the network",
+            "software assigned"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a MAC address is physical and fixed to the hardware",
+          "synonyms": [
+            "burned into the network card",
+            "hardware address"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "IP works across networks and MAC only within one",
+          "synonyms": [
+            "IP is routable",
+            "MAC is local to the segment"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "IP is logical and changeable; MAC is physical and fixed to the hardware",
+        "distractors": [
+          "IP is physical; MAC is logical",
+          "Both are physical, but IP is longer",
+          "Both are assigned by the router and both can change"
+        ]
+      },
+      "explanation": "A device keeps its MAC address wherever it goes but gets a new IP address on each network it joins. The two are tied together on a local segment by ARP, which resolves an IP address into the MAC address needed to actually deliver the frame. Routers work at IP level and switches at MAC level, which is why they do different jobs.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Compare client-server and peer-to-peer networks.",
+      "back": "In client-server a central server holds the data and serves requests, giving easy backup and central security but a single point of failure. In peer-to-peer each machine shares its own resources, which is cheap and has no single point of failure but is harder to secure and back up.",
+      "keyPoints": [
+        {
+          "text": "client-server has a central server",
+          "synonyms": [
+            "a dedicated machine holds the data",
+            "central control"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "peer-to-peer shares resources between the machines themselves",
+          "synonyms": [
+            "no central server",
+            "each node is equal"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "client-server gives centralised backup and security",
+          "synonyms": [
+            "easier to administer"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "peer-to-peer has no single point of failure",
+          "synonyms": [
+            "more resilient",
+            "cheaper to set up"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Client-server centralises and is easier to secure; P2P is resilient and cheaper",
+        "distractors": [
+          "Client-server is cheaper and more resilient; P2P is easier to secure",
+          "Client-server needs no server hardware",
+          "P2P requires a dedicated central machine"
+        ]
+      },
+      "explanation": "The trade-off is control against resilience. A client-server network can enforce one security policy and take one backup, but if the server fails everyone stops working. A peer-to-peer network keeps working when any one machine fails, but security settings and backups are scattered across every machine - which is why businesses use client-server and small groups often do not.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What does a router do that a switch does not?",
+      "back": "A router connects different networks and forwards packets between them using IP addresses; a switch connects devices within one network and forwards frames using MAC addresses.",
+      "keyPoints": [
+        {
+          "text": "a router joins separate networks",
+          "synonyms": [
+            "forwards between networks",
+            "uses IP addresses"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a switch works within one network",
+          "synonyms": [
+            "connects devices on the same segment",
+            "uses MAC addresses"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a router chooses a path",
+          "synonyms": [
+            "routing",
+            "decides which network to send to next"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A router forwards between networks by IP; a switch forwards within one by MAC",
+        "distractors": [
+          "A switch forwards between networks by IP; a router forwards within one by MAC",
+          "A router amplifies the signal; a switch stores files",
+          "They do the same job at different speeds"
+        ]
+      },
+      "explanation": "A switch learns which MAC address is reachable on each of its ports and only sends a frame where it needs to go, replacing a hub that broadcast to everything. A router reads the destination IP address and works out which network to send the packet to next, which is what makes the internet possible. Devices can combine both, which is what a home router does.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "What are SMTP, POP3 and IMAP each used for?",
+      "back": "SMTP sends mail from a client to a server and between servers. POP3 downloads mail to the device and normally deletes it from the server. IMAP leaves mail on the server and synchronises it across devices.",
+      "keyPoints": [
+        {
+          "text": "SMTP sends mail",
+          "synonyms": [
+            "outgoing mail",
+            "server to server transfer"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "POP3 downloads and usually deletes from the server",
+          "synonyms": [
+            "mail is stored locally"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "IMAP keeps mail on the server",
+          "synonyms": [
+            "synchronises across devices",
+            "folders are shared"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "SMTP sends, POP3 downloads and deletes, IMAP synchronises on the server",
+        "distractors": [
+          "SMTP receives, POP3 sends, IMAP encrypts",
+          "All three send mail, at different speeds",
+          "SMTP sends, POP3 and IMAP both delete mail immediately"
+        ]
+      },
+      "explanation": "The difference that matters in practice is between POP3 and IMAP: POP3 suits one device and limited storage, while IMAP is what makes mail look the same on a phone and a laptop, because the copies live on the server. SMTP is used for both stages of sending - client to server and server to server - and never for collecting mail.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Why can packets from one message arrive out of order, and how is the message still reconstructed?",
+      "back": "Each packet is routed independently, so they may take different paths of different length. Each carries a sequence number, and the receiving transport layer reorders them before passing the data up.",
+      "keyPoints": [
+        {
+          "text": "each packet is routed independently",
+          "synonyms": [
+            "different paths",
+            "packet switching"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "packets carry a sequence number",
+          "synonyms": [
+            "numbered in order"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the receiving end reassembles them",
+          "synonyms": [
+            "TCP reorders",
+            "reassembly at the destination"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Independent routing; sequence numbers allow reassembly",
+        "distractors": [
+          "Packets are always in order; the file system sorts them",
+          "The router buffers all packets until the last one arrives",
+          "Out-of-order packets are discarded and the message is resent"
+        ]
+      },
+      "explanation": "Packet switching deliberately lets each packet find its own way, which is what makes the network resilient to a failed link - but it means arrival order is not guaranteed. TCP puts them back in order, retransmits any that are missing and only then hands the byte stream to the application. UDP does none of this, which is why it is used where being late is worse than being wrong.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.3 Exchanging data",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
     }
   ]
 }

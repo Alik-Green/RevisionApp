@@ -203,6 +203,349 @@
         "further-maths",
         "core-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Find all the cube roots of $8i$, giving your answers in the form $a + bi$.",
+      "back": "$\\sqrt{3} + i$, $-\\sqrt{3} + i$ and $-2i$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "8i = 8 cis(pi/2)",
+          "synonyms": [
+            "modulus 8 and argument pi/2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the modulus of each root is 2 and the arguments differ by 2pi/3",
+          "synonyms": [
+            "cube root of 8 is 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "root 3 + i, -root 3 + i and -2i",
+          "synonyms": [
+            "the three roots"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\sqrt{3} + i$, $-\\sqrt{3} + i$, $-2i$",
+        "distractors": [
+          "$2i$, $-1 + \\sqrt{3}i$, $-1 - \\sqrt{3}i$",
+          "$\\sqrt{3} + i$ only",
+          "$2 + i$, $2 - i$, $-2i$"
+        ]
+      },
+      "explanation": "$8i$ has modulus 8 and argument $\\frac{\\pi}{2}$, so each cube root has modulus 2 and arguments $\\frac{\\pi}{6}$, $\\frac{\\pi}{6} + \\frac{2\\pi}{3} = \\frac{5\\pi}{6}$ and $\\frac{\\pi}{6} + \\frac{4\\pi}{3} = \\frac{3\\pi}{2}$. These give $2\\cis\\frac{\\pi}{6} = \\sqrt{3} + i$, $2\\cis\\frac{5\\pi}{6} = -\\sqrt{3} + i$ and $2\\cis\\frac{3\\pi}{2} = -2i$. The three roots are equally spaced on a circle of radius 2, which is the geometric check worth making.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Use De Moivre's theorem to express $\\cos 4\\theta$ in terms of powers of $\\cos\\theta$.",
+      "back": "$\\cos 4\\theta = 8\\cos^4\\theta - 8\\cos^2\\theta + 1$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "expand (cos theta + i sin theta)^4 with the binomial theorem",
+          "synonyms": [
+            "De Moivre plus binomial expansion"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "take the real part",
+          "synonyms": [
+            "the real part is cos 4 theta"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "8 cos^4 theta - 8 cos^2 theta + 1",
+          "synonyms": [
+            "replace sin^2 with 1 - cos^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$8\\cos^4\\theta - 8\\cos^2\\theta + 1$",
+        "distractors": [
+          "$\\cos^4\\theta - 6\\cos^2\\theta\\sin^2\\theta + \\sin^4\\theta$",
+          "$8\\cos^4\\theta + 8\\cos^2\\theta + 1$",
+          "$4\\cos^3\\theta - 3\\cos\\theta$"
+        ]
+      },
+      "explanation": "$(c + is)^4 = c^4 + 4ic^3s - 6c^2s^2 - 4ics^3 + s^4$, so the real part is $c^4 - 6c^2s^2 + s^4$. Substituting $s^2 = 1 - c^2$ gives $c^4 - 6c^2(1 - c^2) + (1 - c^2)^2 = 8c^4 - 8c^2 + 1$. The second option is the unconverted real part, which is correct but not expressed in powers of $\\cos\\theta$ alone, and the fourth is $\\cos 3\\theta$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Show that $\\sin 3\\theta = 3\\sin\\theta - 4\\sin^3\\theta$ using De Moivre's theorem, and hence solve $\\sin 3\\theta = \\sin\\theta$ for $0 \\le \\theta < \\pi$ by an algebraic method.",
+      "back": "Equating imaginary parts gives the identity; then $3s - 4s^3 = s$ gives $s = 0$ or $s = \\pm\\frac{1}{\\sqrt{2}}$, so $\\theta = 0, \\frac{\\pi}{4}, \\frac{3\\pi}{4}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the imaginary part of (c + is)^3 is 3c^2 s - s^3",
+          "synonyms": [
+            "expand and take the imaginary part"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "replace c^2 with 1 - s^2 to get 3s - 4s^3",
+          "synonyms": [
+            "the required identity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3s - 4s^3 = s factorises to 2s(1 - 2s^2) = 0",
+          "synonyms": [
+            "do not divide by s"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "theta = 0, pi/4, 3pi/4",
+          "synonyms": [
+            "the three solutions in the given range"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$(c + is)^3 = c^3 + 3ic^2s - 3cs^2 - is^3$, so $\\sin 3\\theta = 3c^2s - s^3 = 3(1 - s^2)s - s^3 = 3s - 4s^3$. Setting this equal to $s$ gives $2s - 4s^3 = 0$, so $2s(1 - 2s^2) = 0$ and $s = 0$ or $s^2 = \\frac{1}{2}$. In $0 \\le \\theta < \\pi$ that is $\\theta = 0, \\frac{\\pi}{4}, \\frac{3\\pi}{4}$. Cancelling $s$ instead of factorising would lose $\\theta = 0$ - the same trap as dividing by $\\sin x$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "The complex number $z$ satisfies $|z - 2i| = |z + 4|$. Describe the locus of $z$ on an Argand diagram and find its Cartesian equation.",
+      "back": "The perpendicular bisector of the segment joining $(0, 2)$ and $(-4, 0)$, which is the line $2x + y = -3$.",
+      "keyPoints": [
+        {
+          "text": "the locus is the perpendicular bisector",
+          "synonyms": [
+            "points equidistant from the two fixed points"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "of the points (0, 2) and (-4, 0)",
+          "synonyms": [
+            "2i and -4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2x + y = -3",
+          "synonyms": [
+            "the Cartesian equation",
+            "y = -2x - 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The perpendicular bisector of $(0, 2)$ and $(-4, 0)$: $2x + y = -3$",
+        "distractors": [
+          "A circle centred on $(0, 2)$ with radius 4",
+          "The line $2x + y = 3$",
+          "The perpendicular bisector of $(2, 0)$ and $(0, -4)$"
+        ]
+      },
+      "explanation": "$|z - 2i|$ is the distance from $z$ to $(0, 2)$ and $|z + 4|$ is the distance to $(-4, 0)$, so the locus is their perpendicular bisector. Algebraically, with $z = x + iy$, $x^2 + (y - 2)^2 = (x + 4)^2 + y^2$ expands to $-4y + 4 = 8x + 16$, giving $2x + y = -3$. Two checks: the midpoint $(-2, 1)$ must lie on it, and $-4 + 1 = -3$ does; and the gradient $-2$ must be the negative reciprocal of the gradient joining $(0, 2)$ to $(-4, 0)$, which is $\\frac{1}{2}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Find the modulus and principal argument of $z = -\\sqrt{3} + i$, and hence write $z^6$ in the form $a + bi$.",
+      "back": "$|z| = 2$, $\\arg z = \\frac{5\\pi}{6}$, and $z^6 = -64$.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "modulus 2",
+          "synonyms": [
+            "root(3 + 1)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "argument 5pi/6",
+          "synonyms": [
+            "second quadrant; 150 degrees"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "z^6 = 64 cis(5pi) = -64",
+          "synonyms": [
+            "multiply the argument by 6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "-64",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2$, $\\frac{5\\pi}{6}$, $-64$",
+        "distractors": [
+          "$2$, $-\\frac{\\pi}{6}$, $-64$",
+          "$2$, $\\frac{5\\pi}{6}$, $64$",
+          "$4$, $\\frac{5\\pi}{6}$, $-64$"
+        ]
+      },
+      "explanation": "$|z| = \\sqrt{3 + 1} = 2$, and since the point is in the second quadrant $\\arg z = \\pi - \\frac{\\pi}{6} = \\frac{5\\pi}{6}$, not $-\\frac{\\pi}{6}$ which the calculator's inverse tangent would give. By De Moivre $z^6 = 2^6 \\cis 5\\pi = 64 \\cis \\pi = -64$. Taking the principal argument correctly is the whole question: using $-\\frac{\\pi}{6}$ gives $64\\cis(-\\pi) = -64$ here by luck, but would fail for a different power.",
+      "numeric": {
+        "value": -64,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Solve $z^2 + (-3 + 2i)z + (5 - i) = 0$, giving your answers in the form $a + bi$.",
+      "back": "$z = 1 + i$ and $z = 2 - 3i$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "use the quadratic formula with complex coefficients",
+          "synonyms": [
+            "the formula still applies"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the discriminant is -15 - 8i",
+          "synonyms": [
+            "b^2 - 4ac"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "its square root is 1 - 4i",
+          "synonyms": [
+            "find w with w^2 = -15 - 8i"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1 + i and 2 - 3i",
+          "synonyms": [
+            "the two roots"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$z = 1 + i$ and $z = 2 - 3i$",
+        "distractors": [
+          "$z = 1 - i$ and $z = 2 + 3i$",
+          "$z = -1 + i$ and $z = -2 - 3i$",
+          "$z = 1 + i$ and $z = -2 + 3i$"
+        ]
+      },
+      "explanation": "The discriminant is $(-3 + 2i)^2 - 4(5 - i) = 5 - 12i - 20 + 4i = -15 - 8i$. To take its square root, solve $(p + qi)^2 = -15 - 8i$: matching gives $p^2 - q^2 = -15$, $2pq = -8$ and $p^2 + q^2 = 17$, so $p^2 = 1$, $q^2 = 16$ and, since $pq < 0$, $w = 1 - 4i$. Then $z = \\frac{3 - 2i \\pm (1 - 4i)}{2}$, giving $1 + i$ and $2 - 3i$. Because the coefficients are not all real, the roots are not conjugates - do not expect them to be.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Express $\\frac{3 + 4i}{1 - 2i}$ in the form $a + bi$ and find its modulus.",
+      "back": "$-1 + 2i$, with modulus $\\sqrt{5}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "multiply by the conjugate 1 + 2i",
+          "synonyms": [
+            "rationalise the denominator"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the denominator becomes 5",
+          "synonyms": [
+            "1 + 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "-1 + 2i",
+          "synonyms": [
+            "a = -1 and b = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "modulus root 5",
+          "synonyms": [
+            "root(1 + 4)"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$-1 + 2i$, modulus $\\sqrt{5}$",
+        "distractors": [
+          "$-1 + 2i$, modulus $5$",
+          "$1 + 2i$, modulus $\\sqrt{5}$",
+          "$-1 - 2i$, modulus $\\sqrt{5}$"
+        ]
+      },
+      "explanation": "Multiplying top and bottom by $1 + 2i$ gives $\\frac{(3 + 4i)(1 + 2i)}{1 + 4} = \\frac{3 + 6i + 4i - 8}{5} = \\frac{-5 + 10i}{5} = -1 + 2i$. Its modulus is $\\sqrt{1 + 4} = \\sqrt{5}$, which agrees with $\\frac{|3 + 4i|}{|1 - 2i|} = \\frac{5}{\\sqrt{5}} = \\sqrt{5}$ - a useful independent check on any division.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Complex numbers",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
     }
   ]
 }

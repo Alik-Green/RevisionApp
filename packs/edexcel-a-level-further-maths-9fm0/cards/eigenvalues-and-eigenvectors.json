@@ -178,6 +178,328 @@
         "further-maths",
         "core-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Find the eigenvalues and corresponding eigenvectors of $\\begin{pmatrix} 4 & 1 \\\\ 2 & 3 \\end{pmatrix}$.",
+      "back": "$\\lambda = 5$ with $\\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix}$ and $\\lambda = 2$ with $\\begin{pmatrix} 1 \\\\ -2 \\end{pmatrix}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the characteristic equation is lambda^2 - 7 lambda + 10 = 0",
+          "synonyms": [
+            "det(A - lambda I) = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "lambda = 5 and lambda = 2",
+          "synonyms": [
+            "the eigenvalues"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "eigenvector (1, 1) for lambda = 5",
+          "synonyms": [
+            "solve (A - 5I)v = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "eigenvector (1, -2) for lambda = 2",
+          "synonyms": [
+            "solve (A - 2I)v = 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$5$ with $(1, 1)$; $2$ with $(1, -2)$",
+        "distractors": [
+          "$5$ with $(1, -2)$; $2$ with $(1, 1)$",
+          "$5$ and $2$, both with $(1, 1)$",
+          "$-5$ with $(1, 1)$; $-2$ with $(1, -2)$"
+        ]
+      },
+      "explanation": "$\\det(A - \\lambda I) = (4 - \\lambda)(3 - \\lambda) - 2 = \\lambda^2 - 7\\lambda + 10 = 0$, so $\\lambda = 5, 2$. For $\\lambda = 5$: $\\begin{pmatrix} -1 & 1 \\\\ 2 & -2 \\end{pmatrix}v = 0$ gives $y = x$, so $(1, 1)$. For $\\lambda = 2$: $\\begin{pmatrix} 2 & 1 \\\\ 2 & 1 \\end{pmatrix}v = 0$ gives $y = -2x$, so $(1, -2)$. Both eigenvectors are only determined up to a non-zero scalar multiple, so $(2, 2)$ is equally valid for $\\lambda = 5$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Without finding the eigenvalues, state the sum and the product of the eigenvalues of $\\begin{pmatrix} 4 & 1 \\\\ 2 & 3 \\end{pmatrix}$, and explain why.",
+      "back": "The sum is the trace, $4 + 3 = 7$, and the product is the determinant, $12 - 2 = 10$.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "sum of eigenvalues = trace",
+          "synonyms": [
+            "4 + 3 = 7"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "product of eigenvalues = determinant",
+          "synonyms": [
+            "4 x 3 - 1 x 2 = 10"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "both follow from expanding the characteristic polynomial",
+          "synonyms": [
+            "lambda^2 - (trace) lambda + det"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Sum 7 (trace), product 10 (determinant)",
+        "distractors": [
+          "Sum 10, product 7",
+          "Sum 7, product 12",
+          "Sum 12, product 10"
+        ]
+      },
+      "explanation": "Expanding $\\det(A - \\lambda I) = \\lambda^2 - (a + d)\\lambda + (ad - bc)$ shows the coefficient of $\\lambda$ is minus the trace and the constant term is the determinant, and for a quadratic those are the sum and product of the roots. This is the fastest check on any eigenvalue calculation: $5 + 2 = 7$ and $5 \\times 2 = 10$.",
+      "numeric": {
+        "value": 7,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Diagonalise $A = \\begin{pmatrix} 4 & 1 \\\\ 2 & 3 \\end{pmatrix}$ and use the result to find $A^n$.",
+      "back": "$P = \\begin{pmatrix} 1 & 1 \\\\ 1 & -2 \\end{pmatrix}$, $D = \\begin{pmatrix} 5 & 0 \\\\ 0 & 2 \\end{pmatrix}$, and $A^n = PD^nP^{-1}$ with $D^n = \\begin{pmatrix} 5^n & 0 \\\\ 0 & 2^n \\end{pmatrix}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "P has the eigenvectors as its columns",
+          "synonyms": [
+            "in the same order as D"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "D is diagonal with the eigenvalues",
+          "synonyms": [
+            "5 and 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A = P D P^-1 so A^n = P D^n P^-1",
+          "synonyms": [
+            "only the diagonal entries need raising to the power n"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "With $P = \\begin{pmatrix} 1 & 1 \\\\ 1 & -2 \\end{pmatrix}$ and $D = \\begin{pmatrix} 5 & 0 \\\\ 0 & 2 \\end{pmatrix}$, $A = PDP^{-1}$, and since $P^{-1}P = I$ all the inner factors cancel in $A^n = PD^nP^{-1}$. Only $5^n$ and $2^n$ have to be computed, which is the entire point of diagonalisation. The columns of $P$ must be in the same order as the eigenvalues down the diagonal of $D$, otherwise the product does not return $A$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Find the eigenvalues of $\\begin{pmatrix} 3 & 1 \\\\ 0 & 3 \\end{pmatrix}$ and explain what is unusual about its eigenvectors.",
+      "back": "The eigenvalue 3 is repeated, but there is only one independent eigenvector, $\\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}$, so the matrix is defective and cannot be diagonalised.",
+      "keyPoints": [
+        {
+          "text": "lambda = 3 repeated twice",
+          "synonyms": [
+            "a repeated eigenvalue"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only one independent eigenvector",
+          "synonyms": [
+            "1, 0",
+            "the eigenspace is one dimensional"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the matrix is defective and cannot be diagonalised",
+          "synonyms": [
+            "not diagonalisable"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "One repeated eigenvalue 3 and only one eigenvector, so it is not diagonalisable",
+        "distractors": [
+          "One repeated eigenvalue 3 and two independent eigenvectors",
+          "Two distinct eigenvalues, 3 and 0",
+          "Eigenvalue 3 with eigenvector $(0, 1)$"
+        ]
+      },
+      "explanation": "$\\det(A - \\lambda I) = (3 - \\lambda)^2 = 0$, so $\\lambda = 3$ with algebraic multiplicity 2. But $\\begin{pmatrix} 0 & 1 \\\\ 0 & 0 \\end{pmatrix}v = 0$ forces $y = 0$ and leaves $x$ free, so the eigenspace has dimension 1 only. Geometric multiplicity below algebraic multiplicity means no basis of eigenvectors exists, so $A$ cannot be written as $PDP^{-1}$. Upper triangular matrices with equal diagonal entries are the standard example.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Use the Cayley-Hamilton theorem to express $A^3$ in terms of $A$ and $I$ for $A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}$.",
+      "back": "$A^3 = 13A - 12I$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the characteristic equation is lambda^2 - 4 lambda + 3 = 0",
+          "synonyms": [
+            "trace 4 and determinant 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A^2 = 4A - 3I",
+          "synonyms": [
+            "rearrange the characteristic equation with A in place of lambda"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A^3 = 4A^2 - 3A = 13A - 12I",
+          "synonyms": [
+            "substitute the expression for A^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$13A - 12I$",
+        "distractors": [
+          "$13A + 12I$",
+          "$4A - 3I$",
+          "$12A - 13I$"
+        ]
+      },
+      "explanation": "Cayley-Hamilton gives $A^2 - 4A + 3I = O$, so $A^2 = 4A - 3I$. Then $A^3 = A \\cdot A^2 = 4A^2 - 3A = 4(4A - 3I) - 3A = 13A - 12I$. Check: $A^3 = \\begin{pmatrix} 14 & 13 \\\\ 13 & 14 \\end{pmatrix}$ and $13A - 12I = \\begin{pmatrix} 26 - 12 & 13 \\\\ 13 & 14 \\end{pmatrix}$, which agrees. Repeated substitution beats direct multiplication for high powers.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Prove that eigenvectors belonging to distinct eigenvalues of a real symmetric matrix are perpendicular.",
+      "back": "If $Av = \\lambda v$ and $Aw = \\mu w$ with $\\lambda \\ne \\mu$, then $\\lambda v^T w = v^T A^T A w$ reduces to $\\lambda v^T w = \\mu v^T w$, so $(\\lambda - \\mu)v^T w = 0$ and $v^T w = 0$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "start from v^T A w in two ways",
+          "synonyms": [
+            "use symmetry A = A^T"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(lambda - mu) v^T w = 0",
+          "synonyms": [
+            "the two expressions differ by this factor"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "lambda not equal to mu forces v^T w = 0",
+          "synonyms": [
+            "the dot product is zero",
+            "the eigenvectors are perpendicular"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "From $Av = \\lambda v$, $v^T A w = \\lambda v^T w$. From $Aw = \\mu w$ and $A^T = A$, $v^T A w = v^T A^T w = (Av)^T w = \\mu v^T w$. So $\\lambda v^T w = \\mu v^T w$ and, since $\\lambda \\ne \\mu$, $v^T w = 0$. For $A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}$ the eigenvalues are 3 and 1 with eigenvectors $(1, 1)$ and $(1, -1)$, whose dot product is indeed 0.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "The matrix $\\begin{pmatrix} k & 2 \\\\ 3 & 1 \\end{pmatrix}$ has 4 as an eigenvalue. Find $k$.",
+      "back": "$k = 2$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "det(A - 4I) = 0",
+          "synonyms": [
+            "an eigenvalue makes A - lambda I singular"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(k - 4)(-3) - 6 = 0",
+          "synonyms": [
+            "expand the determinant"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k = 2",
+          "synonyms": [
+            "solve the linear equation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2",
+        "distractors": [
+          "-2",
+          "6",
+          "10"
+        ]
+      },
+      "explanation": "$A - 4I = \\begin{pmatrix} k - 4 & 2 \\\\ 3 & -3 \\end{pmatrix}$ must be singular, so $-3(k - 4) - 6 = 0$, giving $-3k + 12 - 6 = 0$ and $k = 2$. Check: $A = \\begin{pmatrix} 2 & 2 \\\\ 3 & 1 \\end{pmatrix}$ has trace 3 and determinant $2 - 6 = -4$, so the eigenvalues sum to 3 and multiply to $-4$, giving 4 and $-1$.",
+      "numeric": {
+        "value": 2,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 2: Eigenvalues and eigenvectors",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-2"
+      ]
     }
   ]
 }

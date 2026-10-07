@@ -212,6 +212,320 @@
         "physics",
         "m2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Check whether $v^2 = u^2 + 2as$ is homogeneous, showing the base units of each term.",
+      "back": "Yes. $v^2$ and $u^2$ are both $\\mathrm{m^2\\,s^{-2}}$, and $as$ is $\\mathrm{m\\,s^{-2} \\times m = m^2\\,s^{-2}}$, so all three terms agree.",
+      "keyPoints": [
+        {
+          "text": "v^2 has units m^2 s^-2",
+          "synonyms": [
+            "velocity squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "as has units m^2 s^-2",
+          "synonyms": [
+            "acceleration times distance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the equation is homogeneous",
+          "synonyms": [
+            "all terms have the same base units"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Homogeneous: all terms are $\\mathrm{m^2\\,s^{-2}}$",
+        "distractors": [
+          "Not homogeneous: $as$ is $\\mathrm{m\\,s^{-2}}$",
+          "Not homogeneous: $v^2$ is $\\mathrm{m\\,s^{-1}}$",
+          "Homogeneity cannot be checked without the numerical values"
+        ]
+      },
+      "explanation": "Checking homogeneity means expressing every term in SI base units and confirming they match. It can prove an equation wrong but never prove it right: $v^2 = u^2 + 3as$ is perfectly homogeneous and still false. It is the fastest way to eliminate a wrong formula under exam pressure, since the constants are dimensionless and cannot rescue a mismatch.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Express the joule in SI base units.",
+      "back": "$\\mathrm{kg\\,m^2\\,s^{-2}}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "kg m^2 s^-2",
+          "synonyms": [
+            "kilogram metre squared per second squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "start from work = force x distance",
+          "synonyms": [
+            "newton metre"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a newton is kg m s^-2",
+          "synonyms": [
+            "from F = ma"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\mathrm{kg\\,m^2\\,s^{-2}}$",
+        "distractors": [
+          "$\\mathrm{kg\\,m\\,s^{-2}}$",
+          "$\\mathrm{kg\\,m^2\\,s^{-1}}$",
+          "$\\mathrm{kg\\,m^2\\,s^{-3}}$"
+        ]
+      },
+      "explanation": "$1\\,\\mathrm{J} = 1\\,\\mathrm{N\\,m}$, and $1\\,\\mathrm{N} = 1\\,\\mathrm{kg\\,m\\,s^{-2}}$ from $F = ma$, so a joule is $\\mathrm{kg\\,m^2\\,s^{-2}}$. The last option is the watt, which is a joule per second - the two are the most commonly confused pair in this kind of question. Building from the defining equation is more reliable than remembering the result.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Express the volt in SI base units.",
+      "back": "$\\mathrm{kg\\,m^2\\,s^{-3}\\,A^{-1}}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "kg m^2 s^-3 A^-1",
+          "synonyms": [
+            "with a negative power of the ampere"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "start from V = W/Q or V = J/C",
+          "synonyms": [
+            "energy per unit charge"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a coulomb is A s",
+          "synonyms": [
+            "current times time"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\mathrm{kg\\,m^2\\,s^{-3}\\,A^{-1}}$",
+        "distractors": [
+          "$\\mathrm{kg\\,m^2\\,s^{-2}\\,A^{-1}}$",
+          "$\\mathrm{kg\\,m^2\\,s^{-3}\\,A}$",
+          "$\\mathrm{kg\\,m\\,s^{-3}\\,A^{-1}}$"
+        ]
+      },
+      "explanation": "$V = \\frac{W}{Q}$, so $\\frac{\\mathrm{kg\\,m^2\\,s^{-2}}}{\\mathrm{A\\,s}} = \\mathrm{kg\\,m^2\\,s^{-3}\\,A^{-1}}$. Dividing by $\\mathrm{A\\,s}$ both subtracts one more power of seconds and puts the ampere in the denominator - the two steps that are most often dropped. The same method reaches the ohm, $\\mathrm{kg\\,m^2\\,s^{-3}\\,A^{-2}}$, by one further division by A.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "A voltmeter reads $12.0 \\pm 0.3\\,\\mathrm{V}$. Calculate the percentage uncertainty.",
+      "back": "2.5%",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "divide the absolute uncertainty by the reading",
+          "synonyms": [
+            "0.3 / 12.0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "multiply by 100",
+          "synonyms": [
+            "express as a percentage"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2.5%",
+          "synonyms": [
+            "two and a half percent"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.5%",
+        "distractors": [
+          "0.025%",
+          "4.0%",
+          "25%"
+        ]
+      },
+      "explanation": "$\\frac{0.3}{12.0} \\times 100 = 2.5\\%$. The answer 0.025% leaves the fraction unconverted, and 25% misplaces the decimal point. Percentage uncertainty is what makes readings comparable: the same $\\pm 0.3\\,\\mathrm{V}$ on a $1.0\\,\\mathrm{V}$ reading is a 30% uncertainty, which is a very different measurement.",
+      "numeric": {
+        "value": 2.5,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "State how absolute and percentage uncertainties combine when quantities are added, and when they are multiplied.",
+      "back": "When quantities are added or subtracted, absolute uncertainties add. When they are multiplied or divided, percentage uncertainties add.",
+      "keyPoints": [
+        {
+          "text": "adding quantities: add the absolute uncertainties",
+          "synonyms": [
+            "absolute uncertainties add for sums"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "multiplying quantities: add the percentage uncertainties",
+          "synonyms": [
+            "percentage uncertainties add for products"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Add absolute for sums, add percentage for products",
+        "distractors": [
+          "Add percentage for sums, add absolute for products",
+          "Always add absolute uncertainties",
+          "Always add percentage uncertainties"
+        ]
+      },
+      "explanation": "The rule follows from how errors propagate, and it explains why the smallest reading in a sum can dominate: adding $50 \\pm 1$ to $2 \\pm 1$ gives $52 \\pm 2$, where the small measurement contributes half the total uncertainty. In a product it is the least precise percentage that matters, which is why the smallest measured quantity usually limits the accuracy of the result.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Express the newton and the pascal in SI base units.",
+      "back": "Newton: $\\mathrm{kg\\,m\\,s^{-2}}$. Pascal: $\\mathrm{kg\\,m^{-1}\\,s^{-2}}$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "a newton is kg m s^-2",
+          "synonyms": [
+            "from F = ma"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a pascal is kg m^-1 s^-2",
+          "synonyms": [
+            "pressure is force per unit area"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\mathrm{kg\\,m\\,s^{-2}}$ and $\\mathrm{kg\\,m^{-1}\\,s^{-2}}$",
+        "distractors": [
+          "$\\mathrm{kg\\,m\\,s^{-2}}$ and $\\mathrm{kg\\,m\\,s^{-2}}$",
+          "$\\mathrm{kg\\,m^2\\,s^{-2}}$ and $\\mathrm{kg\\,m^{-1}\\,s^{-2}}$",
+          "$\\mathrm{kg\\,m\\,s^{-2}}$ and $\\mathrm{kg\\,m^{2}\\,s^{-2}}$"
+        ]
+      },
+      "explanation": "The newton comes straight from $F = ma$. A pascal is a newton per square metre, so $\\frac{\\mathrm{kg\\,m\\,s^{-2}}}{\\mathrm{m^2}} = \\mathrm{kg\\,m^{-1}\\,s^{-2}}$ - the metre power goes negative because area is in the denominator. Dividing by an area always removes two powers of length, which is the step most often got wrong.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Five repeat readings of a length are 12.4, 12.6, 12.5, 12.9 and 12.6 cm. State the mean and the uncertainty you would quote.",
+      "back": "Mean 12.6 cm, uncertainty $\\pm 0.2$ cm (half the range).",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "mean 12.6 cm",
+          "synonyms": [
+            "add and divide by five"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "half the range is 0.2 cm",
+          "synonyms": [
+            "(12.9 - 12.4) / 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "quote 12.6 +/- 0.2 cm",
+          "synonyms": [
+            "mean plus or minus half the range"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$12.6 \\pm 0.2\\,\\mathrm{cm}$",
+        "distractors": [
+          "$12.6 \\pm 0.5\\,\\mathrm{cm}$",
+          "$12.6 \\pm 0.1\\,\\mathrm{cm}$",
+          "$12.6 \\pm 0.4\\,\\mathrm{cm}$"
+        ]
+      },
+      "explanation": "The mean is $\\frac{12.4 + 12.6 + 12.5 + 12.9 + 12.6}{5} = 12.6$. The range is $12.9 - 12.4 = 0.5$, and half of it, $0.25$, rounds to $0.2$ to match the precision of the mean. Repeating a measurement reduces random error, which is what the spread shows, but it does nothing about a systematic error - a mis-zeroed rule would give five consistent readings that were all wrong by the same amount.",
+      "numeric": {
+        "value": 12.6,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m2"
+      ]
     }
   ]
 }

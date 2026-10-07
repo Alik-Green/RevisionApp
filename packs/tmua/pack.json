@@ -1,8 +1,8 @@
 {
   "packId": "tmua",
   "name": "TMUA",
-  "version": 1,
-  "description": "Original multiple-choice questions and logic and proof practice for the Test of Mathematics for University Admission, with worked explanations for every question.",
+  "version": 2,
+  "description": "Original multiple-choice questions for the Test of Mathematics for University Admission, calibrated to the harder, multi-step style the test has moved towards since 2019, with worked explanations for every question.",
   "structureVerified": false,
   "topics": [
     {
@@ -44,6 +44,16 @@
       "slug": "paper-2",
       "group": "paper",
       "name": "Paper 2: Mathematical Reasoning"
+    },
+    {
+      "slug": "hard",
+      "group": "difficulty",
+      "name": "Hard"
+    },
+    {
+      "slug": "very-hard",
+      "group": "difficulty",
+      "name": "Very hard"
     }
   ],
   "cardFiles": [

@@ -195,6 +195,340 @@
         "physics",
         "m6"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "In the beta-minus decay of a neutron, check that charge, baryon number and lepton number are conserved.",
+      "back": "$n \\to p + e^- + \\bar{\\nu}_e$. Charge $0 \\to +1 - 1 + 0$, baryon number $1 \\to 1 + 0 + 0$, electron lepton number $0 \\to 0 + 1 - 1$. All three are conserved.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "charge is conserved: 0 to +1 and -1",
+          "synonyms": [
+            "the charges balance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "baryon number is conserved: 1 to 1",
+          "synonyms": [
+            "the neutron becomes a proton"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "electron lepton number is conserved: 0 to +1 and -1",
+          "synonyms": [
+            "the antineutrino carries -1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The antineutrino is what makes the lepton numbers balance: the electron has $L_e = +1$, so something with $L_e = -1$ must be created alongside it. Its existence was inferred from missing energy and momentum before it was ever detected. Checking all three conservation laws is the standard way to decide whether a proposed interaction is allowed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "In which interaction is strangeness conserved, and in which can it change?",
+      "back": "Strangeness is conserved in strong interactions but can change by one in weak interactions, which is how strange particles decay.",
+      "keyPoints": [
+        {
+          "text": "conserved in the strong interaction",
+          "synonyms": [
+            "strong interactions preserve strangeness"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "can change in the weak interaction",
+          "synonyms": [
+            "weak interactions do not conserve it"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "this is why strange particles decay by the weak interaction",
+          "synonyms": [
+            "they are produced strongly and decay weakly"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Conserved in strong, can change in weak",
+        "distractors": [
+          "Conserved in weak, can change in strong",
+          "Conserved in both",
+          "Conserved in neither"
+        ]
+      },
+      "explanation": "Strange particles are produced in pairs by the strong interaction, which conserves strangeness, and then decay one at a time by the weak interaction, which does not - which is why they live far longer than a strong-interaction timescale. The historical name 'strange' comes from exactly this unexpectedly long lifetime.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the antiparticle of the electron, the proton and the electron neutrino, and describe how an antiparticle differs from its particle.",
+      "back": "The positron, the antiproton and the electron antineutrino. An antiparticle has the same mass and the same magnitude of charge but the opposite sign, and opposite quantum numbers.",
+      "keyPoints": [
+        {
+          "text": "positron",
+          "synonyms": [
+            "the antielectron"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "antiproton",
+          "synonyms": [
+            "negative charge, same mass as a proton"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "electron antineutrino",
+          "synonyms": [
+            "antineutrino"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "same mass but opposite charge and quantum numbers",
+          "synonyms": [
+            "equal and opposite charge"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Positron, antiproton, electron antineutrino; same mass, opposite charge",
+        "distractors": [
+          "Positron, antiproton, electron neutrino; opposite mass, same charge",
+          "Neutrino, neutron, antineutrino; same charge, different mass",
+          "Positron, proton, antineutrino; half the mass"
+        ]
+      },
+      "explanation": "Only the charge and the internal quantum numbers reverse; the mass and spin are identical. The neutron is neutral but still has an antiparticle, the antineutron, because its baryon number and quark content reverse. When a particle meets its antiparticle they annihilate, converting the whole of their rest mass into energy, usually as photons.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Write the equation for beta-plus decay and name the exchange particle involved.",
+      "back": "$p \\to n + e^+ + \\nu_e$, mediated by a $W^+$ boson. At quark level an up quark becomes a down quark.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "p to n + positron + electron neutrino",
+          "synonyms": [
+            "a proton becomes a neutron"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "W+ boson",
+          "synonyms": [
+            "the exchange particle is a W plus"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an up quark becomes a down quark",
+          "synonyms": [
+            "uud becomes udd"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$p \\to n + e^+ + \\nu_e$ via a $W^+$; $u \\to d$",
+        "distractors": [
+          "$n \\to p + e^- + \\bar{\\nu}_e$ via a $W^-$; $d \\to u$",
+          "$p \\to n + e^+ + \\bar{\\nu}_e$ via a photon; $u \\to d$",
+          "$p \\to n + e^- + \\nu_e$ via a $W^+$; $d \\to u$"
+        ]
+      },
+      "explanation": "The neutrino rather than antineutrino appears here, which is what keeps the electron lepton number at zero: the positron has $L_e = -1$ and the neutrino $+1$. The second option is beta-minus decay, the mirror process. Inside a nucleus a proton can undergo beta-plus decay because the nuclear binding energy supplies the mass difference, which a free proton cannot do.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What do the lines and the vertices of a Feynman diagram represent?",
+      "back": "Lines represent particles, with the direction of the arrow distinguishing matter from antimatter, and vertices represent interactions where an exchange particle is emitted or absorbed.",
+      "keyPoints": [
+        {
+          "text": "lines represent particles",
+          "synonyms": [
+            "particle paths"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the arrow direction distinguishes matter from antimatter",
+          "synonyms": [
+            "antiparticles are drawn backwards in time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "vertices are where interactions occur",
+          "synonyms": [
+            "where exchange particles are emitted or absorbed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the wavy or dashed internal line is the exchange particle",
+          "synonyms": [
+            "virtual particle"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Lines are particles, vertices are interactions with an exchange particle",
+        "distractors": [
+          "Lines are forces, vertices are particles at rest",
+          "Lines show the actual path through space, vertices show collisions",
+          "Lines are energy levels, vertices are photon emissions"
+        ]
+      },
+      "explanation": "A Feynman diagram is a bookkeeping device for a calculation, not a picture of a trajectory: the axes are not literal space and time, and the internal line represents a virtual particle that cannot be observed. Each vertex must satisfy the conservation laws, which is what makes the diagrams a quick way to test whether a proposed interaction is allowed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Classify the pion and the proton in terms of quark content, and state which is a baryon and which a meson.",
+      "back": "A proton is $uud$, a baryon made of three quarks with baryon number $+1$. A positive pion is $u\\bar{d}$, a meson made of a quark and an antiquark with baryon number 0.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "a proton is uud and is a baryon",
+          "synonyms": [
+            "three quarks",
+            "baryon number +1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a positive pion is u and anti-d and is a meson",
+          "synonyms": [
+            "quark-antiquark pair",
+            "baryon number 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "baryons have three quarks and mesons have a quark and an antiquark",
+          "synonyms": [
+            "the defining difference"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Proton $uud$ is a baryon; $\\pi^+$ is $u\\bar{d}$, a meson",
+        "distractors": [
+          "Proton $uud$ is a meson; $\\pi^+$ is $u\\bar{d}$, a baryon",
+          "Proton $ud$ is a baryon; $\\pi^+$ is $uud$, a meson",
+          "Both are baryons, differing only in charge"
+        ]
+      },
+      "explanation": "The quark charges check the identifications: $\\frac{2}{3} + \\frac{2}{3} - \\frac{1}{3} = +1$ for the proton and $\\frac{2}{3} + \\frac{1}{3} = +1$ for the $\\pi^+$. Baryon number is $+\\frac{1}{3}$ per quark and $-\\frac{1}{3}$ per antiquark, so a meson always totals zero. All hadrons are either three-quark baryons or quark-antiquark mesons.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Name the exchange particle of each of the four fundamental interactions.",
+      "back": "Gluon for the strong, $W^+$ or $W^-$ for the weak, photon for the electromagnetic, and the graviton - not yet observed - for gravity.",
+      "keyPoints": [
+        {
+          "text": "gluon for the strong interaction",
+          "synonyms": [
+            "strong: gluon"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "W+ or W- for the weak interaction",
+          "synonyms": [
+            "weak: W boson"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "photon for the electromagnetic interaction",
+          "synonyms": [
+            "electromagnetic: virtual photon"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "graviton for gravity",
+          "synonyms": [
+            "hypothetical graviton",
+            "not yet detected"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Gluon, $W^\\pm$, photon, graviton",
+        "distractors": [
+          "Photon, gluon, $W^\\pm$, graviton",
+          "Gluon, photon, $W^\\pm$, Higgs boson",
+          "Pion, $W^\\pm$, photon, graviton"
+        ]
+      },
+      "explanation": "The pion was once proposed as the strong interaction's exchange particle and is still a useful model of the force between nucleons, but the gluon is the fundamental carrier, acting between quarks. The graviton remains hypothetical: gravity has not been reconciled with quantum mechanics, which is why the standard model describes three interactions and not four.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
     }
   ]
 }

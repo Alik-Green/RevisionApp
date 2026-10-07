@@ -160,6 +160,326 @@
         "further-maths",
         "further-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Define $\\cosh x$ and $\\sinh x$ in terms of exponentials, and state the parity of each.",
+      "back": "$\\cosh x = \\frac{e^x + e^{-x}}{2}$, which is even, and $\\sinh x = \\frac{e^x - e^{-x}}{2}$, which is odd.",
+      "keyPoints": [
+        {
+          "text": "cosh x = (e^x + e^-x)/2",
+          "synonyms": [
+            "the sum of the exponentials over 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "sinh x = (e^x - e^-x)/2",
+          "synonyms": [
+            "the difference of the exponentials over 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cosh is even and sinh is odd",
+          "synonyms": [
+            "cosh(-x) = cosh x and sinh(-x) = -sinh x"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\cosh$ even, $\\sinh$ odd",
+        "distractors": [
+          "$\\cosh$ odd, $\\sinh$ even",
+          "both even",
+          "both odd"
+        ]
+      },
+      "explanation": "Swapping $x$ for $-x$ swaps $e^x$ and $e^{-x}$, so the sum is unchanged and the difference changes sign. That parity is what makes $\\cosh$ the shape of a hanging cable and $\\sinh$ the one that passes through the origin. Note $\\cosh 0 = 1$ while $\\sinh 0 = 0$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Prove that $\\cosh^2 x - \\sinh^2 x = 1$.",
+      "back": "Expanding both squares from the exponential definitions, the cross terms cancel and $\\frac{1}{4}[(e^{2x} + 2 + e^{-2x}) - (e^{2x} - 2 + e^{-2x})] = 1$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "square both definitions",
+          "synonyms": [
+            "expand (e^x + e^-x)^2/4 and (e^x - e^-x)^2/4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the e^(2x) and e^(-2x) terms cancel",
+          "synonyms": [
+            "only the constant terms survive"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the result is 4/4 = 1",
+          "synonyms": [
+            "cosh^2 x - sinh^2 x = 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$\\cosh^2 x = \\frac{e^{2x} + 2 + e^{-2x}}{4}$ and $\\sinh^2 x = \\frac{e^{2x} - 2 + e^{-2x}}{4}$, so the difference is $\\frac{4}{4} = 1$. This mirrors $\\cos^2 x + \\sin^2 x = 1$ with the sign changed, and it is why $(\\cosh t, \\sinh t)$ parametrises the hyperbola $x^2 - y^2 = 1$ exactly as $(\\cos t, \\sin t)$ parametrises the circle.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Solve $2\\cosh x - \\sinh x = 2$.",
+      "back": "$x = 0$ and $x = \\ln 3$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "substitute u = e^x",
+          "synonyms": [
+            "write everything in exponentials"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u^2 - 4u + 3 = 0",
+          "synonyms": [
+            "clear the denominators and simplify"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u = 1 or u = 3",
+          "synonyms": [
+            "factorise as (u - 1)(u - 3)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = 0 or x = ln 3",
+          "synonyms": [
+            "take logarithms; e^x = 1 gives x = 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = 0$ and $x = \\ln 3$",
+        "distractors": [
+          "$x = \\ln 3$ only",
+          "$x = 0$ only",
+          "$x = 1$ and $x = 3$"
+        ]
+      },
+      "explanation": "Substituting the definitions and multiplying by $2u$ gives $u^2 + 1 - \\frac{u^2 - 1}{1} = 4u$, that is $u^2 - 4u + 3 = 0$, so $(u - 1)(u - 3) = 0$. Then $e^x = 1$ gives $x = 0$ and $e^x = 3$ gives $x = \\ln 3$. Every hyperbolic equation becomes a quadratic in $e^x$ this way; forgetting the root $u = 1$ is the usual loss, since $x = 0$ is easy to overlook.",
+      "numeric": {
+        "value": 0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "State $\\frac{d}{dx}\\sinh x$, $\\frac{d}{dx}\\cosh x$, $\\int \\sinh x\\,dx$ and $\\int \\cosh x\\,dx$.",
+      "back": "$\\cosh x$, $\\sinh x$, $\\cosh x + c$ and $\\sinh x + c$ respectively.",
+      "keyPoints": [
+        {
+          "text": "d/dx sinh x = cosh x",
+          "synonyms": [
+            "differentiating sinh gives cosh"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "d/dx cosh x = sinh x",
+          "synonyms": [
+            "no sign change, unlike sine and cosine"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the integrals are cosh x + c and sinh x + c",
+          "synonyms": [
+            "integration mirrors differentiation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\cosh x$; $\\sinh x$; $\\cosh x + c$; $\\sinh x + c$",
+        "distractors": [
+          "$\\cosh x$; $-\\sinh x$; $\\cosh x + c$; $-\\sinh x + c$",
+          "$\\sinh x$; $\\cosh x$; $\\sinh x + c$; $\\cosh x + c$",
+          "$\\cosh x$; $\\sinh x$; $-\\cosh x + c$; $\\sinh x + c$"
+        ]
+      },
+      "explanation": "Differentiating the exponential definitions gives $\\frac{d}{dx}\\sinh x = \\cosh x$ and $\\frac{d}{dx}\\cosh x = \\sinh x$, with no sign changes anywhere. That is the sharpest contrast with the circular functions, where differentiating $\\cos$ introduces a minus. Because no sign appears, differentiation and integration of the hyperbolic pair are the same operation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Express $\\operatorname{arcosh} x$ as a logarithm, stating the domain.",
+      "back": "$\\operatorname{arcosh} x = \\ln(x + \\sqrt{x^2 - 1})$ for $x \\ge 1$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "ln(x + sqrt(x^2 - 1))",
+          "synonyms": [
+            "a natural log of x plus root(x^2 - 1)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the domain is x >= 1",
+          "synonyms": [
+            "x at least 1",
+            "cosh never goes below 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the positive root is taken",
+          "synonyms": [
+            "the negative root would give a negative value"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\ln(x + \\sqrt{x^2 - 1})$ for $x \\ge 1$",
+        "distractors": [
+          "$\\ln(x + \\sqrt{x^2 - 1})$ for all real $x$",
+          "$\\ln(x - \\sqrt{x^2 - 1})$ for $x \\ge 1$",
+          "$\\ln(x + \\sqrt{x^2 + 1})$ for $x \\ge 1$"
+        ]
+      },
+      "explanation": "Solving $x = \\frac{e^y + e^{-y}}{2}$ for $y$ gives a quadratic in $e^y$ whose positive root is $e^y = x + \\sqrt{x^2 - 1}$. The domain is $x \\ge 1$ because $\\cosh y \\ge 1$ for all $y$. The last option is $\\operatorname{arsinh} x$, whose domain is all reals - the two are easy to confuse and differ only by the sign under the root.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Prove the double angle formulae $\\cosh 2x = 2\\cosh^2 x - 1$ and $\\sinh 2x = 2\\sinh x \\cosh x$.",
+      "back": "Both follow by adding or subtracting the exponential definitions: $\\cosh 2x = \\frac{e^{2x} + e^{-2x}}{2}$ rearranges to $2\\cosh^2 x - 1$, and the product $2\\sinh x\\cosh x$ expands to $\\frac{e^{2x} - e^{-2x}}{2}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "start from the exponential definitions",
+          "synonyms": [
+            "expand in e^x and e^-x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cosh 2x = 2 cosh^2 x - 1",
+          "synonyms": [
+            "also 1 + 2 sinh^2 x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "sinh 2x = 2 sinh x cosh x",
+          "synonyms": [
+            "the product of the two definitions"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$2\\cosh^2 x - 1 = \\frac{e^{2x} + 2 + e^{-2x}}{2} - 1 = \\frac{e^{2x} + e^{-2x}}{2} = \\cosh 2x$. And $2\\sinh x\\cosh x = 2 \\times \\frac{e^x - e^{-x}}{2} \\times \\frac{e^x + e^{-x}}{2} = \\frac{e^{2x} - e^{-2x}}{2} = \\sinh 2x$. Note there is also $\\cosh 2x = 1 + 2\\sinh^2 x$, obtained by using $\\cosh^2 - \\sinh^2 = 1$ to eliminate $\\cosh^2$ instead.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Solve $\\sinh x = 2$, giving an exact answer.",
+      "back": "$x = \\ln(2 + \\sqrt{5})$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "write sinh x = (e^x - e^-x)/2 = 2",
+          "synonyms": [
+            "use the definition"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u^2 - 4u - 1 = 0 with u = e^x",
+          "synonyms": [
+            "clear the fraction"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u = 2 + root 5",
+          "synonyms": [
+            "reject the negative root"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = ln(2 + root 5)",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\ln(2 + \\sqrt{5})$",
+        "distractors": [
+          "$\\ln(2 - \\sqrt{5})$",
+          "$\\operatorname{arsinh} 2 = 2$",
+          "$\\ln 5$"
+        ]
+      },
+      "explanation": "With $u = e^x$, $\\frac{u - 1/u}{2} = 2$ gives $u^2 - 4u - 1 = 0$, so $u = \\frac{4 \\pm \\sqrt{20}}{2} = 2 \\pm \\sqrt{5}$. Since $e^x > 0$, the root $2 - \\sqrt{5} < 0$ is rejected and $x = \\ln(2 + \\sqrt{5})$. This agrees with the general formula $\\operatorname{arsinh} x = \\ln(x + \\sqrt{x^2 + 1})$, which is exactly the second distractor's structure with the sign wrong.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Hyperbolic functions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
     }
   ]
 }

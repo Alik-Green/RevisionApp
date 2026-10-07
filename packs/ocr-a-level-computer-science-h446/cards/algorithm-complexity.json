@@ -212,6 +212,327 @@
         "computer-science",
         "component-02"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "What is the time complexity of `while n > 1: n = n // 2`?",
+      "back": "$O(\\log n)$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "O(log n)",
+          "synonyms": [
+            "log n",
+            "logarithmic"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n is halved on every iteration",
+          "synonyms": [
+            "the problem size halves each time"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$O(\\log n)$",
+        "distractors": [
+          "$O(n)$",
+          "$O(\\sqrt{n})$",
+          "$O(n \\log n)$"
+        ]
+      },
+      "explanation": "Each iteration halves $n$, so after $k$ iterations the value is $\\frac{n}{2^k}$. Reaching 1 needs $k = \\log_2 n$ iterations. Halving is the signature of logarithmic complexity and is the same reason binary search is so efficient. Doubling $n$ adds only one more iteration, which is the practical meaning of $O(\\log n)$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "An $O(n^2)$ algorithm takes 3 seconds when $n = 500$. Estimate the time when $n = 2500$.",
+      "back": "75 seconds",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "n has increased fivefold",
+          "synonyms": [
+            "2500 / 500 = 5"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "quadratic means the time rises by a factor of 25",
+          "synonyms": [
+            "5 squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "75 seconds",
+          "synonyms": [
+            "3 x 25"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "75 seconds",
+        "distractors": [
+          "15 seconds",
+          "25 seconds",
+          "1500 seconds"
+        ]
+      },
+      "explanation": "The input grows by a factor of 5, and a quadratic algorithm's work grows by $5^2 = 25$, so $3 \\times 25 = 75$ seconds. The answer 15 seconds applies the factor once, which would be right for a linear algorithm. This scaling is the practical reason quadratic sorts are unusable on large data: a hundredfold increase in size means a ten-thousandfold increase in time.",
+      "numeric": {
+        "value": 75,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the best, worst and average case complexities of linear search and of binary search on $n$ items.",
+      "back": "Linear search: best $O(1)$, worst and average $O(n)$. Binary search: best $O(1)$, worst and average $O(\\log n)$.",
+      "keyPoints": [
+        {
+          "text": "linear search best case is O(1)",
+          "synonyms": [
+            "the item is first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "linear search worst case is O(n)",
+          "synonyms": [
+            "the item is last or absent"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "binary search worst case is O(log n)",
+          "synonyms": [
+            "the list halves each comparison"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Linear: $O(1)$ / $O(n)$ / $O(n)$. Binary: $O(1)$ / $O(\\log n)$ / $O(\\log n)$",
+        "distractors": [
+          "Both have worst case $O(n)$",
+          "Linear: $O(n)$ in every case. Binary: $O(\\log n)$ in every case",
+          "Linear: $O(1)$ / $O(\\log n)$ / $O(n)$. Binary: $O(1)$ / $O(n)$ / $O(\\log n)$"
+        ]
+      },
+      "explanation": "The best case is $O(1)$ for both, since either can find the item on the first comparison. What separates them is the worst case: linear search may examine every item, while binary search halves the remaining range each time. Quoting only one figure per algorithm is the common way to lose this mark - the three cases are genuinely different for linear search.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "What is space complexity, and how does it differ from time complexity?",
+      "back": "Space complexity measures the extra memory an algorithm needs beyond its input, as a function of input size. It is a separate resource: an algorithm can trade one against the other.",
+      "keyPoints": [
+        {
+          "text": "the extra memory needed",
+          "synonyms": [
+            "memory used as a function of input size"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "measured beyond the input itself",
+          "synonyms": [
+            "auxiliary space"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "time and space can be traded off",
+          "synonyms": [
+            "using more memory can save time",
+            "a trade-off"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Extra memory needed, traded against time",
+        "distractors": [
+          "The size of the input file on disk",
+          "The number of variables declared in the source code",
+          "Total memory including the input and the program"
+        ]
+      },
+      "explanation": "Merge sort is the standard example of the trade-off: it sorts in $O(n \\log n)$ time but needs $O(n)$ extra memory for the merged halves, where insertion sort is in-place with $O(1)$ extra space but quadratic time. Counting the input itself is not usual - space complexity means the additional working memory.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What is the time complexity of a naive recursive Fibonacci function with no memoisation, and why?",
+      "back": "$O(2^n)$, because each call branches into two further calls and the same subproblems are recomputed many times.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "O(2^n)",
+          "synonyms": [
+            "exponential"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "each call makes two recursive calls",
+          "synonyms": [
+            "the call tree doubles at each level"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the same subproblems are recalculated",
+          "synonyms": [
+            "overlapping subproblems",
+            "fib(3) is computed repeatedly"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$O(2^n)$, because subproblems are recomputed",
+        "distractors": [
+          "$O(n)$, because there are $n$ Fibonacci numbers",
+          "$O(n^2)$, because the recursion is $n$ deep",
+          "$O(\\log n)$, because the values halve"
+        ]
+      },
+      "explanation": "The call tree has roughly $2^n$ nodes: computing fib(5) makes 15 calls in total, of which fib(3) is computed twice and fib(2) three times. Storing each result the first time it is found reduces this to $O(n)$, which is exactly what memoisation buys. Exponential growth is why this function is unusable beyond about $n = 40$ despite the task being trivial.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Why can an $O(n \\log n)$ algorithm be slower in practice than an $O(n^2)$ one for small inputs?",
+      "back": "Because Big O hides constant factors. For small $n$ a low-constant quadratic algorithm can do less actual work than a high-constant $n \\log n$ one.",
+      "keyPoints": [
+        {
+          "text": "Big O ignores constant factors",
+          "synonyms": [
+            "the constants are hidden",
+            "constant multipliers"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "for small n the crossover has not happened yet",
+          "synonyms": [
+            "the asymptotic advantage has not kicked in"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a practical example",
+          "synonyms": [
+            "insertion sort beats merge sort on short lists",
+            "libraries switch algorithm by size"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Big O hides constant factors, which dominate for small $n$",
+        "distractors": [
+          "Because $O(n^2)$ is actually smaller than $O(n \\log n)$ for small $n$",
+          "Because Big O only describes worst-case behaviour",
+          "It cannot; $O(n \\log n)$ always wins"
+        ]
+      },
+      "explanation": "Big O describes growth as $n \\to \\infty$ and discards both constant factors and lower-order terms. An $O(n^2)$ algorithm doing $n^2$ simple operations beats an $O(n \\log n)$ algorithm doing $100 n \\log n$ until $n$ is around $2^{100}$, which never happens. This is why real sorting libraries use insertion sort for short sublists and switch to merge or quick sort for longer ones.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "What is the time complexity of this pseudocode?\\n```\\nfor i <- 1 to n\\n  for j <- 1 to i\\n    total <- total + a[j]\\n```",
+      "back": "$O(n^2)$, because the inner loop runs $i$ times so the total work is $1 + 2 + \\ldots + n = \\frac{n(n+1)}{2}$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the inner loop runs i times, not n",
+          "synonyms": [
+            "the inner bound depends on the outer variable"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the total is 1 + 2 + ... + n = n(n+1)/2",
+          "synonyms": [
+            "sum the actual work"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "O(n^2)",
+          "synonyms": [
+            "quadratic"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$O(n^2)$: the work totals $\\frac{n(n+1)}{2}$",
+        "distractors": [
+          "$O(n^2 \\log n)$: two nested loops with a sum",
+          "$O(n)$: the average inner length is $\\frac{n}{2}$",
+          "$O(n^3)$: three levels of nesting"
+        ]
+      },
+      "explanation": "The inner loop runs $1 + 2 + \\ldots + n = \\frac{n(n+1)}{2}$ times in total, which is $\\frac{1}{2}n^2 + \\frac{1}{2}n$. Dropping the constant and the lower-order term leaves $O(n^2)$. The halving of the average inner length is real but only affects the hidden constant, not the class - a trap worth remembering whenever the inner bound depends on the outer variable.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.3 Algorithms",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
     }
   ]
 }

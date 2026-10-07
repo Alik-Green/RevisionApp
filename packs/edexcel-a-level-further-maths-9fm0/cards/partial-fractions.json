@@ -184,6 +184,322 @@
         "further-maths",
         "core-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Express $\\frac{x^2 + 1}{(x - 1)(x + 2)}$ in partial fractions.",
+      "back": "$1 + \\frac{2}{3(x - 1)} - \\frac{5}{3(x + 2)}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the fraction is improper, so divide first",
+          "synonyms": [
+            "numerator and denominator have the same degree",
+            "polynomial division"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x^2 + 1 = (x^2 + x - 2) + (3 - x)",
+          "synonyms": [
+            "the quotient is 1 and the remainder is 3 - x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1 + 2/(3(x - 1)) - 5/(3(x + 2))",
+          "synonyms": [
+            "then split the proper remainder"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$1 + \\frac{2}{3(x-1)} - \\frac{5}{3(x+2)}$",
+        "distractors": [
+          "$\\frac{2}{3(x-1)} - \\frac{5}{3(x+2)}$",
+          "$x + \\frac{2}{3(x-1)} - \\frac{5}{3(x+2)}$",
+          "$1 + \\frac{2}{3(x+2)} - \\frac{5}{3(x-1)}$"
+        ]
+      },
+      "explanation": "Partial fractions apply only to a proper fraction. Since both numerator and denominator have degree 2, divide first: $x^2 + 1 = 1 \\times (x^2 + x - 2) + (3 - x)$, so the fraction is $1 + \\frac{3 - x}{(x-1)(x+2)}$. The cover-up rule on the remainder gives $A = \\frac{3-1}{1+2} = \\frac{2}{3}$ at $x = 1$ and $B = \\frac{3+2}{-2-1} = -\\frac{5}{3}$ at $x = -2$. Skipping the division is the single most common error with an improper fraction.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Express $\\frac{3x - 1}{(x + 1)^2 (x - 2)}$ in partial fractions.",
+      "back": "$-\\frac{5}{9(x + 1)} + \\frac{4}{3(x + 1)^2} + \\frac{5}{9(x - 2)}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "a repeated linear factor needs two terms",
+          "synonyms": [
+            "A/(x + 1) and B/(x + 1)^2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "B = 4/3 from the cover-up at x = -1",
+          "synonyms": [
+            "multiply by (x + 1)^2 and substitute"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A = -5/9 and C = 5/9",
+          "synonyms": [
+            "compare coefficients or substitute further values"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$-\\frac{5}{9(x+1)} + \\frac{4}{3(x+1)^2} + \\frac{5}{9(x-2)}$",
+        "distractors": [
+          "$\\frac{5}{9(x+1)} + \\frac{4}{3(x+1)^2} - \\frac{5}{9(x-2)}$",
+          "$\\frac{4}{3(x+1)} - \\frac{5}{9(x+1)^2} + \\frac{5}{9(x-2)}$",
+          "$\\frac{4}{3(x+1)^2} + \\frac{5}{9(x-2)}$"
+        ]
+      },
+      "explanation": "A repeated factor $(x+1)^2$ requires both $\\frac{A}{x+1}$ and $\\frac{B}{(x+1)^2}$. Covering up $(x+1)^2$ and substituting $x = -1$ gives $B = \\frac{-4}{-3} = \\frac{4}{3}$; covering up $(x-2)$ and substituting $x = 2$ gives $C = \\frac{5}{9}$. Then $A$ comes from equating coefficients of $x^2$: $A + C = 0$, so $A = -\\frac{5}{9}$. Omitting the $\\frac{B}{(x+1)^2}$ term is the error the repeated factor is there to catch.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Express $\\frac{x^2 + 2}{(x + 1)(x^2 + 1)}$ in partial fractions.",
+      "back": "$\\frac{3}{2(x + 1)} + \\frac{1 - x}{2(x^2 + 1)}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "an irreducible quadratic needs a linear numerator",
+          "synonyms": [
+            "(Bx + C)/(x^2 + 1)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A = 3/2 from the cover-up at x = -1",
+          "synonyms": [
+            "3/2 over x + 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "B = -1/2 and C = 1/2",
+          "synonyms": [
+            "compare coefficients of x^2 and the constant term"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{3}{2(x+1)} + \\frac{1-x}{2(x^2+1)}$",
+        "distractors": [
+          "$\\frac{3}{2(x+1)} + \\frac{1}{x^2+1}$",
+          "$\\frac{3}{2(x+1)} + \\frac{x+1}{2(x^2+1)}$",
+          "$\\frac{3}{x+1} + \\frac{1-x}{2(x^2+1)}$"
+        ]
+      },
+      "explanation": "$x^2 + 1$ does not factorise over the reals, so its term needs a linear numerator $Bx + C$. Covering up $(x+1)$ and substituting $x = -1$ gives $A = \\frac{3}{2}$. Comparing coefficients of $x^2$ gives $A + B = 1$, so $B = -\\frac{1}{2}$; the constant terms give $A + C = 2$, so $C = \\frac{1}{2}$. Using a constant numerator over $x^2 + 1$ would leave the decomposition short of the degrees of freedom it needs.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Use partial fractions to find the exact value of $\\sum_{n=1}^{\\infty} \\frac{1}{n(n + 1)(n + 2)}$.",
+      "back": "$\\frac{1}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "split as (1/2)(1/n - 2/(n + 1) + 1/(n + 2))",
+          "synonyms": [
+            "partial fractions with three linear factors"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the series telescopes",
+          "synonyms": [
+            "successive terms cancel"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1/4",
+          "synonyms": [
+            "a quarter"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{4}$",
+        "distractors": [
+          "$\\frac{1}{2}$",
+          "$\\frac{1}{6}$",
+          "$1$"
+        ]
+      },
+      "explanation": "In partial fractions $\\frac{1}{n(n+1)(n+2)} = \\frac{1}{2}\\left(\\frac{1}{n} - \\frac{2}{n+1} + \\frac{1}{n+2}\\right)$. Writing out the first terms, almost everything cancels and $\\frac{1}{2}\\left(1 - 1 + \\frac{1}{2}\\right) = \\frac{1}{4}$ survives. With three consecutive factors the cancellation leaves two half-terms rather than one, which is why the answer is $\\frac{1}{4}$ and not the $\\frac{1}{2}$ of the two-factor version.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Explain why the cover-up rule cannot be used on its own for a denominator with a repeated linear factor.",
+      "back": "Covering up gives the coefficient of the highest power of the repeated factor only. The lower powers, and any other factor, need coefficient comparison or further substitution.",
+      "keyPoints": [
+        {
+          "text": "cover-up gives only the top-power coefficient",
+          "synonyms": [
+            "it finds B for B/(x + a)^2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the remaining coefficients need another method",
+          "synonyms": [
+            "compare coefficients",
+            "substitute another value"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "It gives only the highest-power coefficient of the repeated factor",
+        "distractors": [
+          "It always gives the wrong sign for a repeated factor",
+          "It works only for irreducible quadratics",
+          "It cannot be used at all once a factor is repeated"
+        ]
+      },
+      "explanation": "For $\\frac{A}{x+1} + \\frac{B}{(x+1)^2}$, multiplying by $(x+1)^2$ and substituting $x = -1$ isolates $B$ because every other term still contains a factor of $(x + 1)$. But substituting $x = -1$ into the version multiplied by only $(x+1)$ gives $0 = 0$ and reveals nothing about $A$. So cover-up starts the job and coefficient comparison finishes it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Evaluate $\\int \\frac{1}{x^2 - 1}\\,dx$ using partial fractions.",
+      "back": "$\\frac{1}{2}\\ln\\left|\\frac{x - 1}{x + 1}\\right| + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "factorise as (x - 1)(x + 1)",
+          "synonyms": [
+            "difference of two squares"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "split into -1/(2(x + 1)) + 1/(2(x - 1))",
+          "synonyms": [
+            "partial fractions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(1/2) ln |(x - 1)/(x + 1)| + c",
+          "synonyms": [
+            "integrate and combine the logs"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}\\ln\\left|\\frac{x-1}{x+1}\\right| + c$",
+        "distractors": [
+          "$\\ln|x^2 - 1| + c$",
+          "$\\frac{1}{2}\\ln\\left|\\frac{x+1}{x-1}\\right| + c$",
+          "$-\\frac{1}{2}\\ln|x^2 - 1| + c$"
+        ]
+      },
+      "explanation": "$\\frac{1}{x^2 - 1} = \\frac{1}{(x-1)(x+1)} = -\\frac{1}{2(x+1)} + \\frac{1}{2(x-1)}$, so integrating gives $\\frac{1}{2}\\ln|x - 1| - \\frac{1}{2}\\ln|x + 1| + c$, which combines to $\\frac{1}{2}\\ln\\left|\\frac{x-1}{x+1}\\right| + c$. The answer $\\ln|x^2 - 1|$ is what you get by pretending the integrand is $\\frac{2x}{x^2 - 1}$; the third option is the same value with the opposite sign, so the order inside the log matters.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Express $\\frac{2x^3 + x^2 + 1}{x^2 - 1}$ in partial fractions.",
+      "back": "$2x + 1 + \\frac{2}{x - 1}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "divide first because the fraction is improper",
+          "synonyms": [
+            "degree 3 over degree 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the quotient is 2x + 1",
+          "synonyms": [
+            "polynomial division"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the remainder simplifies to 2/(x - 1)",
+          "synonyms": [
+            "(2x + 2)/((x - 1)(x + 1)) cancels"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2x + 1 + \\frac{2}{x-1}$",
+        "distractors": [
+          "$2x + 1 + \\frac{2x + 2}{x^2 - 1}$",
+          "$2x + 1 + \\frac{2}{x+1}$",
+          "$2x - 1 + \\frac{2}{x-1}$"
+        ]
+      },
+      "explanation": "Division gives quotient $2x + 1$ with remainder $2x + 2$, so the expression is $2x + 1 + \\frac{2x + 2}{x^2 - 1}$. Since $2x + 2 = 2(x + 1)$, the fraction cancels to $\\frac{2}{x - 1}$. Spotting that cancellation is the point of the question: the cover-up route would give $\\frac{A}{x-1} + \\frac{B}{x+1}$ with $B = 0$, and leaving an uncancelled fraction is a form error rather than a wrong value.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Partial fractions",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
     }
   ]
 }

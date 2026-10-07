@@ -161,6 +161,339 @@
         "further-maths",
         "further-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "State the Newton-Raphson iteration formula and explain where it comes from.",
+      "back": "$x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$, obtained by following the tangent to the curve at $x_n$ down to the $x$-axis.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "x_(n+1) = x_n - f(x_n)/f'(x_n)",
+          "synonyms": [
+            "the Newton-Raphson formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it comes from the tangent at x_n",
+          "synonyms": [
+            "the x intercept of the tangent line"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f'(x_n) must not be zero",
+          "synonyms": [
+            "the gradient appears in the denominator"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x_n - \\frac{f(x_n)}{f'(x_n)}$, the $x$-intercept of the tangent",
+        "distractors": [
+          "$x_n + \\frac{f'(x_n)}{f(x_n)}$, the $x$-intercept of the normal",
+          "$x_n - \\frac{f'(x_n)}{f(x_n)}$, the midpoint of the interval",
+          "$\\frac{x_n + x_{n-1}}{2}$, the average of two estimates"
+        ]
+      },
+      "explanation": "The tangent at $(x_n, f(x_n))$ is $y - f(x_n) = f'(x_n)(x - x_n)$, and setting $y = 0$ gives the formula. Geometrically each step replaces the curve by its tangent and takes that line's root as the next estimate, which is why convergence is so much faster than interval bisection - roughly twice the number of correct figures per step, when it converges at all.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Apply one iteration of Newton-Raphson to $f(x) = x^3 - 2x - 5$ starting from $x_0 = 2$.",
+      "back": "$x_1 = 2.1$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "f(2) = -1 and f'(2) = 10",
+          "synonyms": [
+            "evaluate the function and its derivative"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f'(x) = 3x^2 - 2",
+          "synonyms": [
+            "differentiate first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x_1 = 2 - (-1)/10 = 2.1",
+          "synonyms": [
+            "subtract the ratio"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.1",
+        "distractors": [
+          "1.9",
+          "2.05",
+          "2.2"
+        ]
+      },
+      "explanation": "$f(2) = 8 - 4 - 5 = -1$ and $f'(x) = 3x^2 - 2$, so $f'(2) = 10$. Then $x_1 = 2 - \\frac{-1}{10} = 2.1$. The answer 1.9 adds the ratio instead of subtracting it, which moves away from the root at about 2.0946. Carrying the sign of $f(x_n)$ correctly is the whole of this step.",
+      "numeric": {
+        "value": 2.1,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Find $x_2$ for $f(x) = x^3 - 2x - 5$ by Newton-Raphson from $x_0 = 2$, to four decimal places.",
+      "back": "$x_2 = 2.0946$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "x_1 = 2.1 from the first iteration",
+          "synonyms": [
+            "the previous step"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f(2.1) = 0.061 and f'(2.1) = 11.23",
+          "synonyms": [
+            "evaluate again at 2.1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x_2 = 2.1 - 0.061/11.23",
+          "synonyms": [
+            "apply the formula a second time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2.0946",
+          "synonyms": [
+            "to four decimal places"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2.0946",
+        "distractors": [
+          "2.0950",
+          "2.0900",
+          "2.1000"
+        ]
+      },
+      "explanation": "$f(2.1) = 9.261 - 4.2 - 5 = 0.061$ and $f'(2.1) = 3(4.41) - 2 = 11.23$, so $x_2 = 2.1 - \\frac{0.061}{11.23} = 2.094568\\ldots$, which rounds to 2.0946. Notice how the correction dropped from $0.1$ to about $0.0054$: that is the quadratic convergence Newton-Raphson is known for. Stopping at $x_1 = 2.1$ is the fourth distractor.",
+      "numeric": {
+        "value": 2.0946,
+        "tolerance": 5e-05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Show that $x^3 - 3x - 1 = 0$ has a root in the interval $(1, 2)$, and state what makes the argument valid.",
+      "back": "$f(1) = -3$ and $f(2) = 1$, so there is a sign change. The argument is valid because $f$ is continuous on $[1, 2]$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "f(1) = -3 and f(2) = 1",
+          "synonyms": [
+            "evaluate at both endpoints"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "there is a sign change",
+          "synonyms": [
+            "the values have opposite signs"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f is continuous on the interval",
+          "synonyms": [
+            "continuity is required",
+            "the intermediate value theorem"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Sign change from $-3$ to $1$, and $f$ is continuous on $[1, 2]$",
+        "distractors": [
+          "Sign change from $-3$ to $1$; continuity is not needed",
+          "$f(1)$ and $f(2)$ are both negative, so a root lies between them",
+          "The derivative changes sign on $[1, 2]$"
+        ]
+      },
+      "explanation": "A sign change alone is not enough: the function must also be continuous, which is what the intermediate value theorem requires. Here $f$ is a polynomial so continuity is automatic, but the condition should still be stated for full marks. Note that a sign change is sufficient but not necessary - $x^2 = 0$ has a root with no sign change, because the curve only touches the axis.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "An iteration is written $x = g(x)$. State the condition for convergence to a root $\\alpha$, and explain what happens when it fails.",
+      "back": "Convergence needs $|g'(\\alpha)| < 1$. If $|g'(\\alpha)| > 1$ the iteration diverges, moving away from the root at each step.",
+      "keyPoints": [
+        {
+          "text": "|g'(alpha)| < 1",
+          "synonyms": [
+            "the modulus of the derivative at the root is less than 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "if the modulus exceeds 1 the iteration diverges",
+          "synonyms": [
+            "the errors are magnified each step"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$|g'(\\alpha)| < 1$; otherwise the errors grow and the iteration diverges",
+        "distractors": [
+          "$g'(\\alpha) > 0$; otherwise the iteration oscillates",
+          "$|g'(\\alpha)| > 1$; otherwise the iteration converges too slowly",
+          "$g'(\\alpha) = 0$; otherwise the iteration never terminates"
+        ]
+      },
+      "explanation": "Near $\\alpha$, $x_{n+1} - \\alpha \\approx g'(\\alpha)(x_n - \\alpha)$, so each error is multiplied by $g'(\\alpha)$. Modulus below 1 shrinks it towards zero; modulus above 1 magnifies it. The sign of $g'(\\alpha)$ decides the shape of the diagram rather than whether it converges: positive gives a staircase and negative a cobweb.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Explain two ways in which Newton-Raphson can fail.",
+      "back": "It fails if $f'(x_n) = 0$, because the tangent is horizontal and never meets the axis; and it can diverge or cycle if the first estimate is too far from the root or the curve has a turning point nearby.",
+      "keyPoints": [
+        {
+          "text": "f'(x_n) = 0 gives a horizontal tangent",
+          "synonyms": [
+            "division by zero",
+            "a stationary point"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a poor starting value can cause divergence or cycling",
+          "synonyms": [
+            "the iteration moves away from the root",
+            "a turning point nearby"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Zero derivative, or a starting value too far from the root",
+        "distractors": [
+          "Only if the function has no real root",
+          "Only if the function is not a polynomial",
+          "It cannot fail once the first estimate is inside a sign change"
+        ]
+      },
+      "explanation": "At a stationary point the tangent is parallel to the $x$-axis, so the formula divides by zero. Away from that, a start near a turning point can send the next estimate far across the graph, and the iteration may then cycle or diverge even though a root exists. Being inside a sign change guarantees a root by continuity but says nothing about whether Newton-Raphson will find it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Compare interval bisection with Newton-Raphson in terms of reliability and speed.",
+      "back": "Bisection is slower but guaranteed to converge once a sign change is found; Newton-Raphson converges much faster, roughly doubling the correct figures each step, but can fail or diverge.",
+      "keyPoints": [
+        {
+          "text": "bisection is guaranteed to converge",
+          "synonyms": [
+            "reliable",
+            "slow but certain"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "bisection gains about one bit per step",
+          "synonyms": [
+            "halves the interval each time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "Newton-Raphson is much faster",
+          "synonyms": [
+            "quadratic convergence",
+            "doubles the correct figures"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "Newton-Raphson can fail",
+          "synonyms": [
+            "not guaranteed",
+            "can diverge"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Bisection slower but guaranteed; Newton-Raphson faster but can fail",
+        "distractors": [
+          "Newton-Raphson slower but guaranteed; bisection faster but can fail",
+          "Both are guaranteed to converge, at the same rate",
+          "Neither is guaranteed, but both converge at the same rate"
+        ]
+      },
+      "explanation": "Bisection halves the interval every step, so it gains about one binary digit per iteration and always converges when a sign change brackets a root. Newton-Raphson typically doubles the number of correct decimal places per step, which is why it is used in calculators - but it needs a derivative and a sensible starting value, and it can fail outright. In practice a robust implementation bisects until it is close, then switches to Newton-Raphson.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Numerical methods",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
     }
   ]
 }

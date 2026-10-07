@@ -163,6 +163,346 @@
         "physics",
         "m5"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "An oscillator has an amplitude of 0.050 m and a frequency of 2.0 Hz. Calculate its maximum speed.",
+      "back": "$0.63\\,\\mathrm{m\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "v max = omega A",
+          "synonyms": [
+            "maximum speed is angular velocity times amplitude"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega = 2 pi f = 12.6 rad/s",
+          "synonyms": [
+            "convert the frequency first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "0.63 m/s",
+          "synonyms": [
+            "about 0.628 m/s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$0.63\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$0.10\\,\\mathrm{m\\,s^{-1}}$",
+          "$6.3\\,\\mathrm{m\\,s^{-1}}$",
+          "$0.31\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "$\\omega = 2\\pi f = 12.57\\,\\mathrm{rad\\,s^{-1}}$, so $v_{max} = \\omega A = 12.57 \\times 0.050 = 0.628\\,\\mathrm{m\\,s^{-1}}$. The maximum speed occurs at the equilibrium position, where all the energy is kinetic. Using $f$ in place of $\\omega$ gives $0.10\\,\\mathrm{m\\,s^{-1}}$, which is the answer most often produced by missing the $2\\pi$.",
+      "numeric": {
+        "value": 0.628,
+        "tolerance": 0.005
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "For the same oscillator, amplitude 0.050 m and frequency 2.0 Hz, calculate the maximum acceleration.",
+      "back": "$7.9\\,\\mathrm{m\\,s^{-2}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "a max = omega^2 A",
+          "synonyms": [
+            "angular velocity squared times amplitude"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega^2 = 158",
+          "synonyms": [
+            "square the angular velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "7.9 m/s^2",
+          "synonyms": [
+            "about 7.90 m/s^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$7.9\\,\\mathrm{m\\,s^{-2}}$",
+        "distractors": [
+          "$0.20\\,\\mathrm{m\\,s^{-2}}$",
+          "$1.3\\,\\mathrm{m\\,s^{-2}}$",
+          "$39\\,\\mathrm{m\\,s^{-2}}$"
+        ]
+      },
+      "explanation": "$a_{max} = \\omega^2 A = 157.9 \\times 0.050 = 7.90\\,\\mathrm{m\\,s^{-2}}$. It occurs at maximum displacement, where the restoring force is greatest, and it is in the opposite direction to the displacement. Comparing with $g = 9.81\\,\\mathrm{m\\,s^{-2}}$ is a useful sanity check: this oscillator's peak acceleration is a little under $g$.",
+      "numeric": {
+        "value": 7.9,
+        "tolerance": 0.05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Write the expression for the kinetic energy of an oscillator at displacement $x$, and state where it is greatest.",
+      "back": "$E_k = \\frac{1}{2}m\\omega^2(A^2 - x^2)$, greatest at $x = 0$ where it equals the total energy $\\frac{1}{2}m\\omega^2A^2$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "E_k = 1/2 m omega^2 (A^2 - x^2)",
+          "synonyms": [
+            "total energy minus the potential energy"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "greatest at the equilibrium position x = 0",
+          "synonyms": [
+            "maximum kinetic energy at the centre"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the total energy is 1/2 m omega^2 A^2",
+          "synonyms": [
+            "constant throughout the motion"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}m\\omega^2(A^2 - x^2)$, greatest at $x = 0$",
+        "distractors": [
+          "$\\frac{1}{2}m\\omega^2x^2$, greatest at $x = A$",
+          "$\\frac{1}{2}m\\omega^2A^2$, the same everywhere",
+          "$\\frac{1}{2}m\\omega^2(A - x)^2$, greatest at $x = -A$"
+        ]
+      },
+      "explanation": "The total energy $\\frac{1}{2}m\\omega^2A^2$ is constant and is shared between kinetic and potential. The potential energy is $\\frac{1}{2}m\\omega^2x^2$, greatest at the extremes, so the kinetic energy is what is left over. The second option is the potential energy, which is the pair of expressions most often swapped.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "An oscillator starts at maximum displacement, so $x = A\\cos\\omega t$. What is its displacement at $t = \\frac{T}{4}$ and at $t = \\frac{T}{2}$?",
+      "back": "Zero at $\\frac{T}{4}$ and $-A$ at $\\frac{T}{2}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "omega t = pi/2 at T/4, so x = 0",
+          "synonyms": [
+            "a quarter period reaches the equilibrium position"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "omega t = pi at T/2, so x = -A",
+          "synonyms": [
+            "half a period reaches the opposite extreme"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$0$ at $\\frac{T}{4}$, $-A$ at $\\frac{T}{2}$",
+        "distractors": [
+          "$A$ at $\\frac{T}{4}$, $0$ at $\\frac{T}{2}$",
+          "$0$ at $\\frac{T}{4}$, $A$ at $\\frac{T}{2}$",
+          "$\\frac{A}{2}$ at $\\frac{T}{4}$, $-A$ at $\\frac{T}{2}$"
+        ]
+      },
+      "explanation": "$\\omega = \\frac{2\\pi}{T}$, so at $t = \\frac{T}{4}$, $\\omega t = \\frac{\\pi}{2}$ and $\\cos\\frac{\\pi}{2} = 0$; at $t = \\frac{T}{2}$, $\\omega t = \\pi$ and $\\cos\\pi = -1$. Starting from maximum displacement is what selects the cosine; a release from the equilibrium position with an initial velocity would need $x = A\\sin\\omega t$ instead, and the two differ by a quarter period.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "On what does the period of a simple pendulum depend, and on what does it not?",
+      "back": "On its length and on $g$, through $T = 2\\pi\\sqrt{\\frac{l}{g}}$. It does not depend on the mass of the bob or, for small angles, on the amplitude.",
+      "keyPoints": [
+        {
+          "text": "it depends on the length",
+          "synonyms": [
+            "longer means a longer period"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it depends on g",
+          "synonyms": [
+            "stronger gravity means a shorter period"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it does not depend on the mass",
+          "synonyms": [
+            "mass has no effect"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it does not depend on the amplitude, for small angles",
+          "synonyms": [
+            "small angle approximation",
+            "isochronous"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Length and $g$ only; not mass and not amplitude",
+        "distractors": [
+          "Mass and amplitude only",
+          "Length, mass and amplitude",
+          "Only the amplitude"
+        ]
+      },
+      "explanation": "The mass cancels for the same reason all objects fall at the same rate: a heavier bob has both a larger restoring force and a larger inertia. Independence of amplitude holds only for small angles, where $\\sin\\theta \\approx \\theta$; beyond about $15^\\circ$ the period lengthens slightly, which is why a pendulum clock slows as its swing dies down.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Distinguish free, forced and damped oscillation, and say what happens at resonance.",
+      "back": "Free oscillation happens at the natural frequency with no external driving force. Forced oscillation is driven at another frequency. Damped oscillation loses energy, reducing the amplitude. At resonance the driving frequency equals the natural frequency and the amplitude is greatest.",
+      "keyPoints": [
+        {
+          "text": "free: at the natural frequency, no driver",
+          "synonyms": [
+            "natural frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "forced: driven at the driver's frequency",
+          "synonyms": [
+            "an external periodic force"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "damped: amplitude decreases as energy is lost",
+          "synonyms": [
+            "energy dissipated"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "resonance: driving frequency equals natural frequency, amplitude is largest",
+          "synonyms": [
+            "maximum energy transfer"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Free at natural frequency, forced by a driver, damped losing energy, resonance at maximum amplitude",
+        "distractors": [
+          "Free and forced mean the same; damping increases the amplitude",
+          "Resonance occurs at twice the natural frequency",
+          "Damped oscillation has a constant amplitude at a lower frequency"
+        ]
+      },
+      "explanation": "Resonance is maximum energy transfer, and it is sharpest when damping is light - a heavily damped system barely shows a peak. The consequences run both ways: resonance is how a microwave oven heats food and how a radio selects a station, and it is also what can bring down a bridge when the wind or marching feet match its natural frequency.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "An oscillator has amplitude 0.040 m and $\\omega = 10\\,\\mathrm{rad\\,s^{-1}}$. Find its speed when the displacement is 0.024 m.",
+      "back": "$0.32\\,\\mathrm{m\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "v = omega sqrt(A^2 - x^2)",
+          "synonyms": [
+            "the speed at a given displacement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A^2 - x^2 = 0.0016 - 0.000576",
+          "synonyms": [
+            "square both amplitudes and subtract"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "0.32 m/s",
+          "synonyms": [
+            "10 x 0.032"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$0.32\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$0.40\\,\\mathrm{m\\,s^{-1}}$",
+          "$0.16\\,\\mathrm{m\\,s^{-1}}$",
+          "$0.24\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "$v = \\omega\\sqrt{A^2 - x^2} = 10\\sqrt{0.040^2 - 0.024^2} = 10\\sqrt{0.000{,}0016 - 0.000576} = 10 \\times 0.032 = 0.32\\,\\mathrm{m\\,s^{-1}}$. Since $0.024 = 0.6A$, the remaining fraction is $\\sqrt{1 - 0.6^2} = 0.8$ of the maximum speed, and $0.8 \\times 0.40 = 0.32$. The maximum speed $0.40\\,\\mathrm{m\\,s^{-1}}$ is the second option, which is what you get by ignoring the displacement.",
+      "numeric": {
+        "value": 0.32,
+        "tolerance": 0.005
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
     }
   ]
 }

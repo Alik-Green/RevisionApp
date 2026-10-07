@@ -196,6 +196,341 @@
         "physics",
         "m4"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Write the equation $I = nAvq$ and explain what each symbol represents.",
+      "back": "$n$ is the number density of charge carriers, $A$ the cross-sectional area, $v$ the mean drift velocity and $q$ the charge on each carrier.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "n is the number density of charge carriers",
+          "synonyms": [
+            "carriers per unit volume"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A is the cross-sectional area",
+          "synonyms": [
+            "area of the conductor"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "v is the mean drift velocity",
+          "synonyms": [
+            "drift velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "q is the charge on each carrier",
+          "synonyms": [
+            "1.60 x 10^-19 C for an electron"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Number density, area, drift velocity, charge per carrier",
+        "distractors": [
+          "Number of carriers, amplitude, velocity, charge of the wire",
+          "Number density, area, velocity of the wave, current",
+          "Neutron density, area, voltage, charge"
+        ]
+      },
+      "explanation": "The equation says the current is the charge passing a point each second: in one second a column of length $v$ and area $A$ passes by, containing $nAv$ carriers each of charge $q$. Drift velocities in a copper wire are of order $10^{-4}\\,\\mathrm{m\\,s^{-1}}$, which is why a lamp lights instantly even though no individual electron travels far.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A wire of length 2.0 m and cross-sectional area $5.0 \\times 10^{-7}\\,\\mathrm{m^2}$ is made of a material with resistivity $1.7 \\times 10^{-8}\\,\\Omega\\,\\mathrm{m}$. Find its resistance.",
+      "back": "$0.068\\,\\Omega$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "R = rho L / A",
+          "synonyms": [
+            "resistivity times length over area"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "0.068 ohm",
+          "synonyms": [
+            "0.068"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "resistance increases with length and falls with area",
+          "synonyms": [
+            "the proportionality"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$0.068\\,\\Omega$",
+        "distractors": [
+          "$0.017\\,\\Omega$",
+          "$68\\,\\Omega$",
+          "$0.34\\,\\Omega$"
+        ]
+      },
+      "explanation": "$R = \\frac{1.7 \\times 10^{-8} \\times 2.0}{5.0 \\times 10^{-7}} = 0.068\\,\\Omega$. Doubling the length doubles the resistance, since the charge carriers meet twice as much obstruction, and doubling the area halves it, since there are twice as many paths. Handling the powers of ten is usually where this calculation goes wrong rather than the formula.",
+      "numeric": {
+        "value": 0.068,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Describe the I-V characteristic of a filament lamp and explain its shape.",
+      "back": "The gradient falls as the current rises, so the curve bends towards the voltage axis. As the filament heats up its lattice vibrations increase, collisions become more frequent and the resistance rises.",
+      "keyPoints": [
+        {
+          "text": "the curve bends, the gradient decreases",
+          "synonyms": [
+            "non-linear",
+            "not a straight line"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the filament gets hotter as the current rises",
+          "synonyms": [
+            "temperature increases"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "higher temperature means more lattice vibrations and more collisions",
+          "synonyms": [
+            "resistance increases with temperature"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Gradient falls as the filament heats and its resistance rises",
+        "distractors": [
+          "A straight line through the origin; the lamp obeys Ohm's law",
+          "Zero current until a threshold voltage, then a straight line",
+          "The gradient increases as the filament heats"
+        ]
+      },
+      "explanation": "The lamp is a non-ohmic conductor: its resistance depends on its temperature, which depends on the current. This is why the characteristic is symmetric but curved in both quadrants - reversing the current still heats the filament. A semiconductor diode, by contrast, conducts in one direction only, and its characteristic is flat until about 0.6 V.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "How do the resistances of a thermistor and an LDR change with their conditions?",
+      "back": "A negative temperature coefficient thermistor's resistance falls as temperature rises. An LDR's resistance falls as light intensity rises.",
+      "keyPoints": [
+        {
+          "text": "thermistor resistance falls as temperature rises",
+          "synonyms": [
+            "NTC",
+            "negative temperature coefficient"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "LDR resistance falls as light intensity rises",
+          "synonyms": [
+            "more light, lower resistance"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Both fall: thermistor with temperature, LDR with light intensity",
+        "distractors": [
+          "Both rise with their condition",
+          "Thermistor falls with temperature; LDR rises with light",
+          "Thermistor rises with temperature; LDR falls with light"
+        ]
+      },
+      "explanation": "Both are semiconductors, and heating or illuminating them releases more charge carriers, which lowers the resistance - the opposite of a metal, whose resistance rises with temperature because the lattice vibrations scatter the electrons more. The pair are used in potential dividers to build temperature and light sensors, which is the usual follow-up question.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "A current of 0.50 A flows for 2.0 minutes. Find the charge that passes and the number of electrons.",
+      "back": "$60\\,\\mathrm{C}$ and $3.8 \\times 10^{20}$ electrons",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "Q = It = 0.50 x 120 = 60 C",
+          "synonyms": [
+            "convert minutes to seconds first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "number of electrons = Q / e",
+          "synonyms": [
+            "divide by 1.60 x 10^-19"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3.75 x 10^20 electrons",
+          "synonyms": [
+            "about 3.8 x 10^20"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$60\\,\\mathrm{C}$, $3.8 \\times 10^{20}$ electrons",
+        "distractors": [
+          "$1.0\\,\\mathrm{C}$, $6.3 \\times 10^{18}$ electrons",
+          "$60\\,\\mathrm{C}$, $9.6 \\times 10^{18}$ electrons",
+          "$0.25\\,\\mathrm{C}$, $1.6 \\times 10^{18}$ electrons"
+        ]
+      },
+      "explanation": "$Q = It = 0.50 \\times 120 = 60\\,\\mathrm{C}$, and $n = \\frac{Q}{e} = \\frac{60}{1.60 \\times 10^{-19}} = 3.75 \\times 10^{20}$. Leaving the time in minutes is the usual slip and gives $1.0\\,\\mathrm{C}$. The size of the answer is worth noting: an ordinary current involves an almost unimaginable number of electrons, which is why individual charges are never observed in a circuit.",
+      "numeric": {
+        "value": 60,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Why does the resistance of a metal wire increase with temperature, in terms of charge carriers?",
+      "back": "The lattice ions vibrate with greater amplitude, so electrons collide with them more often. Each collision interrupts the drift, so the mean drift velocity falls for a given potential difference and the resistance rises.",
+      "keyPoints": [
+        {
+          "text": "the lattice ions vibrate more",
+          "synonyms": [
+            "greater amplitude of vibration"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "electrons collide more frequently",
+          "synonyms": [
+            "more scattering",
+            "shorter time between collisions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the drift velocity falls for the same pd",
+          "synonyms": [
+            "so the current falls and resistance rises"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Larger lattice vibrations cause more frequent collisions, reducing drift velocity",
+        "distractors": [
+          "The wire expands, so the electrons have further to travel",
+          "More charge carriers are released, which increases the resistance",
+          "The electrons move faster and overshoot the collisions"
+        ]
+      },
+      "explanation": "The number of charge carriers in a metal is essentially fixed, so temperature affects only how freely they move. In a semiconductor the opposite dominates: heating releases far more carriers, and that increase outweighs the extra scattering, so the resistance falls. The same two effects are present in both materials, but which one wins is what separates them.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A 12 V supply drives 2.0 A through a resistor. Find the power dissipated and the energy transferred in 30 s.",
+      "back": "24 W and 720 J",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "P = VI = 12 x 2.0 = 24 W",
+          "synonyms": [
+            "power is 24 watts"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "E = Pt = 24 x 30 = 720 J",
+          "synonyms": [
+            "energy is 720 joules"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the energy is dissipated as heat",
+          "synonyms": [
+            "thermal energy",
+            "the resistor warms up"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "24 W, 720 J",
+        "distractors": [
+          "24 W, 24 J",
+          "6.0 W, 180 J",
+          "24 W, 0.80 J"
+        ]
+      },
+      "explanation": "$P = VI = 24\\,\\mathrm{W}$ and $E = Pt = 720\\,\\mathrm{J}$. Since $V = IR$, the same power can be written $I^2R$ or $\\frac{V^2}{R}$, and choosing the form that uses the quantities given saves a step. Note that a kilowatt-hour is a unit of energy, not power - $1\\,\\mathrm{kWh} = 3.6\\,\\mathrm{MJ}$.",
+      "numeric": {
+        "value": 24,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
     }
   ]
 }

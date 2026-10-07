@@ -199,6 +199,332 @@
         "computer-science",
         "component-01"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "What is bytecode, and what role does a virtual machine play?",
+      "back": "Bytecode is an intermediate instruction set produced by a compiler that is not specific to any processor. A virtual machine interprets or just-in-time compiles it on the machine it is running on.",
+      "keyPoints": [
+        {
+          "text": "bytecode is intermediate, platform independent code",
+          "synonyms": [
+            "not machine code",
+            "portable"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a virtual machine executes it on the local hardware",
+          "synonyms": [
+            "the JVM",
+            "interprets or JIT compiles"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "write once, run anywhere",
+          "synonyms": [
+            "the same bytecode runs on any machine with a VM"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Platform-independent intermediate code executed by a virtual machine",
+        "distractors": [
+          "Machine code produced by an assembler",
+          "Source code that has been minified",
+          "Encrypted machine code that only one processor can run"
+        ]
+      },
+      "explanation": "This is how Java achieves portability: `javac` produces bytecode once, and any machine with a suitable JVM runs it. The cost is that the VM is an extra layer, and the benefit beyond portability is that a just-in-time compiler can optimise for the actual processor at run time using information the original compiler did not have.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What is a symbol table, and when is it built?",
+      "back": "A table the translator keeps of every identifier in the program with its type, scope and, where relevant, its memory address. It is built during the semantic analysis stage and updated as declarations are read.",
+      "keyPoints": [
+        {
+          "text": "a table of identifiers",
+          "synonyms": [
+            "names used in the program",
+            "variables and functions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "with their type and scope",
+          "synonyms": [
+            "attributes of each identifier",
+            "memory address"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "built during semantic analysis",
+          "synonyms": [
+            "as declarations are processed"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A table of identifiers with type and scope, built during semantic analysis",
+        "distractors": [
+          "A table of machine instructions, built during code generation",
+          "A list of syntax errors, built during lexical analysis",
+          "A table of memory addresses for the operating system, built at load time"
+        ]
+      },
+      "explanation": "The symbol table is what lets the translator answer 'has this name been declared?' and 'is it being used with the right type?', which is why it must be built before those questions are asked. Scope matters because the same name in two functions refers to two different entries. It is also what the linker later uses to match calls to definitions.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "At which stage of translation is each of these caught: a misspelled keyword, a use of an undeclared variable, and an unmatched bracket?",
+      "back": "A misspelled keyword and an unmatched bracket are caught in lexical and syntax analysis respectively; a use of an undeclared variable is caught in semantic analysis.",
+      "keyPoints": [
+        {
+          "text": "a misspelled keyword is a lexical or syntax error",
+          "synonyms": [
+            "caught early",
+            "not a valid token or statement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an unmatched bracket is a syntax error",
+          "synonyms": [
+            "caught by the parser",
+            "grammar violation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an undeclared variable is a semantic error",
+          "synonyms": [
+            "the code is grammatically valid but meaningless",
+            "caught by semantic analysis"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Syntax, syntax, then semantic analysis",
+        "distractors": [
+          "All three are caught by the linker",
+          "Semantic, syntax, then lexical analysis",
+          "All three are caught at run time"
+        ]
+      },
+      "explanation": "An unmatched bracket breaks the grammar, so the parser rejects it. An undeclared variable is grammatically perfect - `total = total + 1` is a valid statement whatever `total` is - so only a check against the symbol table catches it. Errors that survive translation and only appear when the program runs are the most expensive, which is what static typing is designed to prevent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Distinguish source code, object code and machine code.",
+      "back": "Source code is what the programmer writes in a high-level language. Object code is the translated output of the compiler, containing machine instructions with unresolved references to other modules. Machine code is the fully linked, loadable executable the processor runs.",
+      "keyPoints": [
+        {
+          "text": "source code is written by the programmer",
+          "synonyms": [
+            "high-level language",
+            "human readable"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "object code has unresolved references",
+          "synonyms": [
+            "not yet linked",
+            "the compiler output"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "machine code is the linked executable the processor runs",
+          "synonyms": [
+            "fully resolved",
+            "binary"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Source: written. Object: translated but unlinked. Machine: linked and runnable",
+        "distractors": [
+          "Source: written. Object: encrypted. Machine: interpreted",
+          "All three mean the same thing at different stages of the same file",
+          "Source: written. Object: linked. Machine: compressed"
+        ]
+      },
+      "explanation": "The gap between object code and machine code is exactly what the linker fills: each module is compiled separately into object code, and the linker resolves the calls between them and adds the library routines. This is why changing one file in a large project means recompiling that file and relinking, rather than recompiling everything.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What is just-in-time compilation, and what advantage does it have over pure interpretation?",
+      "back": "Code is compiled to machine code at run time, typically the first time a method is called or once it is found to run often. It runs much faster than interpretation because the processor executes native instructions rather than the interpreter working through them.",
+      "keyPoints": [
+        {
+          "text": "compilation happens at run time",
+          "synonyms": [
+            "compiled while the program runs",
+            "not before execution"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "hot code is compiled and cached",
+          "synonyms": [
+            "frequently executed code",
+            "compiled once and reused"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it runs faster than interpretation",
+          "synonyms": [
+            "native machine code",
+            "no interpretation overhead"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Compiled at run time; executes native code so it is much faster",
+        "distractors": [
+          "Compiled before execution; runs slower than an interpreter",
+          "Interpreted line by line but with caching",
+          "Compiled at run time and therefore slower"
+        ]
+      },
+      "explanation": "A JIT can also optimise using information only available at run time - which branch is usually taken, which types actually occur - something an ahead-of-time compiler cannot know. The cost is a delay the first time a piece of code runs while it compiles, and higher memory use for the compiled code. The JVM and .NET both work this way.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Why does an assembler need two passes over the source?",
+      "back": "The first pass builds a table of labels and the addresses they correspond to; the second pass generates the code, using that table to fill in the addresses the first pass could not yet know.",
+      "keyPoints": [
+        {
+          "text": "the first pass collects the labels and their addresses",
+          "synonyms": [
+            "builds the symbol table",
+            "records where each label falls"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the second pass generates the machine code",
+          "synonyms": [
+            "fills in the addresses",
+            "uses the table from pass one"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a jump target may appear before its label is defined",
+          "synonyms": [
+            "forward references",
+            "the address is not yet known"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Pass one collects labels, pass two generates code with the addresses filled in",
+        "distractors": [
+          "Pass one checks syntax, pass two checks semantics",
+          "Pass one compiles, pass two optimises",
+          "Pass one runs on the CPU, pass two on the GPU"
+        ]
+      },
+      "explanation": "Consider `JMP end` written near the top of a program where the label `end` is defined at the bottom: the address simply is not known until the whole file has been read. A single-pass assembler would have to leave a gap and patch it later, which is what a linker does at a larger scale. The same two-pass structure appears in any translator that has to resolve forward references.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Give two reasons why an interpreted language is easier to debug than a compiled one.",
+      "back": "Errors are reported against the original source line rather than against generated machine code, and code can be changed and re-run immediately without a separate compile step.",
+      "keyPoints": [
+        {
+          "text": "errors point at the original source line",
+          "synonyms": [
+            "no mapping back from machine code",
+            "clearer error messages"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "no compile step, so changes can be tested immediately",
+          "synonyms": [
+            "fast turnaround",
+            "edit and run"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Errors map to the source, and changes need no recompile",
+        "distractors": [
+          "Interpreters run faster, and use less memory",
+          "Interpreted code cannot contain logic errors",
+          "The interpreter fixes errors automatically"
+        ]
+      },
+      "explanation": "A compiled program's crash refers to a machine address that has to be mapped back through debug symbols to find the source line, and every change needs a rebuild before it can be tested. Both costs disappear under an interpreter. The counterweight is that a compiler reports every error it finds in one pass, whereas an interpreter only reaches an error when execution gets there.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
     }
   ]
 }

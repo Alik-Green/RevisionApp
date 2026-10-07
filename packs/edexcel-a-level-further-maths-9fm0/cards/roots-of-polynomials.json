@@ -185,6 +185,354 @@
         "further-maths",
         "core-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "For the equation $2x^3 - 5x^2 + 3x - 7 = 0$ with roots $\\alpha, \\beta, \\gamma$, find $\\alpha + \\beta + \\gamma$, $\\alpha\\beta + \\beta\\gamma + \\gamma\\alpha$ and $\\alpha\\beta\\gamma$.",
+      "back": "$\\frac{5}{2}$, $\\frac{3}{2}$ and $\\frac{7}{2}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "alpha + beta + gamma = 5/2",
+          "synonyms": [
+            "minus b over a"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "alpha beta + beta gamma + gamma alpha = 3/2",
+          "synonyms": [
+            "c over a"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "alpha beta gamma = 7/2",
+          "synonyms": [
+            "minus d over a; the sign alternates"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "5/2, 3/2, 7/2"
+      ],
+      "mcq": {
+        "correct": "$\\frac{5}{2}, \\frac{3}{2}, \\frac{7}{2}$",
+        "distractors": [
+          "$\\frac{5}{2}, \\frac{3}{2}, -\\frac{7}{2}$",
+          "$-\\frac{5}{2}, \\frac{3}{2}, \\frac{7}{2}$",
+          "$\\frac{5}{2}, -\\frac{3}{2}, \\frac{7}{2}$"
+        ]
+      },
+      "explanation": "With a leading coefficient of 2 every sum must be divided by 2: $\\Sigma\\alpha = \\frac{5}{2}$, $\\Sigma\\alpha\\beta = \\frac{3}{2}$ and $\\alpha\\beta\\gamma = -\\frac{-7}{2} = \\frac{7}{2}$. The signs alternate as $-$, $+$, $-$, so the product picks up a minus that the negative constant term then cancels. Forgetting to divide by $a = 2$ is the standard error here.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "The roots of $x^3 - 4x^2 + 5x - 2 = 0$ are $\\alpha, \\beta, \\gamma$. Find $\\alpha^2 + \\beta^2 + \\gamma^2$ and $\\alpha^2\\beta^2 + \\beta^2\\gamma^2 + \\gamma^2\\alpha^2$.",
+      "back": "6 and 9",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "use (alpha + beta + gamma)^2 - 2(alpha beta + beta gamma + gamma alpha)",
+          "synonyms": [
+            "square the sum and subtract twice the pairwise sum"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "6",
+          "synonyms": [
+            "alpha squared plus beta squared plus gamma squared is 6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "square the pairwise sum and subtract twice the product times the sum",
+          "synonyms": [
+            "(alpha beta + beta gamma + gamma alpha)^2 - 2 alpha beta gamma (alpha + beta + gamma)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "9",
+          "synonyms": [
+            "the second value is 9"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "6 and 9",
+        "distractors": [
+          "6 and 25",
+          "16 and 9",
+          "6 and 16"
+        ]
+      },
+      "explanation": "$\\Sigma\\alpha^2 = (\\Sigma\\alpha)^2 - 2\\Sigma\\alpha\\beta = 16 - 10 = 6$. For the squares of the pairwise products, treat $\\alpha\\beta$, $\\beta\\gamma$, $\\gamma\\alpha$ as three new quantities: their sum is 5 and $\\Sigma\\alpha^2\\beta^2 = (\\Sigma\\alpha\\beta)^2 - 2\\alpha\\beta\\gamma\\Sigma\\alpha = 25 - 2(2)(4) = 9$. The answer 25 is $(\\Sigma\\alpha\\beta)^2$ with the correction term forgotten.",
+      "numeric": {
+        "value": 6,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "The roots of $x^3 + x^2 - 3x + 2 = 0$ are $\\alpha, \\beta, \\gamma$. Find the monic cubic whose roots are $2\\alpha, 2\\beta, 2\\gamma$.",
+      "back": "$x^3 + 2x^2 - 12x + 16 = 0$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "substitute x/2 for x",
+          "synonyms": [
+            "let X = 2x so x = X/2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "clear the fractions by multiplying by 8",
+          "synonyms": [
+            "multiply through by 2^3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x^3 + 2x^2 - 12x + 16 = 0",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x^3 + 2x^2 - 12x + 16 = 0$",
+        "distractors": [
+          "$x^3 + 4x^2 - 12x + 8 = 0$",
+          "$2x^3 + 2x^2 - 6x + 4 = 0$",
+          "$x^3 - 2x^2 - 12x - 16 = 0$"
+        ]
+      },
+      "explanation": "If $X = 2x$ then $x = \\frac{X}{2}$, and substituting gives $\\frac{X^3}{8} + \\frac{X^2}{4} - \\frac{3X}{2} + 2 = 0$; multiplying by 8 gives $X^3 + 2X^2 - 12X + 16 = 0$. Scaling the roots by $k$ means substituting $\\frac{x}{k}$, not $kx$. Alternatively, sum of new roots is $2 \\times (-1) = -2$, pairwise sum is $4 \\times (-3) = -12$ and product is $8 \\times (-2) = -16$, giving the same cubic.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "The roots of $x^2 - 5x + 3 = 0$ are $\\alpha$ and $\\beta$. Find the quadratic with roots $\\alpha + \\frac{1}{\\beta}$ and $\\beta + \\frac{1}{\\alpha}$.",
+      "back": "$3x^2 - 20x + 16 = 0$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "sum of new roots is 5 + 5/3 = 20/3",
+          "synonyms": [
+            "alpha + beta + (alpha + beta)/(alpha beta)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "product is alpha beta + 2 + 1/(alpha beta) = 16/3",
+          "synonyms": [
+            "expand the product carefully"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3x^2 - 20x + 16 = 0",
+          "synonyms": [
+            "clear the fractions"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$3x^2 - 20x + 16 = 0$",
+        "distractors": [
+          "$3x^2 - 20x + 13 = 0$",
+          "$x^2 - \\frac{20}{3}x + \\frac{16}{9} = 0$",
+          "$3x^2 + 20x + 16 = 0$"
+        ]
+      },
+      "explanation": "Sum: $\\alpha + \\frac{1}{\\beta} + \\beta + \\frac{1}{\\alpha} = (\\alpha + \\beta) + \\frac{\\alpha + \\beta}{\\alpha\\beta} = 5 + \\frac{5}{3} = \\frac{20}{3}$. Product: $(\\alpha + \\frac{1}{\\beta})(\\beta + \\frac{1}{\\alpha}) = \\alpha\\beta + 1 + 1 + \\frac{1}{\\alpha\\beta} = 3 + 2 + \\frac{1}{3} = \\frac{16}{3}$. So $x^2 - \\frac{20}{3}x + \\frac{16}{3} = 0$, that is $3x^2 - 20x + 16 = 0$. Note the product is not $\\frac{16}{9}$: the two middle terms of the expansion are each 1, not $\\frac{1}{3}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "The cubic $x^3 + px^2 + qx + r = 0$ has roots in arithmetic progression. Prove that $2p^3 - 9pq + 27r = 0$.",
+      "back": "Writing the roots as $a - d$, $a$, $a + d$ gives $3a = -p$, $3a^2 - d^2 = q$ and $a(a^2 - d^2) = -r$. Eliminating $d$ and substituting $a = -\\frac{p}{3}$ gives $2p^3 - 9pq + 27r = 0$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "let the roots be a - d, a, a + d",
+          "synonyms": [
+            "use a symmetric parametrisation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a = -p/3 from the sum of the roots",
+          "synonyms": [
+            "3a = -p"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "d^2 = 3a^2 - q from the pairwise sum",
+          "synonyms": [
+            "eliminate d"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "substituting gives 2p^3 - 9pq + 27r = 0",
+          "synonyms": [
+            "clear the fractions by 27"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "From $a(a^2 - d^2) = -r$ and $d^2 = 3a^2 - q$, we get $a(q - 2a^2) = -r$, so $aq - 2a^3 = -r$. Substituting $a = -\\frac{p}{3}$: $-\\frac{pq}{3} + \\frac{2p^3}{27} = -r$, and multiplying by 27 gives $-9pq + 2p^3 + 27r = 0$. Choosing $a - d, a, a + d$ rather than $\\alpha, \\alpha + d, \\alpha + 2d$ is what makes the algebra collapse - the same trick works for roots in geometric progression using $\\frac{a}{r}, a, ar$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Given that $2 + i$ is a root of $x^3 - 5x^2 + 9x - 5 = 0$, find the other two roots.",
+      "back": "$2 - i$ and 1",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "2 - i is also a root",
+          "synonyms": [
+            "complex roots occur in conjugate pairs",
+            "the coefficients are real"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the third root is 5 - 4 = 1",
+          "synonyms": [
+            "use the sum of the roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1",
+          "synonyms": [
+            "the remaining root is 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2 - i$ and $1$",
+        "distractors": [
+          "$2 - i$ and $-1$",
+          "$-2 + i$ and $1$",
+          "$2 - i$ and $5$"
+        ]
+      },
+      "explanation": "Because every coefficient is real, roots occur in conjugate pairs, so $2 - i$ is also a root. The sum of the three roots is $-(-5) = 5$, and $(2 + i) + (2 - i) = 4$, so the third root is 1. Check with the product: $(2 + i)(2 - i)(1) = 5 \\times 1 = 5$, which matches $-(-5)$. The conjugate pair rule fails if the coefficients are not real, which is worth stating in an explanation mark.",
+      "numeric": {
+        "value": 1,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "The roots of $x^3 - 7x^2 + 14x - 8 = 0$ are in geometric progression. Find them.",
+      "back": "1, 2 and 4",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "let the roots be a/r, a, ar",
+          "synonyms": [
+            "symmetric parametrisation for a GP"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the product a^3 = 8 gives a = 2",
+          "synonyms": [
+            "product of the roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1/r + 1 + r = 7/2 leads to 2r^2 - 5r + 2 = 0",
+          "synonyms": [
+            "use the sum of the roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1, 2, 4",
+          "synonyms": [
+            "the roots are 1, 2 and 4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "1, 2, 4",
+        "distractors": [
+          "1, 2, 8",
+          "2, 4, 8",
+          "1, 4, 7"
+        ]
+      },
+      "explanation": "With roots $\\frac{a}{r}, a, ar$ the product is $a^3 = 8$, so $a = 2$. The sum gives $2(\\frac{1}{r} + 1 + r) = 7$, so $2r^2 - 5r + 2 = 0$ and $(2r - 1)(r - 2) = 0$, giving $r = 2$ or $\\frac{1}{2}$, both of which produce the same set $\\{1, 2, 4\\}$. Check the pairwise sum: $1(2) + 2(4) + 4(1) = 14$. The pair $\\{1, 2, 8\\}$ has the right product but the wrong sum, which is exactly the check that catches a slip.",
+      "numeric": {
+        "value": 1,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Roots of polynomial equations",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
     }
   ]
 }

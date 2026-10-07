@@ -173,6 +173,325 @@
         "further-maths",
         "further-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "State the formula for the area enclosed by the polar curve $r = f(\\theta)$ between $\\theta = \\alpha$ and $\\theta = \\beta$.",
+      "back": "$A = \\frac{1}{2}\\int_\\alpha^\\beta r^2\\,d\\theta$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "half the integral of r squared d theta",
+          "synonyms": [
+            "A = (1/2) integral r^2 dtheta"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the limits are the angles of the bounding radii",
+          "synonyms": [
+            "alpha and beta"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}\\int_\\alpha^\\beta r^2\\,d\\theta$",
+        "distractors": [
+          "$\\int_\\alpha^\\beta r\\,d\\theta$",
+          "$\\frac{1}{2}\\int_\\alpha^\\beta r\\,d\\theta$",
+          "$2\\pi\\int_\\alpha^\\beta r^2\\,d\\theta$"
+        ]
+      },
+      "explanation": "Each thin sector of angle $d\\theta$ has area approximately $\\frac{1}{2}r^2\\,d\\theta$, and summing gives the formula. The factor of a half is the same one that appears in the area of a triangle, and forgetting it is the most frequent error in polar area questions. The formula needs $r^2$, not $r$, because area scales with the square of the radius.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Find the area enclosed by the cardioid $r = 1 + \\cos\\theta$.",
+      "back": "$\\frac{3\\pi}{2}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "A = (1/2) integral from 0 to 2pi of (1 + cos theta)^2 d theta",
+          "synonyms": [
+            "set up the polar area formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "expand to 1 + 2 cos theta + cos^2 theta",
+          "synonyms": [
+            "square the bracket"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3pi/2",
+          "synonyms": [
+            "three pi over 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{3\\pi}{2}$",
+        "distractors": [
+          "$\\frac{3\\pi}{4}$",
+          "$2\\pi$",
+          "$\\pi$"
+        ]
+      },
+      "explanation": "$A = \\frac{1}{2}\\int_0^{2\\pi}(1 + 2\\cos\\theta + \\cos^2\\theta)\\,d\\theta$. Over a full period $\\int\\cos\\theta\\,d\\theta = 0$ and $\\int\\cos^2\\theta\\,d\\theta = \\pi$, so $A = \\frac{1}{2}(2\\pi + 0 + \\pi) = \\frac{3\\pi}{2}$. Knowing $\\int_0^{2\\pi}\\cos^2\\theta\\,d\\theta = \\pi$ without working saves time; it is half the period because $\\cos^2$ averages to $\\frac{1}{2}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Convert the polar equation $r = 2\\cos\\theta$ to Cartesian form and describe the curve.",
+      "back": "$x^2 + y^2 = 2x$, that is $(x - 1)^2 + y^2 = 1$: a circle with centre $(1, 0)$ and radius 1.",
+      "keyPoints": [
+        {
+          "text": "multiply by r to get r^2 = 2r cos theta",
+          "synonyms": [
+            "introduce r^2 and r cos theta"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x^2 + y^2 = 2x",
+          "synonyms": [
+            "use r^2 = x^2 + y^2 and r cos theta = x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(x - 1)^2 + y^2 = 1",
+          "synonyms": [
+            "complete the square"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a circle centred on (1, 0) with radius 1",
+          "synonyms": [
+            "circle centre 1 0 radius 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Circle, centre $(1, 0)$, radius 1",
+        "distractors": [
+          "Circle, centre $(0, 1)$, radius 1",
+          "Circle, centre $(2, 0)$, radius 2",
+          "A straight line through the pole"
+        ]
+      },
+      "explanation": "Multiplying by $r$ gives $r^2 = 2r\\cos\\theta$, and since $r^2 = x^2 + y^2$ and $r\\cos\\theta = x$ this is $x^2 + y^2 = 2x$. Completing the square gives $(x - 1)^2 + y^2 = 1$. Multiplying by $r$ is the standard move for converting polar equations, and it is legitimate here because $r = 0$ satisfies the resulting equation too.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Find the area enclosed by one petal of $r = 2\\sin 2\\theta$.",
+      "back": "$\\frac{\\pi}{2}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "A = (1/2) integral r^2 d theta",
+          "synonyms": [
+            "the polar area formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "one petal corresponds to 0 <= theta <= pi/2",
+          "synonyms": [
+            "the limits for a single loop"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "pi/2",
+          "synonyms": [
+            "half pi"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{\\pi}{2}$",
+        "distractors": [
+          "$\\pi$",
+          "$2\\pi$",
+          "$\\frac{\\pi}{4}$"
+        ]
+      },
+      "explanation": "$r = 2\\sin 2\\theta$ has four petals, and one is traced as $\\theta$ runs from $0$ to $\\frac{\\pi}{2}$. Then $A = \\frac{1}{2}\\int_0^{\\pi/2}4\\sin^2 2\\theta\\,d\\theta = 2\\int_0^{\\pi/2}\\frac{1 - \\cos 4\\theta}{2}\\,d\\theta = \\frac{\\pi}{2}$. Getting the limits right is the substance of the question: using $0$ to $2\\pi$ gives $2\\pi$, which is all four petals.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Sketch the curve $r = \\theta$ for $\\theta \\ge 0$ and name it.",
+      "back": "An Archimedean spiral: the radius grows in proportion to the angle, so successive turns are equally spaced by $2\\pi$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "an Archimedean spiral",
+          "synonyms": [
+            "a spiral"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the radius increases steadily with the angle",
+          "synonyms": [
+            "r grows linearly with theta"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "successive turns are equally spaced",
+          "synonyms": [
+            "the gap between turns is 2 pi"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Because $r$ increases linearly with $\\theta$, each full turn adds exactly $2\\pi$ to the radius, giving equally spaced arms. This contrasts with the logarithmic spiral $r = e^{\\theta}$, whose turns get proportionally further apart, and with $r = \\sin\\theta$, which is a closed circle. Recognising the standard polar curves by shape saves a great deal of plotting time.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "State the condition for a polar curve $r = f(\\theta)$ to have a tangent parallel to the initial line, and explain why.",
+      "back": "$\\frac{dy}{d\\theta} = 0$, where $y = r\\sin\\theta$. A tangent parallel to the initial line is horizontal, and the initial line is the polar $x$-axis.",
+      "keyPoints": [
+        {
+          "text": "dy/d theta = 0",
+          "synonyms": [
+            "differentiate y = r sin theta and set it to zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = r sin theta",
+          "synonyms": [
+            "convert to Cartesian first"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "parallel to the initial line means horizontal",
+          "synonyms": [
+            "the initial line is the polar axis"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{dy}{d\\theta} = 0$ with $y = r\\sin\\theta$",
+        "distractors": [
+          "$\\frac{dr}{d\\theta} = 0$",
+          "$\\frac{dx}{d\\theta} = 0$",
+          "$r = 0$"
+        ]
+      },
+      "explanation": "The initial line is the polar $x$-axis, so a tangent parallel to it is horizontal, which needs $\\frac{dy}{d\\theta} = 0$ with $y = r\\sin\\theta$. Setting $\\frac{dr}{d\\theta} = 0$ instead finds where the curve is furthest or closest to the pole, which is a different thing - though the two often coincide on symmetric curves, which is why the distinction matters. A tangent perpendicular to the initial line needs $\\frac{dx}{d\\theta} = 0$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Find the polar coordinates of the points where the circle $r = 2\\cos\\theta$ meets the circle $r = 1$, for $-\\pi < \\theta \\le \\pi$.",
+      "back": "$\\left(1, \\frac{\\pi}{3}\\right)$ and $\\left(1, -\\frac{\\pi}{3}\\right)$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "set the two expressions for r equal",
+          "synonyms": [
+            "2 cos theta = 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cos theta = 1/2 so theta = plus or minus pi/3",
+          "synonyms": [
+            "solve the trig equation in the given range"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(1, pi/3) and (1, -pi/3)",
+          "synonyms": [
+            "both with r = 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the pole must be checked separately",
+          "synonyms": [
+            "here it is not an intersection, since r = 1 never reaches it"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\left(1, \\frac{\\pi}{3}\\right)$ and $\\left(1, -\\frac{\\pi}{3}\\right)$",
+        "distractors": [
+          "$\\left(\\frac{1}{2}, \\frac{\\pi}{3}\\right)$ and $\\left(\\frac{1}{2}, -\\frac{\\pi}{3}\\right)$",
+          "$\\left(1, \\frac{\\pi}{6}\\right)$ and $\\left(1, -\\frac{\\pi}{6}\\right)$",
+          "$\\left(1, \\frac{2\\pi}{3}\\right)$ and $\\left(1, -\\frac{2\\pi}{3}\\right)$"
+        ]
+      },
+      "explanation": "Equating gives $2\\cos\\theta = 1$, so $\\cos\\theta = \\frac{1}{2}$ and $\\theta = \\pm\\frac{\\pi}{3}$ with $r = 1$. In Cartesian form the curves are $(x - 1)^2 + y^2 = 1$ and $x^2 + y^2 = 1$, two unit circles with centres one unit apart, and the intersections are $\\left(\\frac{1}{2}, \\pm\\frac{\\sqrt{3}}{2}\\right)$, which is exactly $r = 1$ at $\\theta = \\pm\\frac{\\pi}{3}$. The pole is not an intersection here because $r = 1$ never reaches it - but it must still be checked separately, since $r = 0$ is reached at $\\theta = \\frac{\\pi}{2}$ on $r = 2\\cos\\theta$ and a common point at the pole can be missed by equating.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Polar curves",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
     }
   ]
 }

@@ -179,6 +179,355 @@
         "physics",
         "m3"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A motor takes 500 W of electrical input and delivers 350 W of useful mechanical output. Calculate its efficiency.",
+      "back": "70%",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "efficiency = useful output / total input",
+          "synonyms": [
+            "the ratio of output to input"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "350 / 500 = 0.70",
+          "synonyms": [
+            "divide output by input"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "70%",
+          "synonyms": [
+            "seventy percent"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "70%",
+        "distractors": [
+          "143%",
+          "30%",
+          "15%"
+        ]
+      },
+      "explanation": "$\\frac{350}{500} = 0.70$, so 70%. The answer 143% comes from inverting the ratio, and an efficiency above 100% is impossible for a passive machine, which is the immediate check. The missing 30% is not destroyed - it is dissipated as heat and sound, which is what conservation of energy requires.",
+      "numeric": {
+        "value": 70,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A ball is dropped from a height of 12 m. Find its speed just before it hits the ground, ignoring air resistance.",
+      "back": "$15\\,\\mathrm{m\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "gravitational potential energy becomes kinetic energy",
+          "synonyms": [
+            "mgh = 1/2 mv^2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the mass cancels",
+          "synonyms": [
+            "v = sqrt(2gh)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "v = 15 m/s",
+          "synonyms": [
+            "about 15.3 m/s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$15\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$120\\,\\mathrm{m\\,s^{-1}}$",
+          "$24\\,\\mathrm{m\\,s^{-1}}$",
+          "$7.7\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "$mgh = \\frac{1}{2}mv^2$ gives $v = \\sqrt{2gh} = \\sqrt{2 \\times 9.81 \\times 12} = 15.3\\,\\mathrm{m\\,s^{-1}}$, or $15\\,\\mathrm{m\\,s^{-1}}$ to two significant figures. The mass cancels, so a heavier object lands at the same speed - the same conclusion Galileo reached. Note that the answer is independent of the path taken, which is what makes energy methods quicker than kinematics on a curved track.",
+      "numeric": {
+        "value": 15.3,
+        "tolerance": 0.5
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "A car travels at a steady $25\\,\\mathrm{m\\,s^{-1}}$ with a driving force of 800 N. Calculate the power delivered, in watts.",
+      "back": "$2.0 \\times 10^{4}\\,\\mathrm{W}$, that is 20 kW",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "P = Fv",
+          "synonyms": [
+            "power is force times velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "800 x 25 = 20000 W",
+          "synonyms": [
+            "20000 watts"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "20000 W",
+          "synonyms": [
+            "20 kW",
+            "20 kilowatts"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "20 kW",
+        "distractors": [
+          "32 W",
+          "0.032 W",
+          "2000 kW"
+        ]
+      },
+      "explanation": "$P = Fv = 800 \\times 25 = 20000\\,\\mathrm{W} = 20\\,\\mathrm{kW}$. This form of the power equation comes from $P = \\frac{W}{t} = \\frac{Fs}{t} = Fv$ and is the one to reach for whenever a force acts on something already moving. Since the speed is steady, the 800 N exactly balances the resistive forces, so the power is being spent entirely on overcoming drag.",
+      "numeric": {
+        "value": 20000,
+        "tolerance": 100
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "A block slides 4.0 m up a rough slope against a constant friction force of 12 N. How much energy is dissipated, and into what?",
+      "back": "48 J, dissipated as thermal energy in the block and the slope.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "work against friction = force x distance",
+          "synonyms": [
+            "12 x 4.0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "48 J is dissipated",
+          "synonyms": [
+            "forty-eight joules"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it becomes thermal energy",
+          "synonyms": [
+            "heat",
+            "the surfaces warm up"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "48 J as thermal energy",
+        "distractors": [
+          "48 J stored as gravitational potential energy",
+          "3.0 J as thermal energy",
+          "48 J as kinetic energy"
+        ]
+      },
+      "explanation": "$W = Fs = 12 \\times 4.0 = 48\\,\\mathrm{J}$. Friction does not destroy energy, it spreads it into the random motion of the particles in both surfaces, which is what a rise in temperature is. If the block also gains height, the total work done by the applied force is the sum of this 48 J and the gain in gravitational potential energy.",
+      "numeric": {
+        "value": 48,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Name four energy stores and give one example of a transfer between two of them.",
+      "back": "Stores include kinetic, gravitational potential, elastic potential and thermal. For example, a falling object transfers energy from the gravitational potential store to the kinetic store.",
+      "keyPoints": [
+        {
+          "text": "kinetic store",
+          "synonyms": [
+            "energy of motion"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "gravitational potential store",
+          "synonyms": [
+            "energy due to height"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "elastic potential or thermal store",
+          "synonyms": [
+            "strain energy",
+            "internal energy"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a valid transfer between two of them",
+          "synonyms": [
+            "GPE to kinetic",
+            "chemical to kinetic"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Kinetic, GPE, elastic, thermal; a falling object moves GPE to kinetic",
+        "distractors": [
+          "Heat, light, sound, electricity; a lamp moves heat to light",
+          "Kinetic, potential, work, power; work transfers power",
+          "Only kinetic and potential; no others exist"
+        ]
+      },
+      "explanation": "Heat, light and electricity are not stores but routes - energy is transferred by heating, by radiation or by an electric current, but it is not stored as heat. That distinction is what modern specifications test: 'a store of heat' is wrong, and the correct phrasing is energy in the thermal store, transferred by heating.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Write the equation for the elastic potential energy in a spring, and state the condition for it to apply.",
+      "back": "$E = \\frac{1}{2}kx^2$, where $k$ is the spring constant and $x$ the extension. It applies only while the spring obeys Hooke's law, that is below its limit of proportionality.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "E = 1/2 k x^2",
+          "synonyms": [
+            "half k x squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k is the spring constant",
+          "synonyms": [
+            "stiffness",
+            "newtons per metre"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only below the limit of proportionality",
+          "synonyms": [
+            "Hooke's law must hold",
+            "not beyond the elastic limit"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}kx^2$, valid only while Hooke's law holds",
+        "distractors": [
+          "$kx^2$, valid at any extension",
+          "$\\frac{1}{2}kx$, valid only while Hooke's law holds",
+          "$\\frac{1}{2}Fx^2$, valid at any extension"
+        ]
+      },
+      "explanation": "The factor of a half appears because the force rises linearly from zero to $kx$, so the average force during the extension is $\\frac{1}{2}kx$ - the same half that appears in $\\frac{1}{2}mv^2$ and $\\frac{1}{2}CV^2$. Beyond the limit of proportionality the graph curves, the equation no longer describes the spring, and past the elastic limit the extension is permanent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "How is work done found from a force-distance graph, and what must be done if the graph is curved?",
+      "back": "The work done is the area under the graph. If the line is curved, the area must be found by counting squares or by integration.",
+      "keyPoints": [
+        {
+          "text": "the area under the graph",
+          "synonyms": [
+            "area under force against distance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a curved graph needs counting squares",
+          "synonyms": [
+            "estimate the area"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "or integration",
+          "synonyms": [
+            "calculus"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Area under the graph; count squares or integrate if curved",
+        "distractors": [
+          "The gradient of the graph",
+          "The maximum value of the force",
+          "The product of the first and last force values"
+        ]
+      },
+      "explanation": "This parallels the area under a velocity-time graph giving displacement: whenever a quantity is the product of the two axes, the area is the physical quantity. A curved force-distance graph arises whenever the force varies with position, as it does for a spring or for gravity over a large change of height.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.4",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
     }
   ]
 }
