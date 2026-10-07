@@ -1,5 +1,6 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -256,44 +261,83 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
                 NumericFields(draft.value, builtIn) { updated -> draft.value = updated }
             }
 
-            HorizontalDivider()
-            KeyPointEditor(draft.value, builtIn) { updated -> draft.value = updated }
+            // Everything below is optional and collapsed. A card needs a topic, a
+            // front and a back; the rest - key points, distractors, tiles, tags,
+            // an explanation - is what makes grading sharper, and showing all of it
+            // at once made authoring one card look like filling in a form.
+            ExpandableSection(
+                title = "Key points",
+                subtitle = keyPointSubtitle(draft.value),
+                enabled = !builtIn,
+                initiallyExpanded = draft.value.keyPoints.isNotEmpty(),
+            ) {
+                KeyPointEditor(draft.value, builtIn) { updated -> draft.value = updated }
+            }
 
-            HorizontalDivider()
-            LabeledField(
-                label = "Accepted aliases (comma separated)",
-                value = draft.value.aliases,
-                onValueChange = { draft.value = draft.value.copy(aliases = it) },
+            ExpandableSection(
+                title = "Multiple choice options",
+                subtitle = mcqSubtitle(draft.value),
                 enabled = !builtIn,
-                hint = "newton, N, kg m/s^2",
-            )
-            LabeledField(
-                label = "Tile answer chunks (one per line, optional)",
-                value = draft.value.tileChunks,
-                onValueChange = { draft.value = draft.value.copy(tileChunks = it) },
-                enabled = !builtIn,
-                minLines = 2,
-                hint = "Leave blank to split the model answer into words automatically",
-            )
-            McqFields(draft.value, builtIn) { updated -> draft.value = updated }
-            LabeledField(
-                label = "Explanation (optional)",
-                value = draft.value.explanation,
-                onValueChange = { draft.value = draft.value.copy(explanation = it) },
-                enabled = !builtIn,
-                minLines = 2,
-            )
-            LabeledField(
-                label = "Specification reference (optional)",
-                value = draft.value.specRef,
-                onValueChange = { draft.value = draft.value.copy(specRef = it) },
-                enabled = !builtIn,
-                hint = "H556 5.1.2 - Newton's laws",
-            )
+                initiallyExpanded = draft.value.mcqDistractors.isNotBlank(),
+            ) {
+                McqFields(draft.value, builtIn) { updated -> draft.value = updated }
+            }
 
-            HorizontalDivider()
-            TagPicker(snapshot, draft.value.tagIds, builtIn) { tags ->
-                draft.value = draft.value.copy(tagIds = tags)
+            ExpandableSection(
+                title = "Word tiles and accepted answers",
+                subtitle = tilesSubtitle(draft.value),
+                enabled = !builtIn,
+                initiallyExpanded = draft.value.tileChunks.isNotBlank() || draft.value.aliases.isNotBlank(),
+            ) {
+                LabeledField(
+                    label = "Accepted aliases (comma separated)",
+                    value = draft.value.aliases,
+                    onValueChange = { draft.value = draft.value.copy(aliases = it) },
+                    enabled = !builtIn,
+                    hint = "newton, N, kg m/s^2",
+                )
+                LabeledField(
+                    label = "Tile answer chunks (one per line)",
+                    value = draft.value.tileChunks,
+                    onValueChange = { draft.value = draft.value.copy(tileChunks = it) },
+                    enabled = !builtIn,
+                    minLines = 2,
+                    hint = "Leave blank to split the model answer into words automatically",
+                )
+            }
+
+            ExpandableSection(
+                title = "Tags",
+                subtitle = draft.value.tagIds.size.toString() + " selected",
+                enabled = !builtIn,
+                initiallyExpanded = draft.value.tagIds.isNotEmpty(),
+            ) {
+                TagPicker(snapshot, draft.value.tagIds, builtIn) { tags ->
+                    draft.value = draft.value.copy(tagIds = tags)
+                }
+            }
+
+            ExpandableSection(
+                title = "Explanation and specification reference",
+                subtitle = if (draft.value.explanation.isBlank()) "Not written yet" else "Written",
+                enabled = !builtIn,
+                initiallyExpanded = draft.value.explanation.isNotBlank() || draft.value.specRef.isNotBlank(),
+            ) {
+                LabeledField(
+                    label = "Explanation",
+                    value = draft.value.explanation,
+                    onValueChange = { draft.value = draft.value.copy(explanation = it) },
+                    enabled = !builtIn,
+                    minLines = 2,
+                    hint = "Shown after the answer, and required for a good multiple-choice card",
+                )
+                LabeledField(
+                    label = "Specification reference",
+                    value = draft.value.specRef,
+                    onValueChange = { draft.value = draft.value.copy(specRef = it) },
+                    enabled = !builtIn,
+                    hint = "H556 5.1.2 - Newton's laws",
+                )
             }
 
             if (!builtIn) {
@@ -317,6 +361,94 @@ private fun editorTitle(isNew: Boolean, isBuiltIn: Boolean, noun: String): Strin
     isNew -> "New " + noun
     isBuiltIn -> "Built-in " + noun
     else -> "Edit " + noun
+}
+
+/** A collapsed row has to say whether it is worth opening. */
+private fun keyPointSubtitle(draft: CardDraft): String {
+    val written = draft.keyPoints.count { it.text.isNotBlank() }
+    val required = draft.keyPoints.count { it.mustInclude && it.text.isNotBlank() }
+    return when {
+        written == 0 -> "Not used - grading falls back to similarity"
+        required == 0 -> written.toString() + " written"
+        else -> written.toString() + " written, " + required.toString() + " required"
+    }
+}
+
+private fun mcqSubtitle(draft: CardDraft): String {
+    val count = splitList(draft.mcqDistractors).size
+    return when {
+        count == 0 -> "Not authored - distractors are taken from sibling cards"
+        count < Mcq.MIN_DISTRACTORS -> count.toString() + " of " + Mcq.MIN_DISTRACTORS + " distractors, needs more"
+        else -> "Ready - " + count.toString() + " distractors"
+    }
+}
+
+private fun tilesSubtitle(draft: CardDraft): String {
+    val chunks = splitList(draft.tileChunks).size
+    val aliases = splitList(draft.aliases).size
+    val parts = ArrayList<String>(2)
+    parts += if (chunks == 0) "tiles split automatically" else chunks.toString() + " tile chunk(s)"
+    if (aliases > 0) parts += aliases.toString() + " alias(es)"
+    return parts.joinToString(", ")
+}
+
+/**
+ * A row that shows a summary and opens on a tap.
+ *
+ * Card authoring has five optional groups and three required fields. Collapsing
+ * the optional ones behind a summary keeps the common case - topic, front, back,
+ * save - on one screen, while the summary still says whether a section is empty,
+ * half-finished or ready, so nothing hides a mistake.
+ */
+@Composable
+private fun ExpandableSection(
+    title: String,
+    modifier: Modifier = Modifier,
+    subtitle: String = "",
+    enabled: Boolean = true,
+    initiallyExpanded: Boolean = false,
+    content: @Composable () -> Unit,
+) {
+    val expanded = remember(title) { mutableStateOf(initiallyExpanded) }
+    Column(modifier.fillMaxWidth()) {
+        HorizontalDivider()
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .clickable { expanded.value = !expanded.value }
+                .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (subtitle.isNotEmpty()) {
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Icon(
+                if (expanded.value) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                contentDescription = if (expanded.value) "Collapse " + title else "Expand " + title,
+            )
+        }
+        if (expanded.value) {
+            Column(
+                Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                content()
+            }
+        }
+    }
 }
 
 private fun answerTypeHint(type: AnswerType): String = when (type) {

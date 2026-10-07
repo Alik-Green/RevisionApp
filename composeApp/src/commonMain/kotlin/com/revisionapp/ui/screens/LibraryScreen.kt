@@ -137,6 +137,8 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
     val query = state.searchQuery.collectAsState().value
     val filter = state.filter.collectAsState().value
     val snapshot = state.snapshot.collectAsState().value
+    val location = state.location.collectAsState().value
+    val addOpen = remember { mutableStateOf(false) }
     val activeCount = filter.tagIds.size +
         (if (filter.dueOnly) 1 else 0) +
         (if (filter.newOnly) 1 else 0) +
@@ -159,6 +161,37 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
                     }
                 },
             )
+            Box {
+                IconButton(onClick = { addOpen.value = true }) {
+                    Icon(Icons.Filled.Add, contentDescription = "Add")
+                }
+                DropdownMenu(expanded = addOpen.value, onDismissRequest = { addOpen.value = false }) {
+                    DropdownMenuItem(
+                        text = { Text("New card") },
+                        leadingIcon = { Icon(Icons.Filled.NoteAdd, contentDescription = null) },
+                        onClick = {
+                            addOpen.value = false
+                            state.navigate(Route.EditCard(null, location))
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = { Text("New topic") },
+                        leadingIcon = { Icon(Icons.Filled.CreateNewFolder, contentDescription = null) },
+                        onClick = {
+                            addOpen.value = false
+                            state.navigate(Route.EditTopic(null, location))
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = { Text("New tag") },
+                        leadingIcon = { Icon(Icons.Filled.Style, contentDescription = null) },
+                        onClick = {
+                            addOpen.value = false
+                            state.navigate(Route.EditTag(null))
+                        },
+                    )
+                }
+            }
             IconButton(onClick = onFilters) {
                 Box {
                     Icon(Icons.Filled.FilterList, contentDescription = "Filters")
@@ -174,6 +207,23 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
             }
         }
         BreadcrumbRow(state, snapshot)
+
+        // Pinned above the list rather than inside it: the location has to stay on
+        // screen while the user scrolls through what is in it.
+        val node = location?.let { snapshot.tree.find(it) }
+        val children = if (node == null) snapshot.tree.roots else node.children
+        val inSection = remember(snapshot, filter) { snapshot.filtered(filter).size }
+        Text(
+            node?.name ?: "Library",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            locationLine(node, children.size, inSection, snapshot.dueCount(filter)),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+
         ActiveFilterRow(state, snapshot, filter)
     }
 }
@@ -256,7 +306,10 @@ private fun ActiveFilterRow(state: AppState, snapshot: LibrarySnapshot, filter: 
 private fun LocationView(state: AppState, snapshot: LibrarySnapshot, filter: CardFilter) {
     val location = state.location.collectAsState().value
     val node = location?.let { snapshot.tree.find(it) }
-    val children = node?.children.orEmpty()
+    // At the Library root there is no node to take children from: the roots of the
+    // tree ARE the contents. Reading node?.children here listed nothing at all, so
+    // a synced library of 201 cards reported itself empty.
+    val children = if (node == null) snapshot.tree.roots else node.children
     val rootTopicIds = remember(snapshot) { snapshot.tree.roots.map { it.id }.toSet() }
     val cardsHere = remember(snapshot, location, filter, rootTopicIds) {
         val scoped = snapshot.filtered(filter)
@@ -276,17 +329,6 @@ private fun LocationView(state: AppState, snapshot: LibrarySnapshot, filter: Car
     ) {
         item(key = "header") {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    node?.name ?: "Library",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    scoped.size.toString() + " card" + plural(scoped.size) + " here, " +
-                        dueCount.toString() + " due",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
                 LibraryTabs()
                 Button(onClick = { state.switchTab(Route.Study) }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = null)
@@ -790,6 +832,20 @@ private fun sectionSize(section: SearchSection): Int = when (section) {
     is SearchSection.Topics -> section.items.size
     is SearchSection.Tags -> section.items.size
     is SearchSection.Cards -> section.items.size
+}
+
+/**
+ * One line that says where you are and what it holds. "Here" means this topic
+ * itself; "in this section" includes every subtopic, which is what a session
+ * started from here would study.
+ */
+private fun locationLine(node: TopicNode?, subtopics: Int, inSection: Int, due: Int): String {
+    val parts = ArrayList<String>(4)
+    parts += if (node == null) "Top level" else "Inside " + node.name
+    if (subtopics > 0) parts += subtopics.toString() + " subtopic" + plural(subtopics)
+    parts += inSection.toString() + " card" + plural(inSection) + " in this section"
+    parts += due.toString() + " due"
+    return parts.joinToString("  \u00B7  ")
 }
 
 private fun plural(count: Int): String = if (count == 1) "" else "s"
