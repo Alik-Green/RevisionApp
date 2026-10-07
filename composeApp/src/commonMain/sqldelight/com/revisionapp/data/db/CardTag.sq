@@ -1,0 +1,21 @@
+CREATE TABLE card_tag (
+    card_id TEXT NOT NULL,
+    tag_id TEXT NOT NULL,
+    PRIMARY KEY (card_id, tag_id)
+);
+
+selectAll:
+SELECT card_id AS cardId, tag_id AS tagId
+FROM card_tag;
+
+insert:
+INSERT OR REPLACE INTO card_tag(card_id, tag_id)
+VALUES (?, ?);
+
+deleteByCardId:
+DELETE FROM card_tag
+WHERE card_id = ?;
+
+deleteByCardIds:
+DELETE FROM card_tag
+WHERE card_id IN ?;

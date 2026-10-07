@@ -1,0 +1,29 @@
+CREATE TABLE topic (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    parent_id TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    source TEXT NOT NULL,
+    pack_id TEXT
+);
+
+-- One projection per table, with every column aliased, so that each table has
+-- exactly one generated row type and its Kotlin property names are pinned here
+-- rather than inferred.
+selectAll:
+SELECT id AS id, name AS name, parent_id AS parentId, sort_order AS sortOrder,
+       source AS source, pack_id AS packId
+FROM topic
+ORDER BY sort_order ASC, name ASC;
+
+upsert:
+INSERT OR REPLACE INTO topic(id, name, parent_id, sort_order, source, pack_id)
+VALUES (?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM topic
+WHERE id = ?;
+
+deleteByPack:
+DELETE FROM topic
+WHERE pack_id = ?;

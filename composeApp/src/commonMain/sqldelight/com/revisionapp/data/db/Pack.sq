@@ -1,0 +1,18 @@
+CREATE TABLE pack (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    version INTEGER NOT NULL,
+    sha256 TEXT NOT NULL,
+    card_count INTEGER NOT NULL,
+    installed_at INTEGER NOT NULL
+);
+
+selectAll:
+SELECT id AS id, name AS name, version AS version, sha256 AS sha256,
+       card_count AS cardCount, installed_at AS installedAt
+FROM pack
+ORDER BY name ASC;
+
+upsert:
+INSERT OR REPLACE INTO pack(id, name, version, sha256, card_count, installed_at)
+VALUES (?, ?, ?, ?, ?, ?);

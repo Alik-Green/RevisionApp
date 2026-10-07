@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+local.properties
+kotlin-js-store/
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild
+.cxx
+
+# Android
+*.apk
+*.aab
+*.keystore
+!debug.keystore
+
+# Compose desktop native distributions
+composeApp/build/
+desktopApp/build/
+
+# Python (content validator)
+__pycache__/
+*.pyc
+.venv/

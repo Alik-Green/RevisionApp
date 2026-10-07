@@ -1,0 +1,12 @@
+CREATE TABLE setting (
+    setting_key TEXT NOT NULL PRIMARY KEY,
+    setting_value TEXT NOT NULL
+);
+
+selectAll:
+SELECT setting_key AS settingKey, setting_value AS settingValue
+FROM setting;
+
+upsert:
+INSERT OR REPLACE INTO setting(setting_key, setting_value)
+VALUES (?, ?);

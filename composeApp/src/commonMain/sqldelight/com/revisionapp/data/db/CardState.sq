@@ -1,0 +1,27 @@
+CREATE TABLE card_state (
+    card_id TEXT NOT NULL PRIMARY KEY,
+    stability REAL NOT NULL DEFAULT 0.0,
+    difficulty REAL NOT NULL DEFAULT 0.0,
+    due_at INTEGER NOT NULL DEFAULT 0,
+    last_review_at INTEGER,
+    reps INTEGER NOT NULL DEFAULT 0,
+    lapses INTEGER NOT NULL DEFAULT 0,
+    state TEXT NOT NULL DEFAULT 'NEW',
+    mode_escalation INTEGER NOT NULL DEFAULT 0
+);
+
+selectAll:
+SELECT card_id AS cardId, stability AS stability, difficulty AS difficulty,
+       due_at AS dueAt, last_review_at AS lastReviewAt, reps AS reps,
+       lapses AS lapses, state AS state, mode_escalation AS modeEscalation
+FROM card_state;
+
+upsert:
+INSERT OR REPLACE INTO card_state(
+    card_id, stability, difficulty, due_at, last_review_at, reps, lapses, state, mode_escalation
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteById:
+DELETE FROM card_state
+WHERE card_id = ?;
