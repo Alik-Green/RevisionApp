@@ -799,3 +799,37 @@ machine stay synchronous, so the screen updates immediately; only the disk moves
 **What it costs.** Writes for two very fast answers could in principle complete out
 of order. Each is an independent row keyed by card id and each review log entry is
 append-only, so ordering between them carries no meaning.
+
+## D38 — Tiles are graded by order, not by absolute position (2026-10-07)
+
+A reported card had the answer `The mole mol`. Choosing `mole mol` scored 0% and was
+marked Incorrect: `TileGrader` compared each chosen tile with the solution tile at the
+same *index*, so omitting one leading word shifted every remaining tile out of place.
+That was the worst possible feedback for a substantially right answer.
+
+It now scores the longest common subsequence of the chosen tiles against the solution,
+divided by the longer of the two lists. Dropping or repeating a word costs one step;
+reordering does not score at all (reversing `a b c` gives 1/3). `CORRECT` is still only
+an exact match, and the extra decoy no longer forces `INCORRECT` — it lands in
+`PARTIAL`, which is what the verdict text and the review screen describe as "the right
+answer plus an extra". The reason still reports `correctPositions`, which is now the
+subsequence length, and the message was reworded to "tiles were in the right order" so
+the number means what it says.
+
+## D39 — Multiple-choice feedback keeps the options on screen (2026-10-07)
+
+After answering an MCQ the options were replaced by a one-line verdict ("Correct.
+Option 1 is correct.") with no way to read what option 1 was. The review state now
+re-renders all four options: the correct one in the success colours with a tick, the
+one that was chosen in the error colours with a cross if it was wrong, the rest muted.
+The selection comes from `VerdictReason.McqSelection`. The "Model answer" panel also
+shows `mcq.correct` rather than `card.back` for MCQs, since an authored pack is allowed
+to make them differ.
+
+## D40 — The whole app is padded by the safe-drawing insets (2026-10-07)
+
+On Android the shell drew under the status bar and the display cut-out. `App` now wraps
+`AppShell` in `Modifier.windowInsetsPadding(WindowInsets.safeDrawing)` *inside* the
+full-bleed `Surface`, so the background still runs edge to edge while the content stays
+clear of the system bars. The inset is zero on desktop and JVM, so the one code path
+serves both and no `expect`/`actual` was needed.

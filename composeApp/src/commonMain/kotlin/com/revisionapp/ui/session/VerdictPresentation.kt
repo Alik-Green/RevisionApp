@@ -69,7 +69,7 @@ object VerdictPresentation {
             "No key points on this card; judged by similarity (" + percent(reason.cosine) + ")."
 
         is VerdictReason.TilePlacement ->
-            "${reason.correctPositions} of ${reason.totalPositions} tiles were in the right place."
+            "${reason.correctPositions} of ${reason.totalPositions} tiles were in the right order."
 
         is VerdictReason.McqSelection ->
             if (reason.selectedIndex == reason.correctIndex) {

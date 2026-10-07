@@ -21,6 +21,9 @@ import kotlin.test.assertTrue
 
 class QuestionDerivationTest {
 
+    /** Just above the partial floor, so the assertion is about policy, not rounding. */
+    private val PARTIAL_FLOOR = 0.6
+
     private val topicId = TopicId("builtin:pack:topic")
 
     private fun card(
@@ -167,7 +170,10 @@ class QuestionDerivationTest {
         // Three of five tiles are in the right place: 0.6 exactly.
         val nearMiss = TileGrader.grade(solution, listOf("a", "b", "c", "e", "d"))
         assertEquals(VerdictKind.PARTIAL, nearMiss.kind)
-        assertEquals(0.6, nearMiss.score, 1e-9)
+        // Four of the five tiles are still in the right relative order; only the
+        // last two are swapped, so the score is 4/5 rather than the 3/5 that
+        // counting absolute positions gave.
+        assertEquals(0.8, nearMiss.score, 1e-9)
     }
 
     @Test
@@ -183,8 +189,30 @@ class QuestionDerivationTest {
     fun usingADecoyOrDroppingAChunkIsIncorrectEvenIfTheRestIsRight() {
         val solution = listOf("a", "b", "c", "d", "e")
 
-        assertEquals(VerdictKind.INCORRECT, TileGrader.grade(solution, listOf("a", "b", "c", "d", "e", "x")).kind)
-        assertEquals(VerdictKind.INCORRECT, TileGrader.grade(solution, listOf("a", "b", "c", "d")).kind)
+        // A used decoy and a dropped chunk are both PARTIAL now, not INCORRECT:
+        // the answer was substantially right, and neither is CORRECT either.
+        assertEquals(VerdictKind.PARTIAL, TileGrader.grade(solution, listOf("a", "b", "c", "d", "e", "x")).kind)
+        assertEquals(VerdictKind.PARTIAL, TileGrader.grade(solution, listOf("a", "b", "c", "d")).kind)
+    }
+
+    @Test
+    fun omittingALeadingWordIsNotZeroPercent() {
+        // Reported from the app: leaving out the leading "The" used to shift every
+        // remaining tile out of its absolute position and score 0%, which reads as
+        // "you got none of it right" for an answer that was right but for one word.
+        val verdict = TileGrader.grade(listOf("The", "mole", "mol"), listOf("mole", "mol"))
+
+        assertEquals(VerdictKind.PARTIAL, verdict.kind)
+        assertTrue(verdict.score > PARTIAL_FLOOR, "score was " + verdict.score)
+    }
+
+    @Test
+    fun tilesInTheWrongOrderStillScoreLow() {
+        // Forgiveness is about position, not about order: reversing the answer must
+        // not be rescued by the subsequence still being present.
+        val verdict = TileGrader.grade(listOf("a", "b", "c"), listOf("c", "b", "a"))
+
+        assertEquals(VerdictKind.INCORRECT, verdict.kind)
     }
 
     @Test

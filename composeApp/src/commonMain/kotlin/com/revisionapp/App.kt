@@ -1,6 +1,10 @@
 package com.revisionapp
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -46,16 +50,21 @@ fun App(platform: PlatformServices) {
         ProvideRichTextRenderer(appState.renderer) {
             Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 val route = appState.route.collectAsState().value
-                AppShell(appState, route) {
-                    when (route) {
-                        Route.Library -> LibraryScreen(appState)
-                        Route.Study -> StudyScreen(appState)
-                        Route.Stats -> StatsScreen(appState)
-                        Route.Settings -> SettingsScreen(appState)
-                        Route.MathGallery -> MathGalleryScreen(appState)
-                        is Route.EditCard -> CardEditorScreen(appState, route.cardId, route.presetTopicId)
-                        is Route.EditTopic -> TopicEditorScreen(appState, route.topicId, route.presetParentId)
-                        is Route.EditTag -> TagEditorScreen(appState, route.tagId)
+                // Keep everything clear of the status bar, the gesture-navigation area and a
+                // display cut-out. The inset is zero on desktop and JVM, so nothing here has
+                // to be platform-specific.
+                Box(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+                    AppShell(appState, route) {
+                        when (route) {
+                            Route.Library -> LibraryScreen(appState)
+                            Route.Study -> StudyScreen(appState)
+                            Route.Stats -> StatsScreen(appState)
+                            Route.Settings -> SettingsScreen(appState)
+                            Route.MathGallery -> MathGalleryScreen(appState)
+                            is Route.EditCard -> CardEditorScreen(appState, route.cardId, route.presetTopicId)
+                            is Route.EditTopic -> TopicEditorScreen(appState, route.topicId, route.presetParentId)
+                            is Route.EditTag -> TagEditorScreen(appState, route.tagId)
+                        }
                     }
                 }
             }

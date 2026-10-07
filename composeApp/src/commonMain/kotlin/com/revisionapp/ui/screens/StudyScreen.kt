@@ -17,6 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.Shuffle
@@ -43,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.check.Verdict
 import com.revisionapp.domain.check.VerdictKind
+import com.revisionapp.domain.check.VerdictReason
 import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.StudyMode
 import com.revisionapp.domain.srs.Rating
@@ -64,6 +67,8 @@ import com.revisionapp.ui.session.SessionCard
 import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
 import com.revisionapp.ui.session.VerdictPresentation
+import com.revisionapp.ui.theme.verdictContainerColour
+import com.revisionapp.ui.theme.verdictOnContainerColour
 
 private val CorrectGreen = Color(0xFF2E7D32)
 private val PartialAmber = Color(0xFFB26A00)
@@ -538,6 +543,10 @@ private fun Reviewing(state: AppState, reviewing: SessionState.Reviewing) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Prompt(state, item)
+            val question = item.question
+            if (question is Question.MultipleChoice) {
+                McqReview(question, reviewing.verdict)
+            }
             ModelAnswer(state, item)
             VerdictPanel(reviewing.verdict)
             NextActions(state, item, reviewing.verdict)
@@ -550,9 +559,13 @@ private fun Reviewing(state: AppState, reviewing: SessionState.Reviewing) {
 @Composable
 private fun ModelAnswer(state: AppState, item: SessionCard) {
     val card = item.card
+    val question = item.question
+    // For multiple choice the answer is the correct option, which an authored
+    // mcq.correct is allowed to differ from.
+    val answer = if (question is Question.MultipleChoice) question.correctText else card.back
     Panel {
         SectionLabel("Model answer")
-        MathText(card.back, style = MaterialTheme.typography.bodyLarge)
+        MathText(answer, style = MaterialTheme.typography.bodyLarge)
         val explanation = card.explanation
         if (!explanation.isNullOrBlank()) {
             Spacer(Modifier.height(8.dp))
@@ -566,6 +579,62 @@ private fun ModelAnswer(state: AppState, item: SessionCard) {
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+        }
+    }
+}
+
+/**
+ * The four options again, after answering: the correct one in green, and the one you
+ * chose in red if it was wrong. The verdict text can say "option 1 is correct" all it
+ * likes; with the options gone from the screen there is nothing to read it against.
+ */
+@Composable
+private fun McqReview(question: Question.MultipleChoice, verdict: Verdict) {
+    val selection = verdict.reason as? VerdictReason.McqSelection
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        SectionLabel("The options")
+        for (option in question.options) {
+            val chosen = selection?.selectedIndex == option.index
+            val kind = when {
+                option.isCorrect -> VerdictKind.CORRECT
+                chosen -> VerdictKind.INCORRECT
+                else -> null
+            }
+            val container = if (kind == null) {
+                MaterialTheme.colorScheme.surfaceVariant
+            } else {
+                verdictContainerColour(kind)
+            }
+            val onContainer = if (kind == null) {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            } else {
+                verdictOnContainerColour(kind)
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .background(container, RoundedCornerShape(10.dp))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    (option.index + 1).toString() + ".",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = onContainer,
+                )
+                MathText(
+                    option.text,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = onContainer,
+                    modifier = Modifier.weight(1f),
+                )
+                if (option.isCorrect) {
+                    Icon(Icons.Filled.Check, contentDescription = "Correct answer", tint = onContainer)
+                } else if (chosen) {
+                    Icon(Icons.Filled.Close, contentDescription = "Your answer", tint = onContainer)
+                }
+            }
         }
     }
 }
