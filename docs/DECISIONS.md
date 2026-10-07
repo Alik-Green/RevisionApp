@@ -833,3 +833,47 @@ On Android the shell drew under the status bar and the display cut-out. `App` no
 full-bleed `Surface`, so the background still runs edge to edge while the content stays
 clear of the system bars. The inset is zero on desktop and JVM, so the one code path
 serves both and no `expect`/`actual` was needed.
+
+## D41 — Device identity, and why last-write-wins needs it (2026-10-07)
+
+Sync resolves a disagreement between two copies of a record by `updatedAt`, with
+`deviceId` as the tiebreak. The tiebreak is not a formality: two devices can
+write in the same millisecond, and if each then decided that *it* had won, the
+record would be re-uploaded by both forever. Comparing device ids is arbitrary
+but total and symmetric, so both devices reach the same verdict from the same
+two copies. That symmetry, plus comparing content hashes before comparing
+clocks, is what makes a second sync run a no-op.
+
+## D42 — What syncs, and what deliberately does not (2026-10-07)
+
+`RecordType` covers cards, topics, tags, card-tag links, card state and learned
+answers. Two things are excluded on purpose. Content packs never sync: they are
+fetched from the `content` branch, and letting user data carry them would break
+the guarantee that a sync cannot touch installed content (or that a content
+update cannot touch progress). Device settings never sync either — a retention
+target, a theme choice and a last-sync timestamp belong to the device, and
+syncing them would make one phone's preference silently override another's. A
+test asserts no future record type can add `pack` or `setting` without someone
+noticing.
+
+## D43 — `PayloadCodec` ships as the identity (2026-10-07)
+
+Records sit in a folder the user chose, on a machine they own, so the codec that
+ships is `PlainPayloadCodec`: payloads are stored as produced. Keeping them
+readable means a sync problem can be diagnosed by opening a file, which matters
+more than confidentiality for data that never leaves the device. The interface
+exists because that trade reverses the moment a provider puts bytes on someone
+else's hardware; the codec id is written into the manifest so a location stored
+one way is refused rather than misread by a build configured another way.
+
+## D44 — The test double is a real provider, not a mock (2026-10-07)
+
+`InMemorySyncProvider` implements `SyncProvider` for real and is injected
+wherever one is wanted. A mock told which answers to return would have proved
+only that the engine calls the methods the test expected; this proves the merge
+rules against something with the same behaviour as a backend. It also carries
+the two things a stub usually forgets and a real backend always does: a `fault`
+hook that makes any verb fail on demand (so a run that dies mid-upload is
+tested, not assumed safe), and `hiddenIds`, which makes a record appear in a
+listing but vanish when fetched — exactly what an eventually consistent store,
+or a concurrent delete on the other device, looks like.
