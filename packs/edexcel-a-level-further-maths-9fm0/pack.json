@@ -1,7 +1,7 @@
 {
   "packId": "edexcel-a-level-further-maths-9fm0",
   "name": "Edexcel A Level Further Maths (9FM0)",
-  "version": 1,
+  "version": 2,
   "description": "Pure further maths across Core Pure 1, Core Pure 2, Further Pure 1 and Further Pure 2: definitions and theorems as text, formulae as expressions, worked results as numerics.",
   "structureVerified": false,
   "topics": [

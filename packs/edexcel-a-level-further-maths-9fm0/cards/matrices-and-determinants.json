@@ -196,6 +196,323 @@
         "further-maths",
         "core-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Find the determinant of $\\begin{pmatrix} 2 & 1 & 3 \\\\ 0 & -1 & 2 \\\\ 1 & 4 & -2 \\end{pmatrix}$.",
+      "back": "-7",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "-7",
+          "synonyms": [
+            "minus 7",
+            "negative 7"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "expand along the first row or the column containing a zero",
+          "synonyms": [
+            "cofactor expansion"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "-7",
+        "distractors": [
+          "7",
+          "-5",
+          "-12"
+        ]
+      },
+      "explanation": "Expanding along the first row: $2[(-1)(-2) - 2(4)] - 1[0(-2) - 2(1)] + 3[0(4) - (-1)(1)] = 2(2 - 8) - 1(-2) + 3(1) = -12 + 2 + 3 = -7$. The signs alternate $+$, $-$, $+$ down the row; dropping the middle minus is what produces 7. Expanding along the second column would also work and saves one term.",
+      "numeric": {
+        "value": -7,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Find the values of $k$ for which $\\begin{pmatrix} k & 1 & 0 \\\\ 2 & k & 1 \\\\ 0 & 1 & k \\end{pmatrix}$ is singular.",
+      "back": "$k = 0$ and $k = \\pm\\sqrt{3}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "singular means the determinant is zero",
+          "synonyms": [
+            "det = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the determinant is k^3 - 3k",
+          "synonyms": [
+            "expand and simplify"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k = 0 or k = plus or minus root 3",
+          "synonyms": [
+            "k(k^2 - 3) = 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$k = 0, \\pm\\sqrt{3}$",
+        "distractors": [
+          "$k = 0$ only",
+          "$k = \\pm\\sqrt{3}$ only",
+          "$k = \\pm 3$"
+        ]
+      },
+      "explanation": "Expanding along the first row gives $k(k^2 - 1) - 1(2k - 0) = k^3 - k - 2k = k^3 - 3k$. Setting this to zero, $k(k^2 - 3) = 0$, so $k = 0$ or $k = \\pm\\sqrt{3}$. A singular matrix has no inverse and its associated transformation collapses area or volume to zero. Stopping at $k^2 = 3$ and losing the $k = 0$ root is the usual slip.",
+      "numeric": {
+        "value": 0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "$A$ is a $3 \\times 3$ matrix with $\\det A = 3$. Find $\\det(2A^{-1})$.",
+      "back": "$\\frac{8}{3}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "det(kA) = k^3 det A for a 3 x 3 matrix",
+          "synonyms": [
+            "the scalar is raised to the power of the order"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "det(A^-1) = 1/det A = 1/3",
+          "synonyms": [
+            "the determinant of the inverse is the reciprocal"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "8/3",
+          "synonyms": [
+            "eight thirds"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{8}{3}$",
+        "distractors": [
+          "$\\frac{2}{3}$",
+          "$\\frac{1}{6}$",
+          "$24$"
+        ]
+      },
+      "explanation": "$\\det(2A^{-1}) = 2^3 \\det(A^{-1}) = 8 \\times \\frac{1}{3} = \\frac{8}{3}$. The order of the matrix matters: scaling a $3 \\times 3$ matrix by 2 scales every one of three rows, so the determinant is multiplied by $2^3$. For a $2 \\times 2$ matrix the same question would give $\\frac{2}{3}$, which is the first distractor.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Use a determinant to find the area of the triangle with vertices $(1, 2)$, $(4, 6)$ and $(2, 7)$.",
+      "back": "$5.5$ square units, that is $\\frac{11}{2}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "half the absolute value of the determinant",
+          "synonyms": [
+            "area = 1/2 |det|"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "11/2",
+          "synonyms": [
+            "five and a half",
+            "5.5"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "5.5 square units",
+        "11/2 square units"
+      ],
+      "mcq": {
+        "correct": "$\\frac{11}{2}$",
+        "distractors": [
+          "$11$",
+          "$\\frac{21}{2}$",
+          "$\\frac{11}{4}$"
+        ]
+      },
+      "explanation": "$\\frac{1}{2}\\left|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\right| = \\frac{1}{2}\\left|1(6 - 7) + 4(7 - 2) + 2(2 - 6)\\right| = \\frac{1}{2}|-1 + 20 - 8| = \\frac{11}{2}$. The modulus is essential because the sign of the determinant depends on the order in which the vertices are listed; a negative value means the vertices run clockwise.",
+      "numeric": {
+        "value": 5.5,
+        "tolerance": 0.05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Find the inverse of $\\begin{pmatrix} 1 & 2 \\\\ 3 & 7 \\end{pmatrix}$.",
+      "back": "$\\begin{pmatrix} 7 & -2 \\\\ -3 & 1 \\end{pmatrix}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the determinant is 7 - 6 = 1",
+          "synonyms": [
+            "ad - bc"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "swap the diagonal entries and negate the others",
+          "synonyms": [
+            "divide by the determinant"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "7, -2, -3, 1",
+          "synonyms": [
+            "the inverse is the matrix with rows 7 -2 and -3 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\begin{pmatrix} 7 & -2 \\\\ -3 & 1 \\end{pmatrix}$",
+        "distractors": [
+          "$\\begin{pmatrix} 7 & 2 \\\\ 3 & 1 \\end{pmatrix}$",
+          "$\\begin{pmatrix} -7 & 2 \\\\ 3 & -1 \\end{pmatrix}$",
+          "$\\begin{pmatrix} 1 & -2 \\\\ -3 & 7 \\end{pmatrix}$"
+        ]
+      },
+      "explanation": "For $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ the inverse is $\\frac{1}{ad - bc}\\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$. Here $ad - bc = 7 - 6 = 1$, so no division is needed and the inverse is $\\begin{pmatrix} 7 & -2 \\\\ -3 & 1 \\end{pmatrix}$. The last distractor negates the wrong pair of entries, which is the most common slip in the formula.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Verify the Cayley-Hamilton theorem for $A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}$.",
+      "back": "The characteristic equation is $\\lambda^2 - 4\\lambda + 3 = 0$, and $A^2 - 4A + 3I = \\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "the characteristic equation is lambda^2 - 4 lambda + 3 = 0",
+          "synonyms": [
+            "trace 4 and determinant 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A^2 = [[5, 4], [4, 5]]",
+          "synonyms": [
+            "square the matrix"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "A^2 - 4A + 3I is the zero matrix",
+          "synonyms": [
+            "substitute A into its own characteristic equation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$\\det(A - \\lambda I) = (2 - \\lambda)^2 - 1 = \\lambda^2 - 4\\lambda + 3$, whose roots 1 and 3 are the eigenvalues. Now $A^2 = \\begin{pmatrix} 5 & 4 \\\\ 4 & 5 \\end{pmatrix}$, so $A^2 - 4A + 3I = \\begin{pmatrix} 5 - 8 + 3 & 4 - 4 \\\\ 4 - 4 & 5 - 8 + 3 \\end{pmatrix} = O$. The theorem says every square matrix satisfies its own characteristic equation, and it is what makes it possible to write high powers of $A$ as a linear combination of $A$ and $I$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "State the effect on the determinant of (a) swapping two rows, (b) multiplying one row by $k$, and (c) adding a multiple of one row to another.",
+      "back": "(a) It changes sign; (b) it is multiplied by $k$; (c) it is unchanged.",
+      "keyPoints": [
+        {
+          "text": "swapping two rows changes the sign",
+          "synonyms": [
+            "negates the determinant"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "multiplying a row by k multiplies the determinant by k",
+          "synonyms": [
+            "scales it by k"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "adding a multiple of one row to another leaves it unchanged",
+          "synonyms": [
+            "no change"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Sign changes; multiplied by $k$; unchanged",
+        "distractors": [
+          "Sign changes; unchanged; multiplied by $k$",
+          "Unchanged; multiplied by $k$; sign changes",
+          "Sign changes; divided by $k$; unchanged"
+        ]
+      },
+      "explanation": "Property (c) is the reason row reduction can be used to evaluate a determinant: reduce to upper triangular form using only operation (c), then multiply the diagonal. Properties (a) and (b) are also why a matrix with two identical rows has determinant zero - swapping those two rows changes the sign but leaves the matrix alone, so $\\det = -\\det = 0$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Core Pure 1: Matrices",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "core-pure-1"
+      ]
     }
   ]
 }

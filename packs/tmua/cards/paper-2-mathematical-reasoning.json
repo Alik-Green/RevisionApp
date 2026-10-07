@@ -4,284 +4,1110 @@
   "cards": [
     {
       "id": "0001",
-      "front": "What is the contrapositive of the statement 'if $n$ is even then $n^2$ is even'?",
-      "back": "If $n^2$ is odd then $n$ is odd.",
+      "front": "Is '$x > 3$' a necessary condition, a sufficient condition, both, or neither for '$x^2 > 9$'?",
+      "back": "Sufficient but not necessary: $x > 3$ guarantees $x^2 > 9$, but $x^2 > 9$ can hold without it, for instance at $x = -4$.",
       "keyPoints": [
         {
-          "text": "negate both parts",
-          "mustInclude": true
-        },
-        {
-          "text": "reverse them",
+          "text": "sufficient",
           "synonyms": [
-            "swap the hypothesis and conclusion"
+            "it guarantees the other statement",
+            "x > 3 implies x^2 > 9"
           ],
           "mustInclude": true
         },
         {
-          "text": "if n^2 is odd then n is odd",
+          "text": "not necessary",
+          "synonyms": [
+            "the converse fails",
+            "a counterexample to necessity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = -4 is a counterexample",
+          "synonyms": [
+            "a negative value such as -4 or -10"
+          ],
           "mustInclude": true
         }
       ],
       "mcq": {
-        "correct": "If $n^2$ is odd then $n$ is odd.",
+        "correct": "Sufficient but not necessary",
         "distractors": [
-          "If $n^2$ is even then $n$ is even.",
-          "If $n$ is odd then $n^2$ is odd.",
-          "If $n$ is even then $n^2$ is odd."
+          "Necessary but not sufficient",
+          "Both necessary and sufficient",
+          "Neither necessary nor sufficient"
         ]
       },
-      "explanation": "The contrapositive of $P \\Rightarrow Q$ is $\\neg Q \\Rightarrow \\neg P$. Option 2 is the converse and option 3 is the inverse; note that the inverse is logically equivalent to the contrapositive but is not the contrapositive, which is specifically the negated statement read backwards. A statement and its contrapositive always have the same truth value.",
+      "explanation": "$x > 3 \\Rightarrow x^2 > 9$, so the condition is sufficient. But $x = -4$ satisfies $x^2 > 9$ while failing $x > 3$, so the implication does not run backwards and the condition is not necessary. The full set of values with $x^2 > 9$ is $x < -3$ or $x > 3$, which is strictly larger than $x > 3$; a condition describing a larger set is necessary but not sufficient, and one describing a smaller set is sufficient but not necessary.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: contrapositive",
+      "specRef": "Paper 2: necessary and sufficient conditions",
       "tagRefs": [
         "tmua",
-        "paper-2"
+        "paper-2",
+        "hard"
       ]
     },
     {
       "id": "0002",
-      "front": "What is the converse of 'if it rains, the ground is wet', and must it be true?",
-      "back": "'If the ground is wet, it rains.' It need not be true: the ground could be wet for another reason, such as a sprinkler.",
+      "front": "Is '$x^2 - 5x + 6 = 0$' a necessary condition, a sufficient condition, both, or neither for '$x = 2$'?",
+      "back": "Necessary but not sufficient: $x = 2$ forces the equation to hold, but $x = 3$ satisfies the equation without being 2.",
       "keyPoints": [
         {
-          "text": "swap the hypothesis and the conclusion",
+          "text": "necessary",
           "synonyms": [
-            "if the ground is wet then it rains"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "the converse need not be true",
-          "synonyms": [
-            "not logically equivalent"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "a valid alternative explanation",
-          "synonyms": [
-            "sprinkler",
-            "a hose",
-            "flooding"
-          ]
-        }
-      ],
-      "explanation": "A statement and its converse are independent: either can be true or false regardless of the other. Confusing them is the fallacy of affirming the consequent.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: converse",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0003",
-      "front": "Negate the statement 'all prime numbers are odd'.",
-      "back": "There is at least one prime number that is not odd. In other words, some prime numbers are not odd - and 2 is the example that proves it.",
-      "keyPoints": [
-        {
-          "text": "there exists a prime that is not odd",
-          "synonyms": [
-            "some primes are not odd",
-            "at least one prime is even"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "the negation is existential, not universal",
-          "synonyms": [
-            "not 'no primes are odd'"
-          ],
-          "mustInclude": true
-        }
-      ],
-      "mcq": {
-        "correct": "There is at least one prime number that is not odd. In other words, some prime numbers are not odd - and 2 is the example that proves it.",
-        "distractors": [
-          "All prime numbers are even.",
-          "No prime number is odd.",
-          "All odd numbers are prime."
-        ]
-      },
-      "explanation": "The negation of $\\forall x, P(x)$ is $\\exists x, \\neg P(x)$: it takes only one exception to falsify a universal claim, so the negation asserts that such an exception exists. 'No prime is odd' is far stronger than the negation requires.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: negation and quantifiers",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0004",
-      "front": "Negate the statement 'if $x > 2$ then $x^2 > 4$'.",
-      "back": "There is a value of $x$ with $x > 2$ and $x^2 \\le 4$.",
-      "keyPoints": [
-        {
-          "text": "the hypothesis is kept",
-          "synonyms": [
-            "x > 2 still holds"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "the conclusion is negated",
-          "synonyms": [
-            "x^2 is not greater than 4",
-            "x^2 <= 4"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "it asserts that such a case exists",
-          "mustInclude": true
-        }
-      ],
-      "mcq": {
-        "correct": "There is a value of $x$ with $x > 2$ and $x^2 \\le 4$.",
-        "distractors": [
-          "If $x \\le 2$ then $x^2 \\le 4$.",
-          "If $x^2 \\le 4$ then $x \\le 2$.",
-          "If $x > 2$ then $x^2 \\le 4$ for every $x$."
-        ]
-      },
-      "explanation": "The negation of $P \\Rightarrow Q$ is $P \\wedge \\neg Q$, not another implication. An implication is false only when its hypothesis holds and its conclusion fails, so the negation says exactly that such a case exists.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: negation of an implication",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0005",
-      "front": "What is the difference between a necessary condition and a sufficient condition?",
-      "back": "A is sufficient for B means that A guarantees B, so A implies B. A is necessary for B means B cannot happen without A, so B implies A. A condition can be one, both or neither.",
-      "answerType": "SELF_GRADE",
-      "keyPoints": [
-        {
-          "text": "sufficient means it guarantees the other",
-          "synonyms": [
-            "A implies B"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "necessary means the other cannot hold without it",
-          "synonyms": [
+            "x = 2 implies the equation holds",
             "B implies A"
           ],
           "mustInclude": true
         },
         {
-          "text": "a condition can be necessary but not sufficient, or both",
+          "text": "not sufficient",
           "synonyms": [
-            "necessary and sufficient"
-          ]
-        }
-      ],
-      "explanation": "Being over 18 is necessary but not sufficient for a driving licence in the UK; passing the test is sufficient. When both hold, the two statements are equivalent.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: necessary and sufficient",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0006",
-      "front": "A student is asked to prove 'if n squared is even then n is even'. They write: suppose n is even, so n = 2k, then n squared = 4k squared, which is even. What is wrong?",
-      "back": "They have proved the converse. The task was to start from n squared being even and deduce that n is even, but they assumed n was even instead, which is the conclusion they were supposed to reach.",
-      "answerType": "SELF_GRADE",
-      "keyPoints": [
-        {
-          "text": "they proved the converse instead",
-          "mustInclude": true
-        },
-        {
-          "text": "they assumed what they needed to prove",
-          "synonyms": [
-            "started from the conclusion",
-            "circular"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "the proof should begin with n squared even",
-          "synonyms": [
-            "the hypothesis is n squared is even"
-          ],
-          "mustInclude": true
-        }
-      ],
-      "explanation": "The correct argument usually goes by contrapositive: suppose n is odd, so n = 2k + 1, then n squared = 4k squared + 4k + 1, which is odd. That proves the contrapositive, which is equivalent to the original statement.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: spotting errors in proof",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0007",
-      "front": "What is assumed at the start of a proof by contradiction that $\\sqrt{2}$ is irrational?",
-      "back": "That $\\sqrt{2}$ is rational, so $\\sqrt{2} = \\frac{a}{b}$ for integers $a$ and $b$ with no common factor other than 1.",
-      "keyPoints": [
-        {
-          "text": "assume the opposite: that root 2 is rational",
-          "mustInclude": true
-        },
-        {
-          "text": "write it as a fraction a/b in lowest terms",
-          "synonyms": [
-            "coprime",
-            "no common factor"
-          ],
-          "mustInclude": true
-        }
-      ],
-      "explanation": "The condition that a and b share no common factor is what makes the contradiction possible: the argument ends by showing both are even, so they share the factor 2.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: proof by contradiction",
-      "tagRefs": [
-        "tmua",
-        "paper-2"
-      ]
-    },
-    {
-      "id": "0008",
-      "front": "Negate the statement 'there is an integer $n$ such that $n^2 = 2$'.",
-      "back": "For every integer $n$, $n^2 \\ne 2$.",
-      "keyPoints": [
-        {
-          "text": "the quantifier changes from exists to for all",
-          "synonyms": [
-            "existential becomes universal"
-          ],
-          "mustInclude": true
-        },
-        {
-          "text": "the condition is negated",
-          "synonyms": [
-            "n^2 is not equal to 2"
+            "the equation has a second root",
+            "x = 3 also works"
           ],
           "mustInclude": true
         }
       ],
       "mcq": {
-        "correct": "For every integer $n$, $n^2 \\ne 2$.",
+        "correct": "Necessary but not sufficient",
         "distractors": [
-          "There is an integer $n$ such that $n^2 \\ne 2$.",
-          "For every integer $n$, $n^2 = 2$.",
-          "There is no real number $x$ with $x^2 = 2$."
+          "Sufficient but not necessary",
+          "Both necessary and sufficient",
+          "Neither necessary nor sufficient"
         ]
       },
-      "explanation": "The negation of $\\exists x, P(x)$ is $\\forall x, \\neg P(x)$. Note the last distractor changes the domain from integers to reals, which makes it a different and false statement.",
+      "explanation": "Read the implication in the direction the wording demands: if $x = 2$ then $4 - 10 + 6 = 0$, so the equation holding is necessary for $x = 2$. It is not sufficient, because $x^2 - 5x + 6 = (x-2)(x-3) = 0$ also at $x = 3$. This is the mirror image of the previous question and is where most candidates reverse the direction: the larger solution set is the necessary condition and the smaller one is the sufficient condition.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 2: negation and quantifiers",
+      "specRef": "Paper 2: necessary and sufficient conditions",
       "tagRefs": [
         "tmua",
-        "paper-2"
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "Negate the statement 'for every real number $x$ there is a real number $y$ such that $xy = 1$'.",
+      "back": "There is a real number $x$ such that for every real number $y$, $xy \\ne 1$.",
+      "keyPoints": [
+        {
+          "text": "the two quantifiers swap",
+          "synonyms": [
+            "for all becomes there exists and there exists becomes for all"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the order of the quantifiers is preserved",
+          "synonyms": [
+            "exists x, then for all y"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the condition xy = 1 is negated",
+          "synonyms": [
+            "xy is not equal to 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = 0 is a witness",
+          "synonyms": [
+            "zero makes the original statement false"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "There is a real $x$ such that for every real $y$, $xy \\ne 1$.",
+        "distractors": [
+          "For every real $x$ there is a real $y$ such that $xy \\ne 1$.",
+          "There is a real $x$ such that there is a real $y$ with $xy \\ne 1$.",
+          "For every real $x$ and every real $y$, $xy \\ne 1$."
+        ]
+      },
+      "explanation": "Negation flips each quantifier in turn and negates the innermost condition, keeping their order: $\\neg(\\forall x\\,\\exists y\\, P) = \\exists x\\,\\forall y\\,\\neg P$. The result is true, with $x = 0$ as the witness, since $0 \\times y = 0 \\ne 1$ for every $y$. Swapping the order of the quantifiers as well would change the meaning entirely: $\\exists y\\,\\forall x\\,(xy \\ne 1)$ is a different and also true statement, but it is not the negation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: negation of quantified statements",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0004",
+      "front": "Negate the statement 'for every integer $n$, if $n^2$ is divisible by 4 then $n$ is even'.",
+      "back": "There is an integer $n$ such that $n^2$ is divisible by 4 and $n$ is odd.",
+      "keyPoints": [
+        {
+          "text": "there exists an integer n",
+          "synonyms": [
+            "the universal quantifier becomes existential"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the hypothesis is kept",
+          "synonyms": [
+            "n^2 is still divisible by 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the conclusion is negated and joined by and",
+          "synonyms": [
+            "n is odd",
+            "P and not Q"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "There is an integer $n$ with $n^2$ divisible by 4 and $n$ odd.",
+        "distractors": [
+          "For every integer $n$, if $n^2$ is divisible by 4 then $n$ is odd.",
+          "There is an integer $n$ with $n^2$ not divisible by 4 and $n$ even.",
+          "For every integer $n$, if $n^2$ is not divisible by 4 then $n$ is odd."
+        ]
+      },
+      "explanation": "The statement is $\\forall n\\,(P(n) \\Rightarrow Q(n))$, whose negation is $\\exists n\\,(P(n) \\wedge \\neg Q(n))$. The quantifier flips, the hypothesis survives untouched and the conclusion is negated, joined by 'and' rather than by another 'if'. The original is true - if $n$ were odd, $n^2$ would be odd - so the negation must be false, and indeed no odd square is divisible by 4.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: negation of quantified statements",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0005",
+      "front": "Which statement is logically equivalent to 'if $f$ is differentiable at $a$ then $f$ is continuous at $a$'?",
+      "back": "If $f$ is not continuous at $a$ then $f$ is not differentiable at $a$.",
+      "keyPoints": [
+        {
+          "text": "the contrapositive",
+          "synonyms": [
+            "negate both parts and reverse them"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "if f is not continuous at a then f is not differentiable at a",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "If $f$ is not continuous at $a$ then $f$ is not differentiable at $a$.",
+        "distractors": [
+          "If $f$ is continuous at $a$ then $f$ is differentiable at $a$.",
+          "If $f$ is not differentiable at $a$ then $f$ is not continuous at $a$.",
+          "$f$ is differentiable at $a$ and $f$ is continuous at $a$."
+        ]
+      },
+      "explanation": "The contrapositive $\\neg Q \\Rightarrow \\neg P$ always shares its truth value with $P \\Rightarrow Q$. Option 2 is the converse and option 3 is the inverse; those two are equivalent to each other but not to the original, and in fact both are false here, since $f(x) = |x|$ is continuous but not differentiable at 0. This is the standard way to use the result: to show a function is not differentiable, show it is not continuous.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: contrapositive and equivalence",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0006",
+      "front": "A student 'proves' that $1 = 2$ as follows. Let $a = b$. Then $a^2 = ab$, so $a^2 - b^2 = ab - b^2$, so $(a + b)(a - b) = b(a - b)$, so $a + b = b$, so $2b = b$ and $2 = 1$. Identify the invalid step.",
+      "back": "Dividing by $a - b$, which is zero because $a = b$.",
+      "keyPoints": [
+        {
+          "text": "the step from (a + b)(a - b) = b(a - b) to a + b = b",
+          "synonyms": [
+            "cancelling the common factor"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "division by zero",
+          "synonyms": [
+            "a - b = 0",
+            "the divisor is zero"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Dividing by $a - b$, which is zero",
+        "distractors": [
+          "Expanding $a^2 - b^2$ as $(a + b)(a - b)$",
+          "Subtracting $b^2$ from only one side",
+          "Assuming $a = b$ at the start"
+        ]
+      },
+      "explanation": "Every step is legal except the cancellation of $(a - b)$ from both sides, which is division by $a - b = 0$. Cancelling a common factor is only valid when that factor is non-zero, so the argument quietly divides by zero. Assuming $a = b$ is not itself an error - a proof may assume anything - the error is what is then done with that assumption.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A student writes: '$n^2 + n + 41$ is prime for every positive integer $n$. Check: $n = 1$ gives 43, $n = 2$ gives 47, $n = 3$ gives 53. Hence the statement is true.' What is wrong with the reasoning, and what is a counterexample?",
+      "back": "Checking a few cases cannot prove a universal statement, and $n = 41$ gives $41^2 + 41 + 41 = 41 \\times 43$, which is not prime.",
+      "keyPoints": [
+        {
+          "text": "finitely many examples do not prove a for-all statement",
+          "synonyms": [
+            "checking cases is not a proof"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n = 41",
+          "synonyms": [
+            "the counterexample is n = 41"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "41 x 43 = 1763",
+          "synonyms": [
+            "1763 is not prime",
+            "it factorises"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Examples are not a proof, and $n = 41$ gives $41 \\times 43$",
+        "distractors": [
+          "Nothing: three checks are enough for a quadratic",
+          "The statement is false because $n = 4$ gives a composite number",
+          "The reasoning is valid but the arithmetic for $n = 3$ is wrong"
+        ]
+      },
+      "explanation": "A universal claim needs a general argument; no number of successful cases establishes it. Here $n = 41$ gives $41^2 + 41 + 41 = 41(41 + 1 + 1) = 41 \\times 43 = 1763$, a product of two primes. In fact $n = 1$ to $39$ all give primes, which is exactly why this expression is a famous trap - it looks convincing right up to the first counterexample. Note that $n = 4$ gives $16 + 4 + 41 = 61$, which is prime, so that suggested counterexample fails.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "A student writes: 'Assume $1 + 2 + \\ldots + k = \\frac{k(k+1)}{2}$. Then $1 + 2 + \\ldots + k + (k + 1) = \\frac{k(k+1)}{2} + (k+1) = \\frac{(k+1)(k+2)}{2}$, which is the required form. Hence by induction the formula holds for all positive integers $n$.' What is missing?",
+      "back": "The base case: the formula was never verified for $n = 1$, so there is nothing for the inductive step to build on.",
+      "keyPoints": [
+        {
+          "text": "the base case is missing",
+          "synonyms": [
+            "n = 1 was never checked",
+            "no starting point"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "induction needs both the base case and the inductive step",
+          "synonyms": [
+            "two parts are required"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The base case $n = 1$ was never verified",
+        "distractors": [
+          "The inductive step is algebraically wrong",
+          "The student should have assumed the result for $k + 1$",
+          "Nothing is missing"
+        ]
+      },
+      "explanation": "The inductive step is correct: $\\frac{k(k+1)}{2} + (k+1) = \\frac{k(k+1) + 2(k+1)}{2} = \\frac{(k+1)(k+2)}{2}$. What is absent is the base case. Induction is a domino argument, and a chain of dominos that never starts topples nothing. Here $n = 1$ does work, so the proof is repairable with one line - but a genuine statement with a false base case would be 'proved' by exactly the same reasoning.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: proof by induction",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Which method is the most efficient way to prove that if $3n + 2$ is odd then $n$ is odd, for integers $n$?",
+      "back": "Proof by contrapositive: assume $n$ is even, write $n = 2k$, and show $3n + 2$ is even.",
+      "keyPoints": [
+        {
+          "text": "contrapositive",
+          "synonyms": [
+            "assume n is even and deduce 3n + 2 is even"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assuming n is odd directly gives no algebraic handle",
+          "synonyms": [
+            "odd is hard to work with from the hypothesis"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Proof by contrapositive",
+        "distractors": [
+          "Proof by induction",
+          "Disproof by counterexample",
+          "Proof by exhaustion"
+        ]
+      },
+      "explanation": "Working forwards from '$3n + 2$ is odd' means writing $3n + 2 = 2m + 1$ and then trying to extract $n = \\frac{2m - 1}{3}$, which needs an argument about divisibility. The contrapositive is cleaner: if $n = 2k$ then $3n + 2 = 6k + 2 = 2(3k + 1)$, which is even. Whenever the conclusion is a parity or divisibility statement about $n$ itself, the contrapositive usually turns a hard hypothesis into an easy one. Induction and exhaustion do not apply to a statement about a single arbitrary integer.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: choosing a proof method",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Disprove the statement 'the sum of any two irrational numbers is irrational'.",
+      "back": "A single counterexample suffices: $\\sqrt{2} + (2 - \\sqrt{2}) = 2$, and both $\\sqrt{2}$ and $2 - \\sqrt{2}$ are irrational while their sum is rational.",
+      "keyPoints": [
+        {
+          "text": "one counterexample is enough",
+          "synonyms": [
+            "a single example disproves a for-all statement"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "two irrationals summing to a rational",
+          "synonyms": [
+            "root 2 plus (2 - root 2) = 2",
+            "root 2 plus minus root 2 = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the sum is rational",
+          "synonyms": [
+            "the result is an integer or a fraction"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\sqrt{2} + (2 - \\sqrt{2}) = 2$",
+        "distractors": [
+          "$\\sqrt{2} + \\sqrt{3}$ is irrational",
+          "The statement is true and cannot be disproved",
+          "$\\sqrt{2} \\times \\sqrt{2} = 2$"
+        ]
+      },
+      "explanation": "To falsify $\\forall x\\,\\forall y\\,P(x, y)$ it is enough to exhibit one pair where $P$ fails. Here $\\sqrt{2}$ is irrational and $2 - \\sqrt{2}$ is irrational - if it were rational, subtracting from the rational number 2 would make $\\sqrt{2}$ rational - yet their sum is 2. Equally valid is $\\sqrt{2} + (-\\sqrt{2}) = 0$. The last option disproves a statement about products, not sums, so it does not answer the question.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: disproof by counterexample",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Explain why $n^2 + n$ is even for every integer $n$, and say what proof technique this is.",
+      "back": "Because $n^2 + n = n(n + 1)$ is a product of two consecutive integers, one of which must be even; this is proof by cases, or equivalently a parity argument.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "factorise as n(n + 1)",
+          "synonyms": [
+            "n squared plus n factorises"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "two consecutive integers",
+          "synonyms": [
+            "one of them is even"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the product is therefore even",
+          "synonyms": [
+            "an even factor makes the product even"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "proof by cases",
+          "synonyms": [
+            "consider n even and n odd separately",
+            "parity argument"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Factorising gives $n(n+1)$, and of any two consecutive integers exactly one is even, so the product has a factor 2. Written as cases: if $n = 2k$ then $n(n+1) = 2k(2k+1)$; if $n = 2k+1$ then $n(n+1) = (2k+1)(2k+2) = 2(2k+1)(k+1)$. Both cases give an even number, so the result holds for every integer. The factored version is shorter, but the case version is the template for anything that does not factorise so neatly.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: proof by cases",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A student solves $\\sqrt{2x + 3} = x$ by squaring both sides: $2x + 3 = x^2$, so $x^2 - 2x - 3 = 0$, so $(x - 3)(x + 1) = 0$ and $x = 3$ or $x = -1$. Explain what must be checked, and give the solution set.",
+      "back": "Squaring is not reversible, so each root must be substituted back. $x = 3$ works but $x = -1$ gives $\\sqrt{1} = -1$, which is false, so the only solution is $x = 3$.",
+      "keyPoints": [
+        {
+          "text": "squaring can introduce extraneous roots",
+          "synonyms": [
+            "squaring is not a reversible step",
+            "check the answers"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = -1 does not satisfy the original equation",
+          "synonyms": [
+            "root 1 = -1 is false"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = 3 only",
+          "synonyms": [
+            "the solution set is 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = 3$ only",
+        "distractors": [
+          "$x = 3$ and $x = -1$",
+          "$x = -1$ only",
+          "There is no solution"
+        ]
+      },
+      "explanation": "The equation $\\sqrt{2x+3} = x$ implies $2x + 3 = x^2$, but not conversely: squaring identifies $a = b$ with $a = -b$. Substituting $x = -1$ gives $\\sqrt{1} = 1 \\ne -1$, so it is extraneous; $x = 3$ gives $\\sqrt{9} = 3$, which works. The underlying reason is that $\\sqrt{\\ }$ returns the non-negative root only, so the original equation needs $x \\ge 0$ as well as $2x + 3 = x^2$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0013",
+      "front": "State a necessary and sufficient condition on the real numbers $a$, $b$ and $c$, with $a \\ne 0$, for the equation $ax^2 + bx + c = 0$ to have real roots.",
+      "back": "$b^2 - 4ac \\ge 0$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "b^2 - 4ac >= 0",
+          "synonyms": [
+            "the discriminant is non-negative",
+            "discriminant greater than or equal to zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "greater than or equal to, not strictly greater than",
+          "synonyms": [
+            "equality gives one repeated real root"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$b^2 - 4ac \\ge 0$",
+        "distractors": [
+          "$b^2 - 4ac > 0$",
+          "$b^2 - 4ac \\le 0$",
+          "$b^2 \\ge 4ac$ and $a > 0$"
+        ]
+      },
+      "explanation": "The condition is exactly an if-and-only-if: the discriminant being non-negative is equivalent to real roots existing, which is what 'necessary and sufficient' means. The boundary case matters - $b^2 - 4ac = 0$ gives one repeated real root, which is still real, so the strict inequality $> 0$ is necessary and sufficient only for two distinct real roots. The extra clause $a > 0$ is irrelevant to whether roots exist; it only decides which way the parabola opens.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: necessary and sufficient conditions",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0014",
+      "front": "Find the solution set of '$x > 0$ or $x^2 > 4$', remembering how 'or' is read in mathematics.",
+      "back": "$x > 0$ or $x < -2$",
+      "keyPoints": [
+        {
+          "text": "or is inclusive",
+          "synonyms": [
+            "a value satisfying both is still in the solution set"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x^2 > 4 gives x < -2 or x > 2",
+          "synonyms": [
+            "solve the second condition"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x > 0 or x < -2",
+          "synonyms": [
+            "the union of the two sets"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x > 0$ or $x < -2$",
+        "distractors": [
+          "$x > 2$ only",
+          "$-2 < x$ or $x > 2$",
+          "$0 < x < 2$"
+        ]
+      },
+      "explanation": "Mathematical 'or' is inclusive, so the solution set is the union of $\\{x : x > 0\\}$ and $\\{x : x < -2 \\text{ or } x > 2\\}$. Since $x > 2$ is already contained in $x > 0$, the union collapses to $x > 0$ or $x < -2$. The distractor $x > 2$ reads 'or' as 'and', and $-2 < x$ or $x > 2$ solves $x^2 > 4$ as $-2 < x < 2$ and then unions incorrectly.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: logical connectives",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0015",
+      "front": "Is the statement 'if $n$ is an even prime greater than 2, then $n^2 = 7$' true or false? Justify your answer.",
+      "back": "True, vacuously: no integer is an even prime greater than 2, so the hypothesis is never satisfied and an implication with a false hypothesis is true.",
+      "keyPoints": [
+        {
+          "text": "true",
+          "synonyms": [
+            "the statement is true"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the hypothesis can never hold",
+          "synonyms": [
+            "2 is the only even prime",
+            "no such n exists"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an implication with a false hypothesis is true",
+          "synonyms": [
+            "vacuously true",
+            "vacuous truth"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "True, vacuously",
+        "distractors": [
+          "False, because $n^2 = 7$ has no integer solution",
+          "False, because $n = 2$ is an even prime",
+          "Neither true nor false; it is undefined"
+        ]
+      },
+      "explanation": "An implication $P \\Rightarrow Q$ is false only when $P$ holds and $Q$ fails. Here $P$ never holds - 2 is the only even prime, and it is not greater than 2 - so there is no case in which the statement can fail, and it is true by default. This is vacuous truth, and it is why statements about the empty set are so often technically true. Option 3 misreads the hypothesis: 2 is even and prime but is not greater than 2.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: logical connectives",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0016",
+      "front": "A student is asked to prove '$n$ is even if and only if $n^2$ is even' and proves only that if $n$ is even then $n^2$ is even. Why is the proof incomplete, and how should the other direction be done?",
+      "back": "Only one direction of an if-and-only-if has been shown; the other direction is needed, most easily by contrapositive: if $n$ is odd then $n^2 = 4k^2 + 4k + 1$ is odd.",
+      "keyPoints": [
+        {
+          "text": "if and only if means two implications",
+          "synonyms": [
+            "both directions must be proved",
+            "only one direction is done"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the other direction needs its own proof",
+          "synonyms": [
+            "even n squared implies even n"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "contrapositive with n odd",
+          "synonyms": [
+            "assume n is odd and show n squared is odd",
+            "n = 2k + 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Both directions are needed; prove the other by contrapositive",
+        "distractors": [
+          "The proof is complete because the directions are equivalent",
+          "The second direction follows automatically from the first",
+          "The first direction is the wrong one to prove"
+        ]
+      },
+      "explanation": "$P \\Leftrightarrow Q$ is two separate claims, $P \\Rightarrow Q$ and $Q \\Rightarrow P$, and neither implies the other. The missing direction, 'if $n^2$ is even then $n$ is even', is best done by contrapositive: if $n = 2k + 1$ then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. Attempting it directly from $n^2 = 2m$ requires factoring and is noticeably harder - which is exactly why the contrapositive form is worth recognising.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: constructing arguments",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0017",
+      "front": "For which real values of $k$ is the statement 'for all real $x$, $kx^2 + 4x + k > 0$' true?",
+      "back": "$k > 2$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "k must be positive",
+          "synonyms": [
+            "the parabola must open upwards"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the discriminant must be negative",
+          "synonyms": [
+            "16 - 4k^2 < 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k > 2",
+          "synonyms": [
+            "k is greater than 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$k > 2$",
+        "distractors": [
+          "$k > 2$ or $k < -2$",
+          "$-2 < k < 2$",
+          "$k \\ge 2$"
+        ]
+      },
+      "explanation": "Two things are needed. First $k > 0$, otherwise the graph opens downwards and dips below the axis. Second the quadratic must never touch the axis, so $\\Delta = 16 - 4k^2 < 0$, giving $k^2 > 4$, that is $k > 2$ or $k < -2$. Intersecting with $k > 0$ leaves $k > 2$. The distractor $k > 2$ or $k < -2$ forgets the upward-opening requirement; at $k = 2$ the graph touches the axis at $x = -1$, so $kx^2 + 4x + k = 0$ there and the strict inequality fails.",
+      "numeric": {
+        "value": 2,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: reasoning with quadratics",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0018",
+      "front": "A student claims the sequence $u_n = \\frac{n}{n + 1}$ is increasing, arguing '$u_1 < u_2 < u_3 < u_4$, so the sequence is increasing'. What is wrong, and how should it be proved?",
+      "back": "Finitely many terms cannot establish a property of infinitely many; the general difference $u_{n+1} - u_n = \\frac{1}{(n + 1)(n + 2)}$ is positive for every $n$, which does prove it.",
+      "keyPoints": [
+        {
+          "text": "checking a few terms is not a proof",
+          "synonyms": [
+            "finitely many cases do not cover all n"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "consider u_(n+1) - u_n for general n",
+          "synonyms": [
+            "form the difference of consecutive terms"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1/((n + 1)(n + 2))",
+          "synonyms": [
+            "the difference is positive for every positive integer n"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Few cases prove nothing; show $u_{n+1} - u_n = \\frac{1}{(n+1)(n+2)} > 0$",
+        "distractors": [
+          "Nothing is wrong; four terms are enough for a monotonic sequence",
+          "The claim is false because the sequence decreases",
+          "The sequence must be shown to be bounded as well"
+        ]
+      },
+      "explanation": "$u_{n+1} - u_n = \\frac{n+1}{n+2} - \\frac{n}{n+1} = \\frac{(n+1)^2 - n(n+2)}{(n+2)(n+1)} = \\frac{1}{(n+1)(n+2)} > 0$ for every positive integer $n$, so the sequence is increasing. Checking cases is not just weak here, it is structurally the wrong kind of argument: the whole point is that the property must hold for all $n$, including those not checked. Boundedness is a separate property and is not needed for monotonicity.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: reasoning with sequences",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0019",
+      "front": "A student solves $\\sin 2x = \\sin x$ on $0 \\le x < 2\\pi$ by 'cancelling' $\\sin x$ from both sides to get $2x = x$, hence $x = 0$. Identify the error and give all the solutions.",
+      "back": "Cancelling divides by $\\sin x$ and loses every solution with $\\sin x = 0$; factoring gives $\\sin x (2\\cos x - 1) = 0$, so $x = 0, \\frac{\\pi}{3}, \\pi, \\frac{5\\pi}{3}$.",
+      "keyPoints": [
+        {
+          "text": "cancelling is division by sin x, which may be zero",
+          "synonyms": [
+            "you cannot divide by an expression that can be zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "factorise instead",
+          "synonyms": [
+            "sin x (2 cos x - 1) = 0",
+            "2 sin x cos x - sin x = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = 0, pi/3, pi, 5pi/3",
+          "synonyms": [
+            "four solutions",
+            "0, 60, 180 and 300 degrees"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = 0, \\frac{\\pi}{3}, \\pi, \\frac{5\\pi}{3}$",
+        "distractors": [
+          "$x = 0, \\frac{\\pi}{3}$",
+          "$x = 0, \\pi$",
+          "$x = \\frac{\\pi}{3}, \\pi, \\frac{5\\pi}{3}$"
+        ]
+      },
+      "explanation": "Writing $\\sin 2x = 2\\sin x \\cos x$ gives $\\sin x(2\\cos x - 1) = 0$. The first factor gives $\\sin x = 0$, so $x = 0$ and $x = \\pi$; the second gives $\\cos x = \\frac{1}{2}$, so $x = \\frac{\\pi}{3}$ and $x = \\frac{5\\pi}{3}$. Cancelling $\\sin x$ is division by something that is zero at $x = 0$ and $x = \\pi$, and it also discards the whole second factor. This is the same defect as dividing by $x$ when solving $x^2 = 3x$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0020",
+      "front": "A student solves $\\log x^2 = 2$ by writing $2\\log x = 2$, so $\\log x = 1$ and $x = 10$. What is wrong?",
+      "back": "The identity $\\log x^2 = 2\\log x$ holds only for $x > 0$; in general $\\log x^2 = 2\\log|x|$, so $x = -10$ is a second solution.",
+      "keyPoints": [
+        {
+          "text": "the power law needs x > 0",
+          "synonyms": [
+            "log x^2 = 2 log |x|",
+            "the argument must be positive"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = -10 is also a solution",
+          "synonyms": [
+            "a negative solution is lost",
+            "x = plus or minus 10"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = -10$ is lost; the solutions are $\\pm 10$",
+        "distractors": [
+          "Nothing; $x = 10$ is the only solution",
+          "The equation has no solution because $x^2 > 0$",
+          "The base of the logarithm must be stated first"
+        ]
+      },
+      "explanation": "$x^2$ is positive for every non-zero $x$, so the left-hand side is defined at $x = -10$, where $\\log 100 = 2$. But $2\\log x$ is undefined for $x < 0$, so the identity $\\log x^2 = 2\\log x$ is valid only on $x > 0$; the general form is $\\log x^2 = 2\\log|x|$. Solving correctly gives $x^2 = 100$ and $x = \\pm 10$. Applying a logarithm law without checking its domain is one of the commonest sources of lost solutions.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0021",
+      "front": "To prove that $\\log_2 3$ is irrational, assume $\\log_2 3 = \\frac{a}{b}$ for positive integers $a$ and $b$. This gives $2^a = 3^b$. Why is that a contradiction?",
+      "back": "Because $2^a$ is even for $a \\ge 1$ while $3^b$ is odd, so they can never be equal; and $a = 0$ would give $1 = 3^b$, also impossible.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "2^a is even and 3^b is odd",
+          "synonyms": [
+            "parity argument",
+            "an even number cannot equal an odd number"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a = 0 must be handled separately",
+          "synonyms": [
+            "2^0 = 1 is not even",
+            "the case a = 0 gives 1 = 3^b"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "From $2^{a/b} = 3$, raising both sides to the power $b$ gives $2^a = 3^b$. For $a \\ge 1$ the left side is even and the right side is odd, which is impossible. The case $a = 0$ must be dealt with separately, since $2^0 = 1$ is odd: then $1 = 3^b$ forces $b = 0$, contradicting $b$ being a positive integer. Leaving out that edge case is the sort of gap a Paper 2 question is built to expose.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: proof by contradiction",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0022",
+      "front": "Prove that if $n^2$ is divisible by 3 then $n$ is divisible by 3, and name the method.",
+      "back": "Proof by cases on the remainder of $n$ on division by 3: $n = 3k$, $3k + 1$ or $3k + 2$ give $n^2$ with remainder 0, 1 and 1 respectively, so $n^2$ divisible by 3 forces $n = 3k$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "consider n = 3k, 3k + 1 and 3k + 2",
+          "synonyms": [
+            "split into three cases by remainder",
+            "proof by cases"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the squares leave remainders 0, 1 and 1",
+          "synonyms": [
+            "9k^2, 9k^2 + 6k + 1, 9k^2 + 12k + 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only the first case has n^2 divisible by 3",
+          "synonyms": [
+            "so n must be 3k",
+            "n is divisible by 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Every integer is $3k$, $3k + 1$ or $3k + 2$. Their squares are $9k^2$, $9k^2 + 6k + 1 = 3(3k^2 + 2k) + 1$ and $9k^2 + 12k + 4 = 3(3k^2 + 4k + 1) + 1$, so the remainders on division by 3 are 0, 1 and 1. If $n^2$ is divisible by 3, the remainder is 0, which only the first case produces, so $n = 3k$. The same template proves that $\\sqrt{3}$ is irrational. Note the converse is immediate - if $n = 3k$ then $n^2 = 9k^2$ - and it is the harder direction that needs the cases.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: proof by cases",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0023",
+      "front": "Is '$f'(a) = 0$' a necessary condition, a sufficient condition, both, or neither for '$f$ has a local maximum at $a$'?",
+      "back": "Neither: $f(x) = -|x|$ has a local maximum at 0 with no derivative there, and $f(x) = x^2$ has $f'(0) = 0$ at a minimum.",
+      "keyPoints": [
+        {
+          "text": "neither",
+          "synonyms": [
+            "it is neither necessary nor sufficient"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a maximum can occur where the derivative does not exist",
+          "synonyms": [
+            "f(x) = -|x| at 0",
+            "a corner or cusp"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "f'(a) = 0 can be a minimum or a point of inflection",
+          "synonyms": [
+            "x^2 at 0",
+            "x^3 at 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Neither",
+        "distractors": [
+          "Necessary but not sufficient",
+          "Sufficient but not necessary",
+          "Both necessary and sufficient"
+        ]
+      },
+      "explanation": "Not necessary: $f(x) = -|x|$ reaches a maximum at $x = 0$ where the derivative does not exist, and the familiar result only applies to differentiable functions. Not sufficient: $f'(a) = 0$ marks any stationary point, and $x^2$ has $f'(0) = 0$ at a minimum while $x^3$ has it at a stationary point of inflection. The statement becomes necessary once differentiability at $a$ is assumed, which is why specification wording matters.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: necessary and sufficient conditions",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0024",
+      "front": "One counterexample disproves 'for all real $x$, $f(x) > 0$'. What is required to disprove 'there exists a real $x$ such that $f(x) > 0$'?",
+      "back": "A general argument that $f(x) \\le 0$ for every real $x$; no finite list of examples will do.",
+      "keyPoints": [
+        {
+          "text": "show f(x) <= 0 for all x",
+          "synonyms": [
+            "prove the universal statement",
+            "a general argument is needed"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "examples cannot do it",
+          "synonyms": [
+            "infinitely many values cannot all be checked",
+            "no finite number of cases suffices"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A general proof that $f(x) \\le 0$ for every $x$",
+        "distractors": [
+          "One counterexample",
+          "Two counterexamples, one on each side of zero",
+          "Checking that $f(0) \\le 0$"
+        ]
+      },
+      "explanation": "The two statements are negations of each other: $\\neg(\\forall x\\, P) = \\exists x\\, \\neg P$ and $\\neg(\\exists x\\, P) = \\forall x\\, \\neg P$. Disproving a universal claim takes one example, but disproving an existential claim requires showing the condition fails everywhere, which is a general argument. The asymmetry is worth internalising: existence is cheap to prove and expensive to disprove, and universality is the other way round.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: reasoning about quantifiers",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0025",
+      "front": "A student solves $\\frac{1}{x} < 2$ by multiplying both sides by $x$ to get $1 < 2x$, hence $x > \\frac{1}{2}$. Identify the error and give the correct solution set.",
+      "back": "Multiplying by $x$ assumes $x > 0$; every negative $x$ also satisfies the inequality. The solution is $x < 0$ or $x > \\frac{1}{2}$.",
+      "keyPoints": [
+        {
+          "text": "multiplying by x assumes x > 0",
+          "synonyms": [
+            "the sign of x is unknown",
+            "the inequality would reverse if x < 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "negative values of x all work",
+          "synonyms": [
+            "x < 0 is part of the solution"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x < 0 or x > 1/2",
+          "synonyms": [
+            "two separate ranges"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x < 0$ or $x > \\frac{1}{2}$",
+        "distractors": [
+          "$x > \\frac{1}{2}$",
+          "$x < 0$ or $x < \\frac{1}{2}$",
+          "$0 < x < \\frac{1}{2}$"
+        ]
+      },
+      "explanation": "Multiplying an inequality by a quantity of unknown sign is the error: if $x < 0$ the inequality reverses. The safe method is to bring everything to one side, $\\frac{1}{x} - 2 < 0$, so $\\frac{1 - 2x}{x} < 0$. A sign chart on the critical values $0$ and $\\frac{1}{2}$ gives $x < 0$ or $x > \\frac{1}{2}$. Testing $x = -1$: $\\frac{1}{-1} = -1 < 2$, which works, so the student's answer is visibly incomplete.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: errors in proof",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0026",
+      "front": "The rule states 'you can graduate only if you pass the exam'. Write this as an implication between $G$ (you graduate) and $P$ (you pass), and say what it does and does not guarantee.",
+      "back": "$G \\Rightarrow P$. Passing is necessary for graduating, but it does not guarantee graduation; other conditions may also be required.",
+      "keyPoints": [
+        {
+          "text": "G implies P",
+          "synonyms": [
+            "graduating implies passing",
+            "graduate => pass"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only if points backwards",
+          "synonyms": [
+            "the necessary condition comes after only if"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "passing does not guarantee graduating",
+          "synonyms": [
+            "not sufficient",
+            "P does not imply G"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$G \\Rightarrow P$; passing is necessary but not sufficient",
+        "distractors": [
+          "$P \\Rightarrow G$; passing guarantees graduating",
+          "$G \\Rightarrow P$; passing is sufficient but not necessary",
+          "$P \\Rightarrow G$; graduating is necessary for passing"
+        ]
+      },
+      "explanation": "'A only if B' means $A \\Rightarrow B$: the thing after 'only if' is the necessary condition. So graduating implies passing, and passing is necessary for graduating. It says nothing about whether passing is enough - the converse would be 'if you pass then you graduate', which the rule does not assert. Contrast 'you can graduate if you pass', which is $P \\Rightarrow G$ and makes passing sufficient. The word 'if' attaches to the sufficient condition and 'only if' to the necessary one.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 2: reasoning terms and implication",
+      "tagRefs": [
+        "tmua",
+        "paper-2",
+        "very-hard"
       ]
     }
   ]

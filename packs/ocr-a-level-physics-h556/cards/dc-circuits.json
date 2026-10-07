@@ -171,6 +171,337 @@
         "physics",
         "m4"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A 12 V supply is connected across a 4.0 ohm and an 8.0 ohm resistor in series. Find the potential difference across the 8.0 ohm resistor.",
+      "back": "8.0 V",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "the pd splits in proportion to the resistances",
+          "synonyms": [
+            "potential divider"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "V = 12 x 8 / (4 + 8)",
+          "synonyms": [
+            "resistance over total resistance times the supply"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "8.0 V",
+          "synonyms": [
+            "eight volts"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "8.0 V",
+        "distractors": [
+          "4.0 V",
+          "6.0 V",
+          "12 V"
+        ]
+      },
+      "explanation": "The current is $\\frac{12}{12} = 1.0\\,\\mathrm{A}$, so the pd across the 8.0 ohm resistor is $1.0 \\times 8.0 = 8.0\\,\\mathrm{V}$. Equivalently, the divider formula gives $12 \\times \\frac{8}{12} = 8.0\\,\\mathrm{V}$. The larger resistance takes the larger share of the voltage, which is the opposite of how current divides in parallel - the distinction worth having clear.",
+      "numeric": {
+        "value": 8.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A cell of e.m.f. 9.0 V and internal resistance 0.50 ohm supplies a 4.0 ohm load. Find the current, the terminal pd and the lost volts.",
+      "back": "$2.0\\,\\mathrm{A}$, $8.0\\,\\mathrm{V}$ and $1.0\\,\\mathrm{V}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "total resistance is 4.5 ohm",
+          "synonyms": [
+            "load plus internal resistance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "current is 9.0 / 4.5 = 2.0 A",
+          "synonyms": [
+            "I = E / (R + r)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "terminal pd is 8.0 V",
+          "synonyms": [
+            "E - Ir"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "lost volts is 1.0 V",
+          "synonyms": [
+            "Ir = 2.0 x 0.50"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2.0\\,\\mathrm{A}$, $8.0\\,\\mathrm{V}$, $1.0\\,\\mathrm{V}$",
+        "distractors": [
+          "$2.25\\,\\mathrm{A}$, $9.0\\,\\mathrm{V}$, $0\\,\\mathrm{V}$",
+          "$2.0\\,\\mathrm{A}$, $9.0\\,\\mathrm{V}$, $1.0\\,\\mathrm{V}$",
+          "$1.8\\,\\mathrm{A}$, $8.0\\,\\mathrm{V}$, $1.0\\,\\mathrm{V}$"
+        ]
+      },
+      "explanation": "The internal resistance is in series with the load, so $I = \\frac{9.0}{4.0 + 0.50} = 2.0\\,\\mathrm{A}$. The lost volts is $Ir = 1.0\\,\\mathrm{V}$, leaving a terminal pd of $9.0 - 1.0 = 8.0\\,\\mathrm{V}$. The answer $2.25\\,\\mathrm{A}$ ignores the internal resistance, which is the whole point of the question: the terminal pd equals the e.m.f. only when no current flows.",
+      "numeric": {
+        "value": 2.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Find the combined resistance of 2.0, 3.0 and 6.0 ohm resistors in parallel.",
+      "back": "$1.0\\,\\Omega$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "add the reciprocals",
+          "synonyms": [
+            "1/R = 1/2 + 1/3 + 1/6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the reciprocals sum to 1",
+          "synonyms": [
+            "3/6 + 2/6 + 1/6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1.0 ohm",
+          "synonyms": [
+            "the combined resistance is 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$1.0\\,\\Omega$",
+        "distractors": [
+          "$11\\,\\Omega$",
+          "$0.091\\,\\Omega$",
+          "$3.7\\,\\Omega$"
+        ]
+      },
+      "explanation": "$\\frac{1}{R} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{6} = \\frac{3 + 2 + 1}{6} = 1$, so $R = 1.0\\,\\Omega$. The combined resistance of a parallel group is always less than the smallest resistor in it, which is an immediate check on any answer. The distractor $11\\,\\Omega$ is the series answer, and $0.091\\,\\Omega$ is the reciprocal left un-inverted.",
+      "numeric": {
+        "value": 1.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "State Kirchhoff's first and second laws and identify the quantity each conserves.",
+      "back": "First law: the current entering a junction equals the current leaving, conserving charge. Second law: the sum of e.m.f.s equals the sum of potential differences round a closed loop, conserving energy.",
+      "keyPoints": [
+        {
+          "text": "first law: current in equals current out at a junction",
+          "synonyms": [
+            "conservation of charge"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "second law: e.m.f.s equal pds round a loop",
+          "synonyms": [
+            "conservation of energy"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "First conserves charge at a junction; second conserves energy round a loop",
+        "distractors": [
+          "First conserves energy; second conserves charge",
+          "Both conserve charge",
+          "Both conserve energy"
+        ]
+      },
+      "explanation": "Charge cannot accumulate at a junction, which is the first law; and a charge returning to its starting point must have the same energy it began with, which is the second. Pairing each law with its conservation principle is a mark in its own right, and it is also what makes the laws memorable rather than arbitrary.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Two resistors are in series. State what is the same through both and what is shared between them.",
+      "back": "The current is the same through both; the potential difference is shared between them in proportion to their resistances.",
+      "keyPoints": [
+        {
+          "text": "the current is the same",
+          "synonyms": [
+            "same current through each",
+            "no branching"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the pd is shared",
+          "synonyms": [
+            "splits between them",
+            "in proportion to resistance"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Same current, shared potential difference",
+        "distractors": [
+          "Same potential difference, shared current",
+          "Same current and same potential difference",
+          "Same power, shared charge"
+        ]
+      },
+      "explanation": "This is the mirror image of the parallel case, where the pd is the same and the current divides. Mixing the two up is the most common error in circuit questions, and the way to keep them apart is to think physically: a series circuit is a single path so the same charge per second must pass every point, while a parallel circuit has the same two endpoints so the energy change between them is fixed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "What happens to the total resistance and the total current when an extra resistor is added in parallel to a circuit with a fixed supply?",
+      "back": "The total resistance falls and the total current rises. Adding a parallel branch gives the charge another route, so the combination conducts better than either branch alone.",
+      "keyPoints": [
+        {
+          "text": "total resistance falls",
+          "synonyms": [
+            "the combined resistance decreases"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "total current rises",
+          "synonyms": [
+            "more current is drawn"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an extra path is added",
+          "synonyms": [
+            "another route for the charge",
+            "conductance adds"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Resistance falls, current rises",
+        "distractors": [
+          "Resistance rises, current falls",
+          "Resistance falls, current falls",
+          "Resistance rises, current rises"
+        ]
+      },
+      "explanation": "This surprises people because adding a component feels like adding an obstacle. It is clearer in terms of conductance, which is the reciprocal of resistance and does add directly in parallel. The practical consequence is a real hazard: plugging more appliances into one socket lowers the total resistance and raises the current, which is what overloads a ring main.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A 6.0 V battery drives 0.50 A through a circuit. Calculate the total power supplied and the energy transferred in 2.0 minutes.",
+      "back": "3.0 W and 360 J",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "P = VI = 6.0 x 0.50 = 3.0 W",
+          "synonyms": [
+            "power is 3 watts"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "E = Pt = 3.0 x 120 = 360 J",
+          "synonyms": [
+            "convert minutes to seconds"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "360 J",
+          "synonyms": [
+            "three hundred and sixty joules"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "3.0 W, 360 J",
+        "distractors": [
+          "3.0 W, 6.0 J",
+          "12 W, 1440 J",
+          "0.083 W, 10 J"
+        ]
+      },
+      "explanation": "$P = VI = 3.0\\,\\mathrm{W}$ and $E = Pt = 3.0 \\times 120 = 360\\,\\mathrm{J}$. The total power supplied by the battery is dissipated across the whole circuit, including any internal resistance, so it equals the sum of the powers in each component - a useful check when a question gives several resistors.",
+      "numeric": {
+        "value": 3.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.3.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
     }
   ]
 }

@@ -236,6 +236,360 @@
         "physics",
         "m3"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A 0.15 kg ball strikes a wall at $20\\,\\mathrm{m\\,s^{-1}}$ and rebounds at $15\\,\\mathrm{m\\,s^{-1}}$. The contact lasts 0.020 s. Find the change in momentum and the average force.",
+      "back": "$5.25\\,\\mathrm{N\\,s}$ and $260\\,\\mathrm{N}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "momentum is a vector so the velocities have opposite signs",
+          "synonyms": [
+            "the rebound subtracts a negative"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "change in momentum is 0.15 x 35 = 5.25 N s",
+          "synonyms": [
+            "5.25"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "F = change in momentum / time = 260 N",
+          "synonyms": [
+            "about 262.5 N",
+            "260 newtons"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$5.25\\,\\mathrm{N\\,s}$, $260\\,\\mathrm{N}$",
+        "distractors": [
+          "$0.75\\,\\mathrm{N\\,s}$, $38\\,\\mathrm{N}$",
+          "$5.25\\,\\mathrm{N\\,s}$, $105\\,\\mathrm{N}$",
+          "$3.0\\,\\mathrm{N\\,s}$, $150\\,\\mathrm{N}$"
+        ]
+      },
+      "explanation": "Taking the incoming direction as positive, $\\Delta p = 0.15(15 - (-20)) = 0.15 \\times 35 = 5.25\\,\\mathrm{N\\,s}$, and $F = \\frac{5.25}{0.020} = 262.5\\,\\mathrm{N}$, or $260\\,\\mathrm{N}$ to two significant figures. The answer $0.75\\,\\mathrm{N\\,s}$ subtracts the speeds instead of adding them, which is what happens when the rebound is not treated as a negative velocity. A rebound always produces a larger impulse than a stop.",
+      "numeric": {
+        "value": 5.25,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A 2.0 kg trolley at $3.0\\,\\mathrm{m\\,s^{-1}}$ collides with a stationary 1.0 kg trolley and they stick together. Find the common speed and the kinetic energy lost.",
+      "back": "$2.0\\,\\mathrm{m\\,s^{-1}}$ and $3.0\\,\\mathrm{J}$ lost",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "momentum is conserved",
+          "synonyms": [
+            "6.0 = 3v"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the common speed is 2.0 m/s",
+          "synonyms": [
+            "2 m/s"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "kinetic energy before is 9.0 J and after is 6.0 J",
+          "synonyms": [
+            "compare the two"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3.0 J is lost",
+          "synonyms": [
+            "energy is not conserved in the collision"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2.0\\,\\mathrm{m\\,s^{-1}}$, $3.0\\,\\mathrm{J}$ lost",
+        "distractors": [
+          "$2.0\\,\\mathrm{m\\,s^{-1}}$, none lost",
+          "$1.5\\,\\mathrm{m\\,s^{-1}}$, $3.0\\,\\mathrm{J}$ lost",
+          "$2.0\\,\\mathrm{m\\,s^{-1}}$, $6.0\\,\\mathrm{J}$ lost"
+        ]
+      },
+      "explanation": "Momentum before is $2.0 \\times 3.0 = 6.0\\,\\mathrm{kg\\,m\\,s^{-1}}$, and after it is $3.0v$, so $v = 2.0\\,\\mathrm{m\\,s^{-1}}$. Kinetic energy before is $\\frac{1}{2}(2.0)(9) = 9.0\\,\\mathrm{J}$ and after is $\\frac{1}{2}(3.0)(4) = 6.0\\,\\mathrm{J}$, so $3.0\\,\\mathrm{J}$ is lost as heat and sound. Momentum is always conserved in a collision; kinetic energy is not, and an inelastic collision is defined by that loss.",
+      "numeric": {
+        "value": 2.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Why can a Newton's third law pair never cancel out on a free-body diagram?",
+      "back": "Because the two forces act on different bodies. Only forces acting on the same body can combine, and a free-body diagram shows the forces on one body only.",
+      "keyPoints": [
+        {
+          "text": "the two forces act on different bodies",
+          "synonyms": [
+            "each force is on a different object"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a free-body diagram shows one body only",
+          "synonyms": [
+            "only one of the pair appears"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "forces can only cancel if they act on the same object",
+          "synonyms": [
+            "they cannot be added"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "They act on different bodies, so they never appear on the same diagram",
+        "distractors": [
+          "They are always unequal in size",
+          "They act in the same direction",
+          "They cancel only when the bodies are at rest"
+        ]
+      },
+      "explanation": "A book on a table: the book pushes down on the table and the table pushes up on the book - equal and opposite, but on different objects. The force that balances the book's weight is the table's upward push on the book, which is a different pair entirely. Confusing these two pairs is the single most common error in free-body diagrams.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "A 5.0 kg block rests on a slope inclined at $30^\\circ$. Resolve its weight and find the component down the slope.",
+      "back": "Down the slope: $mg\\sin 30^\\circ = 25\\,\\mathrm{N}$. Perpendicular to it: $mg\\cos 30^\\circ = 42\\,\\mathrm{N}$.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "resolve the weight into two components",
+          "synonyms": [
+            "parallel and perpendicular to the slope"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "down the slope is mg sin 30 = 25 N",
+          "synonyms": [
+            "sine gives the parallel component"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "perpendicular is mg cos 30 = 42 N",
+          "synonyms": [
+            "cosine gives the perpendicular component"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$25\\,\\mathrm{N}$ down the slope, $42\\,\\mathrm{N}$ perpendicular",
+        "distractors": [
+          "$42\\,\\mathrm{N}$ down the slope, $25\\,\\mathrm{N}$ perpendicular",
+          "$49\\,\\mathrm{N}$ down the slope, $0\\,\\mathrm{N}$ perpendicular",
+          "$25\\,\\mathrm{N}$ down the slope, $25\\,\\mathrm{N}$ perpendicular"
+        ]
+      },
+      "explanation": "$mg = 49\\,\\mathrm{N}$. The component parallel to the slope is $mg\\sin\\theta = 49 \\times 0.5 = 25\\,\\mathrm{N}$ and perpendicular is $mg\\cos\\theta = 42\\,\\mathrm{N}$. Sine goes with the slope, which is easy to reverse: at $\\theta = 0$ a flat surface must give zero parallel component, and $\\sin 0 = 0$ does exactly that, which is the check to run. The perpendicular component is what the normal contact force balances.",
+      "numeric": {
+        "value": 25,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Two objects have momenta of $3.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ east and $4.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ north. Find the total momentum.",
+      "back": "$5.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ at $53^\\circ$ north of east.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "momentum is a vector",
+          "synonyms": [
+            "it must be added as a vector"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the total is 5.0 kg m s^-1",
+          "synonyms": [
+            "Pythagoras on 3 and 4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "at 53 degrees north of east",
+          "synonyms": [
+            "tan theta = 4/3",
+            "give a direction as well"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$5.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ at $53^\\circ$ north of east",
+        "distractors": [
+          "$7.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ north-east",
+          "$1.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ north of east",
+          "$5.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ east"
+        ]
+      },
+      "explanation": "Momentum has direction, so perpendicular momenta add as vectors: $\\sqrt{3^2 + 4^2} = 5.0\\,\\mathrm{kg\\,m\\,s^{-1}}$ at $\\tan^{-1}\\frac{4}{3} = 53^\\circ$. Stating a direction is not optional - a magnitude alone is an incomplete answer for a vector quantity. This is exactly why two-dimensional collision problems need the conservation law applied separately in each direction.",
+      "numeric": {
+        "value": 5.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "A 2.0 kg gun fires a 0.020 kg bullet at $400\\,\\mathrm{m\\,s^{-1}}$. Find the recoil speed of the gun.",
+      "back": "$4.0\\,\\mathrm{m\\,s^{-1}}$ backwards",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "total momentum before is zero",
+          "synonyms": [
+            "both were at rest"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the momenta afterwards must cancel",
+          "synonyms": [
+            "conservation of momentum"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "recoil speed is 4.0 m/s",
+          "synonyms": [
+            "0.020 x 400 / 2.0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$4.0\\,\\mathrm{m\\,s^{-1}}$ in the opposite direction",
+        "distractors": [
+          "$400\\,\\mathrm{m\\,s^{-1}}$ in the opposite direction",
+          "$0.040\\,\\mathrm{m\\,s^{-1}}$",
+          "$4.0\\,\\mathrm{m\\,s^{-1}}$ in the same direction as the bullet"
+        ]
+      },
+      "explanation": "Initial momentum is zero, so $0 = 0.020 \\times 400 + 2.0 v$ and $v = -4.0\\,\\mathrm{m\\,s^{-1}}$. The negative sign is the answer's most important part: the gun moves backwards. The mass ratio of 100 to 1 gives a speed ratio of 1 to 100, which is the general pattern in any recoil or explosion problem.",
+      "numeric": {
+        "value": 4.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A hose delivers water at $5.0\\,\\mathrm{kg\\,s^{-1}}$ moving at $20\\,\\mathrm{m\\,s^{-1}}$, which is brought to rest on hitting a wall. Find the force on the wall.",
+      "back": "100 N",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "F = rate of change of momentum",
+          "synonyms": [
+            "F = dp/dt"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "5.0 kg s^-1 x 20 m s^-1 = 100 N",
+          "synonyms": [
+            "mass flow rate times velocity change"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "100 N",
+          "synonyms": [
+            "one hundred newtons"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "100 N",
+        "distractors": [
+          "4.0 N",
+          "25 N",
+          "1000 N"
+        ]
+      },
+      "explanation": "Each second, $5.0\\,\\mathrm{kg}$ of water loses $20\\,\\mathrm{m\\,s^{-1}}$ of velocity, so $\\frac{\\Delta p}{\\Delta t} = 5.0 \\times 20 = 100\\,\\mathrm{N}$. This is $F = \\frac{dp}{dt}$ applied to a continuous stream, which is the form of the second law that handles changing mass. If the water rebounded instead of stopping, the velocity change would be larger and so would the force - the same reasoning as the ball in the earlier card.",
+      "numeric": {
+        "value": 100,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.3",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
     }
   ]
 }

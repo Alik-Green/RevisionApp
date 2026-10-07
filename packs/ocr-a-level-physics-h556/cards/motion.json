@@ -231,6 +231,350 @@
         "physics",
         "m3"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A car accelerates uniformly from rest at $2.5\\,\\mathrm{m\\,s^{-2}}$ for 8.0 s. Calculate its final speed and the distance it covers.",
+      "back": "$20\\,\\mathrm{m\\,s^{-1}}$ and $80\\,\\mathrm{m}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "v = u + at = 20 m/s",
+          "synonyms": [
+            "final speed is 20"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "s = ut + 1/2 at^2 = 80 m",
+          "synonyms": [
+            "distance is 80"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u = 0 because it starts from rest",
+          "synonyms": [
+            "the initial speed is zero"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$20\\,\\mathrm{m\\,s^{-1}}$, $80\\,\\mathrm{m}$",
+        "distractors": [
+          "$20\\,\\mathrm{m\\,s^{-1}}$, $160\\,\\mathrm{m}$",
+          "$10\\,\\mathrm{m\\,s^{-1}}$, $80\\,\\mathrm{m}$",
+          "$20\\,\\mathrm{m\\,s^{-1}}$, $40\\,\\mathrm{m}$"
+        ]
+      },
+      "explanation": "$v = 0 + 2.5 \\times 8.0 = 20\\,\\mathrm{m\\,s^{-1}}$ and $s = 0 + \\frac{1}{2} \\times 2.5 \\times 64 = 80\\,\\mathrm{m}$. The distance can be checked from the average speed: $\\frac{0 + 20}{2} \\times 8 = 80\\,\\mathrm{m}$, which is quicker and catches a slipped factor of a half. The answer $160\\,\\mathrm{m}$ is $vt$ without the half.",
+      "numeric": {
+        "value": 20,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "A ball is thrown horizontally at $15\\,\\mathrm{m\\,s^{-1}}$ from a height of 20 m. Find the time of flight and the horizontal range.",
+      "back": "$t = 2.0\\,\\mathrm{s}$ and range $= 30\\,\\mathrm{m}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "the vertical motion decides the time",
+          "synonyms": [
+            "vertical and horizontal are independent"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "t = sqrt(2h/g) = 2.0 s",
+          "synonyms": [
+            "from s = 1/2 gt^2 with u = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "range = 15 x 2.0 = 30 m",
+          "synonyms": [
+            "horizontal speed is constant"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2.0\\,\\mathrm{s}$, $30\\,\\mathrm{m}$",
+        "distractors": [
+          "$2.0\\,\\mathrm{s}$, $15\\,\\mathrm{m}$",
+          "$4.1\\,\\mathrm{s}$, $61\\,\\mathrm{m}$",
+          "$2.0\\,\\mathrm{s}$, $60\\,\\mathrm{m}$"
+        ]
+      },
+      "explanation": "Horizontally there is no acceleration, so the time comes entirely from the fall: $20 = \\frac{1}{2}(9.81)t^2$ gives $t = 2.02\\,\\mathrm{s}$. The range is then $15 \\times 2.02 = 30\\,\\mathrm{m}$. The key idea is independence: throwing the ball harder does not keep it in the air longer, and a ball dropped from the same height lands at the same moment. The answer $4.1\\,\\mathrm{s}$ treats the 20 m as a horizontal distance.",
+      "numeric": {
+        "value": 2.0,
+        "tolerance": 0.05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "On a velocity-time graph, what does an area below the time axis represent?",
+      "back": "Displacement in the negative direction. The total displacement is the signed sum of the areas, while the distance travelled is the sum of their magnitudes.",
+      "keyPoints": [
+        {
+          "text": "negative displacement",
+          "synonyms": [
+            "displacement in the opposite direction",
+            "moving backwards"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "total displacement is the signed sum",
+          "synonyms": [
+            "areas cancel"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "distance travelled is the sum of the magnitudes",
+          "synonyms": [
+            "distance ignores the sign"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Negative displacement; distance uses the magnitudes",
+        "distractors": [
+          "Nothing; area below the axis has no meaning",
+          "Negative acceleration",
+          "Negative speed"
+        ]
+      },
+      "explanation": "A graph that dips below the axis shows the object moving backwards, so that area subtracts from the displacement but still adds to the distance travelled. An object that walks 10 m out and 10 m back has zero displacement and 20 m of distance, and a velocity-time graph shows this directly. Speed is never negative, which is why 'negative speed' is not an option that can be right.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Explain why a falling object reaches a terminal velocity.",
+      "back": "As speed increases, drag increases until it balances the weight. The resultant force and so the acceleration become zero, and the object continues at constant speed.",
+      "keyPoints": [
+        {
+          "text": "drag increases with speed",
+          "synonyms": [
+            "air resistance grows"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "drag eventually equals the weight",
+          "synonyms": [
+            "the forces balance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "resultant force and acceleration become zero",
+          "synonyms": [
+            "no further acceleration"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the object continues at constant speed",
+          "synonyms": [
+            "terminal velocity"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Drag grows until it balances the weight, so acceleration falls to zero",
+        "distractors": [
+          "The object runs out of gravitational potential energy",
+          "Gravity weakens as the object falls",
+          "The object's mass decreases with speed"
+        ]
+      },
+      "explanation": "The acceleration is not zero from the start - it decreases continuously as the drag grows, approaching zero asymptotically. A heavier object of the same shape has a larger weight to balance, so it reaches a higher terminal velocity, which is why a parachute works: it increases the drag at any given speed and so lowers the balance point.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What does the gradient of a velocity-time graph represent, and what does a curved line tell you?",
+      "back": "The acceleration. A curved line means the acceleration is changing, and the gradient of a tangent at a point gives the acceleration at that instant.",
+      "keyPoints": [
+        {
+          "text": "the gradient is the acceleration",
+          "synonyms": [
+            "rate of change of velocity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a curve means changing acceleration",
+          "synonyms": [
+            "non-uniform acceleration"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a tangent gives the instantaneous acceleration",
+          "synonyms": [
+            "draw a tangent at the point"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Acceleration; a curve means it is changing, found from a tangent",
+        "distractors": [
+          "Speed; a curve means the object is turning",
+          "Displacement; a curve means the direction is changing",
+          "Jerk; a curve means the mass is changing"
+        ]
+      },
+      "explanation": "The same reasoning that makes a straight-line gradient a constant makes a curve's gradient a variable, and a tangent is the way to read a variable gradient off a graph. The parallel fact for a displacement-time graph is worth holding alongside: its gradient is velocity, and its curvature shows acceleration.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "A car travelling at $30\\,\\mathrm{m\\,s^{-1}}$ brakes with a constant deceleration of $6.0\\,\\mathrm{m\\,s^{-2}}$. Find the braking distance.",
+      "back": "75 m",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "use v^2 = u^2 + 2as",
+          "synonyms": [
+            "the equation without time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "0 = 900 - 12s",
+          "synonyms": [
+            "the final speed is zero and a is negative"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "75 m",
+          "synonyms": [
+            "seventy-five metres"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "75 m",
+        "distractors": [
+          "150 m",
+          "5.0 m",
+          "900 m"
+        ]
+      },
+      "explanation": "With $v = 0$, $u = 30$ and $a = -6.0$: $0 = 900 - 12s$, so $s = 75\\,\\mathrm{m}$. Choosing the equation without $t$ avoids finding the time first, which is the faster route whenever time is not asked for. Braking distance goes up as the square of the speed - at $60\\,\\mathrm{m\\,s^{-1}}$ it would be 300 m, four times as far, which is the physics behind speed limits.",
+      "numeric": {
+        "value": 75,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "A boat crosses a river at $3.0\\,\\mathrm{m\\,s^{-1}}$ relative to the water, heading straight across, while the current runs at $4.0\\,\\mathrm{m\\,s^{-1}}$. Find the resultant speed and its direction.",
+      "back": "$5.0\\,\\mathrm{m\\,s^{-1}}$ at $53^\\circ$ to the direction straight across, downstream.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "velocities are vectors and add as vectors",
+          "synonyms": [
+            "use Pythagoras"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "resultant is 5.0 m/s",
+          "synonyms": [
+            "3-4-5 triangle"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the angle to the straight-across direction is 53 degrees",
+          "synonyms": [
+            "tan theta = 4/3",
+            "downstream"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$5.0\\,\\mathrm{m\\,s^{-1}}$ at $53^\\circ$ downstream of straight across",
+        "distractors": [
+          "$7.0\\,\\mathrm{m\\,s^{-1}}$ downstream",
+          "$1.0\\,\\mathrm{m\\,s^{-1}}$ downstream",
+          "$5.0\\,\\mathrm{m\\,s^{-1}}$ at $37^\\circ$ to the current"
+        ]
+      },
+      "explanation": "The two velocities are perpendicular, so the resultant is $\\sqrt{3^2 + 4^2} = 5.0\\,\\mathrm{m\\,s^{-1}}$, at $\\tan^{-1}\\frac{4}{3} = 53^\\circ$ to the across direction. Adding them to get 7 would only be right if they were parallel. Velocity addition is the clearest demonstration that velocity is a vector: the boat's actual path is neither the direction it points nor the direction of the current.",
+      "numeric": {
+        "value": 5.0,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "3.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m3"
+      ]
     }
   ]
 }

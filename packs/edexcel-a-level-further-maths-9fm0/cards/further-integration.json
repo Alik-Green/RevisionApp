@@ -170,6 +170,312 @@
         "further-maths",
         "further-pure-2"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Evaluate $\\int e^x \\sin x\\,dx$.",
+      "back": "$\\frac{1}{2}e^x(\\sin x - \\cos x) + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "integrate by parts twice",
+          "synonyms": [
+            "the same integral reappears"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "solve the resulting equation for the integral",
+          "synonyms": [
+            "2I = e^x (sin x - cos x)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(1/2) e^x (sin x - cos x) + c",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}e^x(\\sin x - \\cos x) + c$",
+        "distractors": [
+          "$e^x(\\sin x + \\cos x) + c$",
+          "$\\frac{1}{2}e^x(\\sin x + \\cos x) + c$",
+          "$e^x \\cos x + c$"
+        ]
+      },
+      "explanation": "Two rounds of integration by parts bring the original integral back with a minus sign: $I = -e^x\\cos x + e^x\\sin x - I$, so $2I = e^x(\\sin x - \\cos x)$. The same method works for $e^x\\cos x$. The trap is choosing a different $u$ in the second round, which undoes the first and produces $0 = 0$ instead of an equation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Evaluate $\\int \\ln x\\,dx$.",
+      "back": "$x\\ln x - x + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "take u = ln x and dv/dx = 1",
+          "synonyms": [
+            "integration by parts with a hidden 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x ln x - integral of 1 dx",
+          "synonyms": [
+            "the remaining integral is just x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x ln x - x + c",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x\\ln x - x + c$",
+        "distractors": [
+          "$\\frac{1}{x} + c$",
+          "$x\\ln x + x + c$",
+          "$\\frac{(\\ln x)^2}{2} + c$"
+        ]
+      },
+      "explanation": "Integrating by parts with $u = \\ln x$ and $\\frac{dv}{dx} = 1$ gives $x\\ln x - \\int x \\times \\frac{1}{x}\\,dx = x\\ln x - x + c$. The trick is seeing the invisible factor of 1. Check by differentiation: $\\ln x + 1 - 1 = \\ln x$. The last distractor is what you get by pretending $\\ln x$ is a power of $\\ln x$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Evaluate $\\int x^2 e^x\\,dx$.",
+      "back": "$e^x(x^2 - 2x + 2) + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "integrate by parts twice, differentiating the power each time",
+          "synonyms": [
+            "tabular integration"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "e^x(x^2 - 2x + 2) + c",
+          "synonyms": [
+            "the signs alternate plus, minus, plus"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$e^x(x^2 - 2x + 2) + c$",
+        "distractors": [
+          "$e^x(x^2 + 2x + 2) + c$",
+          "$\\frac{x^3 e^x}{3} + c$",
+          "$e^x(x^2 - 2x - 2) + c$"
+        ]
+      },
+      "explanation": "Each round differentiates the power and integrates $e^x$, giving $x^2e^x - 2xe^x + 2e^x + c$. The signs alternate because each integration by parts introduces a minus. The third option is the 'integrate both parts' error, which would be correct only if the product rule worked backwards.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Use the double angle formulae to evaluate $\\int \\sin^4 x\\,dx$.",
+      "back": "$\\frac{3x}{8} - \\frac{\\sin 2x}{4} + \\frac{\\sin 4x}{32} + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "write sin^2 x = (1 - cos 2x)/2 and square",
+          "synonyms": [
+            "reduce the power with the double angle identity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "expand to 3/8 - (cos 2x)/2 + (cos 4x)/8",
+          "synonyms": [
+            "use cos^2 2x = (1 + cos 4x)/2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3x/8 - sin 2x / 4 + sin 4x / 32 + c",
+          "synonyms": [
+            "integrate term by term"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{3x}{8} - \\frac{\\sin 2x}{4} + \\frac{\\sin 4x}{32} + c$",
+        "distractors": [
+          "$\\frac{\\sin^5 x}{5} + c$",
+          "$\\frac{3x}{8} + \\frac{\\sin 2x}{4} + \\frac{\\sin 4x}{32} + c$",
+          "$\\frac{x}{4} - \\frac{\\sin 2x}{4} + c$"
+        ]
+      },
+      "explanation": "$\\sin^4 x = \\left(\\frac{1 - \\cos 2x}{2}\\right)^2 = \\frac{1}{4} - \\frac{\\cos 2x}{2} + \\frac{\\cos^2 2x}{4}$, and $\\frac{\\cos^2 2x}{4} = \\frac{1 + \\cos 4x}{8}$, so the integrand is $\\frac{3}{8} - \\frac{\\cos 2x}{2} + \\frac{\\cos 4x}{8}$. Integrating gives the stated result. The first distractor is the reverse chain rule applied where there is no $\\cos x$ factor to supply it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Evaluate $\\int \\frac{1}{4 + x^2}\\,dx$.",
+      "back": "$\\frac{1}{2}\\arctan\\frac{x}{2} + c$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "use the standard result for 1/(a^2 + x^2) with a = 2",
+          "synonyms": [
+            "inverse tangent form"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1/a outside and x/a inside",
+          "synonyms": [
+            "the scale factor appears twice"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(1/2) arctan(x/2) + c",
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}\\arctan\\frac{x}{2} + c$",
+        "distractors": [
+          "$\\arctan\\frac{x}{2} + c$",
+          "$\\frac{1}{2}\\arctan 2x + c$",
+          "$\\ln|4 + x^2| + c$"
+        ]
+      },
+      "explanation": "The standard result is $\\int \\frac{1}{a^2 + x^2}\\,dx = \\frac{1}{a}\\arctan\\frac{x}{a} + c$, so with $a = 2$ the answer is $\\frac{1}{2}\\arctan\\frac{x}{2} + c$. Both appearances of $a$ matter: dropping the $\\frac{1}{2}$ in front is the most common omission, and it is caught instantly by differentiating.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Use integration by parts to find a reduction formula for $I_n = \\int x^n e^x\\,dx$, and hence evaluate $I_3$.",
+      "back": "$I_n = x^n e^x - nI_{n-1}$, and $I_3 = e^x(x^3 - 3x^2 + 6x - 6) + c$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "I_n = x^n e^x - n I_(n-1)",
+          "synonyms": [
+            "differentiate x^n and integrate e^x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "I_0 = e^x + c",
+          "synonyms": [
+            "the base of the reduction"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "e^x(x^3 - 3x^2 + 6x - 6) + c",
+          "synonyms": [
+            "apply the formula three times"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$I_n = x^ne^x - nI_{n-1}$; $I_3 = e^x(x^3 - 3x^2 + 6x - 6) + c$",
+        "distractors": [
+          "$I_n = x^ne^x + nI_{n-1}$; $I_3 = e^x(x^3 + 3x^2 + 6x + 6) + c$",
+          "$I_n = nx^{n-1}e^x - I_{n-1}$; $I_3 = e^x(x^3 - 3x^2 + 6x - 6) + c$",
+          "$I_n = x^ne^x - I_{n-1}$; $I_3 = e^x(x^3 - x^2 + x - 1) + c$"
+        ]
+      },
+      "explanation": "With $u = x^n$ and $\\frac{dv}{dx} = e^x$, $I_n = x^ne^x - n\\int x^{n-1}e^x\\,dx = x^ne^x - nI_{n-1}$. Since $I_0 = e^x$, $I_1 = e^x(x - 1)$, $I_2 = e^x(x^2 - 2x + 2)$ and $I_3 = e^x(x^3 - 3x^2 + 6x - 6)$. The coefficients 1, 3, 6 are the factorials building up, which is a useful check on the arithmetic.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Find the area of the region enclosed by one petal of the polar curve $r = 2\\sin 2\\theta$.",
+      "back": "$\\frac{\\pi}{2}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "A = (1/2) integral of r^2 d theta",
+          "synonyms": [
+            "the polar area formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "one petal runs from 0 to pi/2",
+          "synonyms": [
+            "the limits for a single loop"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "pi/2",
+          "synonyms": [
+            "half pi"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{\\pi}{2}$",
+        "distractors": [
+          "$\\pi$",
+          "$2\\pi$",
+          "$\\frac{\\pi}{4}$"
+        ]
+      },
+      "explanation": "$A = \\frac{1}{2}\\int_0^{\\pi/2} 4\\sin^2 2\\theta\\,d\\theta = 2\\int_0^{\\pi/2}\\frac{1 - \\cos 4\\theta}{2}\\,d\\theta = \\left[\\theta - \\frac{\\sin 4\\theta}{4}\\right]_0^{\\pi/2} = \\frac{\\pi}{2}$. The curve has four petals and each subtends $\\frac{\\pi}{2}$ at the pole, so taking limits $0$ to $2\\pi$ would give $2\\pi$, the area of all four.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 2: Further integration",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-2"
+      ]
     }
   ]
 }

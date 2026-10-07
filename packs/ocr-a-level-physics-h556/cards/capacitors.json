@@ -174,6 +174,337 @@
         "physics",
         "m6"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "A 220 microfarad capacitor is charged to 12 V. Calculate the charge stored and the energy stored.",
+      "back": "$2.6 \\times 10^{-3}\\,\\mathrm{C}$ and $1.6 \\times 10^{-2}\\,\\mathrm{J}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "Q = CV = 2.64 x 10^-3 C",
+          "synonyms": [
+            "charge is capacitance times voltage"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "E = 1/2 CV^2",
+          "synonyms": [
+            "energy is half C V squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "0.0158 J",
+          "synonyms": [
+            "about 1.6 x 10^-2 J"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2.6\\,\\mathrm{mC}$, $0.016\\,\\mathrm{J}$",
+        "distractors": [
+          "$2.6\\,\\mathrm{mC}$, $0.032\\,\\mathrm{J}$",
+          "$2.6\\,\\mathrm{C}$, $0.016\\,\\mathrm{J}$",
+          "$1.8 \\times 10^{-5}\\,\\mathrm{C}$, $0.016\\,\\mathrm{J}$"
+        ]
+      },
+      "explanation": "$Q = CV = 220 \\times 10^{-6} \\times 12 = 2.64 \\times 10^{-3}\\,\\mathrm{C}$ and $E = \\frac{1}{2}CV^2 = \\frac{1}{2} \\times 220 \\times 10^{-6} \\times 144 = 0.0158\\,\\mathrm{J}$. The factor of a half in the energy comes from the average voltage during charging being half the final value, and forgetting it doubles the answer. Note $E = \\frac{1}{2}QV$ gives the same result.",
+      "numeric": {
+        "value": 0.0158,
+        "tolerance": 0.0005
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Two capacitors are connected in series. State what is the same on each and what is shared.",
+      "back": "The charge is the same on each; the potential difference is shared between them, in inverse proportion to their capacitances.",
+      "keyPoints": [
+        {
+          "text": "the charge is the same",
+          "synonyms": [
+            "equal charge on each capacitor"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the pd is shared",
+          "synonyms": [
+            "splits between them",
+            "in inverse proportion to capacitance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the smaller capacitor takes the larger pd",
+          "synonyms": [
+            "V = Q/C"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Same charge, shared potential difference",
+        "distractors": [
+          "Same potential difference, shared charge",
+          "Same charge and same potential difference",
+          "Same energy, shared charge"
+        ]
+      },
+      "explanation": "In series the same charge must be displaced through each capacitor, since the inner plates are isolated and can only be charged by induction. Since $V = \\frac{Q}{C}$, the smaller capacitor takes the larger share of the voltage - which is why series capacitors are used to spread a high voltage across several components. This is the opposite of resistors in series, where the larger resistance takes the larger voltage.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "What fraction of its initial charge remains on a discharging capacitor after one time constant, and after three?",
+      "back": "37% after one time constant, and about 5% after three.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "37% remains after one time constant",
+          "synonyms": [
+            "e^-1",
+            "about 0.37 of the initial charge"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "about 5% remains after three time constants",
+          "synonyms": [
+            "e^-3",
+            "roughly 0.05"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "37% after one, 5% after three",
+        "distractors": [
+          "63% after one, 5% after three",
+          "50% after one, 12.5% after three",
+          "37% after one, 37% after three"
+        ]
+      },
+      "explanation": "Discharging follows $Q = Q_0 e^{-t/RC}$, so after one time constant $e^{-1} = 0.368$ remains. After three, $e^{-3} = 0.050$. The 63% figure belongs to the charging curve, where the capacitor reaches 63% of its final charge in one time constant - the two percentages are complementary because $1 - 0.368 = 0.632$.",
+      "numeric": {
+        "value": 37,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "What fraction of its final charge does a charging capacitor reach after one time constant?",
+      "back": "63%",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "63%",
+          "synonyms": [
+            "about 63 percent",
+            "1 - e^-1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "from Q = Q0 (1 - e^(-t/RC))",
+          "synonyms": [
+            "the charging equation"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "63%",
+        "distractors": [
+          "37%",
+          "50%",
+          "86%"
+        ]
+      },
+      "explanation": "Charging follows $Q = Q_0(1 - e^{-t/RC})$, so after one time constant $1 - e^{-1} = 0.632$. After two it reaches 86% and after five 99.3%, which is why five time constants is conventionally taken as fully charged. The exponential approach means the capacitor never quite reaches $Q_0$, only gets arbitrarily close.",
+      "numeric": {
+        "value": 63,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Write the equation for the capacitance of a parallel plate capacitor and explain the effect of inserting a dielectric.",
+      "back": "$C = \\frac{\\varepsilon A}{d}$. A dielectric increases the permittivity, so the capacitance rises; the molecules polarise and partially cancel the field between the plates.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "C = epsilon A / d",
+          "synonyms": [
+            "permittivity times area over separation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a dielectric increases the capacitance",
+          "synonyms": [
+            "the permittivity rises"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the molecules polarise and reduce the field",
+          "synonyms": [
+            "induced dipoles oppose the field"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$C = \\frac{\\varepsilon A}{d}$; a dielectric increases $C$ by polarising",
+        "distractors": [
+          "$C = \\frac{\\varepsilon d}{A}$; a dielectric decreases $C$",
+          "$C = \\varepsilon A d$; a dielectric has no effect",
+          "$C = \\frac{A}{\\varepsilon d}$; a dielectric increases $C$ by conducting"
+        ]
+      },
+      "explanation": "Capacitance grows with plate area and falls with separation, since a smaller gap means a stronger field for the same charge. A dielectric's molecules align with the field and set up an opposing one, so more charge is needed for the same voltage - which is what a larger capacitance means. The ratio is the relative permittivity, typically 2 to 10 for plastics and much higher for ceramics.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Find the time constant of a 47 microfarad capacitor discharging through a 100 kilohm resistor.",
+      "back": "4.7 s",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "tau = RC",
+          "synonyms": [
+            "time constant is resistance times capacitance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "4.7 s",
+          "synonyms": [
+            "about 4.7 seconds"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it is the time for the charge to fall to 37% of its initial value",
+          "synonyms": [
+            "the meaning of the time constant"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "4.7 s",
+        "distractors": [
+          "4700 s",
+          "0.0021 s",
+          "47 s"
+        ]
+      },
+      "explanation": "$\\tau = RC = 100 \\times 10^{3} \\times 47 \\times 10^{-6} = 4.7\\,\\mathrm{s}$. It is the time for the charge, voltage and current each to fall to $e^{-1} = 37\\%$ of its starting value, and all three decay with the same time constant. Larger resistance slows the discharge because the initial current is smaller; larger capacitance slows it because there is more charge to remove.",
+      "numeric": {
+        "value": 4.7,
+        "tolerance": 0.05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Two 4.0 microfarad capacitors are connected in series and the combination is charged to 12 V. Find the total capacitance, the charge and the energy stored.",
+      "back": "$2.0\\,\\mu\\mathrm{F}$, $2.4 \\times 10^{-5}\\,\\mathrm{C}$ and $1.4 \\times 10^{-4}\\,\\mathrm{J}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "series capacitance is 2.0 microfarad",
+          "synonyms": [
+            "reciprocals add, so it halves"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "Q = CV = 2.4 x 10^-5 C",
+          "synonyms": [
+            "charge from the total capacitance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "E = 1/2 CV^2 = 1.44 x 10^-4 J",
+          "synonyms": [
+            "energy stored"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2.0\\,\\mu\\mathrm{F}$, $2.4 \\times 10^{-5}\\,\\mathrm{C}$, $1.4 \\times 10^{-4}\\,\\mathrm{J}$",
+        "distractors": [
+          "$8.0\\,\\mu\\mathrm{F}$, $9.6 \\times 10^{-5}\\,\\mathrm{C}$, $5.8 \\times 10^{-4}\\,\\mathrm{J}$",
+          "$2.0\\,\\mu\\mathrm{F}$, $4.8 \\times 10^{-5}\\,\\mathrm{C}$, $2.9 \\times 10^{-4}\\,\\mathrm{J}$",
+          "$4.0\\,\\mu\\mathrm{F}$, $4.8 \\times 10^{-5}\\,\\mathrm{C}$, $2.9 \\times 10^{-4}\\,\\mathrm{J}$"
+        ]
+      },
+      "explanation": "$\\frac{1}{C} = \\frac{1}{4} + \\frac{1}{4}$ in microfarads, so $C = 2.0\\,\\mu\\mathrm{F}$ - equal capacitors in series halve, exactly as equal resistors in parallel do. Then $Q = 2.0 \\times 10^{-6} \\times 12 = 2.4 \\times 10^{-5}\\,\\mathrm{C}$ and $E = \\frac{1}{2} \\times 2.0 \\times 10^{-6} \\times 144 = 1.44 \\times 10^{-4}\\,\\mathrm{J}$. Each capacitor holds the same charge but only 6 V, which is why series capacitors withstand a higher total voltage.",
+      "numeric": {
+        "value": 0.000144,
+        "tolerance": 1e-05
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "6.1.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m6"
+      ]
     }
   ]
 }

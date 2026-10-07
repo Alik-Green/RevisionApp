@@ -32,11 +32,19 @@ sandbox this content was written in.
 
 ## Structure
 
-Maths > Further Maths > unit > sub-topic. Twelve leaf sub-topics with five cards
-each: roots of polynomials, partial fractions, matrices and determinants,
-complex numbers and De Moivre, eigenvalues and eigenvectors, differential
-equations, summation of series, polar curves, proof by induction, numerical
-methods, hyperbolic functions and further integration.
+Maths > Further Maths > unit > sub-topic. Twelve leaf sub-topics with twelve
+cards each, 144 in total: roots of polynomials, partial fractions, matrices and
+determinants, complex numbers and De Moivre, eigenvalues and eigenvectors,
+differential equations, summation of series, polar curves, proof by induction,
+numerical methods, hyperbolic functions and further integration.
+
+Cards 0001 to 0005 in each file are the original short recall and definition
+cards. Cards 0006 to 0012 were added later and are pitched at the multi-step end
+of the topic: identities proved from first principles, results that need a
+substitution or a factorisation to unlock them, and questions that ask for the
+reasoning behind a method as well as the answer. Every numerical answer in this
+pack was checked against an independent symbolic calculation before it was
+written in.
 
 Definitions and theorems are `TEXT` with key points, worked results are
 `NUMERIC` with a tolerance, and formulae are `EXPRESSION` so they can be compared

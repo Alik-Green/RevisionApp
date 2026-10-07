@@ -4,34 +4,34 @@
     {
       "id": "edexcel-a-level-further-maths-9fm0",
       "name": "Edexcel A Level Further Maths (9FM0)",
-      "version": 1,
+      "version": 2,
       "path": "packs/edexcel-a-level-further-maths-9fm0",
-      "sha256": "1adb78182384374380f6e9efa55bdc1494a6ec4c7071b3bdd5385bedcc0f301c",
-      "cardCount": 60
+      "sha256": "9e8de99ab35d97333a68f6ff509a17987467ff2fba962ac4676351e60a3b9d68",
+      "cardCount": 144
     },
     {
       "id": "ocr-a-level-computer-science-h446",
       "name": "OCR A Level Computer Science (H446)",
-      "version": 1,
+      "version": 2,
       "path": "packs/ocr-a-level-computer-science-h446",
-      "sha256": "e4df0db2a52993b38db7f4fc433a04a564ed572987b89119f18653f33b1f6288",
-      "cardCount": 50
+      "sha256": "c7508429bf1f3ea7bf96ecd11b547e486d61ed05f4c03e3f4a29353e26bde07b",
+      "cardCount": 120
     },
     {
       "id": "ocr-a-level-physics-h556",
       "name": "OCR A Level Physics (H556)",
-      "version": 1,
+      "version": 2,
       "path": "packs/ocr-a-level-physics-h556",
-      "sha256": "5a5a0473fea83b8f8a46f125055b708243f89e23759a5d06dca58cea6acc56bf",
-      "cardCount": 65
+      "sha256": "a79f8d931bce5ac66c2e029df122678b46aada2fb2e0550e353ebd9630eeb510",
+      "cardCount": 156
     },
     {
       "id": "tmua",
       "name": "TMUA",
-      "version": 1,
+      "version": 2,
       "path": "packs/tmua",
-      "sha256": "3dbe702346c2d79d9efc9c05da82db6a95f56a72297fdf4f866a8b4fb5d1e5fb",
-      "cardCount": 26
+      "sha256": "19c7885d56a7a8c3444091e902844e713811cf77f05b8562d376544143c76f5a",
+      "cardCount": 74
     }
   ]
 }

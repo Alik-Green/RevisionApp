@@ -165,6 +165,333 @@
         "further-maths",
         "further-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "State the standard results for $\\sum_{r=1}^n r$, $\\sum_{r=1}^n r^2$ and $\\sum_{r=1}^n r^3$.",
+      "back": "$\\frac{n(n+1)}{2}$, $\\frac{n(n+1)(2n+1)}{6}$ and $\\left[\\frac{n(n+1)}{2}\\right]^2$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "n(n+1)/2",
+          "synonyms": [
+            "sum of r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n(n+1)(2n+1)/6",
+          "synonyms": [
+            "sum of r squared"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "[n(n+1)/2]^2",
+          "synonyms": [
+            "sum of r cubed",
+            "the square of the sum of r"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{n(n+1)}{2}$, $\\frac{n(n+1)(2n+1)}{6}$, $\\left[\\frac{n(n+1)}{2}\\right]^2$",
+        "distractors": [
+          "$\\frac{n(n+1)}{2}$, $\\frac{n(n+1)(2n+1)}{3}$, $\\left[\\frac{n(n+1)}{2}\\right]^2$",
+          "$\\frac{n^2}{2}$, $\\frac{n(n+1)(2n+1)}{6}$, $\\frac{n^2(n+1)^2}{2}$",
+          "$\\frac{n(n+1)}{2}$, $\\frac{n(n+1)(2n+1)}{6}$, $\\frac{n(n+1)(2n+1)(3n+1)}{12}$"
+        ]
+      },
+      "explanation": "These three are the raw material for every summation question, since any polynomial in $r$ can be split into them. The last option is $\\sum r^4$-shaped and is a plausible-looking wrong answer. A quick check at $n = 2$: $\\sum r^3 = 1 + 8 = 9$ and $\\left[\\frac{2 \\times 3}{2}\\right]^2 = 9$, which confirms the third result.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Find $\\sum_{r=1}^n r(r + 1)(r + 2)$ in terms of $n$.",
+      "back": "$\\frac{n(n + 1)(n + 2)(n + 3)}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "expand to r^3 + 3r^2 + 2r",
+          "synonyms": [
+            "multiply out the product"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "use the standard results for r^3, r^2 and r",
+          "synonyms": [
+            "combine the three sums"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n(n+1)(n+2)(n+3)/4",
+          "synonyms": [
+            "factorise the result"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{n(n+1)(n+2)(n+3)}{4}$",
+        "distractors": [
+          "$\\frac{n(n+1)(n+2)}{3}$",
+          "$\\frac{n(n+1)(n+2)(n+3)}{12}$",
+          "$n(n+1)(n+2)(n+3)$"
+        ]
+      },
+      "explanation": "Expanding gives $\\sum r^3 + 3\\sum r^2 + 2\\sum r$, which combines and factorises to $\\frac{n(n+1)(n+2)(n+3)}{4}$. Check at $n = 1$: the sum is $1 \\times 2 \\times 3 = 6$ and the formula gives $\\frac{1 \\times 2 \\times 3 \\times 4}{4} = 6$. A product of $k$ consecutive integers summed always gives that product extended by one term and divided by $k + 1$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Use the method of differences to find $\\sum_{r=1}^n \\frac{1}{r(r + 2)}$.",
+      "back": "$\\frac{1}{2}\\left(\\frac{3}{2} - \\frac{1}{n + 1} - \\frac{1}{n + 2}\\right)$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "1/(r(r + 2)) = (1/2)(1/r - 1/(r + 2))",
+          "synonyms": [
+            "partial fractions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "two terms survive at each end",
+          "synonyms": [
+            "the gap of 2 means two cancellations short"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(1/2)(1 + 1/2 - 1/(n+1) - 1/(n+2))",
+          "synonyms": [
+            "add what does not cancel"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{1}{2}\\left(\\frac{3}{2} - \\frac{1}{n+1} - \\frac{1}{n+2}\\right)$",
+        "distractors": [
+          "$1 - \\frac{1}{n+1}$",
+          "$\\frac{1}{2}\\left(1 - \\frac{1}{n+2}\\right)$",
+          "$\\frac{3}{2} - \\frac{1}{n+1} - \\frac{1}{n+2}$"
+        ]
+      },
+      "explanation": "In partial fractions $\\frac{1}{r(r+2)} = \\frac{1}{2}\\left(\\frac{1}{r} - \\frac{1}{r+2}\\right)$. Writing the terms out, $r = 1$ and $r = 2$ leave unmatched $\\frac{1}{2}(1 + \\frac{1}{2})$ at the start and $r = n - 1$ and $r = n$ leave $-\\frac{1}{2}\\left(\\frac{1}{n+1} + \\frac{1}{n+2}\\right)$ at the end. The number of surviving terms at each end equals the gap in the denominators, which is the rule to remember. As $n \\to \\infty$ this tends to $\\frac{3}{4}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Prove that $\\sum_{r=1}^n r \\times r! = (n + 1)! - 1$.",
+      "back": "Write $r \\times r! = (r + 1 - 1)r! = (r + 1)! - r!$, which telescopes to $(n + 1)! - 1! = (n + 1)! - 1$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "write r as (r + 1) - 1",
+          "synonyms": [
+            "the trick that creates the telescoping form"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "r x r! = (r + 1)! - r!",
+          "synonyms": [
+            "split into a difference of factorials"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the sum telescopes to (n + 1)! - 1",
+          "synonyms": [
+            "everything in between cancels"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$r \\times r! = (r+1)! - r!$, which telescopes to $(n+1)! - 1$",
+        "distractors": [
+          "$r \\times r! = (r+1)!$, which sums to $(n+1)!$",
+          "$r \\times r! = r! + r$, which sums to $n! + \\frac{n(n+1)}{2}$",
+          "$r \\times r! = (r!)^2$, which telescopes to $((n+1)!)^2 - 1$"
+        ]
+      },
+      "explanation": "The step $r = (r + 1) - 1$ turns a product into a difference, and differences telescope. Check at $n = 3$: $1 + 4 + 18 = 23$ and $4! - 1 = 23$. Adding and subtracting the same quantity to manufacture a telescoping form is a technique worth having ready, since it is not obvious from the sum itself.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Prove that the sum of the first $n$ odd numbers is $n^2$.",
+      "back": "$\\sum_{r=1}^n (2r - 1) = 2\\sum r - \\sum 1 = n(n + 1) - n = n^2$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "the rth odd number is 2r - 1",
+          "synonyms": [
+            "write the general term"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "split into 2 sum r minus sum 1",
+          "synonyms": [
+            "use linearity of summation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n(n + 1) - n = n^2",
+          "synonyms": [
+            "simplify"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$2\\sum r - \\sum 1 = n(n+1) - n = n^2$",
+        "distractors": [
+          "$\\sum 2r - \\sum 1 = n^2 + n$",
+          "$2\\sum r = n(n+1)$, so the sum is $n(n+1)$",
+          "$\\sum (2r - 1) = 2n - 1$"
+        ]
+      },
+      "explanation": "Splitting the sum gives $2 \\times \\frac{n(n+1)}{2} - n = n(n+1) - n = n^2$. The geometric picture is the reason the answer is so clean: adding the $(n+1)$th odd number, $2n + 1$, to an $n \\times n$ square extends it to an $(n+1) \\times (n+1)$ square. Check at $n = 4$: $1 + 3 + 5 + 7 = 16$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Given that $\\sum_{r=1}^n (ar + b) = 3n^2 + 5n$ for every positive integer $n$, find $a$ and $b$.",
+      "back": "$a = 6$ and $b = 2$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "sum (ar + b) = a n(n+1)/2 + bn",
+          "synonyms": [
+            "split using the standard results"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "compare the coefficient of n^2 to get a/2 = 3",
+          "synonyms": [
+            "so a = 6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "compare the coefficient of n to get a/2 + b = 5",
+          "synonyms": [
+            "so b = 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$a = 6$, $b = 2$",
+        "distractors": [
+          "$a = 3$, $b = 5$",
+          "$a = 6$, $b = 5$",
+          "$a = 2$, $b = 6$"
+        ]
+      },
+      "explanation": "$\\sum(ar + b) = a\\frac{n(n+1)}{2} + bn = \\frac{a}{2}n^2 + \\left(\\frac{a}{2} + b\\right)n$. Matching coefficients with $3n^2 + 5n$ gives $\\frac{a}{2} = 3$, so $a = 6$, and $\\frac{a}{2} + b = 5$, so $b = 2$. Check at $n = 1$: $a + b = 8$ and $3 + 5 = 8$. Reading $a = 3$ off the $n^2$ coefficient directly, without the factor of a half, is the standard error.",
+      "numeric": {
+        "value": 6,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Find $\\sum_{r=1}^n (2r - 1)^2$ in terms of $n$.",
+      "back": "$\\frac{n(2n - 1)(2n + 1)}{3}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "expand (2r - 1)^2 as 4r^2 - 4r + 1",
+          "synonyms": [
+            "square the general term"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "use the standard results for r^2 and r",
+          "synonyms": [
+            "combine the sums"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "n(2n - 1)(2n + 1)/3",
+          "synonyms": [
+            "factorise; the product is 4n^2 - 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{n(2n-1)(2n+1)}{3}$",
+        "distractors": [
+          "$\\frac{n(2n+1)(4n+1)}{6}$",
+          "$\\left[\\frac{n(n+1)}{2}\\right]^2$",
+          "$\\frac{4n^3}{3}$"
+        ]
+      },
+      "explanation": "Expanding gives $4\\sum r^2 - 4\\sum r + n = \\frac{2n(n+1)(2n+1)}{3} - 2n(n+1) + n$, which simplifies to $\\frac{n(4n^2 - 1)}{3} = \\frac{n(2n-1)(2n+1)}{3}$. The second option is $\\sum (2r)^2$ shaped and the third is $\\sum (2r - 1)$ cubed-shaped, both plausible wrong turns. Check at $n = 2$: $1 + 9 = 10$ and $\\frac{2 \\times 3 \\times 5}{3} = 10$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Summation of series",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
     }
   ]
 }

@@ -173,6 +173,321 @@
         "further-maths",
         "further-pure-1"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Prove by induction that $\\sum_{r=1}^n r^3 = \\left[\\frac{n(n+1)}{2}\\right]^2$.",
+      "back": "The base case $n = 1$ gives $1 = 1$. Assuming it for $k$ and adding $(k+1)^3$ gives $\\left[\\frac{k(k+1)}{2}\\right]^2 + (k+1)^3 = \\left[\\frac{(k+1)(k+2)}{2}\\right]^2$ after factorising $(k+1)^2$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "verify the base case n = 1",
+          "synonyms": [
+            "check the formula at n = 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume the result for n = k",
+          "synonyms": [
+            "the inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "add (k + 1)^3 to both sides",
+          "synonyms": [
+            "the inductive step"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "factorise to [(k+1)(k+2)/2]^2",
+          "synonyms": [
+            "the algebra of the step"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The key line is $\\frac{k^2(k+1)^2}{4} + (k+1)^3 = \\frac{(k+1)^2[k^2 + 4(k+1)]}{4} = \\frac{(k+1)^2(k+2)^2}{4}$, since $k^2 + 4k + 4 = (k+2)^2$. Recognising that perfect square is what makes the step close. The result is also the square of $\\sum r$, which is a striking fact but not a proof - induction is still needed.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Prove by induction that $5^n - 1$ is divisible by 4 for every positive integer $n$.",
+      "back": "Base case $n = 1$: $5 - 1 = 4$. If $5^k - 1 = 4m$ then $5^{k+1} - 1 = 5(4m + 1) - 1 = 20m + 4 = 4(5m + 1)$, which is divisible by 4.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case n = 1 gives 4",
+          "synonyms": [
+            "check the first case"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume 5^k - 1 = 4m",
+          "synonyms": [
+            "the inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "write 5^(k+1) - 1 as 5(5^k) - 1 and substitute",
+          "synonyms": [
+            "multiply the hypothesis by 5"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "4(5m + 1)",
+          "synonyms": [
+            "a multiple of 4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The move that makes divisibility inductions work is multiplying the hypothesis by the base of the power, here 5, and then adding and subtracting to restore the required shape. Note $5^{k+1} - 1 = 5(5^k - 1) + 4$, which is the same step written more compactly and is often the fastest route to the answer.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Prove by induction that $2^n > n^2$ for all integers $n \\ge 5$, and explain why the restriction on $n$ is needed.",
+      "back": "Base case $n = 5$: $32 > 25$. If $2^k > k^2$ then $2^{k+1} > 2k^2$, and $2k^2 > (k+1)^2$ once $k^2 - 2k - 1 > 0$, which holds for $k \\ge 3$. The claim fails for $n = 2, 3, 4$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case n = 5 gives 32 > 25",
+          "synonyms": [
+            "verify the starting value"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2^(k+1) = 2 x 2^k > 2k^2",
+          "synonyms": [
+            "double the hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2k^2 > (k+1)^2 needs k^2 - 2k - 1 > 0",
+          "synonyms": [
+            "compare the two expressions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the statement is false for n = 2, 3 and 4",
+          "synonyms": [
+            "the restriction is necessary"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$2k^2 - (k+1)^2 = k^2 - 2k - 1$, which is positive for $k \\ge 3$, so the step works from $n = 3$ upwards and the base case could be $n = 3$. The claim is genuinely false at $n = 2$ ($4 = 4$), $n = 3$ ($8 < 9$) and $n = 4$ ($16 = 16$), which is why the inequality needs a starting point at all. Inequality inductions always need this extra comparison line.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Prove by induction that $\\begin{pmatrix} 1 & 1 \\\\ 0 & 1 \\end{pmatrix}^n = \\begin{pmatrix} 1 & n \\\\ 0 & 1 \\end{pmatrix}$ for every positive integer $n$.",
+      "back": "Base case $n = 1$ is immediate. If the result holds for $k$, then multiplying by $A$ gives $\\begin{pmatrix} 1 & k \\\\ 0 & 1 \\end{pmatrix}\\begin{pmatrix} 1 & 1 \\\\ 0 & 1 \\end{pmatrix} = \\begin{pmatrix} 1 & k + 1 \\\\ 0 & 1 \\end{pmatrix}$, which is the result for $k + 1$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "check n = 1",
+          "synonyms": [
+            "the base case"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume the form for n = k",
+          "synonyms": [
+            "the inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "multiply the k case by A on the right",
+          "synonyms": [
+            "A^(k+1) = A^k A"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the top right entry becomes k + 1",
+          "synonyms": [
+            "matrix multiplication gives the required form"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The product is $\\begin{pmatrix} 1 \\times 1 + k \\times 0 & 1 \\times 1 + k \\times 1 \\\\ 0 & 1 \\end{pmatrix} = \\begin{pmatrix} 1 & k+1 \\\\ 0 & 1 \\end{pmatrix}$. Matrix induction is exactly the same argument as any other, with matrix multiplication in place of algebra; the only new care needed is that the order of multiplication must be kept fixed throughout.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Prove by induction that $n^3 - n$ is divisible by 3 for every positive integer $n$.",
+      "back": "Base case $n = 1$ gives 0, which is divisible by 3. If $k^3 - k = 3m$ then $(k+1)^3 - (k+1) = k^3 - k + 3k^2 + 3k = 3m + 3(k^2 + k) = 3(m + k^2 + k)$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case n = 1 gives 0",
+          "synonyms": [
+            "0 is divisible by 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume k^3 - k = 3m",
+          "synonyms": [
+            "the inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "expand (k+1)^3 - (k+1) and isolate k^3 - k",
+          "synonyms": [
+            "the extra terms are 3k^2 + 3k"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3(m + k^2 + k)",
+          "synonyms": [
+            "a multiple of 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "$(k+1)^3 - (k+1) = k^3 + 3k^2 + 3k + 1 - k - 1 = (k^3 - k) + 3k^2 + 3k$, and the bracketed part is $3m$ by hypothesis. Every extra term carries a factor 3, which is what makes the induction close. The result also follows immediately from factorising $n(n-1)(n+1)$ as three consecutive integers, but induction is what the question asks for.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Prove by induction that $\\sum_{r=1}^n \\frac{1}{r(r+1)} = \\frac{n}{n+1}$.",
+      "back": "Base case $n = 1$: $\\frac{1}{2} = \\frac{1}{2}$. Adding $\\frac{1}{(k+1)(k+2)}$ to $\\frac{k}{k+1}$ gives $\\frac{k(k+2) + 1}{(k+1)(k+2)} = \\frac{(k+1)^2}{(k+1)(k+2)} = \\frac{k+1}{k+2}$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case n = 1 gives 1/2",
+          "synonyms": [
+            "check the first case"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "add 1/((k+1)(k+2)) to both sides",
+          "synonyms": [
+            "the inductive step"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the numerator is k^2 + 2k + 1 = (k+1)^2",
+          "synonyms": [
+            "a perfect square appears"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(k+1)/(k+2)",
+          "synonyms": [
+            "cancel one factor of k + 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The numerator $k(k+2) + 1 = k^2 + 2k + 1 = (k+1)^2$ cancels one $(k+1)$ from the denominator. Spotting that perfect square is the whole of the algebraic work, and it is the same pattern that appears in the $\\sum r^3$ induction. The result agrees with the method of differences, since $\\frac{1}{r(r+1)} = \\frac{1}{r} - \\frac{1}{r+1}$ telescopes.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Prove by induction that $6^n + 4$ is divisible by 5 for every non-negative integer $n$.",
+      "back": "Base case $n = 0$: $1 + 4 = 5$. If $6^k + 4 = 5m$ then $6^{k+1} + 4 = 6(5m - 4) + 4 = 30m - 20 = 5(6m - 4)$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "base case n = 0 gives 5",
+          "synonyms": [
+            "start at n = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "assume 6^k + 4 = 5m",
+          "synonyms": [
+            "the inductive hypothesis"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "write 6^(k+1) = 6 x 6^k and substitute 6^k = 5m - 4",
+          "synonyms": [
+            "multiply the hypothesis by 6"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "5(6m - 4)",
+          "synonyms": [
+            "a multiple of 5"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "Alternatively $6^{k+1} + 4 = 6(6^k + 4) - 20$, which is $6(5m) - 20 = 5(6m - 4)$ in one line. Including $n = 0$ in the base case matters: the statement is about non-negative integers, and $6^0 + 4 = 5$ does hold. Modular arithmetic gives the same result instantly, since $6 \\equiv 1 \\pmod 5$ so $6^n + 4 \\equiv 1 + 4 \\equiv 0$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Further Pure 1: Proof by induction",
+      "tagRefs": [
+        "edexcel",
+        "a-level",
+        "further-maths",
+        "further-pure-1"
+      ]
     }
   ]
 }

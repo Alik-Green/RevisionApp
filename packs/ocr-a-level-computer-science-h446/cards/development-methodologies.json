@@ -191,6 +191,337 @@
         "computer-science",
         "component-01"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "Name three practices associated with Extreme Programming.",
+      "back": "Pair programming, test-driven development and continuous integration; short release cycles with on-site customer involvement are also central.",
+      "keyPoints": [
+        {
+          "text": "pair programming",
+          "synonyms": [
+            "two programmers at one machine"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "test-driven development",
+          "synonyms": [
+            "tests written before the code",
+            "TDD"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "continuous integration",
+          "synonyms": [
+            "frequent integration",
+            "short release cycles",
+            "on-site customer"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Pair programming, test-driven development, continuous integration",
+        "distractors": [
+          "Waterfall stages, sign-off documents and a fixed scope",
+          "Prototyping, user feedback and scrum meetings only",
+          "Code review, release planning and a Gantt chart"
+        ]
+      },
+      "explanation": "XP is an Agile framework, so its practices all serve short feedback cycles: tests written first, two people on every piece of code, and integration several times a day so that faults surface while they are small. A fixed scope with formal sign-off is the opposite philosophy and belongs to waterfall.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What is the difference between iterative and incremental development?",
+      "back": "Iterative development repeats the cycle of build, test and refine to improve the same functionality; incremental development builds the system in separate finished pieces, adding new functionality each time.",
+      "keyPoints": [
+        {
+          "text": "iterative repeats and refines the same work",
+          "synonyms": [
+            "repeated cycles",
+            "improvement through repetition"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "incremental adds new finished pieces",
+          "synonyms": [
+            "delivered in chunks",
+            "new functionality each time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the two are usually combined",
+          "synonyms": [
+            "most Agile methods are both"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Iterative refines the same work; incremental adds new finished pieces",
+        "distractors": [
+          "Iterative adds new pieces; incremental refines existing ones",
+          "They are synonyms with no distinction",
+          "Iterative is waterfall and incremental is Agile"
+        ]
+      },
+      "explanation": "A sketch redrawn three times to get it right is iterative; drawing the outline, then adding colour, then adding detail is incremental. Most Agile methods do both at once, which is why the words are used loosely - but an exam question asking for the distinction wants exactly this difference.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "Distinguish unit, integration, system and acceptance testing.",
+      "back": "Unit tests one module in isolation, integration tests how modules work together, system tests the whole finished program against its specification, and acceptance testing is done by the client to decide whether the system is fit for use.",
+      "keyPoints": [
+        {
+          "text": "unit: one module in isolation",
+          "synonyms": [
+            "a single function or component"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "integration: modules working together",
+          "synonyms": [
+            "the interfaces between parts"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "system: the whole program against the specification",
+          "synonyms": [
+            "the complete system"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "acceptance: by the client, to decide fitness for use",
+          "synonyms": [
+            "user acceptance testing",
+            "UAT"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Module alone, modules together, whole system, client sign-off",
+        "distractors": [
+          "Whole system first, then modules, then integration, then client",
+          "All four test the same thing at different speeds",
+          "Unit and system are the same; integration and acceptance are the same"
+        ]
+      },
+      "explanation": "The order matters because faults are cheapest to find early: a unit test that fails points at one function, whereas the same fault found in system testing could be anywhere. Acceptance testing is also the only one of the four usually carried out by people who did not write the code.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "What is the difference between white box and black box testing?",
+      "back": "White box testing uses knowledge of the internal code to design tests that cover paths and branches; black box testing uses only the specification, choosing inputs from what the program is supposed to do.",
+      "keyPoints": [
+        {
+          "text": "white box uses the internal code",
+          "synonyms": [
+            "knows how it is implemented",
+            "covers paths and branches"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "black box uses only the specification",
+          "synonyms": [
+            "no knowledge of the code",
+            "based on requirements"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "they find different faults",
+          "synonyms": [
+            "each can miss what the other catches"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "White box uses the code; black box uses only the specification",
+        "distractors": [
+          "White box is automated; black box is manual",
+          "White box tests the interface; black box tests the internals",
+          "White box is done by the client; black box by the developer"
+        ]
+      },
+      "explanation": "A black box test cannot detect code that is never reachable, and a white box test cannot detect a feature that was never written, since it only checks what exists. That is why both are used. Statement and branch coverage are white box measures; equivalence partitioning and boundary value analysis are black box techniques.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "A program accepts an integer age from 18 to 65 inclusive. Give one item each of valid, invalid and boundary test data.",
+      "back": "Valid: 40. Invalid: 17 or 100, and a non-numeric entry such as 'abc'. Boundary: 17, 18, 65 and 66.",
+      "keyPoints": [
+        {
+          "text": "a valid value inside the range",
+          "synonyms": [
+            "40",
+            "any value from 18 to 65"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an invalid value",
+          "synonyms": [
+            "17",
+            "100",
+            "a non-numeric input"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "boundary values just inside and just outside each end",
+          "synonyms": [
+            "17, 18, 65, 66"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Valid 40; invalid 17 or 'abc'; boundary 17, 18, 65, 66",
+        "distractors": [
+          "Valid 18; invalid 65; boundary 40",
+          "Valid 40; invalid 41; boundary 18 only",
+          "Valid 65; invalid 66; boundary 18 and 65 only"
+        ]
+      },
+      "explanation": "Boundary values are where off-by-one faults live, which is why the pair either side of each limit is tested rather than the limits alone. Testing 18 and 65 by themselves would miss a program that wrongly uses `<` instead of `<=`. Invalid data should include the wrong type as well as the wrong value.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Give two reasons why waterfall suits a safety-critical system better than Agile.",
+      "back": "The requirements are fixed and fully known before work starts, and the formal documentation and sign-off at each stage provide the audit trail that certification requires.",
+      "keyPoints": [
+        {
+          "text": "requirements are fixed and known in advance",
+          "synonyms": [
+            "the specification does not change",
+            "no evolving requirements"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "documentation and sign-off give an audit trail",
+          "synonyms": [
+            "formal records",
+            "needed for certification",
+            "traceability"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Fixed requirements, and formal documentation for certification",
+        "distractors": [
+          "It is faster to build and needs fewer staff",
+          "It allows requirements to change late, which is safer",
+          "It needs no testing, because each stage is signed off"
+        ]
+      },
+      "explanation": "Certifying an aircraft control system needs evidence of what was specified, what was built and what was tested, which waterfall's stage documents supply naturally. Its weakness - that changes are expensive - is not a weakness when the requirements genuinely will not move. Testing is still required at every stage; sign-off does not replace it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "What is a dry run, and what does a trace table record?",
+      "back": "A dry run is working through an algorithm by hand on paper with sample data. A trace table records the value of each variable after every step, alongside the output produced.",
+      "keyPoints": [
+        {
+          "text": "working through the algorithm by hand with sample data",
+          "synonyms": [
+            "simulating on paper",
+            "desk checking"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the trace table records each variable's value at each step",
+          "synonyms": [
+            "variable values over time"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it also records output and any conditions tested",
+          "synonyms": [
+            "the output column",
+            "which branch was taken"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Manual simulation on paper; the table records each variable per step",
+        "distractors": [
+          "Running the program under a debugger; the table records memory addresses",
+          "A test done by the client; the table records user actions",
+          "An automated test; the table records execution time"
+        ]
+      },
+      "explanation": "A trace table exposes loop faults that reading the code hides, because the faulty iteration is written down rather than imagined. Its limits are worth stating too: it only exercises the data chosen, so it can confirm a fault but never prove its absence - which is what separates a dry run from a proof of correctness.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "1.2 Software and software development",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-01"
+      ]
     }
   ]
 }

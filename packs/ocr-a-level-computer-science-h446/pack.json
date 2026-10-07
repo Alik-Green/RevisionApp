@@ -1,7 +1,7 @@
 {
   "packId": "ocr-a-level-computer-science-h446",
   "name": "OCR A Level Computer Science (H446)",
-  "version": 1,
+  "version": 2,
   "description": "Software and its development, exchanging data, computational thinking and algorithms, with trace and pseudocode questions as self-graded or multiple choice.",
   "structureVerified": false,
   "topics": [

@@ -168,6 +168,351 @@
         "physics",
         "m4"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "In a double slit experiment light of wavelength 600 nm falls on slits 1.0 mm apart, with the screen 2.0 m away. Find the fringe spacing in mm.",
+      "back": "1.2 mm",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "w = lambda D / s",
+          "synonyms": [
+            "the double slit formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1.2 mm",
+          "synonyms": [
+            "1.2 x 10^-3 m"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "convert every quantity to metres first",
+          "synonyms": [
+            "consistent units"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "1.2 mm",
+        "distractors": [
+          "0.30 mm",
+          "1.2 m",
+          "3.0 mm"
+        ]
+      },
+      "explanation": "$w = \\frac{\\lambda D}{s} = \\frac{600 \\times 10^{-9} \\times 2.0}{1.0 \\times 10^{-3}} = 1.2 \\times 10^{-3}\\,\\mathrm{m}$. Rearranged as $\\lambda = \\frac{ws}{D}$ this is the standard way to measure a wavelength, and it explains the apparatus choices: a small slit separation and a large distance to the screen both widen the fringes and so reduce the percentage error in measuring them.",
+      "numeric": {
+        "value": 1.2,
+        "tolerance": 0.1,
+        "unit": "mm"
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "State the diffraction grating equation and explain why a grating gives sharper maxima than a double slit.",
+      "back": "$d\\sin\\theta = n\\lambda$. With many slits the maxima are much narrower and brighter, because light from all the slits must arrive in phase, so slight deviations cancel more completely.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "d sin theta = n lambda",
+          "synonyms": [
+            "the grating equation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "maxima are sharper and brighter",
+          "synonyms": [
+            "narrower peaks",
+            "more intense"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "more slits means more complete cancellation between maxima",
+          "synonyms": [
+            "the beams must all be in phase"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$d\\sin\\theta = n\\lambda$; more slits give narrower, brighter maxima",
+        "distractors": [
+          "$d\\sin\\theta = n\\lambda$; more slits give wider, dimmer maxima",
+          "$d = n\\lambda\\sin\\theta$; sharper because the slits are closer",
+          "$\\sin\\theta = \\frac{n\\lambda}{D}$; sharper because the screen is further away"
+        ]
+      },
+      "explanation": "The maxima stay in the same places as they would for two slits of the same spacing, but the regions between them become properly dark, so the peaks stand out and their angles can be measured more precisely. This is why gratings rather than double slits are used in spectrometers to separate wavelengths that are close together.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "What is the length of a string vibrating in its first harmonic, in terms of the wavelength?",
+      "back": "Half a wavelength: $L = \\frac{\\lambda}{2}$, with a node at each end and an antinode in the middle.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "L = lambda / 2",
+          "synonyms": [
+            "half a wavelength"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "nodes at both ends",
+          "synonyms": [
+            "fixed ends",
+            "the ends cannot move"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "one antinode in the middle",
+          "synonyms": [
+            "a single loop"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$L = \\frac{\\lambda}{2}$, nodes at the ends and one antinode",
+        "distractors": [
+          "$L = \\lambda$, nodes at the ends and two antinodes",
+          "$L = \\frac{\\lambda}{4}$, a node at one end only",
+          "$L = 2\\lambda$, four antinodes"
+        ]
+      },
+      "explanation": "A string fixed at both ends must have a node at each, and the simplest pattern fitting that is half a wave. The harmonics are then $L = \\frac{\\lambda}{2}, \\lambda, \\frac{3\\lambda}{2}, \\ldots$, so the frequencies are $f, 2f, 3f, \\ldots$. A pipe closed at one end has a node at the closed end and an antinode at the open one, giving $L = \\frac{\\lambda}{4}$ and odd harmonics only.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Plane polarised light of intensity $I_0$ passes through a polarising filter at $60^\\circ$ to its plane of polarisation. Find the transmitted intensity.",
+      "back": "$\\frac{I_0}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "Malus's law: I = I0 cos^2 theta",
+          "synonyms": [
+            "cosine squared of the angle"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cos 60 = 1/2 so cos^2 60 = 1/4",
+          "synonyms": [
+            "square the cosine, do not just halve"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "I0 / 4",
+          "synonyms": [
+            "a quarter of the original intensity"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{I_0}{4}$",
+        "distractors": [
+          "$\\frac{I_0}{2}$",
+          "$\\frac{I_0}{8}$",
+          "$\\frac{3I_0}{4}$"
+        ]
+      },
+      "explanation": "Malus's law gives $I = I_0\\cos^2 60^\\circ = I_0 \\times 0.25$. The cosine is squared, which is why the answer is a quarter rather than a half - applying the cosine once is the standard error. At $90^\\circ$ the transmitted intensity is zero, which is what crossed polarisers demonstrate.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "Find the critical angle for light leaving glass of refractive index 1.5, and state the condition for total internal reflection.",
+      "back": "$42^\\circ$, and total internal reflection occurs when light travels from the denser to the less dense medium at an angle of incidence greater than the critical angle.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "sin c = 1/n",
+          "synonyms": [
+            "the critical angle formula"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "c = 42 degrees",
+          "synonyms": [
+            "about 41.8 degrees"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "light must go from denser to less dense medium",
+          "synonyms": [
+            "towards a lower refractive index"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the angle of incidence must exceed the critical angle",
+          "synonyms": [
+            "greater than c"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$42^\\circ$; denser to less dense, incidence above the critical angle",
+        "distractors": [
+          "$42^\\circ$; less dense to denser, incidence above the critical angle",
+          "$48^\\circ$; denser to less dense, incidence below the critical angle",
+          "$42^\\circ$; any direction, incidence equal to the critical angle"
+        ]
+      },
+      "explanation": "$\\sin c = \\frac{1}{1.5} = 0.667$, so $c = 41.8^\\circ$, or $42^\\circ$ to two significant figures. Total internal reflection needs both conditions: the light must be travelling towards the less optically dense medium, and the angle of incidence must exceed $c$. At exactly $c$ the refracted ray runs along the boundary. Optical fibres depend on both conditions holding.",
+      "numeric": {
+        "value": 41.8,
+        "tolerance": 0.1
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Two waves of the same frequency differ in phase by $\\frac{\\pi}{2}$ radians. What fraction of a wavelength is that, and what does it mean for their interference?",
+      "back": "A quarter of a wavelength. The interference is neither fully constructive nor fully destructive, giving a resultant of amplitude $\\sqrt{2}$ times each individual amplitude.",
+      "keyPoints": [
+        {
+          "text": "a quarter of a wavelength",
+          "synonyms": [
+            "pi/2 is 90 degrees",
+            "one quarter"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "neither fully constructive nor fully destructive",
+          "synonyms": [
+            "partial interference"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the resultant amplitude is root 2 times one amplitude",
+          "synonyms": [
+            "add as vectors at right angles"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A quarter wavelength; partial interference, resultant $\\sqrt{2}A$",
+        "distractors": [
+          "Half a wavelength; total destructive interference",
+          "A whole wavelength; total constructive interference",
+          "A quarter wavelength; total destructive interference"
+        ]
+      },
+      "explanation": "$2\\pi$ radians is one full wavelength, so $\\frac{\\pi}{2}$ is a quarter. Adding two equal amplitudes at $90^\\circ$ gives $\\sqrt{A^2 + A^2} = A\\sqrt{2}$, which lies between the fully constructive $2A$ and the fully destructive zero. Only phase differences of an even multiple of $\\pi$ give maximum reinforcement and an odd multiple give complete cancellation.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Light passes from air into glass of refractive index 1.5 at an angle of incidence of $40^\\circ$. Find the angle of refraction.",
+      "back": "$25^\\circ$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "Snell's law: n1 sin theta1 = n2 sin theta2",
+          "synonyms": [
+            "use the refractive index form"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "sin theta2 = sin 40 / 1.5",
+          "synonyms": [
+            "rearrange for the second angle"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "25 degrees",
+          "synonyms": [
+            "about 25.4 degrees",
+            "the ray bends towards the normal"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$25^\\circ$, towards the normal",
+        "distractors": [
+          "$25^\\circ$, away from the normal",
+          "$60^\\circ$, towards the normal",
+          "$71^\\circ$, away from the normal"
+        ]
+      },
+      "explanation": "$\\sin\\theta_2 = \\frac{1.0 \\times \\sin 40^\\circ}{1.5} = 0.429$, so $\\theta_2 = 25.4^\\circ$. Entering a more optically dense medium the ray bends towards the normal, which is the direction check to make - the answer $71^\\circ$ is what you get by putting the 1.5 in the numerator. Snell's law in the form $\\frac{\\sin i}{\\sin r} = n$ applies specifically to air-to-material, while $n_1\\sin\\theta_1 = n_2\\sin\\theta_2$ is general.",
+      "numeric": {
+        "value": 25.4,
+        "tolerance": 0.1
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "4.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m4"
+      ]
     }
   ]
 }

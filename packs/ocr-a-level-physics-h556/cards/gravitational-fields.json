@@ -171,6 +171,338 @@
         "physics",
         "m5"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "The gravitational field strength at a planet's surface is $g$. What is it at a height equal to the planet's radius above the surface?",
+      "back": "$\\frac{g}{4}$, because the distance from the centre has doubled and $g$ follows an inverse square law.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "g / 4",
+          "synonyms": [
+            "a quarter of the surface value"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the distance from the centre doubles",
+          "synonyms": [
+            "r becomes 2r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "inverse square law means g falls by a factor of 4",
+          "synonyms": [
+            "1 / 2^2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{g}{4}$",
+        "distractors": [
+          "$\\frac{g}{2}$",
+          "$\\frac{g}{8}$",
+          "$2g$"
+        ]
+      },
+      "explanation": "The height is measured from the surface but the law uses the distance from the centre, so at a height $R$ the distance is $2R$. Then $g = \\frac{GM}{(2R)^2} = \\frac{1}{4}\\frac{GM}{R^2} = \\frac{g}{4}$. Forgetting to add the planet's radius to the height is the standard error, and it gives $\\frac{g}{1} = g$ for a height of one radius.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Calculate the escape velocity from a planet of mass $5.97 \\times 10^{24}\\,\\mathrm{kg}$ and radius $6.37 \\times 10^{6}\\,\\mathrm{m}$.",
+      "back": "$1.1 \\times 10^{4}\\,\\mathrm{m\\,s^{-1}}$, about $11\\,\\mathrm{km\\,s^{-1}}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "escape velocity comes from setting kinetic energy equal to the potential energy needed",
+          "synonyms": [
+            "1/2 mv^2 = GMm/r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "v = sqrt(2GM/r)",
+          "synonyms": [
+            "the mass of the object cancels"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "11200 m/s",
+          "synonyms": [
+            "about 11 km/s",
+            "1.1 x 10^4 m/s"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$1.1 \\times 10^{4}\\,\\mathrm{m\\,s^{-1}}$",
+        "distractors": [
+          "$7.9 \\times 10^{3}\\,\\mathrm{m\\,s^{-1}}$",
+          "$1.6 \\times 10^{8}\\,\\mathrm{m\\,s^{-1}}$",
+          "$1.1 \\times 10^{2}\\,\\mathrm{m\\,s^{-1}}$"
+        ]
+      },
+      "explanation": "$\\frac{1}{2}mv^2 = \\frac{GMm}{r}$ gives $v = \\sqrt{\\frac{2GM}{r}} = \\sqrt{\\frac{2 \\times 6.67 \\times 10^{-11} \\times 5.97 \\times 10^{24}}{6.37 \\times 10^{6}}} = 1.12 \\times 10^{4}\\,\\mathrm{m\\,s^{-1}}$. The object's mass cancels, so a rocket and a molecule need the same speed. The second option is the orbital speed at the surface, which is escape velocity divided by $\\sqrt{2}$.",
+      "numeric": {
+        "value": 11200,
+        "tolerance": 100
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "State the difference between $\\Delta W = mg\\Delta h$ and $W = -\\frac{GMm}{r}$, and say when each applies.",
+      "back": "$mg\\Delta h$ assumes a uniform field and applies near a planet's surface. $-\\frac{GMm}{r}$ is the general expression for gravitational potential energy and applies over distances where $g$ changes appreciably.",
+      "keyPoints": [
+        {
+          "text": "mg delta h assumes a uniform field",
+          "synonyms": [
+            "constant g",
+            "near the surface"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "-GMm/r is the general form",
+          "synonyms": [
+            "for large changes of height",
+            "where g varies"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the general form is negative and tends to zero at infinity",
+          "synonyms": [
+            "potential energy is zero at infinity"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$mg\\Delta h$ for a uniform field near the surface; $-\\frac{GMm}{r}$ generally",
+        "distractors": [
+          "They are two forms of the same equation and always agree",
+          "$mg\\Delta h$ is general; $-\\frac{GMm}{r}$ only near the surface",
+          "$mg\\Delta h$ for planets; $-\\frac{GMm}{r}$ only for stars"
+        ]
+      },
+      "explanation": "Taking $g$ as constant is an approximation valid only over heights small compared with the radius. The general form is measured from infinity, where it is defined as zero, so it is negative everywhere else and rises towards zero as $r$ increases. Differentiating $-\\frac{GMm}{r}$ recovers $\\frac{GMm}{r^2}$, which shows the two descriptions are consistent.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "Calculate the radius of a geostationary orbit, taking $M = 5.97 \\times 10^{24}\\,\\mathrm{kg}$ and $T = 86400\\,\\mathrm{s}$.",
+      "back": "$4.2 \\times 10^{7}\\,\\mathrm{m}$, about $4.2 \\times 10^{4}\\,\\mathrm{km}$ from the centre",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "gravity provides the centripetal force",
+          "synonyms": [
+            "GMm/r^2 = m omega^2 r"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "r^3 = GM T^2 / (4 pi^2)",
+          "synonyms": [
+            "rearrange for the radius"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "4.2 x 10^7 m",
+          "synonyms": [
+            "about 42000 km",
+            "roughly 36000 km above the surface"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$4.2 \\times 10^{7}\\,\\mathrm{m}$",
+        "distractors": [
+          "$6.4 \\times 10^{6}\\,\\mathrm{m}$",
+          "$4.2 \\times 10^{5}\\,\\mathrm{m}$",
+          "$2.6 \\times 10^{8}\\,\\mathrm{m}$"
+        ]
+      },
+      "explanation": "Setting $\\frac{GMm}{r^2} = m\\omega^2 r$ with $\\omega = \\frac{2\\pi}{T}$ gives $r^3 = \\frac{GMT^2}{4\\pi^2} = 7.5 \\times 10^{22}$, so $r = 4.22 \\times 10^{7}\\,\\mathrm{m}$. Subtracting the Earth's radius puts the satellite about $3.6 \\times 10^{4}\\,\\mathrm{km}$ above the surface - far above the atmosphere, which is why such a satellite needs almost no station-keeping.",
+      "numeric": {
+        "value": 42200000.0,
+        "tolerance": 1000000.0
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "How do gravitational field lines and equipotential surfaces relate to each other?",
+      "back": "Field lines are always perpendicular to equipotential surfaces, they point in the direction of decreasing potential, and their spacing shows the field strength.",
+      "keyPoints": [
+        {
+          "text": "field lines are perpendicular to equipotentials",
+          "synonyms": [
+            "they cross at right angles"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "field lines point towards lower potential",
+          "synonyms": [
+            "in the direction of decreasing potential"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "closer spacing means a stronger field",
+          "synonyms": [
+            "density of lines shows strength"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Perpendicular; field lines point towards lower potential, spacing shows strength",
+        "distractors": [
+          "Parallel; field lines point towards higher potential",
+          "Perpendicular; field lines point towards higher potential",
+          "At 45 degrees; spacing shows the potential"
+        ]
+      },
+      "explanation": "No work is done moving along an equipotential, since $W = q\\Delta V$ and $\\Delta V = 0$, and work is only zero for a force perpendicular to the motion - which is why the two families are orthogonal. For a point mass the equipotentials are concentric spheres and the field lines are radial. The same geometry holds for electric fields, which is what makes the analogy worth learning once.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Why is gravitational potential always negative, and what is its value at infinity?",
+      "back": "It is defined as the work done per unit mass bringing a mass from infinity to the point. Since gravity does the work rather than an external agent, the value is negative, and it is zero at infinity by definition.",
+      "keyPoints": [
+        {
+          "text": "zero at infinity by definition",
+          "synonyms": [
+            "the reference point is infinity"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "gravity does positive work as the mass falls in",
+          "synonyms": [
+            "so the potential decreases"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "negative everywhere else",
+          "synonyms": [
+            "it rises towards zero with distance"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Defined from infinity, where it is zero; negative because gravity does the work",
+        "distractors": [
+          "Positive everywhere; zero at the surface",
+          "Negative because mass is always positive",
+          "Zero everywhere; only differences matter"
+        ]
+      },
+      "explanation": "Bringing a mass in from infinity releases energy, so the potential falls below the zero reference. Every bound orbit has negative total energy for the same reason, and reaching zero total energy is exactly what escape velocity means. The sign is a consequence of the definition rather than a property of gravity itself, but it is a fixed convention that examiners expect.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Two satellites orbit the same planet, one at radius $r$ and one at $4r$. Compare their orbital speeds.",
+      "back": "The outer satellite is half as fast: $v \\propto \\frac{1}{\\sqrt{r}}$, so $v_{outer} = \\frac{v_{inner}}{2}$.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "v = sqrt(GM/r)",
+          "synonyms": [
+            "orbital speed falls with radius"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "v is proportional to 1 over root r",
+          "synonyms": [
+            "inverse square root"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the outer satellite is half as fast",
+          "synonyms": [
+            "a factor of 2",
+            "ratio 1:2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Half as fast, since $v \\propto \\frac{1}{\\sqrt{r}}$",
+        "distractors": [
+          "Four times slower",
+          "Twice as fast",
+          "The same speed, since both are in orbit"
+        ]
+      },
+      "explanation": "From $\\frac{GMm}{r^2} = \\frac{mv^2}{r}$, $v = \\sqrt{\\frac{GM}{r}}$, so quadrupling $r$ halves $v$. Counter-intuitively, the outer satellite also has a much longer period, since $T \\propto r^{3/2}$ by Kepler's third law - eight times longer here. The mass of the satellite cancels in both results, so it is irrelevant to either.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "5.4.1",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "physics",
+        "m5"
+      ]
     }
   ]
 }

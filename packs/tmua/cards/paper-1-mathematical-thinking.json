@@ -4,268 +4,1182 @@
   "cards": [
     {
       "id": "0001",
-      "front": "A function is defined by $f(x) = 2x + 3$. What is $f(f(2))$?",
-      "back": "17",
+      "front": "Given that $\\sqrt{12 + 6\\sqrt{3}}$ can be written in the form $a + \\sqrt{b}$ where $a$ and $b$ are positive integers, find $a + b$.",
+      "back": "6",
       "answerType": "NUMERIC",
       "keyPoints": [
         {
-          "text": "17",
+          "text": "6",
+          "synonyms": [
+            "a = 3 and b = 3",
+            "root of 12 plus 6 root 3 is 3 plus root 3"
+          ],
           "mustInclude": true
         }
       ],
       "mcq": {
-        "correct": "17",
+        "correct": "6",
         "distractors": [
-          "10",
-          "13",
-          "34"
+          "4",
+          "12",
+          "15"
         ]
       },
-      "explanation": "$f(2) = 7$, then $f(7) = 2 \\times 7 + 3 = 17$. The answer 10 stops after adding 3 once, 13 applies $f$ to 2 twice by adding rather than composing, and 34 doubles the result by applying $f$ a third time.",
+      "explanation": "Set $a + \\sqrt{b} = \\sqrt{12 + 6\\sqrt{3}}$ and square both sides: $a^2 + b + 2a\\sqrt{b} = 12 + 6\\sqrt{3}$. Matching the rational and irrational parts gives $a^2 + b = 12$ and $2a\\sqrt{b} = 6\\sqrt{3}$, so $a^2 b = 27$. The only positive integer solution is $a = 3$, $b = 3$, and indeed $(3 + \\sqrt{3})^2 = 9 + 6\\sqrt{3} + 3 = 12 + 6\\sqrt{3}$. Hence $a + b = 6$. The answer 12 comes from reading $a^2 + b = 12$ as the answer instead of solving it; 15 is $a + b$ for $a = 12, b = 3$.",
       "numeric": {
-        "value": 17,
+        "value": 6,
         "tolerance": 0.01
       },
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: functions and composition",
+      "specRef": "Paper 1: surds and manipulation of radicals",
       "tagRefs": [
         "tmua",
-        "paper-1"
+        "paper-1",
+        "hard"
       ]
     },
     {
       "id": "0002",
-      "front": "A geometric progression has first term 8 and common ratio $\\frac{1}{2}$. What is the sum to infinity?",
-      "back": "16",
-      "answerType": "NUMERIC",
+      "front": "Find the set of values of $k$ for which $x^2 + 2kx + (k + 6) = 0$ has two distinct real roots.",
+      "back": "$k < -2$ or $k > 3$",
       "keyPoints": [
         {
-          "text": "16",
+          "text": "discriminant greater than zero",
+          "synonyms": [
+            "b^2 - 4ac > 0",
+            "4k^2 - 4(k + 6) > 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k^2 - k - 6 > 0",
+          "synonyms": [
+            "(k - 3)(k + 2) > 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "k < -2 or k > 3",
+          "synonyms": [
+            "k is less than -2 or greater than 3"
+          ],
           "mustInclude": true
         }
       ],
       "mcq": {
-        "correct": "16",
+        "correct": "$k < -2$ or $k > 3$",
         "distractors": [
-          "4",
-          "8",
-          "32"
+          "$-2 < k < 3$",
+          "$k < -3$ or $k > 2$",
+          "$-3 < k < 2$"
         ]
       },
-      "explanation": "$|r| = \\frac{1}{2} < 1$, so the sum to infinity exists and is $\\frac{a}{1 - r} = \\frac{8}{1/2} = 16$. The answer 4 is $\\frac{a}{1+r}$, a sign slip, and 32 doubles it.",
+      "explanation": "Two distinct real roots means $\\Delta = (2k)^2 - 4(k + 6) > 0$, so $4k^2 - 4k - 24 > 0$ and $k^2 - k - 6 > 0$. Factoring gives $(k - 3)(k + 2) > 0$, an upward-opening quadratic in $k$ that is positive outside its roots, so $k < -2$ or $k > 3$. The interval $-2 < k < 3$ is the sign the wrong way round, which is the single most common slip on this shape of question.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: quadratics and the discriminant",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0003",
+      "front": "The sum of the first $n$ terms of a sequence is $S_n = 3n^2 + 2n$. Find the twentieth term and the common difference, and say what kind of sequence this is.",
+      "back": "$u_{20} = 119$ and the common difference is 6; the sequence is arithmetic.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "u_n = 6n - 1",
+          "synonyms": [
+            "the nth term is 6n - 1",
+            "u_n = S_n - S_(n-1)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "119",
+          "synonyms": [
+            "the twentieth term is 119"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "common difference 6",
+          "synonyms": [
+            "d = 6",
+            "arithmetic"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$u_{20} = 119$, $d = 6$",
+        "distractors": [
+          "$u_{20} = 122$, $d = 6$",
+          "$u_{20} = 119$, $d = 3$",
+          "$u_{20} = 82$, $d = 6$"
+        ]
+      },
+      "explanation": "$u_n = S_n - S_{n-1} = (3n^2 + 2n) - (3(n-1)^2 + 2(n-1)) = 6n - 1$, which is linear in $n$, so the sequence is arithmetic with $d = 6$. Then $u_{20} = 120 - 1 = 119$. The answer 122 is $S_{20} - S_{19}$ evaluated with $S_{19}$ mis-expanded, and 82 is $u_{20}$ for the geometric misreading $u_n = S_n/20$.",
       "numeric": {
-        "value": 16,
+        "value": 119,
         "tolerance": 0.01
       },
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Paper 1: sequences and series",
       "tagRefs": [
         "tmua",
-        "paper-1"
-      ]
-    },
-    {
-      "id": "0003",
-      "front": "Simplify $\\frac{x^2 - 9}{x^2 - 6x + 9}$.",
-      "back": "$\\frac{x + 3}{x - 3}$",
-      "answerType": "EXPRESSION",
-      "keyPoints": [
-        {
-          "text": "(x + 3)/(x - 3)",
-          "mustInclude": true
-        }
-      ],
-      "acceptedAliases": [
-        "(x+3)/(x-3)"
-      ],
-      "mcq": {
-        "correct": "$\\frac{x + 3}{x - 3}$",
-        "distractors": [
-          "$\\frac{x - 3}{x + 3}$",
-          "$x + 3$",
-          "$\\frac{x + 3}{x^2 - 9}$"
-        ]
-      },
-      "explanation": "The numerator is a difference of two squares, $(x-3)(x+3)$, and the denominator is a perfect square, $(x-3)^2$. Cancelling one $(x-3)$ leaves $\\frac{x+3}{x-3}$. The first distractor cancels the wrong factor.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: algebraic fractions",
-      "tagRefs": [
-        "tmua",
-        "paper-1"
+        "paper-1",
+        "hard"
       ]
     },
     {
       "id": "0004",
-      "front": "A bag holds 3 red and 2 blue counters. Two counters are drawn at random without replacement. What is the probability that both are red?",
-      "back": "0.3",
+      "front": "Find the coefficient of $x^3$ in the expansion of $(1 + 2x)^5 (1 - x)^4$.",
+      "back": "-24",
       "answerType": "NUMERIC",
       "keyPoints": [
         {
-          "text": "0.3",
+          "text": "-24",
           "synonyms": [
-            "3/10",
-            "6/20"
+            "minus 24",
+            "negative 24"
           ],
           "mustInclude": true
         }
       ],
-      "acceptedAliases": [
-        "3/10"
-      ],
       "mcq": {
-        "correct": "0.3",
+        "correct": "-24",
         "distractors": [
-          "0.36",
-          "0.6",
-          "0.5"
+          "24",
+          "-80",
+          "56"
         ]
       },
-      "explanation": "Without replacement the second draw is from four counters, so the probability is $\\frac{3}{5} \\times \\frac{2}{4} = \\frac{6}{20} = 0.3$. The answer 0.36 is $\\left(\\frac{3}{5}\\right)^2$, which is the with-replacement calculation.",
+      "explanation": "Expand each bracket only as far as $x^3$: $(1 + 2x)^5$ gives $1 + 10x + 40x^2 + 80x^3$ and $(1 - x)^4$ gives $1 - 4x + 6x^2 - 4x^3$. The $x^3$ coefficient is the sum over pairs of powers adding to 3: $1 \\times (-4) + 10 \\times 6 + 40 \\times (-4) + 80 \\times 1 = -4 + 60 - 160 + 80 = -24$. The answer 56 keeps only the first two products, and 24 is the sign lost.",
       "numeric": {
-        "value": 0.3,
+        "value": -24,
         "tolerance": 0.01
       },
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: probability",
+      "specRef": "Paper 1: binomial expansion",
       "tagRefs": [
         "tmua",
-        "paper-1"
+        "paper-1",
+        "very-hard"
       ]
     },
     {
       "id": "0005",
-      "front": "What is $\\log_2 32 + \\log_3 27$?",
-      "back": "8",
-      "answerType": "NUMERIC",
+      "front": "Find the exact area enclosed between the curves $y = x^2$ and $y = 4x - x^2$.",
+      "back": "$\\frac{8}{3}$",
+      "answerType": "EXPRESSION",
       "keyPoints": [
         {
-          "text": "8",
-          "mustInclude": true
-        }
-      ],
-      "mcq": {
-        "correct": "8",
-        "distractors": [
-          "6",
-          "15",
-          "59"
-        ]
-      },
-      "explanation": "$\\log_2 32 = 5$ because $2^5 = 32$, and $\\log_3 27 = 3$ because $3^3 = 27$, so the sum is 8. The answer 15 multiplies the two logarithms instead of adding them.",
-      "numeric": {
-        "value": 8,
-        "tolerance": 0.01
-      },
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: logarithms and indices",
-      "tagRefs": [
-        "tmua",
-        "paper-1"
-      ]
-    },
-    {
-      "id": "0006",
-      "front": "Find the coordinates of the minimum point of $y = x^2 - 4x + 5$.",
-      "back": "(2, 1)",
-      "keyPoints": [
-        {
-          "text": "x coordinate is 2",
+          "text": "8/3",
+          "synonyms": [
+            "eight thirds",
+            "2.667"
+          ],
           "mustInclude": true
         },
         {
-          "text": "y coordinate is 1",
-          "mustInclude": true
-        }
-      ],
-      "acceptedAliases": [
-        "(2,1)"
-      ],
-      "mcq": {
-        "correct": "(2, 1)",
-        "distractors": [
-          "(-2, 1)",
-          "(2, -1)",
-          "(4, 5)"
-        ]
-      },
-      "explanation": "Completing the square gives $y = (x - 2)^2 + 1$, so the minimum is $(2, 1)$. Equivalently the turning point of $ax^2 + bx + c$ has $x = -\\frac{b}{2a} = 2$. The answer $(-2, 1)$ takes the sign of $b$ the wrong way.",
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: quadratics",
-      "tagRefs": [
-        "tmua",
-        "paper-1"
-      ]
-    },
-    {
-      "id": "0007",
-      "front": "A triangle has sides of length 5, 12 and 13. What is its area?",
-      "back": "30",
-      "answerType": "NUMERIC",
-      "keyPoints": [
-        {
-          "text": "30",
-          "mustInclude": true
-        }
-      ],
-      "mcq": {
-        "correct": "30",
-        "distractors": [
-          "65",
-          "32.5",
-          "78"
-        ]
-      },
-      "explanation": "$5^2 + 12^2 = 25 + 144 = 169 = 13^2$, so the triangle is right-angled with the two shorter sides as base and height: area $= \\frac{1}{2} \\times 5 \\times 12 = 30$. The answer 65 forgets the factor of a half.",
-      "numeric": {
-        "value": 30,
-        "tolerance": 0.01
-      },
-      "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: geometry",
-      "tagRefs": [
-        "tmua",
-        "paper-1"
-      ]
-    },
-    {
-      "id": "0008",
-      "front": "Solve $2^{x+1} = 32$.",
-      "back": "x = 4",
-      "answerType": "NUMERIC",
-      "keyPoints": [
-        {
-          "text": "4",
+          "text": "limits 0 and 2",
           "synonyms": [
-            "x",
-            " ",
-            "=",
-            " ",
-            "4"
+            "the curves meet at x = 0 and x = 2"
           ],
           "mustInclude": true
         }
       ],
-      "acceptedAliases": [
-        "x = 4"
-      ],
       "mcq": {
-        "correct": "x = 4",
+        "correct": "$\\frac{8}{3}$",
         "distractors": [
-          "x = 5",
-          "x = 3",
-          "x = 16"
+          "$\\frac{16}{3}$",
+          "$\\frac{4}{3}$",
+          "$\\frac{32}{3}$"
         ]
       },
-      "explanation": "$32 = 2^5$, so $x + 1 = 5$ and $x = 4$. The answer $x = 5$ equates the exponent with 5 and forgets the $+1$.",
+      "explanation": "Set the curves equal: $x^2 = 4x - x^2$ gives $2x^2 - 4x = 0$, so the limits are $x = 0$ and $x = 2$. The lower curve is $y = x^2$, so the area is $\\int_0^2 (4x - x^2 - x^2)\\,dx = \\int_0^2 (4x - 2x^2)\\,dx = \\left[2x^2 - \\frac{2x^3}{3}\\right]_0^2 = 8 - \\frac{16}{3} = \\frac{8}{3}$. The answer $\\frac{16}{3}$ forgets that both $x^2$ terms are subtracted, and $\\frac{32}{3}$ forgets the factor of a half implied by the symmetry.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: applications of integration",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0006",
+      "front": "Solve $2\\cos^2 x - 5\\cos x + 2 = 0$ for $0 \\le x < 2\\pi$, giving your answers in terms of $\\pi$.",
+      "back": "$x = \\frac{\\pi}{3}$ and $x = \\frac{5\\pi}{3}$",
+      "keyPoints": [
+        {
+          "text": "cos x = 1/2",
+          "synonyms": [
+            "cosine x equals a half"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "cos x = 2 is rejected",
+          "synonyms": [
+            "no solution from cos x = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = pi/3 and 5pi/3",
+          "synonyms": [
+            "60 and 300 degrees"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = \\frac{\\pi}{3}, \\frac{5\\pi}{3}$",
+        "distractors": [
+          "$x = \\frac{\\pi}{3}$ only",
+          "$x = \\frac{\\pi}{6}, \\frac{11\\pi}{6}$",
+          "$x = \\frac{2\\pi}{3}, \\frac{4\\pi}{3}$"
+        ]
+      },
+      "explanation": "Let $c = \\cos x$. Then $2c^2 - 5c + 2 = 0$ factorises as $(2c - 1)(c - 2) = 0$, so $c = \\frac{1}{2}$ or $c = 2$. Since $|\\cos x| \\le 1$, the root $c = 2$ gives nothing, and $\\cos x = \\frac{1}{2}$ gives $x = \\frac{\\pi}{3}$ and $x = \\frac{5\\pi}{3}$. The answer $\\frac{\\pi}{6}, \\frac{11\\pi}{6}$ solves $\\sin x = \\frac{1}{2}$ instead, and $\\frac{2\\pi}{3}, \\frac{4\\pi}{3}$ solves $\\cos x = -\\frac{1}{2}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: trigonometric equations",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "Express $3\\cos\\theta + 4\\sin\\theta$ in the form $R\\cos(\\theta - \\alpha)$ with $R > 0$ and $0 < \\alpha < \\frac{\\pi}{2}$. Give $R$ and $\\tan\\alpha$.",
+      "back": "$R = 5$ and $\\tan\\alpha = \\frac{4}{3}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "R = 5",
+          "synonyms": [
+            "R is 5",
+            "root(3^2 + 4^2)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "tan alpha = 4/3",
+          "synonyms": [
+            "alpha = arctan(4/3)",
+            "alpha about 0.927 radians"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$R = 5$, $\\tan\\alpha = \\frac{4}{3}$",
+        "distractors": [
+          "$R = 5$, $\\tan\\alpha = \\frac{3}{4}$",
+          "$R = 7$, $\\tan\\alpha = \\frac{4}{3}$",
+          "$R = 25$, $\\tan\\alpha = \\frac{4}{3}$"
+        ]
+      },
+      "explanation": "Expanding $R\\cos(\\theta - \\alpha) = R\\cos\\theta\\cos\\alpha + R\\sin\\theta\\sin\\alpha$ and comparing coefficients gives $R\\cos\\alpha = 3$ and $R\\sin\\alpha = 4$. Hence $R = \\sqrt{3^2 + 4^2} = 5$ and $\\tan\\alpha = \\frac{4}{3}$. The answer $\\tan\\alpha = \\frac{3}{4}$ swaps the coefficients, which gives $R\\cos(\\theta + \\alpha)$ instead.",
+      "numeric": {
+        "value": 5,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: trigonometric identities",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "The tangent to $y = x^3 - 3x$ at the point $P$ where $x = 2$ meets the curve again at $Q$. Find the coordinates of $Q$.",
+      "back": "$(-4, -52)$",
+      "keyPoints": [
+        {
+          "text": "tangent is y = 9x - 16",
+          "synonyms": [
+            "gradient 9 at x = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = 2 is a repeated root",
+          "synonyms": [
+            "(x - 2)^2 (x + 4)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "Q is (-4, -52)",
+          "synonyms": [
+            "x = -4 and y = -52"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$(-4, -52)$",
+        "distractors": [
+          "$(-4, -76)$",
+          "$(4, 52)$",
+          "$(-2, -2)$"
+        ]
+      },
+      "explanation": "At $x = 2$, $y = 8 - 6 = 2$ and $\\frac{dy}{dx} = 3x^2 - 3 = 9$, so the tangent is $y - 2 = 9(x - 2)$, that is $y = 9x - 16$. Intersecting with the curve gives $x^3 - 12x + 16 = 0$. Because the line is a tangent, $x = 2$ is a repeated root, so the cubic factorises as $(x - 2)^2(x + 4)$ and the third root is $x = -4$, giving $y = -64 + 12 = -52$. Using the repeated root is far quicker than dividing out.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: differentiation and coordinate geometry",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "The line $y = 2x + 1$ is a tangent to the circle $x^2 + y^2 = k$. Find the value of $k$.",
+      "back": "$k = \\frac{1}{5}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "perpendicular distance from the origin equals the radius",
+          "synonyms": [
+            "distance from centre to tangent is the radius"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "1/5",
+          "synonyms": [
+            "one fifth",
+            "0.2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$k = \\frac{1}{5}$",
+        "distractors": [
+          "$k = \\frac{1}{\\sqrt{5}}$",
+          "$k = 5$",
+          "$k = \\frac{1}{25}$"
+        ]
+      },
+      "explanation": "The circle has centre $(0, 0)$ and radius $\\sqrt{k}$. For the line $2x - y + 1 = 0$ to be a tangent, its perpendicular distance from the centre must equal the radius: $\\frac{|2(0) - 0 + 1|}{\\sqrt{2^2 + (-1)^2}} = \\frac{1}{\\sqrt{5}}$. Squaring gives $k = \\frac{1}{5}$. The answer $\\frac{1}{\\sqrt{5}}$ forgets that $k$ is the radius squared, not the radius.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: coordinate geometry of circles",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "In a circle with centre $O$, the chord $AB$ subtends an angle of $130^\\circ$ at $O$. The point $C$ lies on the major arc $AB$, and the tangent at $A$ meets the line $AB$ extended beyond $A$. Find angle $ACB$ and the angle between the tangent at $A$ and the chord $AB$.",
+      "back": "Angle $ACB = 65^\\circ$ and the angle between the tangent and $AB$ is also $65^\\circ$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "angle at the circumference is half the angle at the centre",
+          "synonyms": [
+            "ACB is 65"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "65",
+          "synonyms": [
+            "65 degrees"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the alternate segment theorem",
+          "synonyms": [
+            "tangent-chord angle equals the angle in the alternate segment",
+            "the tangent-chord angle is also 65"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "both are $65^\\circ$",
+        "distractors": [
+          "$65^\\circ$ and $115^\\circ$",
+          "$115^\\circ$ and $65^\\circ$",
+          "both are $130^\\circ$"
+        ]
+      },
+      "explanation": "$C$ is on the major arc, so angle $ACB$ subtends the minor arc $AB$ and is half the angle at the centre: $\\frac{1}{2} \\times 130^\\circ = 65^\\circ$. The alternate segment theorem says the angle between a tangent and a chord equals the angle that chord subtends in the alternate segment, which is exactly angle $ACB$, so the tangent-chord angle is also $65^\\circ$. The distractor $115^\\circ$ is half the reflex angle $230^\\circ$, which would be the angle at a point on the minor arc.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: circle theorems",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "Solve $2^{2x+1} - 9 \\times 2^x + 4 = 0$.",
+      "back": "$x = -1$ and $x = 2$",
+      "keyPoints": [
+        {
+          "text": "substitute u = 2^x",
+          "synonyms": [
+            "let u = 2^x",
+            "quadratic in 2^x"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2u^2 - 9u + 4 = 0",
+          "synonyms": [
+            "(2u - 1)(u - 4) = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = -1 and x = 2",
+          "synonyms": [
+            "minus one and two"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = -1$ and $x = 2$",
+        "distractors": [
+          "$x = 1$ and $x = 2$",
+          "$x = -1$ only",
+          "$x = \\frac{1}{2}$ and $x = 4$"
+        ]
+      },
+      "explanation": "Write $2^{2x+1} = 2 \\times (2^x)^2$ and substitute $u = 2^x$: $2u^2 - 9u + 4 = 0$, so $(2u - 1)(u - 4) = 0$ and $u = \\frac{1}{2}$ or $u = 4$. Then $2^x = 2^{-1}$ gives $x = -1$ and $2^x = 2^2$ gives $x = 2$. The distractor $x = \\frac{1}{2}$ and $x = 4$ stops at the values of $u$ without converting back, and $x = 1$ comes from $2^x = \\frac{1}{2}$ read as $x = 1$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: indices and exponentials",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "Find the range of values of $k$ for which $y = x^3 - 3x + k$ has three distinct real roots.",
+      "back": "$-2 < k < 2$",
+      "keyPoints": [
+        {
+          "text": "stationary points at x = -1 and x = 1",
+          "synonyms": [
+            "differentiate and solve 3x^2 - 3 = 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "local maximum 2 + k and local minimum k - 2",
+          "synonyms": [
+            "values at the stationary points"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "maximum positive and minimum negative",
+          "synonyms": [
+            "-2 < k < 2",
+            "k is strictly between -2 and 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$-2 < k < 2$",
+        "distractors": [
+          "$k < -2$ or $k > 2$",
+          "$-2 \\le k \\le 2$",
+          "$0 < k < 2$"
+        ]
+      },
+      "explanation": "$\\frac{dy}{dx} = 3x^2 - 3 = 0$ at $x = \\pm 1$. The values are $y(-1) = -1 + 3 + k = 2 + k$ (a maximum) and $y(1) = 1 - 3 + k = k - 2$ (a minimum). Three distinct real roots need the maximum above the axis and the minimum below it, so $2 + k > 0$ and $k - 2 < 0$, giving $-2 < k < 2$. At the endpoints one stationary point touches the axis and there are only two distinct roots, which is why the inequalities are strict.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: sketching graphs and number of roots",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0013",
+      "front": "Evaluate $\\int_0^1 x e^{2x}\\,dx$, giving an exact answer.",
+      "back": "$\\frac{e^2 + 1}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "integration by parts",
+          "synonyms": [
+            "u = x, dv/dx = e^(2x)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(e^2 + 1)/4",
+          "synonyms": [
+            "e squared plus 1 all over 4",
+            "(1/4)e^2 + 1/4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{e^2 + 1}{4}$",
+        "distractors": [
+          "$\\frac{e^2 - 1}{4}$",
+          "$\\frac{e^2}{2}$",
+          "$\\frac{e^2 + 1}{2}$"
+        ]
+      },
+      "explanation": "With $u = x$ and $\\frac{dv}{dx} = e^{2x}$, integration by parts gives $\\left[\\frac{xe^{2x}}{2}\\right]_0^1 - \\int_0^1 \\frac{e^{2x}}{2}\\,dx = \\frac{e^2}{2} - \\left[\\frac{e^{2x}}{4}\\right]_0^1 = \\frac{e^2}{2} - \\frac{e^2}{4} + \\frac{1}{4} = \\frac{e^2 + 1}{4}$. The sign in $\\frac{e^2 - 1}{4}$ comes from evaluating $\\left[\\frac{e^{2x}}{4}\\right]_0^1$ as $\\frac{e^2}{4} + \\frac{1}{4}$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: integration by parts",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0014",
+      "front": "The line $y = x + c$ cuts the curve $y = x^2 - 3x + 5$ in two distinct points. Find the range of values of $c$.",
+      "back": "$c > 1$",
+      "keyPoints": [
+        {
+          "text": "x^2 - 4x + (5 - c) = 0",
+          "synonyms": [
+            "equate and rearrange"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "discriminant greater than zero",
+          "synonyms": [
+            "16 - 4(5 - c) > 0"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "c > 1",
+          "synonyms": [
+            "c is greater than 1"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$c > 1$",
+        "distractors": [
+          "$c < 1$",
+          "$c > -1$",
+          "$c \\ge 1$"
+        ]
+      },
+      "explanation": "Equating gives $x + c = x^2 - 3x + 5$, so $x^2 - 4x + (5 - c) = 0$. Two distinct intersections need $\\Delta = 16 - 4(5 - c) > 0$, that is $4c - 4 > 0$, so $c > 1$. At $c = 1$ the line is a tangent and there is one point of contact, so the inequality is strict. The answer $c > -1$ comes from misreading the constant as $5 + c$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: simultaneous equations",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0015",
+      "front": "Solve $\\frac{x - 1}{x + 2} \\le 2$.",
+      "back": "$x \\le -5$ or $x > -2$",
+      "keyPoints": [
+        {
+          "text": "do not multiply by x + 2",
+          "synonyms": [
+            "the sign of x + 2 is unknown",
+            "bring everything to one side"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(x + 5)/(x + 2) >= 0",
+          "synonyms": [
+            "subtract 2 and simplify to a single fraction"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x <= -5 or x > -2",
+          "synonyms": [
+            "x is at most -5 or strictly greater than -2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x \\le -5$ or $x > -2$",
+        "distractors": [
+          "$-5 \\le x < -2$",
+          "$x \\ge -5$ and $x > -2$",
+          "$x \\le -5$ or $x \\ge -2$"
+        ]
+      },
+      "explanation": "Multiplying by $x + 2$ is illegal because its sign is unknown. Instead subtract 2: $\\frac{x - 1 - 2x - 4}{x + 2} \\le 0$, so $\\frac{-x - 5}{x + 2} \\le 0$, and multiplying through by $-1$ reverses the inequality to $\\frac{x + 5}{x + 2} \\ge 0$. A sign chart on the critical values $-5$ and $-2$ gives $x \\le -5$ or $x > -2$; $x = -5$ is included because the numerator vanishes there, but $x = -2$ is excluded because the fraction is undefined.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: algebraic inequalities",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0016",
+      "front": "The first, second and fifth terms of an arithmetic progression with non-zero common difference form a geometric progression. Find the common ratio of that geometric progression.",
+      "back": "3",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "terms a, a + d, a + 4d",
+          "synonyms": [
+            "let the first term be a and the common difference d"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "d = 2a",
+          "synonyms": [
+            "(a + d)^2 = a(a + 4d)"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3",
+          "synonyms": [
+            "the common ratio is 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "3",
+        "distractors": [
+          "2",
+          "4",
+          "5"
+        ]
+      },
+      "explanation": "Let the progression be $a, a + d, a + 2d, \\ldots$. The three terms are $a$, $a + d$ and $a + 4d$, and for these to be geometric the square of the middle one must equal the product of the outer two: $(a + d)^2 = a(a + 4d)$, so $a^2 + 2ad + d^2 = a^2 + 4ad$, giving $d^2 = 2ad$. Since $d \\ne 0$, $d = 2a$, and the common ratio is $\\frac{a + d}{a} = \\frac{3a}{a} = 3$. For example $1, 3, 5, 7, 9$ has the subsequence $1, 3, 9$.",
+      "numeric": {
+        "value": 3,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: sequences and series",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0017",
+      "front": "A histogram has class intervals 0-10, 10-20 and 20-40 with frequency densities 3, 5 and 2 per unit on the horizontal axis. Find the total frequency and state the modal class.",
+      "back": "Total frequency 120; the modal class is 10-20.",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "frequency equals frequency density times class width",
+          "synonyms": [
+            "area of the bar is the frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "30, 50 and 40",
+          "synonyms": [
+            "10 x 3, 10 x 5, 20 x 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "total frequency 120",
+          "synonyms": [
+            "120"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "modal class is 10-20",
+          "synonyms": [
+            "the class with the greatest frequency density",
+            "the tallest bar"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "120, modal class 10-20",
+        "distractors": [
+          "10, modal class 20-40",
+          "120, modal class 20-40",
+          "100, modal class 10-20"
+        ]
+      },
+      "explanation": "On a histogram the frequency of a class is the area of its bar, so frequency density multiplied by class width: $10 \\times 3 = 30$, $10 \\times 5 = 50$ and $20 \\times 2 = 40$, totalling 120. The modal class is the one with the greatest frequency density, that is the tallest bar, which is 10-20 at density 5 - not 20-40, whose larger frequency of 40 comes only from being twice as wide.",
+      "numeric": {
+        "value": 120,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: statistics and data representation",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0018",
+      "front": "Find the remainder when $2^{50}$ is divided by 7.",
+      "back": "4",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "2^3 = 8 is congruent to 1 modulo 7",
+          "synonyms": [
+            "the powers of 2 repeat with period 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "50 = 3 x 16 + 2",
+          "synonyms": [
+            "reduce the exponent modulo 3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "4",
+          "synonyms": [
+            "the remainder is 4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "4",
+        "distractors": [
+          "1",
+          "2",
+          "6"
+        ]
+      },
+      "explanation": "$2^3 = 8 \\equiv 1 \\pmod 7$, so the residues of $2^n$ repeat with period 3: $2, 4, 1, 2, 4, 1, \\ldots$. Writing $50 = 3 \\times 16 + 2$ gives $2^{50} \\equiv (2^3)^{16} \\times 2^2 \\equiv 1^{16} \\times 4 \\equiv 4 \\pmod 7$. The answer 1 is the residue when the exponent is a multiple of 3, which is what a candidate who rounds $50$ down to $48$ and stops would get.",
       "numeric": {
         "value": 4,
         "tolerance": 0.01
       },
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Paper 1: indices",
+      "specRef": "Paper 1: number and divisibility",
       "tagRefs": [
         "tmua",
-        "paper-1"
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0019",
+      "front": "Functions are defined by $f(x) = \\frac{1}{x - 1}$ for $x \\ne 1$ and $g(x) = \\sqrt{x + 3}$ for $x \\ge -3$. Find the range of the composite function $f(g(x))$.",
+      "back": "$f(g(x)) \\le -1$ or $f(g(x)) > 0$, that is $(-\\infty, -1] \\cup (0, \\infty)$",
+      "keyPoints": [
+        {
+          "text": "g(x) >= 0",
+          "synonyms": [
+            "the range of g is the non-negative reals"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "u = 1 must be excluded",
+          "synonyms": [
+            "the input 1 is not in the domain of f"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the values run down to -1 on [0, 1)",
+          "synonyms": [
+            "at u = 0 the value is -1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(-infinity, -1] union (0, infinity)",
+          "synonyms": [
+            "f(g(x)) <= -1 or f(g(x)) > 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$(-\\infty, -1] \\cup (0, \\infty)$",
+        "distractors": [
+          "$(-\\infty, 0) \\cup (0, \\infty)$",
+          "$[-1, \\infty)$",
+          "$(0, \\infty)$"
+        ]
+      },
+      "explanation": "$g$ outputs $u = \\sqrt{x+3} \\ge 0$, so $f(g(x)) = \\frac{1}{u - 1}$ with $u \\ge 0$ and $u \\ne 1$. On $0 \\le u < 1$ the denominator runs from $-1$ up to $0^-$, so the fraction runs from $-1$ down to $-\\infty$, giving $(-\\infty, -1]$. On $u > 1$ it runs from $+\\infty$ down towards $0$, giving $(0, \\infty)$. The trap is forgetting that $u$ never reaches $1$, so the function has a vertical asymptote inside its domain of inputs, and that $u$ starts at $0$ rather than at $-\\infty$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: functions, domain and range",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0020",
+      "front": "Let $f(x) = |x^2 - 4x + 3|$. State how many solutions the equation $f(x) = k$ has when $k > 1$, when $k = 1$, when $0 < k < 1$ and when $k = 0$.",
+      "back": "Two solutions when $k > 1$, three when $k = 1$, four when $0 < k < 1$, and two when $k = 0$.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "x^2 - 4x + 3 = (x - 2)^2 - 1",
+          "synonyms": [
+            "complete the square",
+            "minimum -1 at x = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "reflecting the part below the axis makes a peak of height 1 at x = 2",
+          "synonyms": [
+            "the modulus creates a local maximum at x = 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2, 3, 4, 2",
+          "synonyms": [
+            "two, three, four, two"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "2, 3, 4, 2",
+        "distractors": [
+          "2, 3, 4, 1",
+          "2, 2, 4, 2",
+          "4, 3, 2, 2"
+        ]
+      },
+      "explanation": "The quadratic is $(x-2)^2 - 1$, with roots at $x = 1$ and $x = 3$ and minimum $-1$ at $x = 2$. Taking the modulus reflects the dip between the roots, so the graph has a local maximum of height 1 at $x = 2$ and touches zero at $x = 1$ and $x = 3$. A horizontal line at height $k$ therefore meets the graph twice above the peak, three times exactly at the peak, four times between the peak and zero, and twice at $k = 0$ where it touches the two roots.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: sketching graphs and transformations",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0021",
+      "front": "Find the exact value of $\\sum_{n=1}^{\\infty} \\frac{1}{n(n + 2)}$.",
+      "back": "$\\frac{3}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "partial fractions give (1/2)(1/n - 1/(n + 2))",
+          "synonyms": [
+            "split into partial fractions"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "telescoping with two surviving terms",
+          "synonyms": [
+            "the cancellation leaves 1/2 and 1/4"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "3/4",
+          "synonyms": [
+            "three quarters"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{3}{4}$",
+        "distractors": [
+          "$\\frac{1}{2}$",
+          "$1$",
+          "$\\frac{1}{4}$"
+        ]
+      },
+      "explanation": "In partial fractions $\\frac{1}{n(n+2)} = \\frac{1}{2}\\left(\\frac{1}{n} - \\frac{1}{n+2}\\right)$. Because the gap is 2 rather than 1, the sum telescopes leaving the first two positive terms: $\\frac{1}{2}\\left(1 + \\frac{1}{2} + \\frac{1}{3} - \\frac{1}{3} + \\ldots\\right) = \\frac{1}{2}\\left(1 + \\frac{1}{2}\\right) = \\frac{3}{4}$. The answer $\\frac{1}{2}$ is what you get from $\\sum \\frac{1}{n(n+1)}$, which leaves only one surviving term.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: series and partial fractions",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
+      ]
+    },
+    {
+      "id": "0022",
+      "front": "In triangle $ABC$, $AB = 7$, $AC = 5$ and angle $BAC = 60^\\circ$. Find the exact length of $BC$ and the exact area of the triangle.",
+      "back": "$BC = \\sqrt{39}$ and the area is $\\frac{35\\sqrt{3}}{4}$",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "cosine rule",
+          "synonyms": [
+            "BC^2 = 49 + 25 - 2 x 7 x 5 x cos 60"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "BC = sqrt(39)",
+          "synonyms": [
+            "root 39"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "area = (35 root 3)/4",
+          "synonyms": [
+            "half ab sin C",
+            "35 root 3 over 4"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$BC = \\sqrt{39}$, area $\\frac{35\\sqrt{3}}{4}$",
+        "distractors": [
+          "$BC = \\sqrt{39}$, area $\\frac{35\\sqrt{3}}{2}$",
+          "$BC = \\sqrt{89}$, area $\\frac{35\\sqrt{3}}{4}$",
+          "$BC = \\sqrt{39}$, area $\\frac{35}{4}$"
+        ]
+      },
+      "explanation": "The cosine rule gives $BC^2 = 7^2 + 5^2 - 2(7)(5)\\cos 60^\\circ = 49 + 25 - 35 = 39$, so $BC = \\sqrt{39}$. The area is $\\frac{1}{2} ab \\sin C = \\frac{1}{2}(7)(5)\\frac{\\sqrt{3}}{2} = \\frac{35\\sqrt{3}}{4}$. The distractor $\\sqrt{89}$ uses a plus sign in the cosine rule, which is the error to watch for when the included angle is obtuse rather than acute.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: trigonometry in triangles",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0023",
+      "front": "Find the coordinates of the maximum point of the curve $y = \\frac{\\ln x}{x}$ for $x > 0$.",
+      "back": "$\\left(e, \\frac{1}{e}\\right)$",
+      "keyPoints": [
+        {
+          "text": "quotient rule gives (1 - ln x)/x^2",
+          "synonyms": [
+            "differentiate using the quotient rule"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "ln x = 1 so x = e",
+          "synonyms": [
+            "the stationary point is at x = e"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(e, 1/e)",
+          "synonyms": [
+            "y = 1/e",
+            "e comma e to the minus one"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\left(e, \\frac{1}{e}\\right)$",
+        "distractors": [
+          "$(1, 0)$",
+          "$(e, e)$",
+          "$\\left(\\frac{1}{e}, -e\\right)$"
+        ]
+      },
+      "explanation": "The quotient rule gives $\\frac{dy}{dx} = \\frac{\\frac{1}{x} \\cdot x - \\ln x}{x^2} = \\frac{1 - \\ln x}{x^2}$. This is zero when $\\ln x = 1$, so $x = e$, and $y = \\frac{\\ln e}{e} = \\frac{1}{e}$. For $x < e$ the numerator is positive and for $x > e$ negative, so it is a maximum. The point $(1, 0)$ is the $x$-intercept, which is where the numerator - not the derivative - vanishes.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: differentiation",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0024",
+      "front": "Solve $\\log_2 (x + 1) + \\log_2 (x - 1) = 3$.",
+      "back": "$x = 3$ only",
+      "keyPoints": [
+        {
+          "text": "combine the logs to get log_2 (x^2 - 1) = 3",
+          "synonyms": [
+            "addition law"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x^2 - 1 = 8 so x^2 = 9",
+          "synonyms": [
+            "x = 3 or x = -3"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "x = -3 is rejected",
+          "synonyms": [
+            "check against the domain x > 1",
+            "only x = 3"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$x = 3$ only",
+        "distractors": [
+          "$x = 3$ and $x = -3$",
+          "$x = \\pm\\sqrt{10}$",
+          "$x = 4$"
+        ]
+      },
+      "explanation": "The addition law gives $\\log_2 (x^2 - 1) = 3$, so $x^2 - 1 = 8$ and $x = \\pm 3$. Both logarithms must be defined, which needs $x + 1 > 0$ and $x - 1 > 0$, that is $x > 1$, so $x = -3$ is rejected and $x = 3$ is the only solution. Checking back: $\\log_2 4 + \\log_2 2 = 2 + 1 = 3$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: logarithms",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0025",
+      "front": "A bag holds 4 red and 6 blue counters. Three counters are drawn at random without replacement. Find the probability that at least one of them is red.",
+      "back": "$\\frac{5}{6}$",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "use 1 minus the probability that all three are blue",
+          "synonyms": [
+            "the complement",
+            "at least one becomes none"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(6/10)(5/9)(4/8) = 1/6",
+          "synonyms": [
+            "the probability all three are blue"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "5/6",
+          "synonyms": [
+            "five sixths"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "5/6",
+        "0.833"
+      ],
+      "mcq": {
+        "correct": "$\\frac{5}{6}$",
+        "distractors": [
+          "$\\frac{1}{6}$",
+          "$\\frac{2}{5}$",
+          "$\\frac{3}{5}$"
+        ]
+      },
+      "explanation": "At least one red is the complement of all three blue: $1 - \\frac{6}{10} \\times \\frac{5}{9} \\times \\frac{4}{8} = 1 - \\frac{120}{720} = 1 - \\frac{1}{6} = \\frac{5}{6}$. The distractor $\\frac{1}{6}$ is the complement itself, and $\\frac{3}{5}$ is the single-draw probability of red applied as if the draws were independent and repeated.",
+      "numeric": {
+        "value": 0.8333,
+        "tolerance": 0.002
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: probability without replacement",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "hard"
+      ]
+    },
+    {
+      "id": "0026",
+      "front": "The point $(2, 5)$ lies on the graph of $y = f(x)$. Find the coordinates of its image on the graph of $y = 3f(2x - 4) + 1$, and describe the transformation as a sequence.",
+      "back": "$(3, 16)$: a stretch of scale factor $\\frac{1}{2}$ parallel to the $x$-axis, a translation of 2 in the positive $x$ direction, a stretch of scale factor 3 parallel to the $y$ axis and a translation of 1 in the positive $y$ direction.",
+      "keyPoints": [
+        {
+          "text": "solve 2x - 4 = 2 to get x = 3",
+          "synonyms": [
+            "the inside of f must still equal 2"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "y = 3 x 5 + 1 = 16",
+          "synonyms": [
+            "the outside operations act on 5"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "(3, 16)",
+          "synonyms": [
+            "the image is 3 comma 16"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "2x - 4 = 2(x - 2)",
+          "synonyms": [
+            "a horizontal stretch of scale factor a half then a translation of 2"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$(3, 16)$",
+        "distractors": [
+          "$(0, 16)$",
+          "$(8, 16)$",
+          "$(3, 10)$"
+        ]
+      },
+      "explanation": "The output is unchanged only where $2x - 4 = 2$, so $x = 3$; the new $y$ is $3f(2) + 1 = 3(5) + 1 = 16$. Writing $2x - 4 = 2(x - 2)$ fixes the order of the horizontal maps: scale $x$ by $\\frac{1}{2}$ first, then translate by $+2$. Doing them the other way round moves the point to $x = 0$, which is the first distractor. Everything outside $f$ acts on the $y$ coordinate in the order written.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Paper 1: transformations of graphs",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "very-hard"
       ]
     }
   ]

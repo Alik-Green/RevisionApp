@@ -182,6 +182,326 @@
         "computer-science",
         "component-02"
       ]
+    },
+    {
+      "id": "0006",
+      "front": "What is a greedy algorithm, and give a case where the greedy approach fails.",
+      "back": "One that makes the locally best choice at each step without revisiting it. It fails for coin change when the denominations are badly chosen: with coins 1, 3 and 4, making 6 greedily gives 4 + 1 + 1, but 3 + 3 uses fewer coins.",
+      "keyPoints": [
+        {
+          "text": "takes the locally best choice at each step",
+          "synonyms": [
+            "locally optimal",
+            "never revisits a decision"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it can miss the global optimum",
+          "synonyms": [
+            "the greedy choice is not always right"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a counter-example",
+          "synonyms": [
+            "coin change with awkward denominations",
+            "1, 3 and 4 making 6"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Locally best choice each step; fails on coin change with coins 1, 3, 4",
+        "distractors": [
+          "Explores every branch; fails only on undecidable problems",
+          "Splits the problem in half; fails when subproblems overlap",
+          "Stores previous results; fails when memory runs out"
+        ]
+      },
+      "explanation": "Greedy works for standard coin systems such as 1, 2, 5, 10, 20, 50 but not in general: for 6 with coins 1, 3, 4 it takes 4 + 1 + 1 (three coins) when 3 + 3 needs only two. Dijkstra's shortest path is a greedy algorithm that does work, because its greedy choice can be proved safe - which is the difference between a technique and a guarantee.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0007",
+      "front": "What distinguishes dynamic programming from divide and conquer?",
+      "back": "In divide and conquer the subproblems are independent; in dynamic programming they overlap, so results are stored and reused rather than recomputed.",
+      "keyPoints": [
+        {
+          "text": "divide and conquer has independent subproblems",
+          "synonyms": [
+            "the subproblems do not overlap"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "dynamic programming has overlapping subproblems",
+          "synonyms": [
+            "the same subproblem recurs"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "results are stored and reused",
+          "synonyms": [
+            "memoisation",
+            "a table of solved subproblems"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Dynamic programming reuses overlapping subproblems; divide and conquer does not have them",
+        "distractors": [
+          "Dynamic programming always uses recursion and divide and conquer never does",
+          "Dynamic programming is always faster",
+          "Divide and conquer stores results and dynamic programming does not"
+        ]
+      },
+      "explanation": "Merge sort is divide and conquer: its two halves share no work. Naive recursive Fibonacci splits the same way but recomputes fib(3) many times over, which is what makes it exponential. Dynamic programming keeps each subproblem's answer, turning that exponential into linear. Overlapping subproblems plus optimal substructure is the standard test for whether DP applies.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0008",
+      "front": "A finite state machine accepts binary strings that contain the substring 'ab'. Describe its states and transitions.",
+      "back": "Three states: S0 (start, no progress), S1 (an 'a' has just been seen) and S2 (accepting, 'ab' has been seen). S0 goes to S1 on 'a' and stays on 'b'; S1 goes to S2 on 'b' and stays on 'a'; S2 is accepting and stays there on any input.",
+      "answerType": "SELF_GRADE",
+      "keyPoints": [
+        {
+          "text": "three states",
+          "synonyms": [
+            "start, part-matched, accepting"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an accepting state that cannot be left",
+          "synonyms": [
+            "once ab is seen the string is accepted"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a transition on a from the start to the part-matched state",
+          "synonyms": [
+            "a begins the pattern"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "a transition on b from part-matched to accepting",
+          "synonyms": [
+            "b completes the pattern"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "explanation": "The key design decision is that the accepting state has a self-loop on both symbols: once 'ab' has appeared, later input cannot un-accept the string. The state S1 also needs a self-loop on 'a', because 'aa' still leaves the machine part-way through a possible match. Missing that self-loop is the standard fault, and it makes the machine reject 'aab'.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0009",
+      "front": "How does backtracking improve on brute force?",
+      "back": "It abandons a partial solution as soon as it can be shown that no completion can work, pruning whole branches of the search tree instead of exploring them.",
+      "keyPoints": [
+        {
+          "text": "it abandons a partial solution early",
+          "synonyms": [
+            "pruning",
+            "cuts off branches"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it tests whether a completion is still possible",
+          "synonyms": [
+            "a feasibility test at each step"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it can still be exponential in the worst case",
+          "synonyms": [
+            "pruning does not change the worst case"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "It prunes branches that cannot lead to a solution",
+        "distractors": [
+          "It always finds a solution in polynomial time",
+          "It never uses recursion",
+          "It stores previous solutions in a table"
+        ]
+      },
+      "explanation": "The N-queens problem is the classic case: placing a queen that attacks an earlier one makes the whole rest of that branch pointless, so it is abandoned immediately. Backtracking is still exhaustive in principle and can be exponential - pruning reduces the constant and often the effective size dramatically, but it is not a complexity guarantee. Storing previous solutions is dynamic programming, not backtracking.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0010",
+      "front": "What is a heuristic, and what is the risk of using one?",
+      "back": "A rule of thumb that finds a good solution quickly without guaranteeing the best one. The risk is that the answer may be arbitrarily far from optimal, and there is usually no bound on how far.",
+      "keyPoints": [
+        {
+          "text": "a rule of thumb that is fast but not guaranteed optimal",
+          "synonyms": [
+            "fast but approximate",
+            "not guaranteed best"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the result may be far from optimal",
+          "synonyms": [
+            "no guarantee on quality"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an example",
+          "synonyms": [
+            "nearest neighbour for the travelling salesman",
+            "A* search"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Fast but not guaranteed optimal; the answer may be far from the best",
+        "distractors": [
+          "Always optimal but slow",
+          "A proof technique for showing an algorithm correct",
+          "A method that always finds the worst solution first"
+        ]
+      },
+      "explanation": "The nearest-neighbour heuristic for the travelling salesman problem is the standard illustration: it is quick, but on some arrangements of cities it produces a tour twice as long as the shortest. Heuristics are used precisely when the exact problem is too slow to solve - the travelling salesman problem has $n!$ possible tours.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "What is the difference between memoisation and tabulation?",
+      "back": "Both store subproblem results. Memoisation fills the table lazily from the top down using recursion; tabulation fills it in advance from the bottom up using iteration.",
+      "keyPoints": [
+        {
+          "text": "memoisation is top-down and recursive",
+          "synonyms": [
+            "computed on demand",
+            "lazy"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "tabulation is bottom-up and iterative",
+          "synonyms": [
+            "filled in order in advance"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "both store results to avoid recomputation",
+          "synonyms": [
+            "they are two forms of dynamic programming"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Memoisation is top-down recursion, tabulation is bottom-up iteration",
+        "distractors": [
+          "Memoisation is bottom-up, tabulation is top-down",
+          "Memoisation stores results and tabulation recomputes them",
+          "They are two names for the same thing with no difference"
+        ]
+      },
+      "explanation": "Tabulation avoids the cost and stack-depth risk of deep recursion and only computes states that are actually reachable, while memoisation can skip whole regions of the table that the recursion never reaches. For a problem such as the knapsack, where every state is needed anyway, tabulation is usually the cleaner choice.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "How many total function calls does a naive recursive `fib(5)` make, counting the original call?",
+      "back": "15",
+      "answerType": "NUMERIC",
+      "keyPoints": [
+        {
+          "text": "15",
+          "synonyms": [
+            "fifteen calls"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "count the whole call tree",
+          "synonyms": [
+            "each call to fib(n) with n >= 2 makes two more"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "15",
+        "distractors": [
+          "5",
+          "10",
+          "32"
+        ]
+      },
+      "explanation": "Letting $T(n)$ be the number of calls, $T(n) = 1 + T(n-1) + T(n-2)$ with $T(0) = T(1) = 1$, giving $T(2) = 3$, $T(3) = 5$, $T(4) = 9$ and $T(5) = 15$. The count grows like the Fibonacci numbers themselves, which is the concrete version of the $O(2^n)$ claim. Memoising each value would reduce this to 5 distinct computations.",
+      "numeric": {
+        "value": 15,
+        "tolerance": 0.01
+      },
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "2.1 Computational thinking",
+      "tagRefs": [
+        "ocr",
+        "a-level",
+        "computer-science",
+        "component-02"
+      ]
     }
   ]
 }

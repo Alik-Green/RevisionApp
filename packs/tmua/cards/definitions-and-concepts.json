@@ -4,18 +4,14 @@
   "cards": [
     {
       "id": "0001",
-      "front": "Define the contrapositive of a conditional statement.",
-      "back": "The contrapositive of $P \\Rightarrow Q$ is $\\neg Q \\Rightarrow \\neg P$. It is always logically equivalent to the original statement.",
+      "front": "Define the contrapositive of a conditional statement, and say why it matters.",
+      "back": "The contrapositive of $P \\Rightarrow Q$ is $\\neg Q \\Rightarrow \\neg P$. It always has the same truth value as the original, so proving it proves the original.",
       "keyPoints": [
         {
-          "text": "negate Q then negate P",
+          "text": "negate both parts and reverse them",
           "synonyms": [
             "not Q implies not P"
           ],
-          "mustInclude": true
-        },
-        {
-          "text": "the two are reversed",
           "mustInclude": true
         },
         {
@@ -24,12 +20,24 @@
             "same truth value"
           ],
           "mustInclude": true
+        },
+        {
+          "text": "proving the contrapositive is a legitimate proof of the original",
+          "synonyms": [
+            "it is a valid proof strategy"
+          ],
+          "mustInclude": true
         }
       ],
-      "acceptedAliases": [
-        "\u00acQ \u21d2 \u00acP"
-      ],
-      "explanation": "Because they always share a truth value, proving the contrapositive is a legitimate way to prove the original statement.",
+      "mcq": {
+        "correct": "$\\neg Q \\Rightarrow \\neg P$, always equivalent to $P \\Rightarrow Q$",
+        "distractors": [
+          "$Q \\Rightarrow P$, always equivalent to $P \\Rightarrow Q$",
+          "$\\neg P \\Rightarrow \\neg Q$, always equivalent to $P \\Rightarrow Q$",
+          "$\\neg Q \\Rightarrow \\neg P$, equivalent only when $P$ is true"
+        ]
+      },
+      "explanation": "Because the equivalence is unconditional, the contrapositive is a genuine alternative route to a proof and is often the easier one: 'if $3n + 2$ is odd then $n$ is odd' is awkward forwards but immediate as 'if $n$ is even then $3n + 2$ is even'.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: logic",
       "tagRefs": [
@@ -40,25 +48,47 @@
     },
     {
       "id": "0002",
-      "front": "Define the converse of a conditional statement.",
-      "back": "The converse of $P \\Rightarrow Q$ is $Q \\Rightarrow P$. It is not logically equivalent to the original, so it may have a different truth value.",
+      "front": "Define the converse and the inverse of $P \\Rightarrow Q$, and say which pairs are equivalent.",
+      "back": "The converse is $Q \\Rightarrow P$ and the inverse is $\\neg P \\Rightarrow \\neg Q$. These two are equivalent to each other, and neither is equivalent to the original.",
       "keyPoints": [
         {
-          "text": "swap the hypothesis and the conclusion",
+          "text": "converse swaps the parts",
           "synonyms": [
             "Q implies P"
           ],
           "mustInclude": true
         },
         {
-          "text": "not equivalent to the original statement",
+          "text": "inverse negates both without swapping",
           "synonyms": [
-            "can have a different truth value"
+            "not P implies not Q"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "converse and inverse are equivalent to each other",
+          "synonyms": [
+            "they form one equivalent pair"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "neither is equivalent to the original",
+          "synonyms": [
+            "the original pairs with the contrapositive"
           ],
           "mustInclude": true
         }
       ],
-      "explanation": "Asserting the converse because the original is true is the fallacy of affirming the consequent.",
+      "mcq": {
+        "correct": "Converse and inverse are equivalent to each other; neither matches the original",
+        "distractors": [
+          "All four forms are equivalent",
+          "Converse and contrapositive are equivalent",
+          "Inverse and original are equivalent"
+        ]
+      },
+      "explanation": "The four forms split into two equivalence classes: $\\{P \\Rightarrow Q,\\ \\neg Q \\Rightarrow \\neg P\\}$ and $\\{Q \\Rightarrow P,\\ \\neg P \\Rightarrow \\neg Q\\}$. Taking the contrapositive of the inverse gives the converse, which is why the second pair travels together. Confusing the classes is the fallacy of affirming the consequent.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: logic",
       "tagRefs": [
@@ -69,28 +99,42 @@
     },
     {
       "id": "0003",
-      "front": "Define the inverse of a conditional statement, and say what it is equivalent to.",
-      "back": "The inverse of $P \\Rightarrow Q$ is $\\neg P \\Rightarrow \\neg Q$. It is equivalent to the converse, and not to the original statement.",
+      "front": "What does 'A is necessary for B' mean as an implication, and how does it differ from 'A is sufficient for B'?",
+      "back": "'A is necessary for B' means $B \\Rightarrow A$: B cannot hold without A. 'A is sufficient for B' means $A \\Rightarrow B$: A alone guarantees B. A condition may be one, both or neither.",
       "keyPoints": [
         {
-          "text": "negate both parts without reversing them",
+          "text": "necessary means B implies A",
           "synonyms": [
-            "not P implies not Q"
+            "B cannot hold without A"
           ],
           "mustInclude": true
         },
         {
-          "text": "equivalent to the converse",
+          "text": "sufficient means A implies B",
+          "synonyms": [
+            "A guarantees B"
+          ],
           "mustInclude": true
         },
         {
-          "text": "not equivalent to the original",
+          "text": "the two directions are different",
+          "synonyms": [
+            "a condition can be one, both or neither"
+          ],
           "mustInclude": true
         }
       ],
-      "explanation": "The inverse of the contrapositive is the original statement, which is why the four forms fall into two equivalent pairs.",
+      "mcq": {
+        "correct": "Necessary: $B \\Rightarrow A$. Sufficient: $A \\Rightarrow B$",
+        "distractors": [
+          "Necessary: $A \\Rightarrow B$. Sufficient: $B \\Rightarrow A$",
+          "Both mean $A \\Rightarrow B$; the words are interchangeable",
+          "Both mean $A \\Leftrightarrow B$"
+        ]
+      },
+      "explanation": "The reliable reading is that 'if' attaches to the sufficient condition and 'only if' to the necessary one: 'you can graduate if you pass' is $P \\Rightarrow G$, while 'you can graduate only if you pass' is $G \\Rightarrow P$. When both hold, $A \\Leftrightarrow B$, and the condition is necessary and sufficient.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Definitions: logic",
+      "specRef": "Definitions: reasoning terms",
       "tagRefs": [
         "tmua",
         "paper-1",
@@ -99,56 +143,82 @@
     },
     {
       "id": "0004",
-      "front": "Define a necessary condition.",
-      "back": "A is necessary for B when B cannot be true without A, that is $B \\Rightarrow A$. A may hold on its own without B holding.",
+      "front": "What is a vacuously true statement?",
+      "back": "A conditional whose hypothesis is never satisfied. Since $P \\Rightarrow Q$ is false only when $P$ holds and $Q$ fails, such a statement cannot fail and is therefore true.",
       "keyPoints": [
         {
-          "text": "B cannot hold without A",
-          "mustInclude": true
-        },
-        {
-          "text": "B implies A",
-          "mustInclude": true
-        },
-        {
-          "text": "A alone does not guarantee B",
+          "text": "the hypothesis is never satisfied",
           "synonyms": [
-            "not sufficient"
-          ]
+            "the premise is always false",
+            "no case can make it fail"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the statement counts as true",
+          "synonyms": [
+            "true by default",
+            "true by definition of implication"
+          ],
+          "mustInclude": true
         }
       ],
-      "explanation": "Being a mammal is necessary for being a dog, but not sufficient: plenty of mammals are not dogs.",
+      "mcq": {
+        "correct": "A conditional with an impossible hypothesis, which is true by default",
+        "distractors": [
+          "A statement that is neither true nor false",
+          "A statement true only for some values",
+          "A statement that has not yet been proved"
+        ]
+      },
+      "explanation": "'If $n$ is an even prime greater than 2, then $n^2 = 7$' is vacuously true, since no such $n$ exists. Vacuous truth also explains why 'every element of the empty set has property P' is true for any P at all, which surprises candidates the first time they meet it.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: logic",
       "tagRefs": [
         "tmua",
         "paper-1",
-        "paper-2"
+        "paper-2",
+        "hard"
       ]
     },
     {
       "id": "0005",
-      "front": "Define a sufficient condition.",
-      "back": "A is sufficient for B when A guarantees B, that is $A \\Rightarrow B$. B may also be brought about some other way.",
+      "front": "What is the difference between inclusive and exclusive 'or' in mathematics?",
+      "back": "Mathematical 'or' is inclusive: '$A$ or $B$' holds when at least one of them holds, including when both do. Exclusive 'or' would exclude the case where both hold.",
       "keyPoints": [
         {
-          "text": "A guarantees B",
-          "mustInclude": true
-        },
-        {
-          "text": "A implies B",
-          "mustInclude": true
-        },
-        {
-          "text": "B can happen without A",
+          "text": "or is inclusive",
           "synonyms": [
-            "not necessary"
-          ]
+            "at least one of the two"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the case where both hold is allowed",
+          "synonyms": [
+            "both true still satisfies it"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "exclusive or would exclude that case",
+          "synonyms": [
+            "exactly one"
+          ],
+          "mustInclude": true
         }
       ],
-      "explanation": "Passing a driving test is sufficient for holding a licence, but not necessary in the sense that other conditions must also hold, such as being old enough.",
+      "mcq": {
+        "correct": "Inclusive: true when both hold",
+        "distractors": [
+          "Exclusive: false when both hold",
+          "Depends on the topic being discussed",
+          "Undefined until the statements are made precise"
+        ]
+      },
+      "explanation": "Consequence: the solution set of '$x > 0$ or $x^2 > 4$' is the union of the two sets, and since $x > 2$ is already inside $x > 0$ the answer collapses to $x > 0$ or $x < -2$. Reading 'or' as exclusive, or as 'and', is a routine source of lost marks.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Definitions: logic",
+      "specRef": "Definitions: logical connectives",
       "tagRefs": [
         "tmua",
         "paper-1",
@@ -157,100 +227,128 @@
     },
     {
       "id": "0006",
-      "front": "Define a counterexample.",
-      "back": "A single case in which a statement fails. One counterexample is enough to prove a universal statement false, though no number of examples can prove it true.",
+      "front": "State De Morgan's laws for the negation of a conjunction and a disjunction.",
+      "back": "$\\neg(P \\wedge Q) = \\neg P \\vee \\neg Q$ and $\\neg(P \\vee Q) = \\neg P \\wedge \\neg Q$: negation turns 'and' into 'or' and 'or' into 'and'.",
+      "answerType": "EXPRESSION",
       "keyPoints": [
         {
-          "text": "a case where the statement fails",
+          "text": "not (P and Q) is (not P) or (not Q)",
           "synonyms": [
-            "an exception"
+            "and becomes or"
           ],
           "mustInclude": true
         },
         {
-          "text": "one is enough to disprove a universal claim",
+          "text": "not (P or Q) is (not P) and (not Q)",
+          "synonyms": [
+            "or becomes and"
+          ],
           "mustInclude": true
         },
         {
-          "text": "examples cannot prove a universal claim true",
+          "text": "the connective flips as the negation passes through",
           "synonyms": [
-            "testing cases is not a proof"
-          ]
+            "De Morgan swaps and and or"
+          ],
+          "mustInclude": true
         }
       ],
-      "explanation": "'All prime numbers are odd' is disproved instantly by the single counterexample 2.",
+      "acceptedAliases": [
+        "not(P and Q) = not P or not Q; not(P or Q) = not P and not Q"
+      ],
+      "mcq": {
+        "correct": "$\\neg(P \\wedge Q) = \\neg P \\vee \\neg Q$ and $\\neg(P \\vee Q) = \\neg P \\wedge \\neg Q$",
+        "distractors": [
+          "$\\neg(P \\wedge Q) = \\neg P \\wedge \\neg Q$",
+          "$\\neg(P \\vee Q) = \\neg P \\vee \\neg Q$",
+          "$\\neg(P \\wedge Q) = P \\vee Q$"
+        ]
+      },
+      "explanation": "The laws also cover quantifiers, which is where they earn their keep on Paper 2: $\\neg(\\forall x\\, P) = \\exists x\\, \\neg P$ and $\\neg(\\exists x\\, P) = \\forall x\\, \\neg P$. Pushing a negation through a quantifier flips it, exactly as pushing one through 'and' turns it into 'or'.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Definitions: proof",
+      "specRef": "Definitions: logical connectives",
       "tagRefs": [
         "tmua",
         "paper-1",
-        "paper-2"
+        "paper-2",
+        "hard"
       ]
     },
     {
       "id": "0007",
-      "front": "Describe proof by contradiction.",
-      "back": "Assume the negation of what you want to prove, reason from it until you reach something impossible or already known to be false, and conclude that the assumption was wrong, so the original statement must be true.",
-      "answerType": "SELF_GRADE",
+      "front": "What does it mean that the order of quantifiers matters? Give an example.",
+      "back": "'For every $x$ there is a $y$ such that $P(x, y)$' and 'there is a $y$ such that for every $x$, $P(x, y)$' are different claims. The second is stronger: one single $y$ must work for all $x$.",
       "keyPoints": [
         {
-          "text": "assume the negation of the statement",
+          "text": "the two orders are not equivalent",
           "synonyms": [
-            "assume the opposite"
+            "swapping the quantifiers changes the meaning"
           ],
           "mustInclude": true
         },
         {
-          "text": "derive a contradiction",
+          "text": "exists-for-all is stronger",
           "synonyms": [
-            "reach something impossible"
+            "one y must serve every x"
           ],
           "mustInclude": true
         },
         {
-          "text": "conclude the original statement is true",
+          "text": "a concrete example",
+          "synonyms": [
+            "xy = 1",
+            "for every x there is y with x + y = 0 but no single y works for all x"
+          ],
           "mustInclude": true
         }
       ],
-      "explanation": "It works because a statement is either true or false: if its negation leads to an impossibility, the statement itself must hold.",
+      "mcq": {
+        "correct": "They are different claims; the version with $\\exists y$ first is stronger",
+        "distractors": [
+          "They are equivalent because both quantify over the same variables",
+          "The order matters only when the statements are false",
+          "Order matters only for uncountable sets"
+        ]
+      },
+      "explanation": "With $P(x, y)$ being $x + y = 0$: for every $x$ there is a $y$, namely $-x$, but no single $y$ satisfies it for every $x$. Reversing the quantifiers turns a true statement into a false one. When negating, flip each quantifier but keep the order: $\\neg(\\forall x\\,\\exists y\\, P) = \\exists x\\,\\forall y\\, \\neg P$.",
       "reviewStatus": "AI_UNREVIEWED",
-      "specRef": "Definitions: proof",
+      "specRef": "Definitions: quantifiers",
       "tagRefs": [
         "tmua",
         "paper-1",
-        "paper-2"
+        "paper-2",
+        "hard"
       ]
     },
     {
       "id": "0008",
-      "front": "State the structure of a proof by mathematical induction.",
-      "back": "Prove the base case, usually n = 1. Assume the statement holds for n = k. Using that assumption, prove it holds for n = k + 1. Conclude that it holds for all positive integers n.",
-      "answerType": "SELF_GRADE",
+      "front": "What is a counterexample, and what can and cannot it establish?",
+      "back": "A single case that fails a universal claim. One counterexample disproves 'for all $x$, $P(x)$', but no number of successful examples proves it.",
       "keyPoints": [
         {
-          "text": "base case",
+          "text": "one case is enough to disprove a for-all statement",
           "synonyms": [
-            "true for n = 1"
+            "a single failing instance"
           ],
           "mustInclude": true
         },
         {
-          "text": "inductive assumption for n = k",
-          "mustInclude": true
-        },
-        {
-          "text": "prove the n = k + 1 case using that assumption",
-          "mustInclude": true
-        },
-        {
-          "text": "state the conclusion",
+          "text": "examples cannot prove a universal claim",
           "synonyms": [
-            "holds for all n"
+            "finitely many checks are not a proof"
           ],
           "mustInclude": true
         }
       ],
-      "explanation": "The base case starts the chain and the inductive step extends it, so together they reach every integer.",
+      "mcq": {
+        "correct": "Disproves a universal claim with one case; cannot prove one",
+        "distractors": [
+          "Proves a universal claim if enough of them are found",
+          "Disproves an existential claim with one case",
+          "Proves an existential claim only when combined with a general argument"
+        ]
+      },
+      "explanation": "The asymmetry is worth memorising: universality is cheap to refute and expensive to prove, existence is cheap to prove and expensive to refute. So disproving 'there exists $x$ with $P(x)$' needs a general argument that $P$ fails everywhere.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: proof",
       "tagRefs": [
@@ -261,28 +359,41 @@
     },
     {
       "id": "0009",
-      "front": "What does 'if and only if' mean?",
-      "back": "That both implications hold: $P \\Rightarrow Q$ and $Q \\Rightarrow P$. The two statements are then logically equivalent, and each is necessary and sufficient for the other.",
+      "front": "Name the fallacy in this argument: 'If it rains the ground is wet. The ground is wet. Therefore it rained.'",
+      "back": "Affirming the consequent: from $P \\Rightarrow Q$ and $Q$ it concludes $P$, which is the converse and does not follow.",
       "keyPoints": [
         {
-          "text": "both directions hold",
+          "text": "affirming the consequent",
           "synonyms": [
-            "P implies Q and Q implies P"
+            "the fallacy of the converse"
           ],
           "mustInclude": true
         },
         {
-          "text": "the statements are equivalent",
+          "text": "it asserts the converse",
           "synonyms": [
-            "necessary and sufficient"
+            "it argues Q therefore P"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "an alternative explanation defeats it",
+          "synonyms": [
+            "a sprinkler",
+            "the ground could be wet another way"
           ],
           "mustInclude": true
         }
       ],
-      "acceptedAliases": [
-        "iff"
-      ],
-      "explanation": "Writing 'if' when you mean 'if and only if' is a common way to lose a mark: it claims only one direction.",
+      "mcq": {
+        "correct": "Affirming the consequent",
+        "distractors": [
+          "Denying the antecedent",
+          "Circular reasoning",
+          "Begging the question"
+        ]
+      },
+      "explanation": "The valid forms are modus ponens ($P \\Rightarrow Q$, $P$, so $Q$) and modus tollens ($P \\Rightarrow Q$, $\\neg Q$, so $\\neg P$). Affirming the consequent and denying the antecedent ($P \\Rightarrow Q$, $\\neg P$, so $\\neg Q$) are the two invalid mirrors, and both show up as distractors in Paper 2 argument questions.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: logic",
       "tagRefs": [
@@ -293,29 +404,573 @@
     },
     {
       "id": "0010",
-      "front": "What do the quantifiers $\\forall$ and $\\exists$ mean, and how does negation affect them?",
-      "back": "$\\forall$ means 'for all' and $\\exists$ means 'there exists'. Negation swaps them: the negation of $\\forall x, P(x)$ is $\\exists x, \\neg P(x)$, and the negation of $\\exists x, P(x)$ is $\\forall x, \\neg P(x)$.",
+      "front": "What is the fallacy of denying the antecedent?",
+      "back": "From $P \\Rightarrow Q$ and $\\neg P$ it concludes $\\neg Q$. It is invalid: the implication says nothing about what happens when $P$ fails.",
       "keyPoints": [
         {
-          "text": "for all and there exists",
+          "text": "it concludes not Q from not P",
           "synonyms": [
-            "universal and existential"
+            "the inverse is treated as if it were equivalent"
           ],
           "mustInclude": true
         },
         {
-          "text": "negation swaps the quantifier",
+          "text": "it is invalid",
+          "synonyms": [
+            "the conclusion does not follow"
+          ],
           "mustInclude": true
         },
         {
-          "text": "and negates the condition",
+          "text": "an example",
           "synonyms": [
-            "not P(x)"
+            "if it rains the ground is wet; it did not rain, so the ground is not wet"
           ],
           "mustInclude": true
         }
       ],
-      "explanation": "'Not all swans are white' means 'there is a swan that is not white', not 'no swan is white'.",
+      "mcq": {
+        "correct": "From $P \\Rightarrow Q$ and $\\neg P$ concluding $\\neg Q$",
+        "distractors": [
+          "From $P \\Rightarrow Q$ and $Q$ concluding $P$",
+          "From $P \\Rightarrow Q$ and $\\neg Q$ concluding $\\neg P$",
+          "Concluding $P$ and $Q$ are equivalent without proof"
+        ]
+      },
+      "explanation": "The third option, modus tollens, is valid - which is what makes the two easy to confuse. Denying the antecedent amounts to assuming the inverse $\\neg P \\Rightarrow \\neg Q$, and the inverse is equivalent to the converse, not to the original.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: logic",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0011",
+      "front": "What are the two parts of a proof by induction, and why are both indispensable?",
+      "back": "The base case, verifying the statement at the first value, and the inductive step, showing that if it holds for $k$ then it holds for $k + 1$. Without the base case there is nothing to start the chain; without the step the chain does not propagate.",
+      "keyPoints": [
+        {
+          "text": "base case",
+          "synonyms": [
+            "verify the first value",
+            "check n = 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "inductive step",
+          "synonyms": [
+            "assume for k and prove for k + 1"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "both are needed",
+          "synonyms": [
+            "either one alone proves nothing",
+            "dominoes"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Base case and inductive step; either alone proves nothing",
+        "distractors": [
+          "Base case and a worked example; the step follows",
+          "Inductive step only; the base case is a formality",
+          "Three cases, $n$, $n + 1$ and $n + 2$"
+        ]
+      },
+      "explanation": "A correct inductive step with a false base case still 'proves' false statements, which is why exam questions ask candidates to find the missing base case. Both parts together give: the statement holds at the start, and truth propagates one step at a time, so it holds throughout.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0012",
+      "front": "What is proof by exhaustion, and when is it the right choice?",
+      "back": "Checking every case in turn, which is valid only when the cases are finite and can be listed completely. It suits claims about a small finite set, such as the divisors of a number or residues modulo a small integer.",
+      "keyPoints": [
+        {
+          "text": "check every case",
+          "synonyms": [
+            "test all possibilities"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only valid when the cases are finite and complete",
+          "synonyms": [
+            "the list must be exhaustive"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Check all finitely many cases, valid only when the list is complete",
+        "distractors": [
+          "Check enough cases to make the result convincing",
+          "Argue from a representative example",
+          "Assume the result and derive a contradiction"
+        ]
+      },
+      "explanation": "Exhaustion is a real proof method, unlike checking a few examples, precisely because nothing is left out. It becomes the method of choice in the disguise of proof by cases on residues: to prove 'if $n^2$ is divisible by 3 then $n$ is divisible by 3', exhaust $n = 3k, 3k + 1, 3k + 2$.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0013",
+      "front": "What does 'without loss of generality' mean, and what must be true for it to be justified?",
+      "back": "That the cases not written down reduce to the one being treated, usually by symmetry. It is justified only when the remaining cases genuinely follow the same argument, not merely because they look similar.",
+      "keyPoints": [
+        {
+          "text": "the other cases reduce to this one",
+          "synonyms": [
+            "symmetry",
+            "the omitted cases behave the same way"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "it must be justified, not asserted",
+          "synonyms": [
+            "the reduction must actually hold"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The omitted cases reduce to the one treated, usually by symmetry",
+        "distractors": [
+          "The result can be assumed for the omitted cases",
+          "The proof is incomplete but acceptable",
+          "The author has checked the other cases numerically"
+        ]
+      },
+      "explanation": "Used properly it is a genuine saving: proving $a + b = b + a$ for non-negative reals and saying the other sign combinations follow by symmetry is fine, because negation is a symmetry of the reals. Used as a substitute for an argument it is exactly the gap a Paper 2 'find the flaw' question is built around.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0014",
+      "front": "Define the discriminant of a quadratic and state what each of its signs tells you about the roots.",
+      "back": "The discriminant of $ax^2 + bx + c$ is $b^2 - 4ac$. Positive gives two distinct real roots, zero gives one repeated real root, and negative gives no real roots.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "b^2 - 4ac",
+          "synonyms": [
+            "discriminant is b squared minus 4ac"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "positive: two distinct real roots",
+          "synonyms": [
+            "greater than zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "zero: one repeated real root",
+          "synonyms": [
+            "equal roots"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "negative: no real roots",
+          "synonyms": [
+            "two complex conjugate roots"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$b^2 - 4ac$: two, one repeated, none",
+        "distractors": [
+          "$b^2 + 4ac$: two, one repeated, none",
+          "$b^2 - 4ac$: one, two, none",
+          "$4ac - b^2$: two, one repeated, none"
+        ]
+      },
+      "explanation": "Zero still counts as real roots, which is why 'has real roots' needs $b^2 - 4ac \\ge 0$ while 'has two distinct real roots' needs the strict inequality. Geometrically the discriminant records how many times the parabola meets the $x$-axis, and it drives every 'find the range of $k$' question on Paper 1.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: quadratics",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0015",
+      "front": "What is frequency density on a histogram, and how is frequency recovered from it?",
+      "back": "Frequency density is frequency divided by class width, plotted on the vertical axis. Frequency is therefore frequency density times class width, which is the area of the bar.",
+      "keyPoints": [
+        {
+          "text": "frequency density = frequency / class width",
+          "synonyms": [
+            "frequency over width"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "frequency = frequency density x class width",
+          "synonyms": [
+            "area of the bar",
+            "the area is the frequency"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "the modal class is the tallest bar, not the largest frequency",
+          "synonyms": [
+            "greatest frequency density"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Frequency divided by class width; frequency is the area of the bar",
+        "distractors": [
+          "Frequency multiplied by class width; frequency is the height of the bar",
+          "The cumulative frequency; frequency is the gradient",
+          "Frequency per unit time; frequency is the total"
+        ]
+      },
+      "explanation": "Because bars have unequal widths, only the area is comparable, so the modal class is the one with the greatest frequency density. Reading the tallest bar as having the largest frequency is the standard trap: a wide bar with modest density can hold more data than a narrow tall one.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: statistics",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0016",
+      "front": "What is a surd, and what is meant by rationalising the denominator?",
+      "back": "A surd is an irrational root such as $\\sqrt{2}$ left in exact form. Rationalising the denominator means rewriting a fraction so that no root appears in the denominator, usually by multiplying top and bottom by a conjugate.",
+      "keyPoints": [
+        {
+          "text": "an irrational root written exactly",
+          "synonyms": [
+            "root 2",
+            "left as a root"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "remove the root from the denominator",
+          "synonyms": [
+            "multiply by the conjugate",
+            "difference of two squares"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "An exact irrational root; remove roots from the denominator using a conjugate",
+        "distractors": [
+          "Any decimal approximation; round the denominator",
+          "A fractional index; rewrite as a power",
+          "A negative root; take the absolute value"
+        ]
+      },
+      "explanation": "For $\\frac{3}{\\sqrt{7} - 2\\sqrt{3}}$ multiply by $\\frac{\\sqrt{7} + 2\\sqrt{3}}{\\sqrt{7} + 2\\sqrt{3}}$; the denominator becomes a difference of two squares, $7 - 12 = -5$. The same conjugate trick handles nested radicals such as $\\sqrt{12 + 6\\sqrt{3}}$, by squaring $a + \\sqrt{b}$ and matching rational against irrational parts.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: surds",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0017",
+      "front": "What is a stationary point, and how are the three types distinguished?",
+      "back": "A point where $\\frac{dy}{dx} = 0$. A sign change from positive to negative is a maximum, from negative to positive a minimum, and no sign change a stationary point of inflection.",
+      "keyPoints": [
+        {
+          "text": "the derivative is zero",
+          "synonyms": [
+            "dy/dx = 0",
+            "the gradient is zero"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "+ to - is a maximum, - to + is a minimum",
+          "synonyms": [
+            "first derivative test",
+            "sign change either side"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "no sign change is a point of inflection",
+          "synonyms": [
+            "stationary point of inflection",
+            "x^3 at 0"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "$\\frac{dy}{dx} = 0$, classified by the sign change either side",
+        "distractors": [
+          "$\\frac{dy}{dx} = 0$, classified by the value of $y$",
+          "$\\frac{d^2y}{dx^2} = 0$ always",
+          "Any turning point or any point of inflection"
+        ]
+      },
+      "explanation": "The second derivative test is a shortcut but fails when $\\frac{d^2y}{dx^2} = 0$, as it does for $x^4$ at 0, so the sign change of the first derivative is the reliable criterion. Stationary points are what make 'three distinct real roots' questions work: the maximum must sit above the axis and the minimum below it.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: differentiation",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0018",
+      "front": "What is an extraneous root, and which operations create one?",
+      "back": "A value produced by an algebraic step that does not satisfy the original equation. Squaring both sides and multiplying by an expression that can be zero are the two operations that create them.",
+      "keyPoints": [
+        {
+          "text": "a root of the manipulated equation that fails the original",
+          "synonyms": [
+            "it does not satisfy the original equation"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "squaring both sides",
+          "synonyms": [
+            "squaring is not reversible"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "multiplying by something that may be zero",
+          "synonyms": [
+            "clearing a denominator"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "A solution of the manipulated equation that fails the original; created by squaring",
+        "distractors": [
+          "A solution found by a numerical method",
+          "A root that cannot be written exactly",
+          "A complex root of a real equation"
+        ]
+      },
+      "explanation": "Solving $\\sqrt{2x + 3} = x$ by squaring yields $x = 3$ and $x = -1$, but $x = -1$ gives $\\sqrt{1} = -1$, which is false. The remedy is to substitute every candidate back, or to state the domain restriction - here $x \\ge 0$ - before starting.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: algebra",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0019",
+      "front": "What is the difference between a lemma, a corollary and a conjecture?",
+      "back": "A lemma is a subsidiary result proved on the way to a larger one, a corollary is a result that follows immediately from one already proved, and a conjecture is a statement believed true but not yet proved.",
+      "keyPoints": [
+        {
+          "text": "lemma: a stepping stone to a bigger result",
+          "synonyms": [
+            "subsidiary result"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "corollary: follows immediately from a proved result",
+          "synonyms": [
+            "an easy consequence"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "conjecture: believed true but unproved",
+          "synonyms": [
+            "not yet proved"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Lemma is a stepping stone, corollary an immediate consequence, conjecture unproved",
+        "distractors": [
+          "Lemma and corollary are unproved, conjecture is proved",
+          "All three are synonyms for a theorem",
+          "Conjecture means disproved"
+        ]
+      },
+      "explanation": "The distinction matters when reading an argument: a conjecture carries no logical weight at all, however convincing the evidence, and $n^2 + n + 41$ being prime is the classic example of a conjecture that survives 39 cases and then fails. A corollary, by contrast, is already proved once the result it follows from is.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: proof",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0020",
+      "front": "What is a telescoping series, and what is the general method for summing one?",
+      "back": "One whose terms cancel in a regular pattern when written out. Split the general term into partial fractions, write out the first few and last few terms, and add up only what survives.",
+      "keyPoints": [
+        {
+          "text": "terms cancel in a regular pattern",
+          "synonyms": [
+            "successive terms cancel"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "use partial fractions first",
+          "synonyms": [
+            "split the general term"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "only a few terms survive",
+          "synonyms": [
+            "add what does not cancel"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "Terms cancel; split into partial fractions and add what survives",
+        "distractors": [
+          "Terms grow without bound; compare with a geometric series",
+          "Terms alternate in sign; group them in pairs",
+          "Terms repeat periodically; sum one period"
+        ]
+      },
+      "explanation": "$\\sum \\frac{1}{n(n+2)}$ splits as $\\frac{1}{2}\\left(\\frac{1}{n} - \\frac{1}{n+2}\\right)$, and because the gap is 2 rather than 1 two terms survive at each end, giving $\\frac{1}{2}(1 + \\frac{1}{2}) = \\frac{3}{4}$. Counting how many terms survive is the step most often got wrong: the gap in the denominators is exactly that number.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: series",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2",
+        "hard"
+      ]
+    },
+    {
+      "id": "0021",
+      "front": "State the alternate segment theorem.",
+      "back": "The angle between a tangent and a chord through the point of contact equals the angle subtended by that chord in the alternate segment.",
+      "keyPoints": [
+        {
+          "text": "angle between the tangent and the chord",
+          "synonyms": [
+            "at the point of contact"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "equals the angle in the alternate segment",
+          "synonyms": [
+            "equals the angle the chord subtends on the far side"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "equal to the angle at the circumference standing on the same chord",
+          "synonyms": [
+            "angle in the opposite segment"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "mcq": {
+        "correct": "The tangent-chord angle equals the angle in the alternate segment",
+        "distractors": [
+          "The tangent-chord angle equals the angle at the centre",
+          "The tangent-chord angle is always a right angle",
+          "The tangent-chord angle equals the angle between the chord and the diameter"
+        ]
+      },
+      "explanation": "If the chord $AB$ subtends $130^\\circ$ at the centre, then a point $C$ on the major arc gives angle $ACB = 65^\\circ$, and the angle between the tangent at $A$ and $AB$ is also $65^\\circ$. This was a reported emphasis in the October 2024 sitting, usually inside a multi-step angle chase rather than as a one-line recall.",
+      "reviewStatus": "AI_UNREVIEWED",
+      "specRef": "Definitions: circle theorems",
+      "tagRefs": [
+        "tmua",
+        "paper-1",
+        "paper-2"
+      ]
+    },
+    {
+      "id": "0022",
+      "front": "What does 'if and only if' mean, and what must a proof of such a statement contain?",
+      "back": "It means the two statements are equivalent: $P \\Leftrightarrow Q$ is both $P \\Rightarrow Q$ and $Q \\Rightarrow P$. A proof must establish both directions separately.",
+      "answerType": "EXPRESSION",
+      "keyPoints": [
+        {
+          "text": "two implications",
+          "synonyms": [
+            "both directions",
+            "P implies Q and Q implies P"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "neither direction follows from the other",
+          "synonyms": [
+            "they must both be proved"
+          ],
+          "mustInclude": true
+        },
+        {
+          "text": "proving one direction leaves the proof incomplete",
+          "synonyms": [
+            "half a proof"
+          ],
+          "mustInclude": true
+        }
+      ],
+      "acceptedAliases": [
+        "P <=> Q means P implies Q and Q implies P"
+      ],
+      "mcq": {
+        "correct": "Both $P \\Rightarrow Q$ and $Q \\Rightarrow P$ must be proved",
+        "distractors": [
+          "Proving $P \\Rightarrow Q$ is enough",
+          "Proving either direction is enough",
+          "It means the statements have the same truth value in one example"
+        ]
+      },
+      "explanation": "'$n$ is even if and only if $n^2$ is even' needs both halves. The forwards direction is one line; the backwards direction is genuinely harder and is usually done by contrapositive, since $n$ odd gives $n^2 = 4k^2 + 4k + 1$ odd. Delivering only the easy half is one of the standard ways Paper 2 questions award partial credit and no more.",
       "reviewStatus": "AI_UNREVIEWED",
       "specRef": "Definitions: logic",
       "tagRefs": [
