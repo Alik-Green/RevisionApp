@@ -20,8 +20,8 @@ classes of mistake that are cheap to make and expensive to discover remotely.
         Rewrites every import block into ktlint's order.
 
         Reports unused imports, imports of com.revisionapp symbols that nothing in
-        the module declares, and import blocks that are not in ktlint's
-        intellij_idea order. Unused imports and import order are both hard ktlint
+        the module declares, qualified references whose qualifier was never
+        imported, and import blocks that are not in ktlint's intellij_idea order. Unused imports and import order are both hard ktlint
         failures, so they are build breakers, not style nits.
 
 Neither knows any Kotlin semantics: a wrong method name, a bad argument type or a
@@ -212,6 +212,20 @@ DECLARATION = re.compile(
 # ktlint's intellij_idea layout: everything else, then java, javax, kotlin, aliases.
 GENERATED = {"RevisionDatabase"}
 
+# Types that need no import: kotlin.* is default-imported, and these Compose and
+# project names are referenced often enough that flagging them would be noise.
+KOTLIN_BUILTINS = {
+    "Any", "Boolean", "Byte", "Char", "Comparable", "Double", "Enum", "Float", "Int",
+    "Long", "Nothing", "Number", "Short", "String", "Unit", "List", "Map", "Set",
+    "ArrayList", "HashMap", "LinkedHashMap", "Pair", "Triple", "Array", "IntArray",
+    "ByteArray", "Result", "Math", "Regex", "Throwable", "Exception", "Companion",
+    "RevisionDatabase",
+    # java.lang is default-imported on every JVM target.
+    "System", "Object", "Integer", "Long", "Double", "Float", "Boolean", "Character",
+    "Thread", "Runnable", "StringBuilder", "CharSequence", "Iterable", "Override",
+    "SuppressWarnings", "Deprecated", "Void", "Class", "Number",
+}
+
 
 def import_group(spec):
     if " as " in spec:
@@ -220,6 +234,23 @@ def import_group(spec):
         if spec.startswith(prefix):
             return position
     return 0
+
+
+def mask_non_code(text):
+    """Blank out comments and literal contents, preserving offsets and newlines.
+
+    Order matters: block comments first so a quote inside a comment cannot start a
+    phantom string, then strings so a `//` inside a literal (a URL, say) cannot be
+    read as a line comment.
+    """
+    def blank(match):
+        return "".join(c if c == "\n" else " " for c in match.group(0))
+
+    masked = re.sub(r"/\*(?:.|\n)*?\*/", blank, text)
+    masked = re.sub(r'"""(?:.|\n)*?"""', blank, masked)
+    masked = re.sub(r'"(?:\\.|[^"\\])*"', blank, masked)
+    masked = re.sub(r"'(?:\\.|[^'\\])*'", blank, masked)
+    return re.sub(r"//[^\n]*", blank, masked)
 
 
 def sort_imports_in(text):
@@ -268,9 +299,19 @@ def main(argv):
         return 2
 
     declared = set()
+    # Names declared in the same package need no import, so each file is checked
+    # against the declarations of every file sharing its package.
+    package_declarations = {}
+    file_package = {}
     for path in files:
-        for match in DECLARATION.finditer(path.read_text(encoding="utf-8")):
-            declared.add(match.group(1))
+        text = path.read_text(encoding="utf-8")
+        match = re.search(r"(?:^|\n)package ([\w.]+)", text)
+        package = match.group(1) if match else ""
+        file_package[path] = package
+        bucket = package_declarations.setdefault(package, set())
+        for declaration in DECLARATION.finditer(text):
+            declared.add(declaration.group(1))
+            bucket.add(declaration.group(1))
 
     problems = 0
     for path in files:
@@ -299,6 +340,23 @@ def main(argv):
             if spec.startswith("com.revisionapp.") and name not in declared and name not in GENERATED:
                 problems += 1
                 print("UNRESOLVED {}: {}".format(path, spec))
+        # A reference like `Alignment.CenterVertically` with no import of Alignment
+        # and no local declaration is a compile error, and nothing else here catches
+        # it: unused imports are the opposite mistake. Member accesses (Icons.Filled,
+        # Route.Library) are skipped because the qualifier before the dot is what has
+        # to resolve, and it is checked on its own iteration.
+        simple = {spec.rsplit(".", 1)[-1].split(" as ")[-1].strip() for spec in specs}
+        local = set(DECLARATION.findall(text)) | package_declarations.get(file_package[path], set())
+        body_text = "\n".join(
+            line for line in mask_non_code(text).split("\n") if not line.startswith("import ")
+        )
+        for match in re.finditer(r"(?<![.\w])([A-Z][A-Za-z0-9_]*)\s*\.", body_text):
+            name = match.group(1)
+            if name in simple or name in local or name in KOTLIN_BUILTINS:
+                continue
+            problems += 1
+            print("NO IMPORT {}: {} is used qualified but never imported".format(path, name))
+
         ordered = sorted(specs, key=lambda item: (import_group(item), item))
         if specs != ordered:
             problems += 1
