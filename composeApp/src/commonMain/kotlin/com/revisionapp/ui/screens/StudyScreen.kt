@@ -12,9 +12,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.Style
+import androidx.compose.material.icons.filled.ViewModule
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -23,8 +30,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -72,65 +82,250 @@ fun StudyScreen(state: AppState) {
 
 // ------------------------------------------------------------------ picker ---
 
+/** One mode, how many cards in scope it can actually present, and why. */
+private data class ModeOption(
+    val mode: StudyMode,
+    val eligible: Int,
+    val description: String,
+    val icon: ImageVector,
+) {
+    val isAvailable: Boolean get() = eligible > 0
+}
+
+/**
+ * The setup screen shown when no session is running: what is due, what the scope
+ * is, how big the session should be, and which modes can actually present these
+ * cards.
+ *
+ * A mode with nothing to show is disabled and says why, rather than being offered
+ * and producing an empty session. Tile mode silently skips long answers and
+ * multiple choice silently skips topics with too few plausible siblings, so this
+ * count is the only place that behaviour is visible before you commit to it.
+ */
 @Composable
 private fun ModePicker(state: AppState) {
     val snapshot = state.snapshot.collectAsState().value
     val filter = state.filter.collectAsState().value
+    val sessionSize = state.sessionSize.collectAsState().value
+    val chosen = remember { mutableStateOf(StudyMode.MIXED) }
     val due = snapshot.dueCount(filter)
+    val scoped = remember(snapshot, filter) { snapshot.filtered(filter) }
+    val options = remember(snapshot, scoped) { modeOptions(snapshot, scoped) }
+    val selected = options.firstOrNull { it.mode == chosen.value } ?: options.last()
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         AppHeader(
             title = "Study",
-            subtitle = due.toString() + " card(s) due with the current filters",
+            subtitle = due.toString() + " due now, " + scoped.size.toString() + " in scope",
             trailing = {
                 TextButton(onClick = { state.navigate(Route.Library) }) { Text("Library") }
             },
         )
         Column(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            EmptyMessage(
-                if (due == 0) {
-                    "Nothing is due right now. Loosen the filters on the Library screen, or start a " +
-                        "session anyway - it will simply be empty."
-                } else {
-                    "Filters are shared with the Library screen: a session only ever contains cards the " +
-                        "current topic and tag selection allows. Cards the chosen mode cannot present - " +
-                        "a long paragraph in tile mode, a topic with too few siblings for multiple " +
-                        "choice - drop out silently."
-                },
-            )
-            for (mode in StudyMode.All) {
-                OutlinedButton(
-                    onClick = { state.startStudy(mode) },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Column(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-                        Text(
-                            mode.title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        Text(
-                            describeMode(mode),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+            DueCard(state, due, scoped.size)
+            ScopeRow(state, snapshot)
+
+            SectionLabel("Session size")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (size in AppState.SessionSizes) {
+                    ToggleChip(
+                        label = AppState.sessionSizeLabel(size),
+                        selected = size == sessionSize,
+                        onClick = { state.setSessionSize(size) },
+                    )
                 }
             }
+
+            SectionLabel("Mode")
+            for (row in options.chunked(2)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    for (option in row) {
+                        ModeCard(option, option.mode == selected.mode, Modifier.weight(1f)) {
+                            chosen.value = option.mode
+                        }
+                    }
+                    if (row.size == 1) Spacer(Modifier.weight(1f))
+                }
+            }
+            if (!selected.isAvailable) {
+                EmptyMessage(disabledReason(selected.mode))
+            }
+
+            Button(
+                onClick = { state.startStudy(selected.mode) },
+                enabled = selected.isAvailable,
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Start " + selected.mode.title.lowercase()) }
             Spacer(Modifier.height(8.dp))
         }
     }
 }
 
-private fun describeMode(mode: StudyMode): String = when (mode) {
-    StudyMode.FLASHCARD -> "Flip the card, then rate yourself Again / Hard / Good / Easy."
-    StudyMode.TYPED -> "Type the answer. Graded automatically, and you can always override the verdict."
-    StudyMode.TILES -> "Put shuffled word tiles back in order. Short answers only."
-    StudyMode.MCQ -> "Pick one of four options, with the explanation shown straight away."
-    StudyMode.MIXED -> "Chooses the best-fit mode for each card, and gets harder after a mistake."
+@Composable
+private fun DueCard(state: AppState, due: Int, inScope: Int) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(14.dp))
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Text(
+            due.toString() + " due today",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+        Text(
+            if (due == 0) {
+                "Nothing is due. You can still study the " + inScope.toString() +
+                    " card(s) in scope to get ahead."
+            } else {
+                "From " + inScope.toString() + " card(s) in the current scope."
+            },
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+        if (due > 0) {
+            Button(onClick = { state.startStudy(StudyMode.MIXED) }) { Text("Start due cards") }
+        }
+    }
+}
+
+/** Where this session will draw its cards from, and a way to go and change it. */
+@Composable
+private fun ScopeRow(state: AppState, snapshot: LibrarySnapshot) {
+    val location = state.location.collectAsState().value
+    val filter = state.filter.collectAsState().value
+    val path = if (location == null) {
+        "Everywhere"
+    } else {
+        snapshot.tree.breadcrumbs(location).joinToString("  \u203A  ") { it.name }
+    }
+    val tags = snapshot.tags.filter { it.id in filter.tagIds }.joinToString(", ") { it.name }
+
+    Row(
+        Modifier.fillMaxWidth().clickable { state.switchTab(Route.Library) }.padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Column(Modifier.weight(1f)) {
+            SectionLabel("Scope")
+            Text(path, style = MaterialTheme.typography.bodyMedium)
+            Text(
+                if (tags.isEmpty()) "No tag filters" else "Tags: " + tags,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        TextButton(onClick = { state.switchTab(Route.Library) }) { Text("Change") }
+    }
+}
+
+@Composable
+private fun ModeCard(option: ModeOption, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    Column(
+        modifier
+            .background(
+                if (selected) scheme.primaryContainer.copy(alpha = 0.45f) else scheme.surfaceContainerLow,
+                RoundedCornerShape(14.dp),
+            )
+            .border(
+                width = if (selected) 2.dp else 1.dp,
+                color = if (selected) scheme.primary else scheme.outlineVariant,
+                shape = RoundedCornerShape(14.dp),
+            )
+            .clickable(enabled = option.isAvailable, onClick = onClick)
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(
+                option.icon,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = if (option.isAvailable) scheme.primary else scheme.onSurfaceVariant,
+            )
+            Text(
+                option.mode.title,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = if (option.isAvailable) scheme.onSurface else scheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Text(
+            option.description,
+            style = MaterialTheme.typography.labelSmall,
+            color = scheme.onSurfaceVariant,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            if (option.isAvailable) option.eligible.toString() + " card(s)" else "none available",
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = if (option.isAvailable) scheme.primary else scheme.onSurfaceVariant,
+        )
+    }
+}
+
+private fun modeOptions(snapshot: LibrarySnapshot, cards: List<Card>): List<ModeOption> =
+    StudyMode.All.map { mode ->
+        when (mode) {
+            StudyMode.FLASHCARD -> ModeOption(
+                mode = mode,
+                eligible = cards.size,
+                description = "Flip the card, then rate yourself",
+                icon = Icons.Filled.Style,
+            )
+
+            StudyMode.TYPED -> ModeOption(
+                mode = mode,
+                eligible = cards.size,
+                description = "Type it; graded, and you can override",
+                icon = Icons.Filled.Keyboard,
+            )
+
+            StudyMode.TILES -> ModeOption(
+                mode = mode,
+                eligible = cards.count { TileQuestionFactory.isEligible(it) },
+                description = "Put shuffled tiles back in order",
+                icon = Icons.Filled.ViewModule,
+            )
+
+            StudyMode.MCQ -> ModeOption(
+                mode = mode,
+                eligible = cards.count { McqQuestionFactory.isEligible(it, snapshot.siblingsOf(it)) },
+                description = "Pick one of four options",
+                icon = Icons.Filled.Help,
+            )
+
+            StudyMode.MIXED -> ModeOption(
+                mode = mode,
+                eligible = cards.size,
+                description = "Best-fit mode for each card",
+                icon = Icons.Filled.Shuffle,
+            )
+        }
+    }
+
+private fun disabledReason(mode: StudyMode): String = when (mode) {
+    StudyMode.TILES ->
+        "No card in scope is short enough for tiles. Tile mode skips long answers rather than " +
+            "turning a paragraph into fifty tiles."
+
+    StudyMode.MCQ ->
+        "No card in scope can make four distinct options. A card needs three authored distractors, " +
+            "or three sibling cards in the same topic with the same answer type."
+
+    StudyMode.FLASHCARD, StudyMode.TYPED, StudyMode.MIXED ->
+        "Nothing in scope. Widen the location or clear a filter in the Library."
 }
 
 // ------------------------------------------------------------------ asking ---

@@ -8,6 +8,7 @@ import com.revisionapp.data.StringListSerializer
 import com.revisionapp.data.db.RevisionDatabase
 import com.revisionapp.domain.check.InMemoryTermCorpus
 import com.revisionapp.domain.check.TermCorpus
+import com.revisionapp.domain.check.TextNormaliser
 import com.revisionapp.domain.model.AnswerType
 import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.CardId
@@ -23,6 +24,7 @@ import com.revisionapp.domain.model.TagGroup
 import com.revisionapp.domain.model.TagId
 import com.revisionapp.domain.model.Topic
 import com.revisionapp.domain.model.TopicId
+import com.revisionapp.domain.repository.LearnedAnswerStore
 import com.revisionapp.domain.repository.LibraryRepository
 import com.revisionapp.domain.repository.PackStore
 import com.revisionapp.domain.repository.ProgressRepository
@@ -349,4 +351,49 @@ class SqlSettingsStore(private val database: RevisionDatabase) : SettingsStore {
 
     override fun all(): Map<String, String> =
         database.settingQueries.selectAll().executeAsList().associate { it.settingKey to it.settingValue }
+}
+
+/**
+ * Learned answers: one row per card, holding every wording the user has vouched
+ * for. Newline-delimited rather than JSON because a learned answer is a single line
+ * of typed text, and the delimiter is stripped from anything stored.
+ */
+class SqlLearnedAnswerStore(
+    private val database: RevisionDatabase,
+    private val clock: Clock = Clock.System,
+) : LearnedAnswerStore {
+
+    override fun all(): Map<CardId, List<String>> =
+        database.learnedAnswerQueries.selectAll().executeAsList().associate { row ->
+            CardId(row.cardId) to decode(row.answers)
+        }
+
+    override fun add(cardId: CardId, answer: String) {
+        val cleaned = answer.replace('\n', ' ').replace('\r', ' ').trim()
+        if (cleaned.isEmpty()) return
+        val key = TextNormaliser.normalise(cleaned)
+        if (key.isEmpty()) return
+        val existing = all()[cardId].orEmpty()
+        // Dedupe on the normalised form, so learning "The newton" twice, or after
+        // already learning "the newton", does not grow the row for nothing.
+        if (existing.any { TextNormaliser.normalise(it) == key }) return
+        val updated = (existing + cleaned).takeLast(MAX_ANSWERS_PER_CARD)
+        database.learnedAnswerQueries.upsert(
+            cardId.value,
+            updated.joinToString(DELIMITER),
+            clock.now().toEpochMilliseconds(),
+        )
+    }
+
+    override fun remove(cardId: CardId) {
+        database.learnedAnswerQueries.deleteByCardId(cardId.value)
+    }
+
+    private fun decode(raw: String): List<String> = raw.split(DELIMITER).filter { it.isNotBlank() }
+
+    companion object {
+        /** Oldest wordings are dropped first; a card does not need an unbounded list. */
+        const val MAX_ANSWERS_PER_CARD: Int = 12
+        private const val DELIMITER: String = "\n"
+    }
 }

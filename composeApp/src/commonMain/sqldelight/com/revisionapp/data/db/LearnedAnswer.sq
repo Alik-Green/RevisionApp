@@ -1,0 +1,22 @@
+-- Answers the user has insisted were correct, learned per card.
+--
+-- Built-in cards are read-only and a pack re-import replaces their rows, so a
+-- learned variant cannot live in `card`: it would be wiped by the next sync. It
+-- lives here, keyed by card id, and survives both a sync and an edit of the card.
+CREATE TABLE learned_answer (
+    card_id TEXT NOT NULL PRIMARY KEY,
+    answers TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+
+selectAll:
+SELECT card_id AS cardId, answers, updated_at AS updatedAt
+FROM learned_answer;
+
+upsert:
+INSERT OR REPLACE INTO learned_answer(card_id, answers, updated_at)
+VALUES (?, ?, ?);
+
+deleteByCardId:
+DELETE FROM learned_answer
+WHERE card_id = ?;

@@ -80,6 +80,24 @@ interface ProgressRepository {
     fun reviewCount(): Int
 }
 
+/**
+ * Answers the user has insisted were correct, learned per card.
+ *
+ * Kept out of `card` on purpose: built-in cards are read-only and a pack re-import
+ * replaces their rows, so anything learned has to live beside the card, keyed by
+ * its id, to survive a content update.
+ */
+interface LearnedAnswerStore {
+
+    /** Every learned answer, keyed by card. Read once when a session is built. */
+    fun all(): Map<CardId, List<String>>
+
+    /** Records [answer] for [cardId], ignoring blanks and wordings already known. */
+    fun add(cardId: CardId, answer: String)
+
+    fun remove(cardId: CardId)
+}
+
 /** Installed content packs, and the atomic import that maintains them. */
 interface PackStore {
     fun installed(): List<InstalledPack>

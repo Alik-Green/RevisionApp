@@ -16,7 +16,9 @@ classes of mistake that are cheap to make and expensive to discover remotely.
         terminated its own comment and produced forty fake unresolved-reference
         errors in a neighbouring file.
 
-    tools/check/imports.py <source-dir>...
+    tools/check/kotlin_check.py --fix <source-dir>...
+        Rewrites every import block into ktlint's order.
+
         Reports unused imports, imports of com.revisionapp symbols that nothing in
         the module declares, and import blocks that are not in ktlint's
         intellij_idea order. Unused imports and import order are both hard ktlint
@@ -236,7 +238,25 @@ def sort_imports_in(text):
 
 
 def main(argv):
-    roots = argv[1:] or ["composeApp/src", "androidApp/src", "desktopApp/src"]
+    fix = "--fix" in argv
+    roots = [a for a in argv[1:] if not a.startswith("-")] or [
+        "composeApp/src", "androidApp/src", "desktopApp/src"]
+
+    if fix:
+        changed = 0
+        for root in roots:
+            for path in sorted(pathlib.Path(root).rglob("*.kt")):
+                if "/build/" in str(path).replace("\\", "/"):
+                    continue
+                text = path.read_text(encoding="utf-8")
+                ordered = sort_imports_in(text)
+                if ordered != text:
+                    path.write_text(ordered, encoding="utf-8")
+                    changed += 1
+                    print("resorted", path)
+        print("{} file(s) resorted".format(changed))
+        return 0
+
     files = [
         path
         for root in roots

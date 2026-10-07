@@ -162,6 +162,10 @@ class AppState(
     private val _searchEverywhere = MutableStateFlow(false)
     val searchEverywhere: StateFlow<Boolean> = _searchEverywhere.asStateFlow()
 
+    /** Cards per session. [SESSION_SIZE_ALL] is the "All" choice. */
+    private val _sessionSize = MutableStateFlow(DEFAULT_SESSION_SIZE)
+    val sessionSize: StateFlow<Int> = _sessionSize.asStateFlow()
+
     private val _settingsUi = MutableStateFlow(SettingsUi.initial())
     val settingsUi: StateFlow<SettingsUi> = _settingsUi.asStateFlow()
 
@@ -311,25 +315,47 @@ class AppState(
      * present (a long paragraph in tile mode, a thin topic in MCQ) drop out
      * silently here.
      */
+    /** How many cards the next session takes; [SESSION_SIZE_ALL] means no limit. */
+    private fun sessionLimit(): Int {
+        val size = _sessionSize.value
+        return if (size <= 0) Int.MAX_VALUE else size
+    }
+
+    fun setSessionSize(size: Int) {
+        _sessionSize.value = size
+    }
+
     fun startStudy(mode: StudyMode) {
         scope.launch(Dispatchers.Default) {
             val snapshot = _snapshot.value
             val filter = _filter.value
             val queue = snapshot.dueCards(filter)
                 .sortedBy { snapshot.stateOf(it.id).dueAt }
-                .take(StudySession.MAX_ITEMS)
+                .take(sessionLimit())
 
             val checker = DefaultAnswerChecker(corpus = graph.library.corpus())
             val scheduler = graph.scheduler()
             val items = queue.mapNotNull { card -> buildSessionCard(card, mode, snapshot) }
+            val learned = graph.learned.all()
 
             session = StudySession(
                 items = items,
                 checker = checker,
                 scheduler = scheduler,
                 clock = graph.clock,
-                persistSchedule = { cardId, state -> graph.progress.saveState(cardId, state) },
-                recordReview = { entry -> graph.progress.record(entry) },
+                // Session events arrive from the UI thread, so every write is handed
+                // to a background dispatcher: answering a card must not do disk I/O
+                // on the thread that is animating the feedback.
+                persistSchedule = { cardId, state ->
+                    scope.launch(Dispatchers.Default) { graph.progress.saveState(cardId, state) }
+                },
+                recordReview = { entry ->
+                    scope.launch(Dispatchers.Default) { graph.progress.record(entry) }
+                },
+                learned = learned,
+                onLearn = { cardId, answer ->
+                    scope.launch(Dispatchers.Default) { graph.learned.add(cardId, answer) }
+                },
             )
             _sessionState.value = session?.state ?: SessionState.Empty
             navigate(Route.Study)
@@ -585,5 +611,13 @@ class AppState(
     companion object {
         /** The four tabs. Editors are pushed on top of them, never beside them. */
         private val TopLevelTabs: Set<Route> = setOf(Route.Library, Route.Study, Route.Stats, Route.Settings)
+
+        /** The session-size choices the Study setup screen offers; 0 means "All". */
+        const val SESSION_SIZE_ALL: Int = 0
+        val SessionSizes: List<Int> = listOf(10, 20, 50, SESSION_SIZE_ALL)
+        const val DEFAULT_SESSION_SIZE: Int = 20
+
+        fun sessionSizeLabel(size: Int): String =
+            if (size == SESSION_SIZE_ALL) "All" else size.toString()
     }
 }

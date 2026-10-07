@@ -38,6 +38,7 @@ class StudySessionTest {
     private val secondCardId = CardId("builtin:test:topic:0002")
     private val saved = mutableListOf<Pair<CardId, ScheduleState>>()
     private val entries = mutableListOf<ReviewEntry>()
+    private val learned = mutableListOf<Pair<CardId, String>>()
 
     private fun card(id: CardId = cardId, back: String = "model answer"): Card = Card(
         id = id,
@@ -68,6 +69,7 @@ class StudySessionTest {
     ): StudySession {
         saved.clear()
         entries.clear()
+        learned.clear()
         return StudySession(
             items = items,
             checker = StubChecker(verdict),
@@ -75,6 +77,7 @@ class StudySessionTest {
             clock = FixedClock(now),
             persistSchedule = { id, state -> saved.add(id to state) },
             recordReview = { entry -> entries.add(entry) },
+            onLearn = { id, answer -> learned.add(id to answer) },
         )
     }
 
@@ -183,6 +186,48 @@ class StudySessionTest {
         assertEquals(VerdictKind.INCORRECT, entry.verdict)
         assertEquals(Rating.EASY, entry.rating)
         assertTrue(entry.correct)
+    }
+
+    @Test
+    fun anOverrideOnATypedAnswerTeachesTheChecker() {
+        val session = session(
+            items = listOf(item(StudyMode.TYPED, Question.Typed(cardId))),
+            verdict = Verdict.incorrect(VerdictReason.EmptyInput),
+        )
+
+        session.onEvent(SessionEvent.Type("the force unit"))
+        session.onEvent(SessionEvent.SubmitText)
+        assertEquals(0, learned.size, "nothing is learned until the user disputes the verdict")
+
+        session.onEvent(SessionEvent.Override(true))
+
+        assertEquals(listOf(cardId to "the force unit"), learned)
+    }
+
+    @Test
+    fun sayingYouWereWrongTeachesNothing() {
+        val session = session(
+            items = listOf(item(StudyMode.TYPED, Question.Typed(cardId))),
+            verdict = Verdict.correct(VerdictReason.ExactMatch),
+        )
+
+        session.onEvent(SessionEvent.Type("the force unit"))
+        session.onEvent(SessionEvent.SubmitText)
+        session.onEvent(SessionEvent.Override(false))
+
+        assertEquals(0, learned.size)
+    }
+
+    @Test
+    fun anOverrideOnATapAnswerTeachesNothing() {
+        // A multiple-choice verdict is not in doubt, so an override there carries no
+        // information about wording and must not pollute the learned answers.
+        val session = session(listOf(item(StudyMode.MCQ, mcqQuestion())))
+
+        session.onEvent(SessionEvent.ChooseOption(1))
+        session.onEvent(SessionEvent.Override(true))
+
+        assertEquals(0, learned.size)
     }
 
     @Test

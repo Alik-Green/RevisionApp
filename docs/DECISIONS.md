@@ -736,3 +736,66 @@ capped at 40 per section. It would need revisiting at roughly ten thousand cards
 and the seam is already in the right place: `LibrarySearch.search` takes a
 snapshot and returns sections, so swapping its body for a query changes nothing at
 the call site.
+
+---
+
+## D36. The checker learns from an override, and rescues a close paraphrase
+
+**Decision.** Saying "I was right" on a typed answer stores that wording beside the
+card in a new `learned_answer` table, and it is matched ahead of key points from
+then on. Separately, when key-point coverage says INCORRECT for a card that *has*
+key points, the answer is compared with the model answer as a whole and rescued to
+PARTIAL if the cosine similarity reaches 0.75.
+
+**Why learning belongs beside the card, not in it.** A built-in card is read-only
+and a pack re-import replaces its rows, so anything stored on the card would be
+wiped by the next sync — the exact data-loss the separation of built-in and user
+content exists to prevent. `learned_answer` is keyed by card id, is written by the
+user and never by a sync, and survives both a content update and an edit of the
+card itself.
+
+**Why only typed answers learn.** A multiple-choice or tile verdict is not in
+doubt: the app knows which option was tapped and whether the tiles were in order,
+so an override there is the user disputing something the app can verify. Learning
+from it would store noise. A typed answer is the only case where the app is
+guessing and the user has information it does not.
+
+**Why the rescue stops at PARTIAL.** Key points are authored evidence about what an
+answer must contain. A high whole-answer similarity is evidence the answer is
+*probably* right, which is worth not marking wrong, but it is not evidence that it
+is right — otherwise a card with carefully chosen key points would grade no
+differently from one with none. The negation guard still runs afterwards, so a
+similarly worded contradiction is capped back at INCORRECT; there is a test for
+exactly that.
+
+**What it costs.** A wrong "I was right" is now permanent for that card until the
+row is deleted, and there is no UI yet for reviewing or clearing what has been
+learned. That belongs in Settings, beside the card's other data. The rescue also
+means two answers can reach PARTIAL by different routes, so a verdict's `reason`
+has to be read to know which — `Similarity` rather than `KeyPointCoverage`.
+
+**The schema.** `learned_answer` is created by `Schema.create` on a fresh database
+and by an idempotent `CREATE TABLE IF NOT EXISTS` in `AppGraph`'s init for one that
+already exists, because `Schema.create` only runs against an empty file and an
+existing install would otherwise fail with "no such table" the first time an
+override was learned. A SQLDelight `.sqm` migration is the orthodox answer and was
+not used: versioned migrations need a checked-in schema directory and a migration
+task that verifies against it, and neither can be run or verified here (D1). The
+DDL is duplicated in `AppGraph` with a comment saying it must match the `.sq` file,
+which is the honest cost of that choice.
+
+## D37. Session writes happen off the UI thread
+
+**Decision.** `persistSchedule`, `recordReview` and `onLearn` are handed to
+`Dispatchers.Default` inside `AppState`, rather than being called directly by
+`StudySession.commit`.
+
+**Why.** Session events arrive from the UI thread, so every answer was doing SQLite
+writes on the thread that is animating the feedback. It was invisible in tests,
+which have no UI thread, and would have shown up as jank on a slow Android device
+at exactly the moment the user is reading their result. The counters and the state
+machine stay synchronous, so the screen updates immediately; only the disk moves.
+
+**What it costs.** Writes for two very fast answers could in principle complete out
+of order. Each is an independent row keyed by card id and each review log entry is
+append-only, so ordering between them carries no meaning.

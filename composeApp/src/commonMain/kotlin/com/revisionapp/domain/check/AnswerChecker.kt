@@ -7,7 +7,14 @@ import com.revisionapp.domain.model.Card
  * fully unit-tested — see `commonTest/.../check`.
  */
 interface AnswerChecker {
-    fun check(card: Card, input: String): Verdict
+
+    /**
+     * @param learnedAnswers answers the user has previously insisted were correct
+     * for this card. They are matched ahead of key points, so the same wording is
+     * never marked wrong twice. Empty by default, which keeps the two-argument form
+     * the brief specifies working for callers that have nothing learned.
+     */
+    fun check(card: Card, input: String, learnedAnswers: List<String> = emptyList()): Verdict
 }
 
 /**

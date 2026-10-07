@@ -16,6 +16,12 @@ sealed interface VerdictReason {
     data object EmptyInput : VerdictReason
     data object ExactMatch : VerdictReason
     data class AliasMatch(val alias: String) : VerdictReason
+
+    /**
+     * The answer matches one the user previously insisted was correct. Learned
+     * answers outrank key points because a human has already adjudicated them.
+     */
+    data class LearnedMatch(val answer: String) : VerdictReason
     data class KeyPointCoverage(val matched: Int, val total: Int) : VerdictReason
     data class NegationConflict(val modelTerm: String, val answerTerm: String) : VerdictReason
     data class NegationPolarity(val modelNegated: Boolean, val answerNegated: Boolean) : VerdictReason

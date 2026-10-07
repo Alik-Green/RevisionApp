@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.material.icons.filled.Notes
@@ -138,32 +137,77 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
     val filter = state.filter.collectAsState().value
     val snapshot = state.snapshot.collectAsState().value
     val location = state.location.collectAsState().value
+    val searchOpen = remember { mutableStateOf(query.isNotBlank()) }
     val addOpen = remember { mutableStateOf(false) }
     val activeCount = filter.tagIds.size +
         (if (filter.dueOnly) 1 else 0) +
         (if (filter.newOnly) 1 else 0) +
         (if (filter.source != null) 1 else 0)
 
+    val node = location?.let { snapshot.tree.find(it) }
+    val children = if (node == null) snapshot.tree.roots else node.children
+    val inSection = remember(snapshot, filter) { snapshot.filtered(filter).size }
+
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = { state.setSearchQuery(it) },
-                modifier = Modifier.weight(1f),
-                singleLine = true,
-                placeholder = { Text("Search topics, tags and cards") },
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                trailingIcon = {
-                    if (query.isNotEmpty()) {
-                        IconButton(onClick = { state.setSearchQuery("") }) {
-                            Icon(Icons.Filled.Close, contentDescription = "Clear search")
-                        }
+        // One compact row: where you are on the left, three small actions on the
+        // right. The search field used to sit here permanently and dominated the
+        // screen; it is now behind its icon, and New card / topic / tag live in one
+        // overflow menu instead of a full-size plus.
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(Modifier.weight(1f)) {
+                BreadcrumbRow(state, snapshot)
+                Text(
+                    node?.name ?: "Library",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    countLine(children.size, inSection, snapshot.dueCount(filter)),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            IconButton(onClick = {
+                val opening = !searchOpen.value
+                searchOpen.value = opening
+                if (!opening) state.setSearchQuery("")
+            }) {
+                Icon(
+                    Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = if (searchOpen.value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            IconButton(onClick = onFilters) {
+                Box {
+                    Icon(
+                        Icons.Filled.FilterList,
+                        contentDescription = "Filters",
+                        tint = if (activeCount > 0) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                    )
+                    if (activeCount > 0) {
+                        Box(
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .size(8.dp)
+                                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+                        )
                     }
-                },
-            )
+                }
+            }
             Box {
                 IconButton(onClick = { addOpen.value = true }) {
-                    Icon(Icons.Filled.Add, contentDescription = "Add")
+                    Icon(
+                        Icons.Filled.MoreVert,
+                        contentDescription = "Add or create",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
                 DropdownMenu(expanded = addOpen.value, onDismissRequest = { addOpen.value = false }) {
                     DropdownMenuItem(
@@ -192,38 +236,25 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
                     )
                 }
             }
-            IconButton(onClick = onFilters) {
-                Box {
-                    Icon(Icons.Filled.FilterList, contentDescription = "Filters")
-                    if (activeCount > 0) {
-                        Box(
-                            Modifier
-                                .align(Alignment.TopEnd)
-                                .size(8.dp)
-                                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
-                        )
-                    }
-                }
-            }
         }
-        BreadcrumbRow(state, snapshot)
-
-        // Pinned above the list rather than inside it: the location has to stay on
-        // screen while the user scrolls through what is in it.
-        val node = location?.let { snapshot.tree.find(it) }
-        val children = if (node == null) snapshot.tree.roots else node.children
-        val inSection = remember(snapshot, filter) { snapshot.filtered(filter).size }
-        Text(
-            node?.name ?: "Library",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            locationLine(node, children.size, inSection, snapshot.dueCount(filter)),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
+        if (searchOpen.value) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { state.setSearchQuery(it) },
+                modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                singleLine = true,
+                placeholder = { Text("Search topics, tags and cards") },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        state.setSearchQuery("")
+                        searchOpen.value = false
+                    }) {
+                        Icon(Icons.Filled.Close, contentDescription = "Close search")
+                    }
+                },
+            )
+        }
         ActiveFilterRow(state, snapshot, filter)
     }
 }
@@ -236,23 +267,38 @@ private fun BreadcrumbRow(state: AppState, snapshot: LibrarySnapshot) {
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
     ) {
-        TextButton(onClick = { state.openTopic(null) }) {
-            Icon(Icons.Filled.Home, contentDescription = null, modifier = Modifier.size(16.dp))
-            Spacer(Modifier.width(4.dp))
-            Text("Library")
-        }
+        Text(
+            "Library",
+            style = MaterialTheme.typography.labelMedium,
+            color = if (location == null) {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
+            modifier = Modifier.clickable(enabled = location != null) { state.openTopic(null) },
+        )
         for (crumb in crumbs) {
             Icon(
                 Icons.Filled.ChevronRight,
                 contentDescription = null,
-                modifier = Modifier.size(14.dp),
+                modifier = Modifier.size(12.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            TextButton(onClick = { state.openTopic(crumb.id) }) {
-                MathText(crumb.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
+            val isLast = crumb.id == location
+            Text(
+                crumb.name,
+                style = MaterialTheme.typography.labelMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = if (isLast) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.primary
+                },
+                modifier = Modifier.clickable(enabled = !isLast) { state.openTopic(crumb.id) },
+            )
         }
     }
 }
@@ -835,13 +881,12 @@ private fun sectionSize(section: SearchSection): Int = when (section) {
 }
 
 /**
- * One line that says where you are and what it holds. "Here" means this topic
- * itself; "in this section" includes every subtopic, which is what a session
- * started from here would study.
+ * Counts only. The breadcrumb already gives the path and the title already gives
+ * the name, so repeating "Inside Circular motion" here said the same thing twice.
+ * "In this section" includes descendants, which is what studying from here covers.
  */
-private fun locationLine(node: TopicNode?, subtopics: Int, inSection: Int, due: Int): String {
-    val parts = ArrayList<String>(4)
-    parts += if (node == null) "Top level" else "Inside " + node.name
+private fun countLine(subtopics: Int, inSection: Int, due: Int): String {
+    val parts = ArrayList<String>(3)
     if (subtopics > 0) parts += subtopics.toString() + " subtopic" + plural(subtopics)
     parts += inSection.toString() + " card" + plural(inSection) + " in this section"
     parts += due.toString() + " due"

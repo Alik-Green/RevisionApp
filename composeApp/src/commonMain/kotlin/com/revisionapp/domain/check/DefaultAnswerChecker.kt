@@ -29,7 +29,7 @@ class DefaultAnswerChecker(
 
     private val similarity = TfIdfScorer(corpus)
 
-    override fun check(card: Card, input: String): Verdict {
+    override fun check(card: Card, input: String, learnedAnswers: List<String>): Verdict {
         if (card.answerType == AnswerType.SELF_GRADE) return Verdict.selfGrade()
         if (input.isBlank()) {
             return Verdict.incorrect(
@@ -38,7 +38,7 @@ class DefaultAnswerChecker(
             )
         }
         return when (card.answerType) {
-            AnswerType.TEXT -> applySemantic(card, input, checkText(card, input))
+            AnswerType.TEXT -> applySemantic(card, input, checkText(card, input, learnedAnswers))
             AnswerType.NUMERIC -> checkNumeric(card, input)
             AnswerType.EXPRESSION -> checkExpression(card, input)
             AnswerType.SELF_GRADE -> Verdict.selfGrade()
@@ -47,18 +47,14 @@ class DefaultAnswerChecker(
 
     // ---------------------------------------------------------------- TEXT ---
 
-    private fun checkText(card: Card, input: String): Verdict {
+    private fun checkText(card: Card, input: String, learnedAnswers: List<String>): Verdict {
         val normalisedInput = TextNormaliser.normalise(input)
         val inputTokens = TextNormaliser.matchTokens(input).toSet()
 
-        val exact = exactOrAliasMatch(card, normalisedInput)
+        val exact = exactOrAliasMatch(card, normalisedInput, learnedAnswers)
         if (exact != null) return exact
 
-        val base = if (card.keyPoints.isNotEmpty()) {
-            keyPointVerdict(card, inputTokens, normalisedInput)
-        } else {
-            similarityVerdict(card, input)
-        }
+        val base = coverageVerdict(card, input, inputTokens, normalisedInput)
 
         val conflict = NegationGuard.findConflict(modelTokens(card), inputTokens) ?: return base
         val reason = when (conflict) {
@@ -71,7 +67,39 @@ class DefaultAnswerChecker(
         return base.cappedAtIncorrect(reason)
     }
 
-    private fun exactOrAliasMatch(card: Card, normalisedInput: String): Verdict? {
+    /**
+     * Key points are the primary evidence, but they are authored wording and a
+     * correct answer in the student's own words can miss every one of them. When
+     * coverage alone says INCORRECT, the answer is compared with the model answer
+     * as a whole and rescued to PARTIAL if it is close enough. It never rescues to
+     * CORRECT - key points still decide that - and the negation guard runs after
+     * this, so a contradicting answer is capped back at INCORRECT.
+     */
+    private fun coverageVerdict(
+        card: Card,
+        input: String,
+        inputTokens: Set<String>,
+        normalisedInput: String,
+    ): Verdict {
+        if (card.keyPoints.isEmpty()) return similarityVerdict(card, input)
+        val keyed = keyPointVerdict(card, inputTokens, normalisedInput)
+        if (keyed.kind != VerdictKind.INCORRECT) return keyed
+        val cosine = similarity.cosine(input, card.back)
+        if (cosine < PARAPHRASE_RESCUE) return keyed
+        return Verdict(
+            kind = VerdictKind.PARTIAL,
+            score = cosine,
+            matchedKeyPoints = keyed.matchedKeyPoints,
+            missedKeyPoints = keyed.missedKeyPoints,
+            reason = VerdictReason.Similarity(cosine),
+        )
+    }
+
+    private fun exactOrAliasMatch(
+        card: Card,
+        normalisedInput: String,
+        learnedAnswers: List<String>,
+    ): Verdict? {
         if (normalisedInput.isEmpty()) return null
         val normalisedBack = TextNormaliser.normalise(card.back)
         if (normalisedBack.isNotEmpty() && normalisedBack == normalisedInput) {
@@ -85,6 +113,16 @@ class DefaultAnswerChecker(
             if (normalisedAlias.isNotEmpty() && normalisedAlias == normalisedInput) {
                 return Verdict.correct(
                     reason = VerdictReason.AliasMatch(alias),
+                    matchedKeyPoints = card.keyPoints.map { it.text },
+                )
+            }
+        }
+        // Learned last, so an authored alias still reports itself as the reason.
+        for (learned in learnedAnswers) {
+            val normalisedLearned = TextNormaliser.normalise(learned)
+            if (normalisedLearned.isNotEmpty() && normalisedLearned == normalisedInput) {
+                return Verdict.correct(
+                    reason = VerdictReason.LearnedMatch(learned),
                     matchedKeyPoints = card.keyPoints.map { it.text },
                 )
             }
@@ -275,6 +313,14 @@ class DefaultAnswerChecker(
 
         /** Similarity is a soft signal: trusted fully only when very high. */
         const val SIMILARITY_CORRECT: Double = 0.92
+
+        /**
+         * How close to the model answer a paraphrase must be to be rescued from
+         * INCORRECT to PARTIAL after failing every key point. Deliberately well
+         * above [SIMILARITY_PARTIAL], which applies to cards with no key points at
+         * all: here the authored evidence has already said no.
+         */
+        const val PARAPHRASE_RESCUE: Double = 0.75
         const val SIMILARITY_PARTIAL: Double = 0.5
 
         const val CLOSE_SCORE: Double = 0.5

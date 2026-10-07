@@ -1,13 +1,16 @@
 package com.revisionapp.di
 
+import app.cash.sqldelight.db.SqlDriver
 import com.revisionapp.data.AppJson
 import com.revisionapp.data.db.RevisionDatabase
+import com.revisionapp.data.repository.SqlLearnedAnswerStore
 import com.revisionapp.data.repository.SqlLibraryRepository
 import com.revisionapp.data.repository.SqlPackStore
 import com.revisionapp.data.repository.SqlProgressRepository
 import com.revisionapp.data.repository.SqlSettingsStore
 import com.revisionapp.data.sync.ContentApiClient
 import com.revisionapp.data.sync.ContentSync
+import com.revisionapp.domain.repository.LearnedAnswerStore
 import com.revisionapp.domain.repository.LibraryRepository
 import com.revisionapp.domain.repository.PackStore
 import com.revisionapp.domain.repository.ProgressRepository
@@ -44,13 +47,25 @@ class AppGraph(platform: PlatformServices) {
     val platformName: String = platform.platformName
     val dataDirectory: String = platform.dataDirectory
 
-    private val database: RevisionDatabase = RevisionDatabase(platform.createDatabaseDriver())
+    private val driver: SqlDriver = platform.createDatabaseDriver()
+    private val database: RevisionDatabase = RevisionDatabase(driver)
     private val httpClient = platform.createHttpClient()
+
+    init {
+        // Tables added after a user's database already existed. Schema.create only
+        // runs against a fresh file, so an existing install would fail with "no such
+        // table" the first time an override was learned. Idempotent DDL is used
+        // rather than a SQLDelight .sqm migration because versioned migrations need
+        // a checked-in schema directory and cannot be verified without a local
+        // compiler. See docs/DECISIONS.md D36.
+        driver.execute(null, LEARNED_ANSWER_DDL, 0, null)
+    }
 
     val library: LibraryRepository = SqlLibraryRepository(database, json, clock)
     val progress: ProgressRepository = SqlProgressRepository(database)
     val packs: PackStore = SqlPackStore(database, json, clock)
     val settings: SettingsStore = SqlSettingsStore(database)
+    val learned: LearnedAnswerStore = SqlLearnedAnswerStore(database, clock)
 
     val planner: StudyPlanner = StudyPlanner(library, progress)
     val renderer: RichTextRenderer = UnicodeRichTextRenderer()
@@ -72,4 +87,13 @@ class AppGraph(platform: PlatformServices) {
 
     fun contentSync(): ContentSync =
         ContentSync(ContentApiClient(httpClient) { contentBaseUrl() }, packs, json)
+
+    private companion object {
+        /** Must match LearnedAnswer.sq exactly; it is the same table, created twice. */
+        const val LEARNED_ANSWER_DDL: String =
+            "CREATE TABLE IF NOT EXISTS learned_answer (" +
+                "card_id TEXT NOT NULL PRIMARY KEY, " +
+                "answers TEXT NOT NULL, " +
+                "updated_at INTEGER NOT NULL)"
+    }
 }

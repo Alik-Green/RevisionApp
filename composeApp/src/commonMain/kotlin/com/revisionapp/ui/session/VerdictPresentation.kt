@@ -27,6 +27,9 @@ object VerdictPresentation {
 
         is VerdictReason.AliasMatch -> "Matched an accepted alternative: " + reason.alias + "."
 
+        is VerdictReason.LearnedMatch ->
+            "Matched an answer you previously marked correct, so it is remembered: " + reason.answer + "."
+
         is VerdictReason.KeyPointCoverage ->
             "Covered ${reason.matched} of ${reason.total} key points."
 

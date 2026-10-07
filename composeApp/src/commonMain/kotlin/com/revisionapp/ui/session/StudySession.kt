@@ -70,6 +70,11 @@ sealed interface SessionState {
         val total: Int,
         val item: SessionCard,
         val verdict: Verdict,
+        /**
+         * What the user actually typed, kept so that "I was right" can teach the
+         * checker. Empty for modes whose answer is a tap rather than text.
+         */
+        val input: String = "",
     ) : SessionState
 
     data class Finished(val summary: SessionSummary) : SessionState
@@ -101,6 +106,10 @@ class StudySession(
     private val clock: Clock,
     private val persistSchedule: (cardId: CardId, state: ScheduleState) -> Unit,
     private val recordReview: (entry: ReviewEntry) -> Unit,
+    /** Answers the user has vouched for before, loaded once when the session is built. */
+    private val learned: Map<CardId, List<String>> = emptyMap(),
+    /** Called when the user overrides a typed verdict to "I was right". */
+    private val onLearn: (cardId: CardId, answer: String) -> Unit = { _, _ -> },
 ) {
     var state: SessionState = if (items.isEmpty()) {
         SessionState.Empty
@@ -163,13 +172,16 @@ class StudySession(
                 correct = event.rating != Rating.AGAIN,
             )
 
-            is SessionEvent.Override -> commit(
-                position = reviewing.position,
-                item = reviewing.item,
-                rating = ModeGrading.ratingForOverride(reviewing.item.mode, event.userSaysCorrect),
-                verdictKind = reviewing.verdict.kind,
-                correct = event.userSaysCorrect,
-            )
+            is SessionEvent.Override -> {
+                if (event.userSaysCorrect) learnFrom(reviewing)
+                commit(
+                    position = reviewing.position,
+                    item = reviewing.item,
+                    rating = ModeGrading.ratingForOverride(reviewing.item.mode, event.userSaysCorrect),
+                    verdictKind = reviewing.verdict.kind,
+                    correct = event.userSaysCorrect,
+                )
+            }
 
             SessionEvent.Next -> if (reviewing.verdict.requiresSelfGrade) {
                 // The checker could not decide; only the user can, so Next is inert
@@ -202,7 +214,11 @@ class StudySession(
     private fun submitText(asking: SessionState.Asking) {
         val draft = asking.draft
         if (draft !is AnswerDraft.Text) return
-        state = reviewing(asking, checker.check(asking.item.card, draft.value))
+        state = reviewing(
+            asking,
+            checker.check(asking.item.card, draft.value, learned[asking.item.card.id].orEmpty()),
+            draft.value,
+        )
     }
 
     private fun tapTile(asking: SessionState.Asking, tileId: Int) {
@@ -226,8 +242,26 @@ class StudySession(
         state = reviewing(asking, McqGrader.grade(question, index))
     }
 
-    private fun reviewing(asking: SessionState.Asking, verdict: Verdict): SessionState.Reviewing =
-        SessionState.Reviewing(asking.position, asking.total, asking.item, verdict)
+    private fun reviewing(
+        asking: SessionState.Asking,
+        verdict: Verdict,
+        input: String = "",
+    ): SessionState.Reviewing =
+        SessionState.Reviewing(asking.position, asking.total, asking.item, verdict, input)
+
+    /**
+     * "I was right" on a typed answer teaches the checker.
+     *
+     * The wording is stored beside the card and matched ahead of key points from
+     * then on, so the same answer is not marked wrong twice. Only typed answers
+     * learn: a multiple-choice or tile verdict is not in doubt, so an override
+     * there carries no new information about wording.
+     */
+    private fun learnFrom(reviewing: SessionState.Reviewing) {
+        if (reviewing.item.mode != StudyMode.TYPED) return
+        if (reviewing.input.isBlank()) return
+        onLearn(reviewing.item.card.id, reviewing.input.trim())
+    }
 
     /**
      * The single place where a review touches the schedule. Every mode gets here,
@@ -263,7 +297,5 @@ class StudySession(
     }
 
     companion object {
-        /** Cards per session; a shorter daily queue beats a long backlog. */
-        const val MAX_ITEMS: Int = 30
     }
 }
