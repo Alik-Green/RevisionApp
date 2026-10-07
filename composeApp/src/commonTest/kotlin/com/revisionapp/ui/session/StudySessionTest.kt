@@ -290,5 +290,5 @@ private class FixedClock(private val instant: Instant) : Clock {
 }
 
 private class StubChecker(private val verdict: Verdict) : AnswerChecker {
-    override fun check(card: Card, input: String): Verdict = verdict
+    override fun check(card: Card, input: String, learnedAnswers: List<String>): Verdict = verdict
 }
