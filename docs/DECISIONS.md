@@ -877,3 +877,30 @@ hook that makes any verb fail on demand (so a run that dies mid-upload is
 tested, not assumed safe), and `hiddenIds`, which makes a record appear in a
 listing but vanish when fetched — exactly what an eventually consistent store,
 or a concurrent delete on the other device, looks like.
+
+## D45 — The review log is the authority; the schedule is a cache (2026-10-07)
+
+Reviews are stored as append-only `.jsonl` segments, one file per device per
+month, and a card's schedule can always be thrown away and recomputed from the
+merged log by `ScheduleRebuilder`. That inverts the usual priority: instead of
+merging `card_state` rows carefully and hoping, the app merges events (which
+only ever grow, so merging is deduplication) and derives state from the result.
+Two devices that end up with the same history necessarily end up with the same
+schedule, which is the property that makes sync converge rather than drift.
+
+Monthly segments rather than one file per device because appending a new month
+can never conflict with another device editing the same bytes -- the property
+that matters most on the worst transport supported, a folder watched by a cloud
+desktop client. A partially copied segment loses its tail, not its head.
+
+`LoggedReview.eventId` is derived from the review (device, card, instant,
+rating, mode) rather than generated, so the same review arriving twice -- a
+re-uploaded segment, or two devices that both hold it -- is stored once. Without
+that, every replay would double the interval. `escalation` is carried in the
+line because the mode ladder is advanced by the study session rather than the
+scheduler, so replaying ratings alone would not reproduce it.
+
+Log lines carry enums as strings resolved by hand rather than by the
+serializer, and a line that cannot be understood is skipped and counted in
+`unreadable`. A review from a newer build, or a truncated tail from an
+interrupted copy, must cost one review rather than the history.

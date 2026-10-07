@@ -63,6 +63,15 @@ interface SyncProvider {
      */
     suspend fun deleteRecord(type: RecordType, id: RecordId)
 
+    /**
+     * Every device that has a log directory here.
+     *
+     * Needed before segments can be merged: the log is per device, and a device
+     * this one has never seen is exactly the one whose reviews would otherwise
+     * be silently dropped from the rebuilt schedule.
+     */
+    suspend fun listLogDevices(): List<DeviceId>
+
     suspend fun listLogSegments(deviceId: DeviceId): List<LogSegmentName>
 
     /** The lines of one segment, in the order they were appended. */

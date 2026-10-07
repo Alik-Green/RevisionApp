@@ -117,6 +117,11 @@ class InMemorySyncProvider(
         deleteCount++
     }
 
+    override suspend fun listLogDevices(): List<DeviceId> {
+        guard("listLogDevices")
+        return segments.keys.map { DeviceId(it.substringBefore('/')) }.distinct().sortedBy { it.value }
+    }
+
     override suspend fun listLogSegments(deviceId: DeviceId): List<LogSegmentName> {
         guard("listLogSegments")
         val prefix = segmentPrefix(deviceId)
