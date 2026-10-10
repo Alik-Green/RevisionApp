@@ -9,7 +9,6 @@ import com.revisionapp.di.AppGraph
 import com.revisionapp.di.SettingKeys
 import com.revisionapp.domain.check.DefaultAnswerChecker
 import com.revisionapp.domain.course.CourseCatalog
-import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.CardFilter
 import com.revisionapp.domain.model.CardId
@@ -40,8 +39,6 @@ import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.StudySession
 import com.revisionapp.ui.theme.ThemeMode
 import com.revisionapp.ui.theme.ThemeStyle
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,6 +53,8 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 /** Destinations. Hand-rolled rather than a navigation library: see DECISIONS.md D6. */
 sealed interface Route {

@@ -21,8 +21,8 @@ import com.revisionapp.domain.usecase.StudyPlanner
 import com.revisionapp.platform.PlatformServices
 import com.revisionapp.ui.render.RichTextRenderer
 import com.revisionapp.ui.render.UnicodeRichTextRenderer
-import kotlin.time.Clock
 import kotlinx.serialization.json.Json
+import kotlin.time.Clock
 
 /** Setting keys stored in the `setting` table. */
 object SettingKeys {

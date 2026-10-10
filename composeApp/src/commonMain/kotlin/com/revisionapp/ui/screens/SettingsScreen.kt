@@ -38,9 +38,9 @@ import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.ThemeMode
 import com.revisionapp.ui.theme.ThemeStyle
-import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 /**
  * Content sync status and controls, the retention setting and where the database
