@@ -427,5 +427,4 @@ class QuestionDerivationTest {
         )
         questions.forEach { assertEquals(shortCard.id, it?.cardId) }
     }
-
 }
