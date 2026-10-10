@@ -169,23 +169,45 @@ class ProgressionRulesTest {
     }
 
     @Test
-    fun characterCosmeticsRequireEarnedCoinsAndNeverGrantStudyAdvantages() {
+    fun starterCharacterHasTheNaturalSkinRangeAndOnlyStarterFeatureChoices() {
+        val progress = LearnerProgress()
+        val owned = progress.ownedAppearanceItemIds.toSet()
+
+        assertEquals(6, AppearanceCatalog.inCategory(AppearanceCategory.SKIN_TONE).count { it.id in owned && it.cost == 0L })
+        assertEquals(2, AppearanceCatalog.inCategory(AppearanceCategory.HAIR_STYLE).count { it.id in owned })
+        assertEquals(1, AppearanceCatalog.inCategory(AppearanceCategory.EYE_STYLE).count { it.id in owned })
+        assertEquals(1, AppearanceCatalog.inCategory(AppearanceCategory.NOSE_STYLE).count { it.id in owned })
+        assertEquals(AppearanceCatalog.SKIN_MEDIUM, progress.characterAppearance.skinToneId)
+    }
+
+    @Test
+    fun cosmeticPiecesAreEarnedOnceAndShapeControlsStayFree() {
         val starting = LearnerProgress(coins = 100)
-        val purchase = ProgressionRules.buyCosmetic(starting, "sprout")
-        assertEquals(55L, purchase.coinsSpent)
-        assertEquals(45L, purchase.progress.coins)
-        assertTrue("sprout" in purchase.progress.ownedCosmeticIds)
-        assertEquals("sprout", purchase.progress.selectedCosmeticId)
+        val purchase = ProgressionRules.unlockAppearanceItem(starting, "hair-wavy")
+        assertEquals(40L, purchase.coinsSpent)
+        assertEquals(60L, purchase.progress.coins)
+        assertTrue("hair-wavy" in purchase.progress.ownedAppearanceItemIds)
+        assertEquals(AppearanceCatalog.HAIR_SHORT, purchase.progress.characterAppearance.hairStyleId)
 
-        val repeated = ProgressionRules.buyCosmetic(purchase.progress, "sprout")
+        val selected = ProgressionRules.selectAppearanceItem(purchase.progress, "hair-wavy")
+        assertEquals("hair-wavy", selected.characterAppearance.hairStyleId)
+        val tuned = ProgressionRules.updateCharacterAppearance(
+            selected,
+            selected.characterAppearance.copy(eyeSpacing = 84, eyeSize = 72, noseHeight = 63),
+        )
+        assertEquals(84, tuned.characterAppearance.eyeSpacing)
+        assertEquals(72, tuned.characterAppearance.eyeSize)
+        assertEquals(63, tuned.characterAppearance.noseHeight)
+        assertEquals(selected.coins, tuned.coins)
+
+        val repeated = ProgressionRules.unlockAppearanceItem(tuned, "hair-wavy")
         assertEquals(0L, repeated.coinsSpent)
-        assertEquals(45L, repeated.progress.coins)
-        assertEquals(purchase.progress, repeated.progress)
-
-        val equippedStarter = ProgressionRules.equipCosmetic(purchase.progress, CharacterCosmetics.STARTER_ID)
-        assertEquals(CharacterCosmetics.STARTER_ID, equippedStarter.selectedCosmeticId)
-        val unaffordable = ProgressionRules.buyCosmetic(equippedStarter, "dragon")
-        assertEquals(equippedStarter, unaffordable.progress)
+        assertEquals(60L, repeated.progress.coins)
+        assertEquals(tuned, repeated.progress)
+        val lockedSelection = ProgressionRules.selectAppearanceItem(tuned, "eyes-round")
+        assertEquals(tuned.characterAppearance.eyeStyleId, lockedSelection.characterAppearance.eyeStyleId)
+        val unaffordable = ProgressionRules.unlockAppearanceItem(tuned, "skin-sky")
+        assertEquals(tuned, unaffordable.progress)
         assertEquals(0L, unaffordable.coinsSpent)
     }
 

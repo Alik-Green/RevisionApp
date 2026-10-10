@@ -29,16 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.revisionapp.domain.progression.AchievementProgress
-import com.revisionapp.domain.progression.CharacterCosmetics
+import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.DailyQuestProgress
 import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.CharacterPortrait
 import com.revisionapp.ui.components.EmptyMessage
-import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.SectionLabel
 
 /** Daily and weekly learning goals, earned coins, streaks and mastery milestones. */
@@ -46,7 +45,7 @@ import com.revisionapp.ui.components.SectionLabel
 fun ProgressionScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val ready = state.progressionReady.collectAsState().value
-    val buddy = CharacterCosmetics.find(progress.selectedCosmeticId) ?: CharacterCosmetics.starter
+    val appearance = progress.characterAppearance
     LaunchedEffect(ready) {
         if (ready) state.refreshProgressionForToday()
     }
@@ -61,7 +60,7 @@ fun ProgressionScreen(state: AppState) {
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CoinsCard(progress.coins, buddy) { state.navigate(Route.CharacterShop) }
+            CoinsCard(progress.coins, appearance) { state.openCosmeticsStore() }
             StreakCard(progress, state)
 
             SectionLabel("TODAY'S QUESTS")
@@ -84,26 +83,14 @@ fun ProgressionScreen(state: AppState) {
                 QuestCard(quest, cadence = "WEEK")
             }
 
-            val achievements = ProgressionRules.achievements(progress)
-            SectionLabel("MASTERY MILESTONES")
-            Text(
-                "${achievements.count { it.isUnlocked }} of ${achievements.size} unlocked · earned once as you make progress",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            for (achievement in achievements) {
-                AchievementRow(achievement)
-            }
-            OutlinedButton(onClick = { state.navigate(Route.CharacterShop) }, modifier = Modifier.fillMaxWidth()) {
-                Text("Visit Character Studio")
-            }
+            AchievementSummaryCard(progress) { state.navigate(Route.Achievements) }
             Spacer(Modifier.height(12.dp))
         }
     }
 }
 
 @Composable
-private fun CoinsCard(coins: Long, buddy: com.revisionapp.domain.progression.CharacterCosmetic, onShop: () -> Unit) {
+private fun CoinsCard(coins: Long, appearance: CharacterAppearance, onShop: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
@@ -114,7 +101,7 @@ private fun CoinsCard(coins: Long, buddy: com.revisionapp.domain.progression.Cha
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(13.dp),
         ) {
-            LearningBuddy(buddy, size = 68.dp)
+            CharacterPortrait(appearance, width = 60.dp, height = 74.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 SectionLabel("YOUR LEARNING COINS")
                 AnimatedContent(targetState = coins, label = "coin-balance") { balance ->
@@ -123,6 +110,32 @@ private fun CoinsCard(coins: Long, buddy: com.revisionapp.domain.progression.Cha
                 Text("Earned through practice", style = MaterialTheme.typography.labelSmall)
             }
             Button(onClick = onShop) { Text("Styles") }
+        }
+    }
+}
+
+@Composable
+private fun AchievementSummaryCard(progress: LearnerProgress, onOpen: () -> Unit) {
+    val milestones = ProgressionRules.achievements(progress)
+    val unlocked = milestones.count { it.isUnlocked }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("🏆", style = MaterialTheme.typography.headlineMedium)
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    SectionLabel("MASTERY MILESTONES")
+                    Text("$unlocked of ${milestones.size} unlocked", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                }
+                Text("${progress.totalCorrectAnswers} correct", style = MaterialTheme.typography.labelSmall)
+            }
+            ProgressBar(if (milestones.isEmpty()) 0f else unlocked.toFloat() / milestones.size)
+            OutlinedButton(onClick = onOpen, modifier = Modifier.fillMaxWidth()) {
+                Text("Explore achievements")
+            }
         }
     }
 }
@@ -208,56 +221,6 @@ private fun QuestCard(quest: DailyQuestProgress, cadence: String) {
             ProgressBar(quest.progressFraction)
             Text(
                 "${quest.current.coerceAtMost(quest.target)} / ${quest.target}${if (quest.isClaimed) " · complete" else ""}",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
-private fun AchievementRow(achievement: AchievementProgress) {
-    val background = if (achievement.isUnlocked) {
-        MaterialTheme.colorScheme.secondaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerLow
-    }
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(17.dp),
-        color = background,
-    ) {
-        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(11.dp)) {
-                Box(
-                    Modifier
-                        .background(
-                            if (achievement.isUnlocked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
-                            CircleShape,
-                        )
-                        .padding(11.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(achievement.icon, style = MaterialTheme.typography.titleMedium)
-                }
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(achievement.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-                    Text(achievement.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Text(
-                    if (achievement.isUnlocked) "✓" else "+${achievement.rewardCoins} 🪙",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = if (achievement.isUnlocked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-            ProgressBar(achievement.progressFraction)
-            Text(
-                if (achievement.isUnlocked) {
-                    "Mastered · ${achievement.rewardCoins} coins earned"
-                } else {
-                    "${achievement.current.coerceAtMost(achievement.target)} / ${achievement.target} · reward ${achievement.rewardCoins} coins"
-                },
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

@@ -44,12 +44,12 @@ import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
-import com.revisionapp.domain.progression.CharacterCosmetic
-import com.revisionapp.domain.progression.CharacterCosmetics
+import com.revisionapp.domain.progression.AppearanceCatalog
+import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.CharacterPortrait
 import com.revisionapp.ui.components.EmptyMessage
-import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.SectionLabel
 
 /** Mobile-first course path. Only the selected course's ordered lesson trail is shown. */
@@ -67,7 +67,6 @@ fun CourseStudyScreen(state: AppState) {
         AppHeader(
             title = "Study",
             subtitle = course?.name ?: "Your learning path",
-            trailing = { TextButton(onClick = { state.openCourseStore() }) { Text("Store") } },
         )
 
         if (loading || !progressionReady) {
@@ -90,9 +89,9 @@ fun CourseStudyScreen(state: AppState) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
-                        LearningBuddy(CharacterCosmetics.starter, size = 82.dp)
+                        CharacterPortrait(AppearanceCatalog.defaultAppearance(), width = 82.dp, height = 100.dp)
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text("Your study buddy is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text("Your character is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                             Text(
                                 "Choose a course and start a learning path at your own pace.",
                                 style = MaterialTheme.typography.bodyMedium,
@@ -114,12 +113,12 @@ fun CourseStudyScreen(state: AppState) {
         val orderedLessons = course.orderedLessons()
         val completedCount = orderedLessons.count { state.isCourseLessonComplete(course.id, it.id) }
         val nextLesson = orderedLessons.firstOrNull { !state.isCourseLessonComplete(course.id, it.id) }
-        val buddy = CharacterCosmetics.find(progress.selectedCosmeticId) ?: CharacterCosmetics.starter
+        val appearance = progress.characterAppearance
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CourseSummaryCard(state, course, completedCount, orderedLessons.size, buddy, nextLesson)
+            CourseSummaryCard(state, course, completedCount, orderedLessons.size, appearance, nextLesson)
             if (catalog.courses.size > 1) {
                 Box {
                     TextButton(onClick = { menuExpanded.value = true }) {
@@ -172,7 +171,7 @@ private fun CourseSummaryCard(
     course: LearningCourse,
     completed: Int,
     total: Int,
-    buddy: CharacterCosmetic,
+    appearance: CharacterAppearance,
     nextLesson: CourseLesson?,
 ) {
     Surface(
@@ -194,7 +193,7 @@ private fun CourseSummaryCard(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
-                LearningBuddy(buddy, size = 74.dp)
+                CharacterPortrait(appearance, width = 74.dp, height = 90.dp)
             }
             Text(
                 "$completed of $total lessons complete",

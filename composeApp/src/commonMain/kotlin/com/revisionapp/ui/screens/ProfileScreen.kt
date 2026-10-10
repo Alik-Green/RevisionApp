@@ -29,21 +29,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.revisionapp.domain.progression.CharacterCosmetics
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.LearningBuddy
+import com.revisionapp.ui.components.CharacterPortrait
 import com.revisionapp.ui.components.SectionLabel
 
-/** Local learner profile with an editable name and earned-only character styling. */
+/** Local learner profile with an editable name and full character appearance controls. */
 @Composable
 fun ProfileScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val progressionReady = state.progressionReady.collectAsState().value
     val catalog = state.courseCatalog.collectAsState().value
     val activeCourse = catalog.course(progress.activeCourseId)
-    val buddy = CharacterCosmetics.find(progress.selectedCosmeticId) ?: CharacterCosmetics.starter
     val nameDraft = remember(progress.displayName) { mutableStateOf(progress.displayName) }
 
     Column(Modifier.fillMaxSize()) {
@@ -71,11 +69,11 @@ fun ProfileScreen(state: AppState) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    LearningBuddy(buddy, size = 84.dp)
+                    CharacterPortrait(progress.characterAppearance, width = 96.dp, height = 118.dp)
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
-                            "${buddy.name} · your learning companion",
+                            "Your study character · ready for its next look",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -83,6 +81,9 @@ fun ProfileScreen(state: AppState) {
                     }
                 }
             }
+
+            SectionLabel("CHARACTER STUDIO")
+            CharacterEditor(state, progress, progressionReady)
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -133,27 +134,6 @@ fun ProfileScreen(state: AppState) {
                         enabled = progressionReady,
                         modifier = Modifier.fillMaxWidth(),
                     ) { Text(if (activeCourse == null) "Open course store" else "Go to Study") }
-                }
-            }
-
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer,
-            ) {
-                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SectionLabel("CHARACTER STUDIO")
-                    Text("Make your buddy yours", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                    Text(
-                        "Earn coins by learning, then choose a new look. Every style is cosmetic—your study tools stay fair.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    )
-                    OutlinedButton(
-                        onClick = { state.navigate(Route.CharacterShop) },
-                        enabled = progressionReady,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) { Text("Customize character") }
                 }
             }
 

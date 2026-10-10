@@ -13,10 +13,15 @@ and **Android**. Every line of logic and every screen is in `commonMain`; the tw
 platform source sets contain nothing but a database driver, an HTTP engine and an
 entry point.
 
-On phones the bottom navigation is **Study**, **Progression** and **Profile**.
-Study shows one downloaded course at a time as an ordered lesson path; use the
-Course Store to download another course, then switch among downloaded courses.
-Progression contains daily and weekly quests, mastery achievements, coins and streak recovery. Earned coins can be spent on cosmetic character styles from the Character Studio; the Profile tab holds the learner name, companion and settings shortcut. The older card library remains available from Profile.
+On phones the bottom navigation is **Study**, **Store**, **Progression** and
+**Profile**. Study shows one downloaded course at a time as an ordered lesson
+path; use Store → Courses to download another course, then switch among
+installed courses. Store → Cosmetics offers character styles and colours bought
+with earned coins. Detailed appearance editing lives in Profile: six natural
+skin tones are unlocked from the start, with free controls for feature size,
+spacing and height. Progression contains daily and weekly quests, streak recovery
+and a separate achievements page. The older card library remains available from
+Profile.
 
 ---
 
@@ -27,7 +32,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-2.1.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.2.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -106,10 +111,11 @@ retired, while their stored metadata remains compatible with older packs.
 
 ### Progression and themes
 
-Progression shows current and best streaks, six daily quests, four Monday-reset weekly quests, mastery achievements, and a streak-repair action. Coins are awarded for lessons, correct recall, streaks and consistent study days—not raw question volume—and can be spent on eight cosmetic character styles. Character purchases never affect lesson access, answer checking or spaced-repetition scheduling. Restoring a broken streak costs more for every additional missed day, with the price doubling each time. All progression and purchases are stored locally.
+Progression shows current and best streaks, six daily quests, four Monday-reset weekly quests, a separate achievements board, and a streak-repair action. Coins are awarded for lessons, correct recall, streaks and consistent study days—not raw question volume—and can be spent on appearance items in Store → Cosmetics. New learners can choose from six natural skin tones, two hair styles, one eye style and one nose style, all included at no cost; additional hair, eye and nose styles and fantasy colours cost coins. Profile keeps appearance editing together with free sliders for hair size and hairline height, eye size, spacing and height, and nose size and height. Cosmetics never affect lesson access, answer checking or spaced-repetition scheduling. Restoring a broken streak costs more for every additional missed day, with the price doubling each time. All progression and purchases are stored locally.
 
-The default palette is playful, with **Ink & Paper** available as an alternative.
-Both styles can follow the system or be fixed to light or dark appearance.
+The default appearance is light mode in the playful palette, with **Ink & Paper**
+available as an alternative. Both styles can follow the system or be fixed to
+light or dark appearance; existing explicit choices are preserved.
 
 ### Maths
 
@@ -165,7 +171,7 @@ content, where it becomes fully editable.
 
 ### Progression and profile
 
-Progression includes daily and weekly learning quests, automatically rewarded mastery milestones, coins and streak recovery with an exponentially increasing price. The Profile tab stores a display name, previews the learner's companion, opens the earned-only Character Studio, links to the active course and keeps the legacy card library reachable. Cosmetic styles do not provide learning advantages.
+Progression includes daily and weekly learning quests, automatically rewarded mastery milestones on a dedicated Achievements page, coins and streak recovery with an exponentially increasing price. Profile keeps the display name, live character preview and detailed appearance editor together, links to the active course, and keeps the legacy card library reachable. Cosmetics are unlocked in Store and provide no learning advantages.
 
 ---
 

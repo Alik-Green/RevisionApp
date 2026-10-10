@@ -21,7 +21,7 @@ import com.revisionapp.ui.nav.Destination
 import com.revisionapp.ui.nav.WindowSizeClass
 import com.revisionapp.ui.session.SessionState
 
-/** Three primary destinations; a lesson or live legacy-card session is immersive. */
+/** Four primary destinations; a lesson or live legacy-card session is immersive. */
 @Composable
 fun AppShell(state: AppState, current: Route, screen: @Composable () -> Unit) {
     val session = state.sessionState.collectAsState().value

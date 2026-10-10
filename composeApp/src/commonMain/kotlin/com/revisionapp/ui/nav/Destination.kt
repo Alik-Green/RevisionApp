@@ -4,12 +4,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.revisionapp.ui.Route
 
-/** The three primary mobile destinations, in bottom-bar order. */
+/** The four primary destinations, in bottom-bar order. */
 enum class Destination(val route: Route, val label: String, val icon: ImageVector) {
     Study(Route.Study, "Study", Icons.Filled.PlayArrow),
+    Store(Route.CourseStore, "Store", Icons.Filled.Storefront),
     Progression(Route.Progression, "Progression", Icons.Filled.EmojiEvents),
     Profile(Route.Profile, "Profile", Icons.Filled.Person),
     ;
@@ -18,12 +20,12 @@ enum class Destination(val route: Route, val label: String, val icon: ImageVecto
         /** The destination a route belongs to, or null for a pushed sub-screen. */
         fun of(route: Route): Destination? = entries.firstOrNull { it.route == route }
 
-        /** Settings, the old library and editors are secondary Profile routes. */
+        /** Settings, achievements, the old library and editors are secondary routes. */
         fun owning(route: Route): Destination = when (route) {
-            Route.Study, Route.CourseStore, is Route.Lesson -> Study
-            Route.Progression, Route.Stats -> Progression
+            Route.Study, is Route.Lesson -> Study
+            Route.CourseStore -> Store
+            Route.Progression, Route.Achievements, Route.Stats -> Progression
             Route.Profile,
-            Route.CharacterShop,
             Route.Settings,
             Route.Library,
             Route.LegacyStudy,

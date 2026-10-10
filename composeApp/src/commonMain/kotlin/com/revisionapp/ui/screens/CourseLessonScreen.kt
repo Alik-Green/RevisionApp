@@ -45,13 +45,12 @@ import com.revisionapp.domain.course.CourseQuestion
 import com.revisionapp.domain.course.CourseQuestionRetryQueue
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.course.QuestionAnswer
-import com.revisionapp.domain.progression.CharacterCosmetic
-import com.revisionapp.domain.progression.CharacterCosmetics
+import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.CharacterPortrait
 import com.revisionapp.ui.components.EmptyMessage
-import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 
@@ -72,7 +71,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val answerCorrect = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<Boolean?>(null) }
     val finished = remember(route.courseId, route.lessonId) { mutableStateOf(false) }
     val learnerProgress = state.learnerProgress.collectAsState().value
-    val buddy = CharacterCosmetics.find(learnerProgress.selectedCosmeticId) ?: CharacterCosmetics.starter
+    val appearance = learnerProgress.characterAppearance
 
     if (course == null || lesson == null || questions.isEmpty()) {
         Column(Modifier.fillMaxSize()) {
@@ -83,7 +82,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     }
 
     if (finished.value) {
-        LessonComplete(state, course, lesson, questionQueue.size, buddy)
+        LessonComplete(state, course, lesson, questionQueue.size, appearance)
         return
     }
 
@@ -193,7 +192,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
             ) {
                 if (correct != null) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        AnswerFeedback(question, correct, buddy)
+                        AnswerFeedback(question, correct, appearance)
                         Button(
                             onClick = {
                                 if (questionIndex.value == questionQueue.lastIndex) {
@@ -265,7 +264,7 @@ private fun CourseAnswerOption(
 private fun AnswerFeedback(
     question: CourseQuestion,
     correct: Boolean,
-    buddy: CharacterCosmetic,
+    appearance: CharacterAppearance,
 ) {
     val color = if (correct) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
     Column(
@@ -277,7 +276,7 @@ private fun AnswerFeedback(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            LearningBuddy(buddy, size = 48.dp, celebratory = correct)
+            CharacterPortrait(appearance, width = 48.dp, height = 58.dp)
             Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(
                     if (correct) "That’s it!" else "Not quite—and that’s okay.",
@@ -324,7 +323,7 @@ private fun LessonComplete(
     course: LearningCourse,
     lesson: CourseLesson,
     questionCount: Int,
-    buddy: CharacterCosmetic,
+    appearance: CharacterAppearance,
 ) {
     Column(Modifier.fillMaxSize()) {
         AppHeader(title = "Lesson complete", subtitle = course.name)
@@ -334,7 +333,7 @@ private fun LessonComplete(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            LearningBuddy(buddy, size = 104.dp, celebratory = true)
+            CharacterPortrait(appearance, width = 104.dp, height = 126.dp)
             Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(lesson.title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             Text(
@@ -342,7 +341,7 @@ private fun LessonComplete(
                 style = MaterialTheme.typography.bodyLarge,
             )
             Text(
-                "Quest and mastery coins are added automatically as you make progress. Spend them on a new buddy style whenever you like.",
+                "Quest and mastery coins are added automatically as you make progress. Spend them on a new look whenever you like.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

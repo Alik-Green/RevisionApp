@@ -24,6 +24,7 @@ import com.revisionapp.domain.model.TagMatch
 import com.revisionapp.domain.model.Topic
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.model.randomUuid
+import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.domain.study.Question
@@ -65,8 +66,8 @@ sealed interface Route {
     data object Study : Route
     data object CourseStore : Route
     data object Progression : Route
+    data object Achievements : Route
     data object Profile : Route
-    data object CharacterShop : Route
 
     /** Existing card-library screens are reachable from Profile, not the tab bar. */
     data object Library : Route
@@ -88,6 +89,11 @@ sealed interface Route {
 
     /** Debug screen under Settings > Developer: both maths renderers side by side. */
     data object MathGallery : Route
+}
+
+enum class StoreSection {
+    COURSES,
+    COSMETICS,
 }
 
 /** What the settings screen shows about content syncing. */
@@ -117,7 +123,7 @@ data class SettingsUi(
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
     val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
-    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val themeMode: ThemeMode = ThemeMode.LIGHT,
 ) {
     companion object {
         fun initial(): SettingsUi =
@@ -126,7 +132,7 @@ data class SettingsUi(
                 desiredRetention = DEFAULT_RETENTION,
                 packs = emptyList(),
                 themeStyle = ThemeStyle.PLAYFUL,
-                themeMode = ThemeMode.SYSTEM,
+                themeMode = ThemeMode.LIGHT,
             )
 
         const val DEFAULT_RETENTION: Double = 0.9
@@ -216,6 +222,9 @@ class AppState(
 
     private val _courseDownloadId = MutableStateFlow<String?>(null)
     val courseDownloadId: StateFlow<String?> = _courseDownloadId.asStateFlow()
+
+    private val _storeSection = MutableStateFlow(StoreSection.COURSES)
+    val storeSection: StateFlow<StoreSection> = _storeSection.asStateFlow()
 
     private val _learnerProgress = MutableStateFlow(LearnerProgress())
     val learnerProgress: StateFlow<LearnerProgress> = _learnerProgress.asStateFlow()
@@ -408,7 +417,17 @@ class AppState(
     }
 
     fun openCourseStore() {
-        navigate(Route.CourseStore)
+        _storeSection.value = StoreSection.COURSES
+        switchTab(Route.CourseStore)
+    }
+
+    fun openCosmeticsStore() {
+        _storeSection.value = StoreSection.COSMETICS
+        switchTab(Route.CourseStore)
+    }
+
+    fun selectStoreSection(section: StoreSection) {
+        _storeSection.value = section
     }
 
     fun back() {
@@ -444,12 +463,16 @@ class AppState(
         updateProgression { ProgressionRules.setDisplayName(it, name) }
     }
 
-    fun buyCharacterCosmetic(cosmeticId: String) {
-        updateProgression { ProgressionRules.buyCosmetic(it, cosmeticId).progress }
+    fun unlockAppearanceItem(itemId: String) {
+        updateProgression { ProgressionRules.unlockAppearanceItem(it, itemId).progress }
     }
 
-    fun equipCharacterCosmetic(cosmeticId: String) {
-        updateProgression { ProgressionRules.equipCosmetic(it, cosmeticId) }
+    fun selectAppearanceItem(itemId: String) {
+        updateProgression { ProgressionRules.selectAppearanceItem(it, itemId) }
+    }
+
+    fun updateCharacterAppearance(appearance: CharacterAppearance) {
+        updateProgression { ProgressionRules.updateCharacterAppearance(it, appearance) }
     }
 
     fun recordCourseQuestionAnswered(isCorrect: Boolean) {

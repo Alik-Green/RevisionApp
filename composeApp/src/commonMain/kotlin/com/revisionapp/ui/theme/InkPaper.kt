@@ -232,7 +232,7 @@ val LocalExtendedColors = staticCompositionLocalOf { InkPaperExtendedLight }
 @Composable
 fun RevisionAppTheme(
     themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
-    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    themeMode: ThemeMode = ThemeMode.LIGHT,
     content: @Composable () -> Unit,
 ) {
     val dark = when (themeMode) {
@@ -263,7 +263,7 @@ enum class ThemeStyle(val title: String) {
     }
 }
 
-/** The appearance override the user picks in Settings. */
+/** The appearance override the user picks in Settings; new installs start in light mode. */
 enum class ThemeMode {
     SYSTEM,
     LIGHT,
@@ -272,7 +272,7 @@ enum class ThemeMode {
 
     companion object {
         fun fromStored(value: String?): ThemeMode =
-            entries.firstOrNull { it.name == value } ?: SYSTEM
+            entries.firstOrNull { it.name == value } ?: LIGHT
     }
 }
 

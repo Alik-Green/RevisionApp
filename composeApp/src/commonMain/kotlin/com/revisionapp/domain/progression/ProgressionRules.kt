@@ -50,8 +50,8 @@ data class LearnerProgress(
     val bestCorrectAnswerStreak: Int = 0,
     val totalStudyDays: Int = 0,
     val unlockedAchievementIds: List<String> = emptyList(),
-    val ownedCosmeticIds: List<String> = listOf(CharacterCosmetics.STARTER_ID),
-    val selectedCosmeticId: String = CharacterCosmetics.STARTER_ID,
+    val ownedAppearanceItemIds: List<String> = AppearanceCatalog.starterItemIds,
+    val characterAppearance: CharacterAppearance = AppearanceCatalog.defaultAppearance(),
     val daily: DailyProgress = DailyProgress(),
     val weekly: WeeklyProgress = WeeklyProgress(),
 )
@@ -459,25 +459,60 @@ object ProgressionRules {
         )
     }
 
-    fun buyCosmetic(progress: LearnerProgress, cosmeticId: String): ProgressionMutation {
-        val cosmetic = CharacterCosmetics.find(cosmeticId) ?: return ProgressionMutation(progress)
-        if (cosmetic.id in progress.ownedCosmeticIds || progress.coins < cosmetic.cost) {
+    fun unlockAppearanceItem(progress: LearnerProgress, itemId: String): ProgressionMutation {
+        val item = AppearanceCatalog.find(itemId) ?: return ProgressionMutation(progress)
+        if (item.id in progress.ownedAppearanceItemIds || progress.coins < item.cost) {
             return ProgressionMutation(progress)
         }
-        val updated = progress.copy(
-            coins = progress.coins - cosmetic.cost,
-            ownedCosmeticIds = (progress.ownedCosmeticIds + cosmetic.id).distinct(),
-            selectedCosmeticId = cosmetic.id,
+        return ProgressionMutation(
+            progress.copy(
+                coins = progress.coins - item.cost,
+                ownedAppearanceItemIds = (progress.ownedAppearanceItemIds + item.id).distinct(),
+            ),
+            coinsSpent = item.cost,
         )
-        return ProgressionMutation(updated, coinsSpent = cosmetic.cost)
     }
 
-    fun equipCosmetic(progress: LearnerProgress, cosmeticId: String): LearnerProgress =
-        if (CharacterCosmetics.find(cosmeticId) != null && cosmeticId in progress.ownedCosmeticIds) {
-            progress.copy(selectedCosmeticId = cosmeticId)
-        } else {
-            progress
+    fun selectAppearanceItem(progress: LearnerProgress, itemId: String): LearnerProgress {
+        val item = AppearanceCatalog.find(itemId) ?: return progress
+        if (item.id !in progress.ownedAppearanceItemIds) return progress
+        val appearance = when (item.category) {
+            AppearanceCategory.SKIN_TONE -> progress.characterAppearance.copy(skinToneId = item.id)
+            AppearanceCategory.HAIR_STYLE -> progress.characterAppearance.copy(hairStyleId = item.id)
+            AppearanceCategory.HAIR_COLOR -> progress.characterAppearance.copy(hairColorId = item.id)
+            AppearanceCategory.EYE_STYLE -> progress.characterAppearance.copy(eyeStyleId = item.id)
+            AppearanceCategory.EYE_COLOR -> progress.characterAppearance.copy(eyeColorId = item.id)
+            AppearanceCategory.NOSE_STYLE -> progress.characterAppearance.copy(noseStyleId = item.id)
         }
+        return progress.copy(characterAppearance = appearance)
+    }
+
+    /** Shape sliders are intentionally free; only new cosmetic pieces cost coins. */
+    fun updateCharacterAppearance(progress: LearnerProgress, appearance: CharacterAppearance): LearnerProgress {
+        val current = progress.characterAppearance
+        fun available(id: String, fallback: String, category: AppearanceCategory): String =
+            AppearanceCatalog.find(id)?.takeIf {
+                it.category == category && it.id in progress.ownedAppearanceItemIds
+            }?.id ?: fallback
+
+        return progress.copy(
+            characterAppearance = appearance.copy(
+                skinToneId = available(appearance.skinToneId, current.skinToneId, AppearanceCategory.SKIN_TONE),
+                hairStyleId = available(appearance.hairStyleId, current.hairStyleId, AppearanceCategory.HAIR_STYLE),
+                hairColorId = available(appearance.hairColorId, current.hairColorId, AppearanceCategory.HAIR_COLOR),
+                eyeStyleId = available(appearance.eyeStyleId, current.eyeStyleId, AppearanceCategory.EYE_STYLE),
+                eyeColorId = available(appearance.eyeColorId, current.eyeColorId, AppearanceCategory.EYE_COLOR),
+                noseStyleId = available(appearance.noseStyleId, current.noseStyleId, AppearanceCategory.NOSE_STYLE),
+                hairSize = appearance.hairSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                hairHeight = appearance.hairHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                eyeSize = appearance.eyeSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                eyeSpacing = appearance.eyeSpacing.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                eyeHeight = appearance.eyeHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                noseSize = appearance.noseSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                noseHeight = appearance.noseHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
+            ),
+        )
+    }
 
     fun streakRecoveryCost(missedDays: Int): Long {
         if (missedDays <= 0) return BASE_STREAK_RECOVERY_COST
@@ -598,6 +633,8 @@ object ProgressionRules {
     }
 
     private const val MAX_DISPLAY_NAME_LENGTH = 24
+    private const val SHAPE_MIN = 0
+    private const val SHAPE_MAX = 100
     private const val BASE_STREAK_RECOVERY_COST = 25L
     private const val MAX_STREAK_RECOVERY_COST = 1_000_000L
     private const val MAX_COST_DOUBLINGS = 16
