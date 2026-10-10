@@ -63,7 +63,7 @@ fun AchievementsScreen(state: AppState) {
             ) {
                 Text("🏆", style = MaterialTheme.typography.displaySmall)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text("${unlocked} / ${achievements.size} badges", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text("$unlocked / ${achievements.size} badges", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text("Lessons, confident recall, streaks and steady practice all count.", style = MaterialTheme.typography.bodySmall)
                 }
             }

@@ -142,8 +142,11 @@ fun CharacterCustomizationScreen(state: AppState) {
                                 owned = owned,
                                 selected = part.id == selectedPartId,
                                 onClick = {
-                                    if (owned) save(appearance.withPart(selectedCategory, part.id))
-                                    else state.openCosmeticsStore(selectedCategory)
+                                    if (owned) {
+                                        save(appearance.withPart(selectedCategory, part.id))
+                                    } else {
+                                        state.openCosmeticsStore(selectedCategory)
+                                    }
                                 },
                             )
                         }
