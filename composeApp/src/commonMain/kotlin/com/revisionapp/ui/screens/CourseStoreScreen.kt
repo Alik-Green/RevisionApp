@@ -1,13 +1,19 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -20,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -74,24 +82,19 @@ fun CourseStoreScreen(state: AppState) {
                 onClick = { state.selectStoreShelf(cosmetics = true) },
             )
         }
-        Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
-        ) {
-            if (cosmeticsSelected) {
-                CosmeticsStoreContent(state)
-            } else {
-                CourseStoreContent(
-                    state = state,
-                    manifestLoading = loading,
-                    error = error,
-                    manifestCourses = manifest?.courses.orEmpty(),
-                    manifestAvailable = manifest != null,
-                    catalog = catalog,
-                    downloadingId = downloadingId,
-                    anotherDownloadInProgress = downloadingId,
-                )
-            }
+        if (cosmeticsSelected) {
+            CosmeticsStoreContent(state, Modifier.weight(1f))
+        } else {
+            CourseStoreContent(
+                state = state,
+                manifestLoading = loading,
+                error = error,
+                manifestCourses = manifest?.courses.orEmpty(),
+                manifestAvailable = manifest != null,
+                catalog = catalog,
+                downloadingId = downloadingId,
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
@@ -105,48 +108,105 @@ private fun CourseStoreContent(
     manifestAvailable: Boolean,
     catalog: com.revisionapp.domain.course.CourseCatalog,
     downloadingId: String?,
-    anotherDownloadInProgress: String?,
+    modifier: Modifier = Modifier,
 ) {
-    SectionLabel("AVAILABLE COURSES")
-    Text(
-        "Choose a course to download it to this device. Downloaded courses are available offline; " +
-            "nothing is downloaded until you choose it.",
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-    if (manifestLoading && !manifestAvailable) {
-        EmptyMessage("Loading the course list from the repository…")
-    }
-    if (!error.isNullOrBlank()) {
-        EmptyMessage("Couldn't load the course list. Check your connection and try again. $error")
-        OutlinedButton(
-            onClick = { state.refreshCourseStore() },
-            enabled = !manifestLoading,
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text("Try again") }
-    }
-    if (manifestAvailable && manifestCourses.isEmpty()) {
-        EmptyMessage("There are no courses in the repository yet.")
-    }
-    for (reference in manifestCourses) {
-        val course = catalog.course(reference.id)
-        CourseStoreCard(
-            reference = reference,
-            downloadedCourse = course,
-            isDownloading = downloadingId == reference.id,
-            anotherDownloadInProgress = anotherDownloadInProgress != null && anotherDownloadInProgress != reference.id,
-            onDownload = { state.downloadCourse(reference) },
-            onUpdate = { state.updateCourse(reference) },
-            onOpen = {
-                state.selectActiveCourse(reference.id)
-                state.switchTab(Route.Study)
-            },
+    val selectedCourseId = remember { mutableStateOf<String?>(null) }
+
+    Column(
+        modifier.fillMaxSize().verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(11.dp),
+    ) {
+        SectionLabel("AVAILABLE COURSES")
+        Text(
+            "Browse a course, open its details, then choose Download. Downloads stay opt-in and are saved for offline study.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        if (manifestLoading && !manifestAvailable) {
+            EmptyMessage("Loading the course list from the repository…")
+        }
+        if (!error.isNullOrBlank()) {
+            EmptyMessage("Couldn't load the course list. Check your connection and try again. $error")
+            OutlinedButton(
+                onClick = { state.refreshCourseStore() },
+                enabled = !manifestLoading,
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Try again") }
+        }
+        if (manifestAvailable && manifestCourses.isEmpty()) {
+            EmptyMessage("There are no courses in the repository yet.")
+        }
+        for (reference in manifestCourses) {
+            val downloadedCourse = catalog.course(reference.id)
+            val selected = selectedCourseId.value == reference.id
+            CourseStoreRow(
+                reference = reference,
+                downloadedCourse = downloadedCourse,
+                selected = selected,
+                onClick = { selectedCourseId.value = if (selected) null else reference.id },
+            )
+            if (selected) {
+                CourseDetailCard(
+                    reference = reference,
+                    downloadedCourse = downloadedCourse,
+                    isDownloading = downloadingId == reference.id,
+                    anotherDownloadInProgress = downloadingId != null && downloadingId != reference.id,
+                    onDownload = { state.downloadCourse(reference) },
+                    onUpdate = { state.updateCourse(reference) },
+                    onOpen = {
+                        state.selectActiveCourse(reference.id)
+                        state.switchTab(Route.Study)
+                    },
+                )
+            }
+        }
+        Spacer(Modifier.size(8.dp))
     }
 }
 
 @Composable
-private fun CourseStoreCard(
+private fun CourseStoreRow(
+    reference: CourseFileReference,
+    downloadedCourse: LearningCourse?,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        shape = RoundedCornerShape(19.dp),
+        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            if (selected) 2.dp else 1.dp,
+            if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant,
+        ),
+        tonalElevation = 1.dp,
+    ) {
+        Row(
+            Modifier.padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(13.dp),
+        ) {
+            CourseGlyph(reference, size = 58.dp)
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(reference.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    if (downloadedCourse != null) {
+                        "Downloaded · ${downloadedCourse.lessons.size} lessons"
+                    } else {
+                        "Available to download"
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (downloadedCourse != null) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(if (selected) "⌃" else "›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
+        }
+    }
+}
+
+@Composable
+private fun CourseDetailCard(
     reference: CourseFileReference,
     downloadedCourse: LearningCourse?,
     isDownloading: Boolean,
@@ -157,41 +217,34 @@ private fun CourseStoreCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
-        tonalElevation = 1.dp,
+        shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.primaryContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
+        tonalElevation = 2.dp,
     ) {
-        Column(
-            Modifier.padding(18.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    reference.name,
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-                if (downloadedCourse != null) {
-                    Text(
-                        "DOWNLOADED",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontWeight = FontWeight.Bold,
-                    )
+        Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                CourseGlyph(reference, size = 64.dp)
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    SectionLabel(if (downloadedCourse == null) "COURSE DETAILS" else "DOWNLOADED COURSE")
+                    Text(reference.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 }
             }
             Text(
-                reference.description.ifBlank { "A structured course with lessons and practice questions." },
+                reference.description.ifBlank {
+                    downloadedCourse?.description ?: "A structured course with lessons and practice questions."
+                },
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             if (downloadedCourse != null) {
                 Text(
                     "${downloadedCourse.lessons.size} lessons · saved for offline study",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
+            } else {
+                Text("Choose Download to save this course on your device.", style = MaterialTheme.typography.labelMedium)
             }
             if (downloadedCourse == null) {
                 Button(
@@ -200,15 +253,40 @@ private fun CourseStoreCard(
                     modifier = Modifier.fillMaxWidth(),
                 ) { Text(if (isDownloading) "Downloading…" else "Download course") }
             } else {
-                OutlinedButton(onClick = onOpen, modifier = Modifier.fillMaxWidth()) {
-                    Text("Study this course")
+                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    Button(onClick = onOpen, modifier = Modifier.weight(1f)) { Text("Open course") }
+                    OutlinedButton(
+                        onClick = onUpdate,
+                        enabled = !isDownloading && !anotherDownloadInProgress,
+                        modifier = Modifier.weight(1f),
+                    ) { Text(if (isDownloading) "Updating…" else "Update") }
                 }
-                OutlinedButton(
-                    onClick = onUpdate,
-                    enabled = !isDownloading && !anotherDownloadInProgress,
-                    modifier = Modifier.fillMaxWidth(),
-                ) { Text(if (isDownloading) "Updating…" else "Update course") }
             }
         }
+    }
+}
+
+@Composable
+private fun CourseGlyph(reference: CourseFileReference, size: androidx.compose.ui.unit.Dp) {
+    Surface(
+        modifier = Modifier.size(size),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.tertiaryContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.36f)),
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Text(courseGlyph(reference), style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onTertiaryContainer)
+        }
+    }
+}
+
+private fun courseGlyph(reference: CourseFileReference): String {
+    val key = "${reference.id} ${reference.name}".lowercase()
+    return when {
+        "tmua" in key || "admission" in key -> "🧠"
+        "math" in key || "algebra" in key || "calculus" in key -> "∑"
+        "physics" in key || "science" in key -> "⚛"
+        "computer" in key || "coding" in key -> "⌘"
+        else -> "📘"
     }
 }

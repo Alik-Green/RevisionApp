@@ -1,25 +1,31 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,103 +36,157 @@ import com.revisionapp.domain.progression.AvatarPartCatalog
 import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
-import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 
-/** Store tab for earning individual character parts with progression coins. */
+private enum class CosmeticsArea(val title: String) {
+    HAIR("Hair"),
+    EYES("Eyes"),
+    NOSE("Nose"),
+    FACE("Face"),
+}
+
+private enum class CosmeticsControl(val title: String) {
+    STYLE("Style"),
+    COLOUR("Colour"),
+    SKIN("Skin"),
+    SHAPE("Shape"),
+}
+
+/** Cosmetics browser. The avatar and category controls stay fixed while options scroll below. */
 @Composable
-fun CosmeticsStoreContent(state: AppState) {
+fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
     val progress = state.learnerProgress.collectAsState().value
     val ready = state.progressionReady.collectAsState().value
-    val category by state.cosmeticsStoreCategory.collectAsState()
-    val parts = AvatarPartCatalog.inCategory(category)
+    val storedCategory = state.cosmeticsStoreCategory.collectAsState().value
+    var area by remember(storedCategory) { mutableStateOf(areaFor(storedCategory)) }
+    var control by remember(storedCategory) { mutableStateOf(controlFor(storedCategory)) }
+    var appearance by remember(progress.characterAppearance) { mutableStateOf(progress.characterAppearance) }
 
-    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+    fun save(next: CharacterAppearance) {
+        appearance = next
+        state.updateCharacterAppearance(next)
+    }
+
+    val selectedPartCategory = partCategory(area, control)
+    val parts = selectedPartCategory?.let { AvatarPartCatalog.inCategory(it) }.orEmpty()
+
+    Column(
+        modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(9.dp),
+    ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            color = MaterialTheme.colorScheme.tertiaryContainer,
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.primaryContainer,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
         ) {
             Row(
-                Modifier.padding(15.dp),
+                Modifier.padding(horizontal = 14.dp, vertical = 9.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(13.dp),
             ) {
-                CharacterAvatar(progress.characterAppearance, size = 70.dp, animated = false)
+                CharacterAvatar(appearance, size = 76.dp, animated = false)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    SectionLabel("COSMETICS WALLET")
-                    Text("${progress.coins} coins", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                    Text("Earned through lessons and practice", style = MaterialTheme.typography.bodySmall)
+                    SectionLabel("YOUR LOOK · LIVE PREVIEW")
+                    Text("${progress.displayName} · ${progress.coinBalanceLabel} coins", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                    Text("Choose a category, then open Style, Colour or Shape.", style = MaterialTheme.typography.bodySmall)
                 }
-                Text("✦", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.tertiary)
             }
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            SectionLabel("BUILD YOUR LOOK")
-            Text(
-                "Unlock hair, eyes, noses and colour palettes. Natural skin tones are free for everyone; styling sliders are always free.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
+        SectionLabel("CHOOSE A CATEGORY")
         Row(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            for (option in AvatarPartCategory.entries) {
+            for (option in CosmeticsArea.entries) {
                 ToggleChip(
-                    label = "${option.icon} ${option.title}",
-                    selected = option == category,
-                    onClick = { state.selectCosmeticsCategory(option) },
+                    label = "${areaIcon(option)} ${option.title}",
+                    selected = option == area,
+                    onClick = {
+                        area = option
+                        control = defaultControl(option)
+                        partCategory(option, control)?.let(state::selectCosmeticsCategory)
+                    },
+                )
+            }
+        }
+        Row(
+            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            for (option in controlsFor(area)) {
+                ToggleChip(
+                    label = option.title,
+                    selected = option == control,
+                    onClick = {
+                        control = option
+                        partCategory(area, option)?.let(state::selectCosmeticsCategory)
+                    },
                 )
             }
         }
 
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(18.dp),
-            color = MaterialTheme.colorScheme.primaryContainer,
+        Column(
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(11.dp),
         ) {
-            Row(
-                Modifier.padding(horizontal = 14.dp, vertical = 11.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(category.icon, style = MaterialTheme.typography.titleMedium)
-                Column(Modifier.weight(1f)) {
-                    Text(category.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                    Text(
-                        "${parts.count { it.id in progress.ownedAvatarPartIds }} of ${parts.size} unlocked",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+            if (control == CosmeticsControl.SHAPE) {
+                CosmeticsShapeControls(
+                    area = area,
+                    appearance = appearance,
+                    onAppearanceChange = { appearance = it },
+                    onFinished = { state.updateCharacterAppearance(it) },
+                )
+            } else {
+                val category = selectedPartCategory
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                ) {
+                    Row(
+                        Modifier.padding(horizontal = 14.dp, vertical = 11.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            Text("${area.title} · ${control.title}", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                            Text(
+                                "${parts.count { it.id in progress.ownedAvatarPartIds }} of ${parts.size} unlocked · tap an owned style to equip",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        if (area == CosmeticsArea.FACE && control == CosmeticsControl.SKIN) {
+                            Text("8 natural tones free", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
                 }
-                if (category == AvatarPartCategory.SKIN_TONE) {
-                    Text("8 natural tones free", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                if (category == null || parts.isEmpty()) {
+                    Text("No options are available in this category yet.", style = MaterialTheme.typography.bodyMedium)
+                }
+                for (part in parts) {
+                    val owned = part.id in progress.ownedAvatarPartIds
+                    val equipped = isEquipped(part, appearance)
+                    CosmeticPartCard(
+                        part = part,
+                        owned = owned,
+                        equipped = equipped,
+                        canAfford = progress.developerMode || progress.coins >= part.costCoins,
+                        ready = ready,
+                        onEquip = {
+                            val next = appearance.withPart(part.category, part.id)
+                            save(next)
+                        },
+                        onUnlock = { state.unlockAvatarPart(part.id) },
+                    )
                 }
             }
         }
-
-        for (part in parts) {
-            CosmeticPartCard(
-                part = part,
-                owned = part.id in progress.ownedAvatarPartIds,
-                equipped = isEquipped(part, progress.characterAppearance),
-                canAfford = progress.coins >= part.costCoins,
-                ready = ready,
-                onUnlock = { state.unlockAvatarPart(part.id) },
-            )
-        }
-
-        OutlinedButton(
-            onClick = { state.navigate(Route.CharacterCustomizer) },
-            enabled = ready,
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text("Try your unlocked styles in Profile") }
     }
 }
 
@@ -137,12 +197,17 @@ private fun CosmeticPartCard(
     equipped: Boolean,
     canAfford: Boolean,
     ready: Boolean,
+    onEquip: () -> Unit,
     onUnlock: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(17.dp),
-        color = if (equipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
+        color = if (equipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            if (equipped) 2.dp else 1.dp,
+            if (equipped) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant,
+        ),
     ) {
         Row(
             Modifier.padding(13.dp),
@@ -161,8 +226,8 @@ private fun CosmeticPartCard(
                 )
             }
             when {
-                equipped -> OutlinedButton(onClick = {}, enabled = false) { Text("Equipped") }
-                owned -> OutlinedButton(onClick = {}, enabled = false) { Text("Owned") }
+                equipped -> Text("Equipped", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                owned -> Button(onClick = onEquip, enabled = ready) { Text("Equip") }
                 else -> Button(onClick = onUnlock, enabled = ready && canAfford) {
                     Text(if (canAfford) "Unlock" else "Need ${part.costCoins}")
                 }
@@ -178,7 +243,7 @@ private fun PartPreview(part: AvatarPart) {
             Modifier.size(52.dp).background(Color(part.colorArgb), CircleShape),
             contentAlignment = Alignment.Center,
         ) {
-            Text("●", color = Color.White.copy(alpha = 0.62f), style = MaterialTheme.typography.labelSmall)
+            Text("✦", color = Color.White.copy(alpha = 0.72f), style = MaterialTheme.typography.labelSmall)
         }
     } else {
         Surface(
@@ -191,6 +256,128 @@ private fun PartPreview(part: AvatarPart) {
             }
         }
     }
+}
+
+@Composable
+private fun CosmeticsShapeControls(
+    area: CosmeticsArea,
+    appearance: CharacterAppearance,
+    onAppearanceChange: (CharacterAppearance) -> Unit,
+    onFinished: (CharacterAppearance) -> Unit,
+) {
+    var draft by remember(area, appearance) { mutableStateOf(appearance) }
+    val controls = when (area) {
+        CosmeticsArea.HAIR -> listOf(
+            CosmeticsShapeControl("Hair size", draft.hairSize, "Small", "Large") { draft.copy(hairSize = it) },
+            CosmeticsShapeControl("Hair height", draft.hairHeight, "Higher", "Lower") { draft.copy(hairHeight = it) },
+            CosmeticsShapeControl("Hair volume", draft.hairVolume, "Neat", "Full") { draft.copy(hairVolume = it) },
+        )
+        CosmeticsArea.EYES -> listOf(
+            CosmeticsShapeControl("Eye spacing", draft.eyeSpacing, "Close", "Wide") { draft.copy(eyeSpacing = it) },
+            CosmeticsShapeControl("Eye size", draft.eyeSize, "Small", "Large") { draft.copy(eyeSize = it) },
+            CosmeticsShapeControl("Eye height", draft.eyeHeight, "Higher", "Lower") { draft.copy(eyeHeight = it) },
+        )
+        CosmeticsArea.NOSE -> listOf(
+            CosmeticsShapeControl("Nose size", draft.noseSize, "Small", "Large") { draft.copy(noseSize = it) },
+            CosmeticsShapeControl("Nose height", draft.noseHeight, "Higher", "Lower") { draft.copy(noseHeight = it) },
+        )
+        CosmeticsArea.FACE -> listOf(
+            CosmeticsShapeControl("Face width", draft.faceWidth, "Narrow", "Wide") { draft.copy(faceWidth = it) },
+            CosmeticsShapeControl("Face height", draft.faceHeight, "Short", "Long") { draft.copy(faceHeight = it) },
+            CosmeticsShapeControl("Jaw roundness", draft.faceRoundness, "Tapered", "Round") { draft.copy(faceRoundness = it) },
+        )
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(19.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+        Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+            SectionLabel("FREE ${area.title.uppercase()} SHAPE")
+            Text("Fine-tune this feature any time—no coins needed.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            for (control in controls) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(control.label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                        Text("${(control.value * 100).toInt()}%", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    }
+                    Slider(
+                        value = control.value,
+                        onValueChange = {
+                            draft = control.update(it)
+                            onAppearanceChange(draft)
+                        },
+                        onValueChangeFinished = { onFinished(draft) },
+                        valueRange = 0f..1f,
+                    )
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(control.lowLabel, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(control.highLabel, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
+        }
+    }
+}
+
+private data class CosmeticsShapeControl(
+    val label: String,
+    val value: Float,
+    val lowLabel: String,
+    val highLabel: String,
+    val update: (Float) -> CharacterAppearance,
+)
+
+private fun controlsFor(area: CosmeticsArea): List<CosmeticsControl> = when (area) {
+    CosmeticsArea.HAIR -> listOf(CosmeticsControl.STYLE, CosmeticsControl.COLOUR, CosmeticsControl.SHAPE)
+    CosmeticsArea.EYES -> listOf(CosmeticsControl.STYLE, CosmeticsControl.COLOUR, CosmeticsControl.SHAPE)
+    CosmeticsArea.NOSE -> listOf(CosmeticsControl.STYLE, CosmeticsControl.SHAPE)
+    CosmeticsArea.FACE -> listOf(CosmeticsControl.SKIN, CosmeticsControl.SHAPE)
+}
+
+private fun defaultControl(area: CosmeticsArea): CosmeticsControl = when (area) {
+    CosmeticsArea.HAIR, CosmeticsArea.EYES, CosmeticsArea.NOSE -> CosmeticsControl.STYLE
+    CosmeticsArea.FACE -> CosmeticsControl.SKIN
+}
+
+private fun partCategory(area: CosmeticsArea, control: CosmeticsControl): AvatarPartCategory? = when (area to control) {
+    CosmeticsArea.HAIR to CosmeticsControl.STYLE -> AvatarPartCategory.HAIR_STYLE
+    CosmeticsArea.HAIR to CosmeticsControl.COLOUR -> AvatarPartCategory.HAIR_COLOR
+    CosmeticsArea.EYES to CosmeticsControl.STYLE -> AvatarPartCategory.EYE_STYLE
+    CosmeticsArea.EYES to CosmeticsControl.COLOUR -> AvatarPartCategory.EYE_COLOR
+    CosmeticsArea.NOSE to CosmeticsControl.STYLE -> AvatarPartCategory.NOSE_STYLE
+    CosmeticsArea.FACE to CosmeticsControl.SKIN -> AvatarPartCategory.SKIN_TONE
+    else -> null
+}
+
+private fun areaFor(category: AvatarPartCategory): CosmeticsArea = when (category) {
+    AvatarPartCategory.HAIR_STYLE, AvatarPartCategory.HAIR_COLOR -> CosmeticsArea.HAIR
+    AvatarPartCategory.EYE_STYLE, AvatarPartCategory.EYE_COLOR -> CosmeticsArea.EYES
+    AvatarPartCategory.NOSE_STYLE -> CosmeticsArea.NOSE
+    AvatarPartCategory.SKIN_TONE -> CosmeticsArea.FACE
+}
+
+private fun controlFor(category: AvatarPartCategory): CosmeticsControl = when (category) {
+    AvatarPartCategory.HAIR_STYLE, AvatarPartCategory.EYE_STYLE, AvatarPartCategory.NOSE_STYLE -> CosmeticsControl.STYLE
+    AvatarPartCategory.HAIR_COLOR, AvatarPartCategory.EYE_COLOR -> CosmeticsControl.COLOUR
+    AvatarPartCategory.SKIN_TONE -> CosmeticsControl.SKIN
+}
+
+private fun areaIcon(area: CosmeticsArea): String = when (area) {
+    CosmeticsArea.HAIR -> "✂️"
+    CosmeticsArea.EYES -> "👁️"
+    CosmeticsArea.NOSE -> "◉"
+    CosmeticsArea.FACE -> "☺️"
+}
+
+private fun CharacterAppearance.withPart(category: AvatarPartCategory, partId: String): CharacterAppearance = when (category) {
+    AvatarPartCategory.HAIR_STYLE -> copy(hairStyleId = partId)
+    AvatarPartCategory.EYE_STYLE -> copy(eyeStyleId = partId)
+    AvatarPartCategory.NOSE_STYLE -> copy(noseStyleId = partId)
+    AvatarPartCategory.SKIN_TONE -> copy(skinToneId = partId)
+    AvatarPartCategory.HAIR_COLOR -> copy(hairColorId = partId)
+    AvatarPartCategory.EYE_COLOR -> copy(eyeColorId = partId)
 }
 
 private fun isEquipped(part: AvatarPart, appearance: CharacterAppearance): Boolean =

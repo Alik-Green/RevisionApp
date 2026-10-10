@@ -62,6 +62,8 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
+private const val DEVELOPER_UNLOCK_CODE = "REVISION-DEV-2026"
+
 /** Destinations. Hand-rolled rather than a navigation library: see DECISIONS.md D6. */
 sealed interface Route {
     data object Study : Route
@@ -120,7 +122,7 @@ data class SettingsUi(
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
     val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
-    val themeMode: ThemeMode = ThemeMode.LIGHT,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
 ) {
     companion object {
         fun initial(): SettingsUi =
@@ -129,7 +131,7 @@ data class SettingsUi(
                 desiredRetention = DEFAULT_RETENTION,
                 packs = emptyList(),
                 themeStyle = ThemeStyle.PLAYFUL,
-                themeMode = ThemeMode.LIGHT,
+                themeMode = ThemeMode.SYSTEM,
             )
 
         const val DEFAULT_RETENTION: Double = 0.9
@@ -469,6 +471,17 @@ class AppState(
         updateProgression { ProgressionRules.setDisplayName(it, name) }
     }
 
+    /** The developer code is checked locally and never written to learner settings. */
+    fun unlockDeveloperMode(code: String): Boolean {
+        if (!code.trim().equals(DEVELOPER_UNLOCK_CODE, ignoreCase = true)) return false
+        setDeveloperMode(true)
+        return true
+    }
+
+    fun setDeveloperMode(enabled: Boolean) {
+        updateProgression { ProgressionRules.setDeveloperMode(it, enabled) }
+    }
+
     fun unlockAvatarPart(partId: String) {
         updateProgression { ProgressionRules.unlockAvatarPart(it, partId).progress }
     }
@@ -498,12 +511,15 @@ class AppState(
     private fun updateProgression(transform: (LearnerProgress) -> LearnerProgress) {
         if (!_progressionReady.value) return
         val today = localToday()
-        _learnerProgress.value = transform(ProgressionRules.forToday(_learnerProgress.value, today))
+        val current = ProgressionRules.forToday(_learnerProgress.value, today)
+        val transformed = transform(current)
+        val updated = if (transformed.developerMode) transformed.copy(coins = Long.MAX_VALUE) else transformed
+        _learnerProgress.value = updated
         scope.launch(Dispatchers.Default) {
             progressionWriteMutex.withLock {
                 graph.settings.write(
                     SettingKeys.LEARNER_PROGRESS_V2,
-                    graph.json.encodeToString(_learnerProgress.value),
+                    graph.json.encodeToString(updated),
                 )
             }
         }

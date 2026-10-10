@@ -14,10 +14,12 @@ platform source sets contain nothing but a database driver, an HTTP engine and a
 entry point.
 
 The bottom navigation is **Study**, **Store**, **Progress** and **Profile**. Study
-shows one downloaded course at a time as an ordered lesson path. Store has
-separate **Courses** and **Cosmetics** shelves: downloads are opt-in, while coins
-unlock individual avatar parts. Profile contains the character designer and the
-legacy card library. Progress keeps quests, streaks and coins in view, with the
+shows a compact active-course selector and a centered, topic-first lesson path;
+its info control displays the course description, lesson count and downloaded
+course choices. Store has separate **Courses** and **Cosmetics** shelves. Tap a
+course to see its icon, description and download/open action; downloads remain
+opt-in. Profile has a direct avatar-edit action and the legacy card library.
+Progress keeps the daily and weekly quests, streaks and coins in view, with the
 full achievement gallery on its own page.
 
 ---
@@ -29,7 +31,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-2.2.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.3.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -108,20 +110,30 @@ retired, while their stored metadata remains compatible with older packs.
 
 ### Progression and themes
 
-Progress shows current and best streaks, six daily quests, four Monday-reset
-weekly quests and a compact badge summary; the full achievement gallery is a
-separate page. Coins reward lessons, correct recall, streaks and consistent
-study days—not raw question volume—and can be spent in Store > Cosmetics on
-individual hairstyles, eye and nose styles, natural and fantasy skin tones, and
-hair and eye colours. Everyone starts with two hairstyles, one eye style, one
-nose style and all eight natural skin tones. Once a feature is unlocked, its
-applicable size, spacing and position controls are always free. Appearance
-purchases never affect lesson access, answer checking or spaced-repetition
-scheduling. Restoring a broken streak costs more for every additional missed
-day, with the price doubling each time. Progress and purchases are stored locally.
+Progress shows current and best streaks, three daily quests selected from the
+available goals, four Monday-reset weekly quests and a compact badge summary;
+the full achievement gallery is a separate page. Coins reward lessons, correct
+recall, streaks and consistent study days—not raw question volume—and can be
+spent in Store > Cosmetics on individual hairstyles, eye and nose styles,
+natural and fantasy skin tones, and hair and eye colours. The Cosmetics shelf
+keeps a live avatar preview in place while Hair, Eyes, Nose and Face options are
+browsed; Style, Colour, Skin and Shape open their corresponding controls. Everyone
+starts with two hairstyles, one eye style, one nose style and all eight natural
+skin tones. Once a feature is unlocked, its applicable size, spacing, face and
+position controls are always free. Appearance purchases never affect lesson
+access, answer checking or spaced-repetition scheduling. Restoring a broken
+streak costs more for every additional missed day, with the price doubling each
+time. Progress and purchases are stored locally.
 
-The default palette is playful and **light**. **Ink & Paper** is available as an
-alternative; either style can follow the system or be fixed to light or dark.
+The default Playful palette follows the device's **light or dark setting**.
+**Ink & Paper** is available as an alternative; either style can also be fixed
+to light or dark. Store, course and quest cards use raised, bordered surfaces to
+stand apart from the page background.
+
+Settings > Developer mode accepts the local unlock code `REVISION-DEV-2026`.
+It enables an unlimited coin balance and unlocks the current cosmetic catalog.
+This is a client-side development convenience, not a security feature; the code
+is not saved, while the enabled state and prior coin balance are stored locally.
 
 ### Maths
 

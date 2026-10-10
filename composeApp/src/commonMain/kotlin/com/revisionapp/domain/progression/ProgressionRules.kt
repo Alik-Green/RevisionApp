@@ -2,6 +2,7 @@ package com.revisionapp.domain.progression
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
+import kotlin.random.Random
 
 @Serializable
 data class DailyProgress(
@@ -11,6 +12,8 @@ data class DailyProgress(
     val correctAnswers: Int = 0,
     val bestCorrectAnswerStreak: Int = 0,
     val claimedQuestIds: List<String> = emptyList(),
+    /** The three quests drawn for this date; persisted so reloads never reroll the board. */
+    val selectedQuestIds: List<String> = emptyList(),
 )
 
 @Serializable
@@ -38,6 +41,9 @@ data class LearnerProgress(
     val displayName: String = "Learner",
     val activeCourseId: String = "",
     val coins: Long = 0,
+    val developerMode: Boolean = false,
+    /** Saved balance restored when developer mode is turned off. */
+    val coinsBeforeDeveloperMode: Long? = null,
     val streakDays: Int = 0,
     val bestStreakDays: Int = 0,
     val lastStudyDate: String? = null,
@@ -56,7 +62,9 @@ data class LearnerProgress(
     val ownedAvatarPartIds: List<String> = AvatarPartCatalog.startingOwnedIds,
     val daily: DailyProgress = DailyProgress(),
     val weekly: WeeklyProgress = WeeklyProgress(),
-)
+) {
+    val coinBalanceLabel: String get() = if (developerMode) "∞" else coins.toString()
+}
 
 data class DailyQuestProgress(
     val id: String,
@@ -330,7 +338,15 @@ object ProgressionRules {
     /** Reset daily/weekly counters and surface a lost streak without erasing it. */
     fun forToday(progress: LearnerProgress, today: LocalDate): LearnerProgress {
         val date = today.toString()
-        val daily = if (progress.daily.date == date) progress.daily else DailyProgress(date = date)
+        val daily = if (progress.daily.date == date) {
+            if (progress.daily.selectedQuestIds.isEmpty()) {
+                progress.daily.copy(selectedQuestIds = selectDailyQuestIds(date))
+            } else {
+                progress.daily
+            }
+        } else {
+            DailyProgress(date = date, selectedQuestIds = selectDailyQuestIds(date))
+        }
         val weekId = weekId(today)
         val weekly = if (progress.weekly.weekId == weekId) progress.weekly else WeeklyProgress(weekId = weekId)
         var streak = progress.streakDays
@@ -418,22 +434,42 @@ object ProgressionRules {
     fun setDisplayName(progress: LearnerProgress, displayName: String): LearnerProgress =
         progress.copy(displayName = displayName.trim().take(MAX_DISPLAY_NAME_LENGTH).ifBlank { "Learner" })
 
+    /** Local developer mode grants every current cosmetic and restores the prior balance when disabled. */
+    fun setDeveloperMode(progress: LearnerProgress, enabled: Boolean): LearnerProgress = when {
+        enabled && progress.developerMode -> progress.copy(coins = Long.MAX_VALUE)
+        enabled -> progress.copy(
+            developerMode = true,
+            coinsBeforeDeveloperMode = progress.coins,
+            coins = Long.MAX_VALUE,
+            ownedAvatarPartIds = AvatarPartCatalog.all.map { it.id }.distinct(),
+        )
+        !progress.developerMode -> progress
+        else -> progress.copy(
+            developerMode = false,
+            coins = progress.coinsBeforeDeveloperMode ?: 0L,
+            coinsBeforeDeveloperMode = null,
+        )
+    }
+
     fun hasCompleted(progress: LearnerProgress, courseId: String, lessonId: String): Boolean =
         "$courseId:$lessonId" in progress.completedLessonIds
 
     /** Award any newly satisfied milestones after restoring a saved profile. */
     fun claimAvailableRewards(progress: LearnerProgress): ProgressionMutation = awardNewRewards(progress)
 
-    fun dailyQuests(progress: LearnerProgress): List<DailyQuestProgress> = questDefinitions.map { quest ->
-        questProgress(
-            id = quest.id,
-            title = quest.title,
-            description = quest.description,
-            current = quest.current(progress.daily),
-            target = quest.target,
-            rewardCoins = quest.rewardCoins,
-            claimedIds = progress.daily.claimedQuestIds,
-        )
+    fun dailyQuests(progress: LearnerProgress): List<DailyQuestProgress> {
+        val selectedIds = progress.daily.selectedQuestIds.ifEmpty { selectDailyQuestIds(progress.daily.date) }
+        return selectedIds.mapNotNull { selectedId -> questDefinitions.firstOrNull { it.id == selectedId } }.map { quest ->
+            questProgress(
+                id = quest.id,
+                title = quest.title,
+                description = quest.description,
+                current = quest.current(progress.daily),
+                target = quest.target,
+                rewardCoins = quest.rewardCoins,
+                claimedIds = progress.daily.claimedQuestIds,
+            )
+        }
     }
 
     fun weeklyQuests(progress: LearnerProgress): List<DailyQuestProgress> = weeklyQuestDefinitions.map { quest ->
@@ -517,9 +553,16 @@ object ProgressionRules {
     /** Unlock one avatar part with earned coins; purchases never alter study mechanics. */
     fun unlockAvatarPart(progress: LearnerProgress, partId: String): ProgressionMutation {
         val part = AvatarPartCatalog.find(partId) ?: return ProgressionMutation(progress)
-        if (part.id in progress.ownedAvatarPartIds || progress.coins < part.costCoins) {
-            return ProgressionMutation(progress)
+        if (part.id in progress.ownedAvatarPartIds) return ProgressionMutation(progress)
+        if (progress.developerMode) {
+            return ProgressionMutation(
+                progress.copy(
+                    coins = Long.MAX_VALUE,
+                    ownedAvatarPartIds = (progress.ownedAvatarPartIds + part.id).distinct(),
+                ),
+            )
         }
+        if (progress.coins < part.costCoins) return ProgressionMutation(progress)
         return ProgressionMutation(
             progress.copy(
                 coins = progress.coins - part.costCoins,
@@ -542,6 +585,9 @@ object ProgressionRules {
                 eyeStyleId = ownedSelection(appearance.eyeStyleId, AvatarPartCategory.EYE_STYLE, current.eyeStyleId),
                 noseStyleId = ownedSelection(appearance.noseStyleId, AvatarPartCategory.NOSE_STYLE, current.noseStyleId),
                 skinToneId = ownedSelection(appearance.skinToneId, AvatarPartCategory.SKIN_TONE, current.skinToneId),
+                faceWidth = appearance.faceWidth.coerceIn(0f, 1f),
+                faceHeight = appearance.faceHeight.coerceIn(0f, 1f),
+                faceRoundness = appearance.faceRoundness.coerceIn(0f, 1f),
                 hairColorId = ownedSelection(appearance.hairColorId, AvatarPartCategory.HAIR_COLOR, current.hairColorId),
                 eyeColorId = ownedSelection(appearance.eyeColorId, AvatarPartCategory.EYE_COLOR, current.eyeColorId),
                 eyeSpacing = appearance.eyeSpacing.coerceIn(0f, 1f),
@@ -572,7 +618,7 @@ object ProgressionRules {
         if (current.coins < cost) return ProgressionMutation(current)
         return ProgressionMutation(
             current.copy(
-                coins = current.coins - cost,
+                coins = if (current.developerMode) Long.MAX_VALUE else current.coins - cost,
                 streakDays = maxOf(current.streakDays, recovery.streakDays),
                 bestStreakDays = maxOf(current.bestStreakDays, recovery.streakDays),
                 lastStudyDate = today.toString(),
@@ -618,8 +664,11 @@ object ProgressionRules {
     }
 
     private fun awardNewRewards(progress: LearnerProgress): ProgressionMutation {
+        val selectedIds = progress.daily.selectedQuestIds.ifEmpty { selectDailyQuestIds(progress.daily.date) }
         val newlyEarnedDaily = questDefinitions.filter { quest ->
-            quest.current(progress.daily) >= quest.target && quest.id !in progress.daily.claimedQuestIds
+            quest.id in selectedIds &&
+                quest.current(progress.daily) >= quest.target &&
+                quest.id !in progress.daily.claimedQuestIds
         }
         val newlyEarnedWeekly = weeklyQuestDefinitions.filter { quest ->
             quest.current(progress.weekly) >= quest.target && quest.id !in progress.weekly.claimedQuestIds
@@ -627,7 +676,7 @@ object ProgressionRules {
         val dailyCoins = newlyEarnedDaily.sumOf { it.rewardCoins }
         val weeklyCoins = newlyEarnedWeekly.sumOf { it.rewardCoins }
         val withQuestRewards = progress.copy(
-            coins = progress.coins + dailyCoins + weeklyCoins,
+            coins = if (progress.developerMode) Long.MAX_VALUE else saturatingCoinsAdd(progress.coins, dailyCoins + weeklyCoins),
             daily = progress.daily.copy(
                 claimedQuestIds = (progress.daily.claimedQuestIds + newlyEarnedDaily.map { it.id }).distinct(),
             ),
@@ -641,11 +690,21 @@ object ProgressionRules {
         }
         val achievementCoins = newlyUnlocked.sumOf { it.rewardCoins }
         val updated = withQuestRewards.copy(
-            coins = withQuestRewards.coins + achievementCoins,
+            coins = if (withQuestRewards.developerMode) {
+                Long.MAX_VALUE
+            } else {
+                saturatingCoinsAdd(withQuestRewards.coins, achievementCoins)
+            },
             unlockedAchievementIds = (withQuestRewards.unlockedAchievementIds + newlyUnlocked.map { it.id }).distinct(),
         )
         return ProgressionMutation(updated, dailyCoins + weeklyCoins + achievementCoins)
     }
+
+    private fun selectDailyQuestIds(date: String): List<String> =
+        questDefinitions.shuffled(Random(date.hashCode() xor DAILY_QUEST_SEED)).take(DAILY_QUEST_COUNT).map { it.id }
+
+    private fun saturatingCoinsAdd(balance: Long, reward: Long): Long =
+        if (reward > 0L && balance > Long.MAX_VALUE - reward) Long.MAX_VALUE else balance + reward
 
     private fun questProgress(
         id: String,
@@ -701,6 +760,8 @@ object ProgressionRules {
     )
 
     private const val MAX_DISPLAY_NAME_LENGTH = 24
+    private const val DAILY_QUEST_COUNT = 3
+    private const val DAILY_QUEST_SEED = 0x51A7C3
     private const val BASE_STREAK_RECOVERY_COST = 25L
     private const val MAX_STREAK_RECOVERY_COST = 1_000_000L
     private const val MAX_COST_DOUBLINGS = 16

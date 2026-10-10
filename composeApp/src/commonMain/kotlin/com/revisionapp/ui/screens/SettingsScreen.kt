@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.ui.AppState
@@ -50,8 +52,12 @@ import kotlin.time.Instant
 fun SettingsScreen(state: AppState) {
     val settings = state.settingsUi.collectAsState().value
     val sync = state.syncState.collectAsState().value
+    val progress = state.learnerProgress.collectAsState().value
+    val progressionReady = state.progressionReady.collectAsState().value
     val urlDraft = remember(settings.baseUrl) { mutableStateOf(settings.baseUrl) }
     val retention = remember(settings.desiredRetention) { mutableStateOf(settings.desiredRetention.toFloat()) }
+    val developerCode = remember { mutableStateOf("") }
+    val developerCodeError = remember { mutableStateOf(false) }
 
     Column(Modifier.fillMaxSize()) {
         AppHeader(
@@ -180,7 +186,56 @@ fun SettingsScreen(state: AppState) {
             MetaRow("Legacy pack source URL", settings.baseUrl)
 
             HorizontalDivider()
-            SectionLabel("Developer")
+            SectionLabel("Developer mode")
+            if (progress.developerMode) {
+                EmptyMessage(
+                    "Developer mode is on. Your balance is unlimited, and all current cosmetic parts are unlocked. " +
+                        "This setting is saved on this device; the code itself is never stored.",
+                )
+                OutlinedButton(
+                    onClick = { state.setDeveloperMode(false) },
+                    enabled = progressionReady,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("Turn off developer mode") }
+            } else {
+                Text(
+                    "Enter a developer code for unlimited coins and cosmetic unlocks. This local convenience " +
+                        "is not a security feature.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                OutlinedTextField(
+                    value = developerCode.value,
+                    onValueChange = {
+                        developerCode.value = it.take(64)
+                        developerCodeError.value = false
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Developer code") },
+                    singleLine = true,
+                    visualTransformation = PasswordVisualTransformation(),
+                    enabled = progressionReady,
+                )
+                if (developerCodeError.value) {
+                    Text(
+                        "That code was not recognised.",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+                Button(
+                    onClick = {
+                        if (state.unlockDeveloperMode(developerCode.value)) {
+                            developerCode.value = ""
+                            developerCodeError.value = false
+                        } else {
+                            developerCodeError.value = true
+                        }
+                    },
+                    enabled = progressionReady && developerCode.value.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text("Enable developer mode") }
+            }
             EmptyMessage(
                 "Diagnostics for the parts of this app that cannot be seen while it is being " +
                     "written: there is no display in the sandbox it is developed in.",

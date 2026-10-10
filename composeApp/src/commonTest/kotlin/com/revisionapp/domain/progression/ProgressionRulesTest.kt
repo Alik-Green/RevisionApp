@@ -3,6 +3,7 @@ package com.revisionapp.domain.progression
 import com.revisionapp.data.AppJson
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -100,26 +101,30 @@ class ProgressionRulesTest {
     @Test
     fun questsAwardCoinsOnceWhenTheirTargetsAreReached() {
         val today = LocalDate(2026, 10, 10)
-        var progress = LearnerProgress()
+        var progress = ProgressionRules.forToday(LearnerProgress(), today)
+        val selectedQuests = ProgressionRules.dailyQuests(progress)
+        assertEquals(3, selectedQuests.size)
+
+        val firstLessonReward = selectedQuests.firstOrNull { it.id == "first-lesson" }?.rewardCoins ?: 0L
         val firstLesson = ProgressionRules.completeLesson(progress, "tmua", "lesson-1", today)
         progress = firstLesson.progress
-        assertEquals(20L, firstLesson.coinsEarned) // first-step quest + first-lesson milestone
+        assertEquals(firstLessonReward + 12L, firstLesson.coinsEarned) // selected quest + first-lesson milestone
 
+        val twoLessonsReward = selectedQuests.firstOrNull { it.id == "two-lessons" }?.rewardCoins ?: 0L
         val secondLesson = ProgressionRules.completeLesson(progress, "tmua", "lesson-2", today)
         progress = secondLesson.progress
-        assertEquals(12L, secondLesson.coinsEarned)
-        assertEquals(32L, progress.coins)
+        assertEquals(twoLessonsReward, secondLesson.coinsEarned)
 
         val tenAnswers = (1..10).fold(progress) { current, _ ->
             ProgressionRules.answerQuestion(current, today).progress
         }
-        assertEquals(162L, tenAnswers.coins)
+        assertEquals(3, ProgressionRules.dailyQuests(tenAnswers).size)
         assertTrue(ProgressionRules.dailyQuests(tenAnswers).all { it.isClaimed })
         assertTrue(ProgressionRules.weeklyQuests(tenAnswers).any { it.id == "weekly-recall-streak" && it.isClaimed })
 
         val extraLesson = ProgressionRules.completeLesson(tenAnswers, "tmua", "lesson-3", today)
         assertEquals(0L, extraLesson.coinsEarned)
-        assertEquals(162L, extraLesson.progress.coins)
+        assertEquals(tenAnswers.coins, extraLesson.progress.coins)
     }
 
     @Test
@@ -131,7 +136,7 @@ class ProgressionRulesTest {
         assertEquals(5, progress.totalQuestionsAnswered)
         assertEquals(0, progress.totalCorrectAnswers)
         assertEquals(0, progress.consecutiveCorrectAnswers)
-        assertFalse(ProgressionRules.dailyQuests(progress).first { it.id == "five-correct" }.isComplete)
+        assertTrue(ProgressionRules.dailyQuests(progress).none { it.isComplete })
         assertFalse("five-correct-answers" in progress.unlockedAchievementIds)
     }
 
@@ -285,5 +290,56 @@ class ProgressionRulesTest {
         val progress = ProgressionRules.completeLesson(LearnerProgress(), "tmua", "intro", today).progress
         assertTrue(ProgressionRules.hasCompleted(progress, "tmua", "intro"))
         assertFalse(ProgressionRules.hasCompleted(progress, "further-maths", "intro"))
+    }
+
+    @Test
+    fun dailyBoardSelectsThreeQuestsAndPersistsTheDrawForTheDay() {
+        val today = LocalDate(2026, 10, 10)
+        val progress = ProgressionRules.forToday(LearnerProgress(), today)
+        val encoded = AppJson.instance.encodeToString(progress)
+        val restored = AppJson.instance.decodeFromString<LearnerProgress>(encoded)
+
+        assertEquals(3, progress.daily.selectedQuestIds.size)
+        assertEquals(progress.daily.selectedQuestIds, restored.daily.selectedQuestIds)
+        assertEquals(progress.daily.selectedQuestIds, ProgressionRules.forToday(restored, today).daily.selectedQuestIds)
+        assertEquals(3, ProgressionRules.dailyQuests(restored).size)
+
+        val nextDay = ProgressionRules.forToday(restored, LocalDate(2026, 10, 11))
+        assertEquals(3, nextDay.daily.selectedQuestIds.size)
+        assertEquals(
+            nextDay.daily.selectedQuestIds.toSet(),
+            ProgressionRules.dailyQuests(nextDay).map { it.id }.toSet(),
+        )
+    }
+
+    @Test
+    fun developerModeIsPersistedAsAnUnlimitedBalanceAndRestoresThePriorCoinBalance() {
+        val starting = LearnerProgress(coins = 245)
+        val enabled = ProgressionRules.setDeveloperMode(starting, enabled = true)
+
+        assertTrue(enabled.developerMode)
+        assertEquals(Long.MAX_VALUE, enabled.coins)
+        assertEquals(AvatarPartCatalog.all.map { it.id }.toSet(), enabled.ownedAvatarPartIds.toSet())
+
+        val afterReward = ProgressionRules.answerQuestion(enabled, LocalDate(2026, 10, 10)).progress
+        assertEquals(Long.MAX_VALUE, afterReward.coins)
+        assertTrue(afterReward.developerMode)
+
+        val disabled = ProgressionRules.setDeveloperMode(afterReward, enabled = false)
+        assertFalse(disabled.developerMode)
+        assertEquals(245L, disabled.coins)
+        assertNull(disabled.coinsBeforeDeveloperMode)
+    }
+
+    @Test
+    fun faceShapeSlidersAreClampedAndSavedWithTheAppearance() {
+        val shaped = ProgressionRules.setCharacterAppearance(
+            LearnerProgress(),
+            CharacterAppearance(faceWidth = 1.4f, faceHeight = -0.2f, faceRoundness = 0.73f),
+        )
+
+        assertEquals(1f, shaped.characterAppearance.faceWidth)
+        assertEquals(0f, shaped.characterAppearance.faceHeight)
+        assertEquals(0.73f, shaped.characterAppearance.faceRoundness)
     }
 }

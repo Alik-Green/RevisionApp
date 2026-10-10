@@ -1,6 +1,9 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,10 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -69,7 +75,20 @@ fun ProfileScreen(state: AppState) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    CharacterAvatar(progress.characterAppearance, size = 84.dp)
+                    Box(Modifier.size(84.dp)) {
+                        CharacterAvatar(progress.characterAppearance, modifier = Modifier.align(Alignment.Center), size = 84.dp)
+                        Surface(
+                            modifier = Modifier.align(Alignment.BottomEnd).size(34.dp)
+                                .clickable { state.navigate(Route.CharacterCustomizer) },
+                            shape = CircleShape,
+                            color = MaterialTheme.colorScheme.surface,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(Icons.Filled.Edit, contentDescription = "Edit avatar", tint = MaterialTheme.colorScheme.primary)
+                            }
+                        }
+                    }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
@@ -77,7 +96,7 @@ fun ProfileScreen(state: AppState) {
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
-                        Text("🪙 ${progress.coins} coins", style = MaterialTheme.typography.labelLarge)
+                        Text("🪙 ${progress.coinBalanceLabel} coins", style = MaterialTheme.typography.labelLarge)
                     }
                 }
             }
@@ -115,22 +134,35 @@ fun ProfileScreen(state: AppState) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.secondaryContainer,
             ) {
-                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SectionLabel("ACTIVE COURSE")
-                    Text(activeCourse?.name ?: "Choose a course", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                    Text(
-                        activeCourse?.description ?: "Browse Courses in the Store and download a learning path to get started.",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                    OutlinedButton(
+                Row(
+                    Modifier.padding(horizontal = 15.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        SectionLabel("ACTIVE COURSE")
+                        Text(activeCourse?.name ?: "Choose a course", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        if (activeCourse != null) {
+                            Text(
+                                "${activeCourse.orderedLessons().size} lessons",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            )
+                        }
+                    }
+                    IconButton(
                         onClick = {
                             if (activeCourse == null) state.openCourseStore() else state.switchTab(Route.Study)
                         },
                         enabled = progressionReady,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) { Text(if (activeCourse == null) "Open Store" else "Go to Study") }
+                    ) {
+                        Icon(
+                            Icons.Filled.Edit,
+                            contentDescription = if (activeCourse == null) "Choose a course in Store" else "View or change active course",
+                        )
+                    }
                 }
             }
 
@@ -143,7 +175,7 @@ fun ProfileScreen(state: AppState) {
                     SectionLabel("YOUR CHARACTER")
                     Text("Design your learner", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                     Text(
-                        "Choose skin tone, hair, eyes and nose. Shape and position unlocked features for free.",
+                        "Choose skin, hair, eyes and nose, then adjust face shape and feature position for free.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )

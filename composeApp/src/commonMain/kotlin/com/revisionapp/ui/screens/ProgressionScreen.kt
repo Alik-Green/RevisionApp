@@ -3,6 +3,7 @@ package com.revisionapp.ui.screens
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,12 +60,12 @@ fun ProgressionScreen(state: AppState) {
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CoinsCard(progress.coins, progress.characterAppearance)
+            CoinsCard(progress.coinBalanceLabel, progress.characterAppearance)
             StreakCard(progress, state)
 
             SectionLabel("TODAY'S QUESTS")
             Text(
-                "Small goals reward lessons and correct recall—not just tapping through questions.",
+                "Three fresh goals are selected each day. They reward lessons and correct recall—not just tapping through questions.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -92,7 +93,7 @@ fun ProgressionScreen(state: AppState) {
 }
 
 @Composable
-private fun CoinsCard(coins: Long, appearance: CharacterAppearance) {
+private fun CoinsCard(balance: String, appearance: CharacterAppearance) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
@@ -106,8 +107,8 @@ private fun CoinsCard(coins: Long, appearance: CharacterAppearance) {
             CharacterAvatar(appearance, size = 68.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 SectionLabel("YOUR LEARNING COINS")
-                AnimatedContent(targetState = coins, label = "coin-balance") { balance ->
-                    Text("$balance 🪙", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                AnimatedContent(targetState = balance, label = "coin-balance") { shownBalance ->
+                    Text("$shownBalance 🪙", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                 }
                 Text("Spend on parts in Store · Cosmetics", style = MaterialTheme.typography.labelSmall)
             }
@@ -201,7 +202,13 @@ private fun QuestCard(quest: DailyQuestProgress, cadence: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(
+            1.dp,
+            if (quest.isComplete) MaterialTheme.colorScheme.tertiary.copy(alpha = 0.65f)
+            else MaterialTheme.colorScheme.outlineVariant,
+        ),
+        tonalElevation = 1.dp,
     ) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {

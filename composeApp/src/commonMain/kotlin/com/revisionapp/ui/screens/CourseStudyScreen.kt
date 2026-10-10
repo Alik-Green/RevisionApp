@@ -1,7 +1,5 @@
 package com.revisionapp.ui.screens
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,44 +14,44 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
-import com.revisionapp.domain.progression.CharacterAppearance
-import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
-import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 
-/** Mobile-first course path. Only the selected course's ordered lesson trail is shown. */
+/** Course-first study home with a compact switch/info card and a centered topic path. */
 @Composable
 fun CourseStudyScreen(state: AppState) {
     val catalog = state.courseCatalog.collectAsState().value
@@ -62,7 +60,7 @@ fun CourseStudyScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val progressionReady = state.progressionReady.collectAsState().value
     val course = catalog.course(progress.activeCourseId) ?: catalog.courses.firstOrNull()
-    val menuExpanded = remember { mutableStateOf(false) }
+    var showCourseInfo by remember { mutableStateOf(false) }
 
     Column(Modifier.fillMaxSize()) {
         AppHeader(
@@ -76,70 +74,49 @@ fun CourseStudyScreen(state: AppState) {
         }
         if (course == null) {
             Column(
-                Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 18.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(22.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.widthIn(max = 600.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
-                    Row(
-                        Modifier.padding(18.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp),
-                    ) {
-                        CharacterAvatar(progress.characterAppearance, size = 82.dp)
-                        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text("Your learner is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                            Text(
-                                "Choose a course and start a learning path at your own pace.",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            )
-                        }
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        SectionLabel("ACTIVE COURSE")
+                        Text("No course downloaded", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text(
+                            "Choose a course from the Store tab to begin. Course downloads are always opt-in.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
                     }
                 }
-                EmptyMessage(
-                    loadError ?: "No courses are downloaded yet. Open the Store tab to choose a learning path.",
-                )
+                if (!loadError.isNullOrBlank()) {
+                    EmptyMessage("Saved course data needs attention. Open the Store tab to retry. $loadError")
+                }
             }
             return@Column
         }
 
         val orderedLessons = course.orderedLessons()
         val completedCount = orderedLessons.count { state.isCourseLessonComplete(course.id, it.id) }
-        val nextLesson = orderedLessons.firstOrNull { !state.isCourseLessonComplete(course.id, it.id) }
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 9.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CourseSummaryCard(state, course, completedCount, orderedLessons.size, progress.characterAppearance, nextLesson)
-            val dailyQuests = ProgressionRules.dailyQuests(progress)
-            QuestSpotlight(dailyQuests.firstOrNull { !it.isClaimed }, onOpen = { state.switchTab(Route.Progression) })
-            if (catalog.courses.size > 1) {
-                Box {
-                    TextButton(onClick = { menuExpanded.value = true }) {
-                        Text("Switch downloaded course")
-                    }
-                    DropdownMenu(
-                        expanded = menuExpanded.value,
-                        onDismissRequest = { menuExpanded.value = false },
-                    ) {
-                        for (option in catalog.courses) {
-                            DropdownMenuItem(
-                                text = { Text(option.name) },
-                                onClick = {
-                                    state.selectActiveCourse(option.id)
-                                    menuExpanded.value = false
-                                },
-                            )
-                        }
-                    }
-                }
-            }
-            SectionLabel("YOUR PATH")
+            ActiveCourseCard(
+                course = course,
+                completed = completedCount,
+                total = orderedLessons.size,
+                onInfo = { showCourseInfo = true },
+                modifier = Modifier.widthIn(max = 740.dp).fillMaxWidth(),
+            )
+            SectionLabel("YOUR TOPIC PATH")
             if (course.sections.isEmpty()) {
                 EmptyMessage("This course has no lesson sections yet.")
             }
@@ -148,82 +125,135 @@ fun CourseStudyScreen(state: AppState) {
                     .flatMap { it.lessonIds }
                     .all { state.isCourseLessonComplete(course.id, it) }
                 if (unlocked) {
-                    CoursePathSection(state, course, section, orderedLessons)
+                    CoursePathSection(
+                        state = state,
+                        course = course,
+                        section = section,
+                        orderedLessons = orderedLessons,
+                        modifier = Modifier.widthIn(max = 660.dp).fillMaxWidth(),
+                    )
                 } else {
-                    LockedCourseSection(section)
+                    LockedCourseSection(
+                        section = section,
+                        modifier = Modifier.widthIn(max = 660.dp).fillMaxWidth(),
+                    )
                 }
             }
             if (!loadError.isNullOrBlank()) {
                 EmptyMessage("Saved course data needs to be downloaded again. Open the Store tab to retry. $loadError")
             }
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(10.dp))
         }
+    }
+
+    if (showCourseInfo && course != null) {
+        CourseInfoDialog(
+            course = course,
+            catalog = catalog,
+            completed = completedCountFor(state, course),
+            onClose = { showCourseInfo = false },
+            onSelectCourse = state::selectActiveCourse,
+        )
     }
 }
 
 @Composable
-private fun CourseSummaryCard(
-    state: AppState,
+private fun ActiveCourseCard(
     course: LearningCourse,
     completed: Int,
     total: Int,
-    appearance: CharacterAppearance,
-    nextLesson: CourseLesson?,
+    onInfo: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = modifier,
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.42f)),
     ) {
-        Column(
-            Modifier.padding(18.dp),
-            verticalArrangement = Arrangement.spacedBy(11.dp),
+        Row(
+            Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(11.dp),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    SectionLabel("YOUR CURRENT PATH")
-                    Text(course.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                    Text(
-                        course.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surface,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text("📘", style = MaterialTheme.typography.titleLarge)
                 }
-                CharacterAvatar(appearance, size = 74.dp)
             }
-            Text(
-                "$completed of $total lessons complete",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-            PathProgressBar(completed, total, MaterialTheme.colorScheme.primary)
-            if (nextLesson != null) {
-                Button(
-                    onClick = { state.openCourseLesson(course.id, nextLesson.id) },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Icon(Icons.Filled.PlayArrow, contentDescription = null)
-                    Spacer(Modifier.width(7.dp))
-                    Text("Continue · ${nextLesson.title}")
-                }
-            } else {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                SectionLabel("ACTIVE COURSE")
+                Text(course.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 Text(
-                    "Every lesson complete — brilliant work!",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold,
+                    "$completed of $total lessons complete",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
+            }
+            IconButton(onClick = onInfo) {
+                Icon(Icons.Filled.Info, contentDescription = "Course details and switching")
             }
         }
     }
 }
 
 @Composable
-private fun LockedCourseSection(section: CourseSection) {
+private fun CourseInfoDialog(
+    course: LearningCourse,
+    catalog: com.revisionapp.domain.course.CourseCatalog,
+    completed: Int,
+    onClose: () -> Unit,
+    onSelectCourse: (String) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text(course.name) },
+        text = {
+            Column(
+                Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Text(course.description, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    "${course.orderedLessons().size} lessons · $completed complete",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                if (catalog.courses.size > 1) {
+                    HorizontalDivider()
+                    Text("SWITCH DOWNLOADED COURSE", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                    for (option in catalog.courses) {
+                        TextButton(
+                            onClick = { onSelectCourse(option.id) },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(
+                                if (option.id == course.id) "✓  ${option.name} · Active" else option.name,
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onClose) { Text("Close") } },
+    )
+}
+
+private fun completedCountFor(state: AppState, course: LearningCourse): Int =
+    course.orderedLessons().count { state.isCourseLessonComplete(course.id, it.id) }
+
+@Composable
+private fun LockedCourseSection(section: CourseSection, modifier: Modifier = Modifier) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Row(
             Modifier.padding(16.dp),
@@ -232,7 +262,7 @@ private fun LockedCourseSection(section: CourseSection) {
         ) {
             Icon(Icons.Filled.Lock, contentDescription = "Topic locked", tint = MaterialTheme.colorScheme.onSurfaceVariant)
             Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(section.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                Text(section.topicLabel.ifBlank { section.title }, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
                     "Complete the lessons above to unlock this topic.",
                     style = MaterialTheme.typography.bodySmall,
@@ -249,33 +279,52 @@ private fun CoursePathSection(
     course: LearningCourse,
     section: CourseSection,
     orderedLessons: List<CourseLesson>,
+    modifier: Modifier = Modifier,
 ) {
     val sectionLessons = section.lessonIds.mapNotNull(course::lesson)
-    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text(section.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-        Text(
-            section.topicLabel,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(Modifier.height(2.dp))
-        for ((sectionIndex, lesson) in sectionLessons.withIndex()) {
-            val globalIndex = orderedLessons.indexOfFirst { it.id == lesson.id }
-            val completed = state.isCourseLessonComplete(course.id, lesson.id)
-            val unlocked = state.canOpenCourseLesson(course.id, lesson.id)
-            val current = unlocked && !completed && orderedLessons.take(globalIndex).none {
-                !state.isCourseLessonComplete(course.id, it.id)
-            }
-            LessonPathNode(
-                state = state,
-                course = course,
-                lesson = lesson,
-                number = globalIndex + 1,
-                completed = completed,
-                current = current,
-                unlocked = unlocked,
-                showConnector = sectionIndex != sectionLessons.lastIndex,
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+        Column(
+            Modifier.padding(15.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            SectionLabel(section.title.uppercase())
+            Text(
+                section.topicLabel.ifBlank { section.title },
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
             )
+            Text(
+                "${sectionLessons.size} practice ${if (sectionLessons.size == 1) "session" else "sessions"}",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(3.dp))
+            for ((sectionIndex, lesson) in sectionLessons.withIndex()) {
+                val globalIndex = orderedLessons.indexOfFirst { it.id == lesson.id }
+                val completed = state.isCourseLessonComplete(course.id, lesson.id)
+                val unlocked = state.canOpenCourseLesson(course.id, lesson.id)
+                val current = unlocked && !completed && orderedLessons.take(globalIndex).none {
+                    !state.isCourseLessonComplete(course.id, it.id)
+                }
+                LessonPathNode(
+                    state = state,
+                    course = course,
+                    lesson = lesson,
+                    topicLabel = section.topicLabel.ifBlank { section.title },
+                    practiceNumber = sectionIndex + 1,
+                    completed = completed,
+                    current = current,
+                    unlocked = unlocked,
+                    showConnector = sectionIndex != sectionLessons.lastIndex,
+                )
+            }
         }
     }
 }
@@ -285,7 +334,8 @@ private fun LessonPathNode(
     state: AppState,
     course: LearningCourse,
     lesson: CourseLesson,
-    number: Int,
+    topicLabel: String,
+    practiceNumber: Int,
     completed: Boolean,
     current: Boolean,
     unlocked: Boolean,
@@ -301,28 +351,29 @@ private fun LessonPathNode(
         current -> MaterialTheme.colorScheme.onPrimary
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
-    val cardColor = when {
-        current -> MaterialTheme.colorScheme.primaryContainer
-        else -> MaterialTheme.colorScheme.surfaceContainerLow
+    val label = when {
+        completed -> "Review practice"
+        current -> "New topic"
+        unlocked -> "Practice"
+        else -> "Coming up"
     }
     val borderColor = if (current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
 
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(11.dp)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
-                Modifier.size(54.dp).background(nodeColor, CircleShape),
+                Modifier.size(46.dp).background(nodeColor, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
                 when {
-                    completed -> Icon(Icons.Filled.Check, contentDescription = "Completed", tint = nodeContent)
-                    !unlocked -> Icon(Icons.Filled.Lock, contentDescription = "Locked", tint = nodeContent)
-                    current -> Icon(Icons.Filled.PlayArrow, contentDescription = "Start lesson", tint = nodeContent)
-                    else -> Text(number.toString(), color = nodeContent, fontWeight = FontWeight.Bold)
+                    current -> Icon(Icons.Filled.Star, contentDescription = "New topic", tint = nodeContent)
+                    completed || unlocked -> Icon(Icons.Filled.FitnessCenter, contentDescription = "Review or practice", tint = nodeContent)
+                    else -> Icon(Icons.Filled.Lock, contentDescription = "Locked", tint = nodeContent)
                 }
             }
             if (showConnector) {
                 Box(
-                    Modifier.padding(top = 4.dp).width(3.dp).height(28.dp)
+                    Modifier.padding(top = 4.dp).width(3.dp).height(20.dp)
                         .background(MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(2.dp)),
                 )
             }
@@ -330,60 +381,28 @@ private fun LessonPathNode(
         Surface(
             modifier = Modifier
                 .weight(1f)
-                .padding(top = 2.dp)
-                .border(1.dp, borderColor, RoundedCornerShape(16.dp))
+                .padding(top = 1.dp)
+                .border(if (current) 2.dp else 1.dp, borderColor, RoundedCornerShape(15.dp))
                 .clickable(enabled = unlocked) { state.openCourseLesson(course.id, lesson.id) },
-            shape = RoundedCornerShape(16.dp),
-            color = cardColor,
+            shape = RoundedCornerShape(15.dp),
+            color = if (current) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
         ) {
-            Column(
-                Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+            Row(
+                Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(9.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        lesson.title,
-                        modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    Text(
-                        when {
-                            completed -> "DONE"
-                            current -> "START"
-                            unlocked -> "REPLAY"
-                            else -> "LOCKED"
-                        },
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (unlocked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(label, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                    Text(topicLabel, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Practice $practiceNumber · ${lesson.questionIds.size} questions", style = MaterialTheme.typography.labelSmall)
                 }
-                if (lesson.description.isNotBlank()) {
-                    Text(
-                        lesson.description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                if (completed) {
+                    Text("DONE", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Bold)
+                } else if (current) {
+                    Button(onClick = { state.openCourseLesson(course.id, lesson.id) }) { Text("Start") }
                 }
-                Text(
-                    "${lesson.questionIds.size} questions",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (current) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
-                )
             }
-        }
-    }
-}
-
-@Composable
-private fun PathProgressBar(completed: Int, total: Int, color: Color) {
-    val fraction = if (total == 0) 0f else (completed.toFloat() / total).coerceIn(0f, 1f)
-    val animatedFraction = animateFloatAsState(fraction, animationSpec = tween(520), label = "course-progress").value
-    Box(
-        Modifier.fillMaxWidth().height(8.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp)),
-    ) {
-        if (animatedFraction > 0f) {
-            Box(Modifier.fillMaxWidth(animatedFraction).height(8.dp).background(color, RoundedCornerShape(4.dp)))
         }
     }
 }

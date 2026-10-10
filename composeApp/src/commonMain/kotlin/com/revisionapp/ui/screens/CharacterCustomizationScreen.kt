@@ -94,7 +94,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
-                        Text("🪙 ${progress.coins} earned coins", style = MaterialTheme.typography.labelLarge)
+                        Text("🪙 ${progress.coinBalanceLabel} earned coins", style = MaterialTheme.typography.labelLarge)
                     }
                 }
             }
@@ -257,7 +257,12 @@ private fun ShapeControls(
             ShapeControl("Nose size", draft.noseSize, "Small", "Large") { draft.copy(noseSize = it) },
             ShapeControl("Nose height", draft.noseHeight, "Higher", "Lower") { draft.copy(noseHeight = it) },
         )
-        AvatarPartCategory.SKIN_TONE, AvatarPartCategory.HAIR_COLOR -> emptyList()
+        AvatarPartCategory.SKIN_TONE -> listOf(
+            ShapeControl("Face width", draft.faceWidth, "Narrow", "Wide") { draft.copy(faceWidth = it) },
+            ShapeControl("Face height", draft.faceHeight, "Short", "Long") { draft.copy(faceHeight = it) },
+            ShapeControl("Jaw roundness", draft.faceRoundness, "Tapered", "Round") { draft.copy(faceRoundness = it) },
+        )
+        AvatarPartCategory.HAIR_COLOR -> emptyList()
     }
     if (controls.isEmpty()) return
 
@@ -267,9 +272,13 @@ private fun ShapeControls(
         color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-            SectionLabel("FREE SHAPE CONTROLS")
+            SectionLabel(if (category == AvatarPartCategory.SKIN_TONE) "FREE FACE SHAPE" else "FREE SHAPE CONTROLS")
             Text(
-                "Fine-tune your ${category.title.lowercase()} anytime—no coins needed.",
+                if (category == AvatarPartCategory.SKIN_TONE) {
+                    "Adjust face width, height and jaw shape anytime—no coins needed."
+                } else {
+                    "Fine-tune your ${category.title.lowercase()} anytime—no coins needed."
+                },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

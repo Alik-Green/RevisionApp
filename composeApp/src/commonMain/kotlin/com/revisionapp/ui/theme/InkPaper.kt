@@ -106,35 +106,35 @@ val PlayfulLight: ColorScheme = lightColorScheme(
     primaryContainer = Color(0xFFE8E0FF),
     onPrimaryContainer = Color(0xFF21105E),
     inversePrimary = Color(0xFFC9BCFF),
-    secondary = Color(0xFF9B245D),
+    secondary = Color(0xFFAD155E),
     onSecondary = Color(0xFFFFFFFF),
     secondaryContainer = Color(0xFFFFD9E8),
     onSecondaryContainer = Color(0xFF3C0020),
-    tertiary = Color(0xFF006B61),
+    tertiary = Color(0xFF00786A),
     onTertiary = Color(0xFFFFFFFF),
     tertiaryContainer = Color(0xFFC5F2E9),
     onTertiaryContainer = Color(0xFF002F2B),
-    background = Color(0xFFFFF8F5),
+    background = Color(0xFFFFF7EE),
     onBackground = Color(0xFF251D27),
-    surface = Color(0xFFFFFBFA),
+    surface = Color(0xFFFFFFFF),
     onSurface = Color(0xFF251D27),
     surfaceVariant = Color(0xFFF0E8F2),
     onSurfaceVariant = Color(0xFF514853),
     surfaceContainerLowest = Color(0xFFFFFFFF),
-    surfaceContainerLow = Color(0xFFFFF7FC),
-    surfaceContainer = Color(0xFFF9F0F7),
-    surfaceContainerHigh = Color(0xFFF3EAF2),
-    surfaceContainerHighest = Color(0xFFEDE4ED),
-    surfaceDim = Color(0xFFE7DDE6),
-    surfaceBright = Color(0xFFFFF9FD),
+    surfaceContainerLow = Color(0xFFFFF0F7),
+    surfaceContainer = Color(0xFFF8E8F2),
+    surfaceContainerHigh = Color(0xFFF0DDEA),
+    surfaceContainerHighest = Color(0xFFE8D3E3),
+    surfaceDim = Color(0xFFE6D8E3),
+    surfaceBright = Color(0xFFFFFAFC),
     inverseSurface = Color(0xFF342D37),
     inverseOnSurface = Color(0xFFF7EEF5),
     error = Color(0xFFB3261E),
     onError = Color(0xFFFFFFFF),
     errorContainer = Color(0xFFFFDAD4),
     onErrorContainer = Color(0xFF410001),
-    outline = Color(0xFF817783),
-    outlineVariant = Color(0xFFD4CBD5),
+    outline = Color(0xFF746573),
+    outlineVariant = Color(0xFFC9B5C5),
     scrim = Color(0xFF000000),
 )
 
@@ -152,27 +152,27 @@ val PlayfulDark: ColorScheme = darkColorScheme(
     onTertiary = Color(0xFF003731),
     tertiaryContainer = Color(0xFF005047),
     onTertiaryContainer = Color(0xFFA3F4E6),
-    background = Color(0xFF18121B),
+    background = Color(0xFF171019),
     onBackground = Color(0xFFF5EAF3),
-    surface = Color(0xFF211A23),
+    surface = Color(0xFF211821),
     onSurface = Color(0xFFF5EAF3),
     surfaceVariant = Color(0xFF39313C),
     onSurfaceVariant = Color(0xFFD0C3D4),
     surfaceContainerLowest = Color(0xFF120D15),
-    surfaceContainerLow = Color(0xFF1D161F),
-    surfaceContainer = Color(0xFF211A23),
-    surfaceContainerHigh = Color(0xFF2C242E),
-    surfaceContainerHighest = Color(0xFF372E39),
-    surfaceDim = Color(0xFF18121B),
-    surfaceBright = Color(0xFF403744),
+    surfaceContainerLow = Color(0xFF261D29),
+    surfaceContainer = Color(0xFF2C2230),
+    surfaceContainerHigh = Color(0xFF372A3B),
+    surfaceContainerHighest = Color(0xFF433348),
+    surfaceDim = Color(0xFF171019),
+    surfaceBright = Color(0xFF4B3C50),
     inverseSurface = Color(0xFFF5EAF3),
     inverseOnSurface = Color(0xFF342D37),
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
     errorContainer = Color(0xFF93000A),
     onErrorContainer = Color(0xFFFFDAD4),
-    outline = Color(0xFF958A99),
-    outlineVariant = Color(0xFF4A414D),
+    outline = Color(0xFFAB9AAE),
+    outlineVariant = Color(0xFF66566B),
     scrim = Color(0xFF000000),
 )
 
@@ -232,7 +232,7 @@ val LocalExtendedColors = staticCompositionLocalOf { InkPaperExtendedLight }
 @Composable
 fun RevisionAppTheme(
     themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
-    themeMode: ThemeMode = ThemeMode.LIGHT,
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
     content: @Composable () -> Unit,
 ) {
     val dark = when (themeMode) {
@@ -263,7 +263,7 @@ enum class ThemeStyle(val title: String) {
     }
 }
 
-/** The appearance override the user picks in Settings; new installs start in light mode. */
+/** The appearance override the user picks in Settings; new installs follow the device. */
 enum class ThemeMode {
     SYSTEM,
     LIGHT,
@@ -272,7 +272,7 @@ enum class ThemeMode {
 
     companion object {
         fun fromStored(value: String?): ThemeMode =
-            entries.firstOrNull { it.name == value } ?: LIGHT
+            entries.firstOrNull { it.name == value } ?: SYSTEM
     }
 }
 

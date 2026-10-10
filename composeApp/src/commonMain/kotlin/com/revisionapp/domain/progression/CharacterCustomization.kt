@@ -110,6 +110,12 @@ data class CharacterAppearance(
     val skinToneId: String = AvatarPartCatalog.DEFAULT_SKIN_TONE,
     val hairColorId: String = AvatarPartCatalog.DEFAULT_HAIR_COLOR,
     val eyeColorId: String = AvatarPartCatalog.DEFAULT_EYE_COLOR,
+    /** 0 = narrow, 1 = wide. */
+    val faceWidth: Float = 0.5f,
+    /** 0 = short, 1 = tall. */
+    val faceHeight: Float = 0.5f,
+    /** 0 = tapered jaw, 1 = rounded jaw. */
+    val faceRoundness: Float = 0.5f,
     /** 0 = close set, 1 = wide set. */
     val eyeSpacing: Float = 0.46f,
     /** 0 = smaller, 1 = larger. */

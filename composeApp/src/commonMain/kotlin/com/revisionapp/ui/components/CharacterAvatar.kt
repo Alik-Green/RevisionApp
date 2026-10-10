@@ -112,12 +112,12 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawAvatar(
 ) {
     val w = size.width
     val h = size.height
-    val faceLeft = w * 0.205f
-    val faceTop = h * 0.19f
-    val faceWidth = w * 0.59f
-    val faceHeight = h * 0.59f
-    val faceRight = faceLeft + faceWidth
     val centerX = w * 0.5f
+    val faceWidth = w * (0.53f + appearance.faceWidth.coerceIn(0f, 1f) * 0.12f)
+    val faceHeight = h * (0.53f + appearance.faceHeight.coerceIn(0f, 1f) * 0.12f)
+    val faceLeft = centerX - faceWidth / 2f
+    val faceTop = h * 0.78f - faceHeight
+    val faceRight = faceLeft + faceWidth
     val hairWidth = faceWidth * (0.84f + appearance.hairSize.coerceIn(0f, 1f) * 0.32f)
     val hairLeft = centerX - hairWidth / 2f
     val hairRight = centerX + hairWidth / 2f
@@ -160,13 +160,23 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawAvatar(
         else -> Unit
     }
 
-    // Ears and face.
+    // Ears and an adjustable face outline; the jaw control makes Face > Shape visible.
     drawOval(skin.copy(alpha = 0.97f), androidx.compose.ui.geometry.Offset(faceLeft - w * 0.055f, faceTop + faceHeight * 0.42f), androidx.compose.ui.geometry.Size(w * 0.12f, h * 0.14f))
     drawOval(skin.copy(alpha = 0.97f), androidx.compose.ui.geometry.Offset(faceRight - w * 0.065f, faceTop + faceHeight * 0.42f), androidx.compose.ui.geometry.Size(w * 0.12f, h * 0.14f))
-    drawOval(skin, androidx.compose.ui.geometry.Offset(faceLeft, faceTop), androidx.compose.ui.geometry.Size(faceWidth, faceHeight))
+    val jawWidth = faceWidth * (0.29f + appearance.faceRoundness.coerceIn(0f, 1f) * 0.21f)
+    val faceOutline = Path().apply {
+        moveTo(centerX, faceTop)
+        cubicTo(centerX + faceWidth * 0.43f, faceTop, faceRight, faceTop + faceHeight * 0.18f, faceRight, faceTop + faceHeight * 0.5f)
+        cubicTo(faceRight, faceTop + faceHeight * 0.77f, centerX + jawWidth, faceTop + faceHeight, centerX, faceTop + faceHeight)
+        cubicTo(centerX - jawWidth, faceTop + faceHeight, faceLeft, faceTop + faceHeight * 0.77f, faceLeft, faceTop + faceHeight * 0.5f)
+        cubicTo(faceLeft, faceTop + faceHeight * 0.18f, centerX - faceWidth * 0.43f, faceTop, centerX, faceTop)
+        close()
+    }
+    drawPath(faceOutline, skin)
 
     // Hairline silhouette: each unlocked hairstyle has its own outline.
     val volume = 0.13f + appearance.hairVolume.coerceIn(0f, 1f) * 0.10f
+    val capVolume = if (appearance.hairStyleId == "hair-crop") volume * 0.62f else volume
     val cap = Path().apply {
         when (appearance.hairStyleId) {
             "hair-spiky" -> {
@@ -181,17 +191,36 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawAvatar(
                 lineTo(hairLeft + hairWidth * 0.04f, hairTop + faceHeight * 0.31f)
                 close()
             }
+            "hair-waves" -> {
+                moveTo(hairLeft, hairTop + faceHeight * 0.31f)
+                cubicTo(hairLeft - w * 0.02f, hairTop + h * 0.02f, hairLeft + hairWidth * 0.08f, hairTop - h * volume * 0.42f, hairLeft + hairWidth * 0.2f, hairTop - h * volume * 0.2f)
+                cubicTo(hairLeft + hairWidth * 0.28f, hairTop - h * volume * 1.1f, hairLeft + hairWidth * 0.41f, hairTop - h * volume * 0.82f, hairLeft + hairWidth * 0.48f, hairTop - h * volume * 0.72f)
+                cubicTo(hairLeft + hairWidth * 0.58f, hairTop - h * volume * 1.2f, hairLeft + hairWidth * 0.72f, hairTop - h * volume * 0.82f, hairLeft + hairWidth * 0.78f, hairTop - h * volume * 0.34f)
+                cubicTo(hairRight - hairWidth * 0.02f, hairTop - h * volume * 0.18f, hairRight + w * 0.02f, hairTop + h * 0.04f, hairRight, hairTop + faceHeight * 0.31f)
+                cubicTo(hairRight - hairWidth * 0.12f, hairTop + faceHeight * 0.18f, hairRight - hairWidth * 0.12f, hairTop + faceHeight * 0.43f, centerX + hairWidth * 0.22f, hairTop + faceHeight * 0.34f)
+                cubicTo(centerX + hairWidth * 0.1f, hairTop + faceHeight * 0.25f, centerX, hairTop + faceHeight * 0.4f, centerX - hairWidth * 0.08f, hairTop + faceHeight * 0.34f)
+                cubicTo(hairLeft + hairWidth * 0.12f, hairTop + faceHeight * 0.24f, hairLeft + hairWidth * 0.11f, hairTop + faceHeight * 0.4f, hairLeft, hairTop + faceHeight * 0.31f)
+                close()
+            }
+            "hair-crop" -> {
+                moveTo(hairLeft, hairTop + faceHeight * 0.23f)
+                cubicTo(hairLeft - w * 0.015f, hairTop + h * 0.035f, centerX - hairWidth * 0.3f, hairTop - h * capVolume, centerX, hairTop - h * capVolume)
+                cubicTo(centerX + hairWidth * 0.35f, hairTop - h * capVolume, hairRight + w * 0.015f, hairTop + h * 0.035f, hairRight, hairTop + faceHeight * 0.23f)
+                lineTo(hairRight - hairWidth * 0.06f, hairTop + faceHeight * 0.2f)
+                cubicTo(centerX + hairWidth * 0.16f, hairTop + faceHeight * 0.25f, centerX - hairWidth * 0.16f, hairTop + faceHeight * 0.25f, hairLeft + hairWidth * 0.06f, hairTop + faceHeight * 0.2f)
+                close()
+            }
             "hair-fringe" -> {
                 moveTo(hairLeft, hairTop + faceHeight * 0.27f)
-                cubicTo(hairLeft - w * 0.015f, hairTop + h * 0.02f, centerX - hairWidth * 0.33f, hairTop - h * volume, centerX, hairTop - h * volume)
-                cubicTo(centerX + hairWidth * 0.37f, hairTop - h * volume, hairRight + w * 0.02f, hairTop + h * 0.02f, hairRight, hairTop + faceHeight * 0.27f)
+                cubicTo(hairLeft - w * 0.015f, hairTop + h * 0.02f, centerX - hairWidth * 0.33f, hairTop - h * capVolume, centerX, hairTop - h * capVolume)
+                cubicTo(centerX + hairWidth * 0.37f, hairTop - h * capVolume, hairRight + w * 0.02f, hairTop + h * 0.02f, hairRight, hairTop + faceHeight * 0.27f)
                 cubicTo(centerX + hairWidth * 0.26f, hairTop + faceHeight * 0.16f, centerX - hairWidth * 0.05f, hairTop + faceHeight * 0.49f, hairLeft + hairWidth * 0.08f, hairTop + faceHeight * 0.35f)
                 close()
             }
             else -> {
                 moveTo(hairLeft, hairTop + faceHeight * 0.27f)
-                cubicTo(hairLeft - w * 0.015f, hairTop + h * 0.02f, centerX - hairWidth * 0.33f, hairTop - h * volume, centerX, hairTop - h * volume)
-                cubicTo(centerX + hairWidth * 0.37f, hairTop - h * volume, hairRight + w * 0.02f, hairTop + h * 0.02f, hairRight, hairTop + faceHeight * 0.27f)
+                cubicTo(hairLeft - w * 0.015f, hairTop + h * 0.02f, centerX - hairWidth * 0.33f, hairTop - h * capVolume, centerX, hairTop - h * capVolume)
+                cubicTo(centerX + hairWidth * 0.37f, hairTop - h * capVolume, hairRight + w * 0.02f, hairTop + h * 0.02f, hairRight, hairTop + faceHeight * 0.27f)
                 lineTo(hairRight - hairWidth * 0.05f, hairTop + faceHeight * 0.19f)
                 cubicTo(centerX + hairWidth * 0.15f, hairTop + faceHeight * 0.26f, centerX - hairWidth * 0.20f, hairTop + faceHeight * 0.18f, hairLeft + hairWidth * 0.05f, hairTop + faceHeight * 0.27f)
                 close()
@@ -220,14 +249,25 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawAvatar(
                 drawPath(lock, hair.copy(alpha = 0.68f), style = Stroke(width = w * 0.018f))
             }
         }
-        "hair-waves", "hair-long", "hair-bob" -> {
+        "hair-waves" -> {
+            for (index in 0..3) {
+                val startX = hairLeft + hairWidth * (0.16f + index * 0.21f)
+                val wave = Path().apply {
+                    moveTo(startX, hairTop + faceHeight * 0.015f)
+                    cubicTo(startX - w * 0.04f, hairTop + faceHeight * 0.08f, startX + w * 0.04f, hairTop + faceHeight * 0.14f, startX, hairTop + faceHeight * 0.23f)
+                }
+                // A lighter strand is visibly different even when the base hair colour is dark.
+                drawPath(wave, Color.White.copy(alpha = 0.46f), style = Stroke(width = w * 0.019f))
+            }
+        }
+        "hair-long", "hair-bob" -> {
             for (index in 0..2) {
                 val startX = hairLeft + hairWidth * (0.19f + index * 0.25f)
                 val wave = Path().apply {
                     moveTo(startX, hairTop + faceHeight * 0.07f)
                     cubicTo(startX - w * 0.025f, hairTop + faceHeight * 0.13f, startX + w * 0.025f, hairTop + faceHeight * 0.17f, startX, hairTop + faceHeight * 0.22f)
                 }
-                drawPath(wave, hair.copy(alpha = 0.42f), style = Stroke(width = w * 0.012f))
+                drawPath(wave, Color.White.copy(alpha = 0.34f), style = Stroke(width = w * 0.014f))
             }
         }
         else -> Unit

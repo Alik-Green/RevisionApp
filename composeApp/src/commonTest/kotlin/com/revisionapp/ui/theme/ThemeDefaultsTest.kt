@@ -6,9 +6,9 @@ import kotlin.test.assertEquals
 
 class ThemeDefaultsTest {
     @Test
-    fun newAndUnconfiguredProfilesStartInLightMode() {
-        assertEquals(ThemeMode.LIGHT, SettingsUi.initial().themeMode)
-        assertEquals(ThemeMode.LIGHT, ThemeMode.fromStored(null))
+    fun newAndUnconfiguredProfilesFollowTheSystemAppearance() {
+        assertEquals(ThemeMode.SYSTEM, SettingsUi.initial().themeMode)
+        assertEquals(ThemeMode.SYSTEM, ThemeMode.fromStored(null))
     }
 
     @Test
