@@ -288,7 +288,7 @@ private fun typographyWithFontFamily(fontFamily: FontFamily, darkMode: Boolean):
         default.copy(
             fontFamily = fontFamily,
             fontWeight = if (darkMode && heavy) FontWeight.Bold else default.fontWeight,
-            fontSize = default.fontSize + if (darkMode && small) 1.sp else 0.sp,
+            fontSize = if (darkMode && small) (default.fontSize.value + 1f).sp else default.fontSize,
         )
     return Typography(
         displayLarge = style(defaults.displayLarge, heavy = true),
