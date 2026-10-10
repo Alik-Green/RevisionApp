@@ -18,13 +18,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.progression.AvatarPart
@@ -41,11 +39,17 @@ import com.revisionapp.domain.progression.AvatarPartCatalog
 import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** Avatar editor lives under Profile; sizing and positioning are always free. */
 @Composable
@@ -68,13 +72,13 @@ fun CharacterCustomizationScreen(state: AppState) {
             onBack = { state.back() },
         )
         if (!ready) {
-            Text("Loading your character…", modifier = Modifier.padding(20.dp))
+            Text("Loading your character…", modifier = Modifier.padding(appInset(20.dp)))
             return@Column
         }
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
+                .padding(horizontal = appInset(16.dp), vertical = appInset(8.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(15.dp)),
         ) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -82,12 +86,12 @@ fun CharacterCustomizationScreen(state: AppState) {
                 color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Row(
-                    Modifier.padding(16.dp),
+                    Modifier.padding(appInset(16.dp)),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(appInset(14.dp)),
                 ) {
                     CharacterAvatar(appearance, size = 122.dp, celebratory = true)
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(5.dp))) {
                         SectionLabel("YOUR AVATAR")
                         Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
@@ -103,7 +107,7 @@ fun CharacterCustomizationScreen(state: AppState) {
             SectionLabel("CHOOSE A FEATURE")
             Row(
                 Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
             ) {
                 for (area in AvatarFeatureArea.entries) {
                     ToggleChip(
@@ -118,7 +122,7 @@ fun CharacterCustomizationScreen(state: AppState) {
             }
             Row(
                 Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
             ) {
                 for (control in controlsForArea(selectedArea)) {
                     ToggleChip(
@@ -142,7 +146,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                     shape = appCornerShape(19.dp),
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                 ) {
-                    Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Column(Modifier.padding(appInset(14.dp)), verticalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 SectionLabel("${selectedCategory.icon} ${selectedCategory.title.uppercase()}")
@@ -156,7 +160,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                         }
                         Row(
                             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                            horizontalArrangement = Arrangement.spacedBy(9.dp),
+                            horizontalArrangement = Arrangement.spacedBy(appInset(9.dp)),
                         ) {
                             for (part in categoryParts) {
                                 val owned = part.id in progress.ownedAvatarPartIds
@@ -187,7 +191,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 OutlinedButton(
                     onClick = { save(CharacterAppearance()) },
                     modifier = Modifier.weight(1f),
@@ -209,22 +213,28 @@ private fun AvatarOptionTile(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
-    val outline = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val outline = if (selected && isDark) MaterialTheme.colorScheme.tertiary
+    else if (selected) MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.outlineVariant
     Surface(
         modifier = Modifier
             .width(104.dp)
             .clickable(onClick = onClick),
         shape = appCornerShape(15.dp),
-        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
+        color = if (selected && isDark) MaterialTheme.colorScheme.tertiaryContainer
+        else if (selected) MaterialTheme.colorScheme.secondaryContainer
+        else MaterialTheme.colorScheme.surface,
         border = BorderStroke(if (selected) 2.dp else 1.dp, outline),
+        shadowElevation = if (isDark && selected) 5.dp else if (isDark) 2.dp else 0.dp,
     ) {
         Column(
-            Modifier.padding(horizontal = 8.dp, vertical = 10.dp),
+            Modifier.padding(horizontal = appInset(8.dp), vertical = appInset(10.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
         ) {
             AvatarPartSwatch(part)
-            Text(part.name, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold)
+            Text(part.name, style = MaterialTheme.typography.labelMedium, fontWeight = appHeadingWeight())
             Text(
                 when {
                     selected -> "EQUIPPED"
@@ -232,7 +242,11 @@ private fun AvatarOptionTile(
                     else -> "🔒 ${part.costCoins}"
                 },
                 style = MaterialTheme.typography.labelSmall,
-                color = if (owned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = when {
+                    owned -> MaterialTheme.colorScheme.primary
+                    isDark -> ExtendedTheme.colors.reward
+                    else -> MaterialTheme.colorScheme.onSurfaceVariant
+                },
             )
         }
     }
@@ -297,7 +311,7 @@ private fun ShapeControls(
         shape = appCornerShape(19.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
-        Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+        Column(Modifier.padding(appInset(15.dp)), verticalArrangement = Arrangement.spacedBy(appInset(7.dp))) {
             SectionLabel(if (category == AvatarPartCategory.SKIN_TONE) "FREE FACE SHAPE" else "FREE SHAPE CONTROLS")
             Text(
                 if (category == AvatarPartCategory.SKIN_TONE) {
@@ -309,7 +323,7 @@ private fun ShapeControls(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             for (control in controls) {
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(control.label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
                         Text(

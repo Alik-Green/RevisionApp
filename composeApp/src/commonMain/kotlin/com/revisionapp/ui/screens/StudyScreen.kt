@@ -21,13 +21,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,7 +45,10 @@ import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
@@ -61,6 +61,7 @@ import com.revisionapp.ui.session.SessionState
 import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appInset
 import com.revisionapp.ui.theme.verdictColour
 import com.revisionapp.ui.theme.verdictContainerColour
 import com.revisionapp.ui.theme.verdictOnContainerColour
@@ -105,14 +106,14 @@ private fun StudySetup(state: AppState) {
             },
         )
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
+            Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(14.dp)),
         ) {
             DueCard(due, scoped.size)
             ScopeRow(state, snapshot)
 
             SectionLabel("Session size")
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 for (size in AppState.SessionSizes) {
                     ToggleChip(
                         label = AppState.sessionSizeLabel(size),
@@ -142,8 +143,8 @@ private fun DueCard(due: Int, inScope: Int) {
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer, appCornerShape(14.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+            .padding(appInset(16.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
     ) {
         Text(
             due.toString() + " due today",
@@ -180,9 +181,9 @@ private fun ScopeRow(state: AppState, snapshot: LibrarySnapshot) {
     val tags = snapshot.tags.filter { it.id in filter.tagIds }.joinToString(", ") { it.name }
 
     Row(
-        Modifier.fillMaxWidth().clickable { state.switchTab(Route.Library) }.padding(vertical = 6.dp),
+        Modifier.fillMaxWidth().clickable { state.switchTab(Route.Library) }.padding(vertical = appInset(6.dp)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(appInset(10.dp)),
     ) {
         Column(Modifier.weight(1f)) {
             SectionLabel("Scope")
@@ -205,8 +206,8 @@ private fun Asking(state: AppState, asking: SessionState.Asking) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         SessionHeader(state, asking.position, asking.total, item)
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             Prompt(state, item)
             when (val question = item.question) {
@@ -233,7 +234,7 @@ private fun SessionHeader(state: AppState, position: Int, total: Int, item: Sess
                 Box(
                     Modifier
                         .background(MaterialTheme.colorScheme.tertiary, appCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 3.dp),
+                        .padding(horizontal = appInset(8.dp), vertical = appInset(3.dp)),
                 ) {
                     Text(
                         "NEW",
@@ -267,10 +268,10 @@ private fun FlashcardInput(state: AppState, item: SessionCard, draft: AnswerDraf
             modifier = Modifier.fillMaxWidth(),
         ) { Text("Show answer") }
 
-        AnswerDraft.Revealed -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        AnswerDraft.Revealed -> Column(verticalArrangement = Arrangement.spacedBy(appInset(12.dp))) {
             ModelAnswer(state, item)
             SectionLabel("How well did you know it?")
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 RatingButton("Again", Modifier.weight(1f)) { state.onSessionEvent(SessionEvent.Rate(Rating.AGAIN)) }
                 RatingButton("Hard", Modifier.weight(1f)) { state.onSessionEvent(SessionEvent.Rate(Rating.HARD)) }
                 RatingButton("Good", Modifier.weight(1f)) { state.onSessionEvent(SessionEvent.Rate(Rating.GOOD)) }
@@ -293,7 +294,7 @@ private fun RatingButton(label: String, modifier: Modifier, onClick: () -> Unit)
 @Composable
 private fun TypedInput(state: AppState, draft: AnswerDraft) {
     val typed = draft as? AnswerDraft.Text ?: AnswerDraft.Text("")
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
         OutlinedTextField(
             value = typed.value,
             onValueChange = { state.onSessionEvent(SessionEvent.Type(it)) },
@@ -310,7 +311,7 @@ private fun TypedInput(state: AppState, draft: AnswerDraft) {
 
 @Composable
 private fun McqInput(state: AppState, question: Question.MultipleChoice) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         SectionLabel("Choose one")
         for (option in question.options) {
             Box(
@@ -318,7 +319,7 @@ private fun McqInput(state: AppState, question: Question.MultipleChoice) {
                     .fillMaxWidth()
                     .border(1.dp, MaterialTheme.colorScheme.outline, appCornerShape(10.dp))
                     .clickable { state.onSessionEvent(SessionEvent.ChooseOption(option.index)) }
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                    .padding(horizontal = appInset(14.dp), vertical = appInset(12.dp)),
             ) {
                 Row {
                     Text(
@@ -340,8 +341,8 @@ private fun Reviewing(state: AppState, reviewing: SessionState.Reviewing) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         SessionHeader(state, reviewing.position, reviewing.total, item)
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             Prompt(state, item)
             val question = item.question
@@ -392,7 +393,7 @@ private fun ModelAnswer(state: AppState, item: SessionCard) {
 @Composable
 private fun McqReview(question: Question.MultipleChoice, verdict: Verdict) {
     val selection = verdict.reason as? VerdictReason.McqSelection
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
         SectionLabel("The options")
         for (option in question.options) {
             val chosen = selection?.selectedIndex == option.index
@@ -415,9 +416,9 @@ private fun McqReview(question: Question.MultipleChoice, verdict: Verdict) {
                 Modifier
                     .fillMaxWidth()
                     .background(container, appCornerShape(10.dp))
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                    .padding(horizontal = appInset(12.dp), vertical = appInset(10.dp)),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
             ) {
                 Text(
                     (option.index + 1).toString() + ".",
@@ -448,9 +449,9 @@ private fun VerdictPanel(verdict: Verdict) {
             .fillMaxWidth()
             .background(colour.copy(alpha = 0.12f), appCornerShape(10.dp))
             .border(1.dp, colour, appCornerShape(10.dp))
-            .padding(14.dp),
+            .padding(appInset(14.dp)),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
             Text(
                 VerdictPresentation.label(verdict.kind) + "  -  " + VerdictPresentation.percent(verdict.score),
                 style = MaterialTheme.typography.titleMedium,
@@ -500,7 +501,7 @@ private fun NextActions(state: AppState, item: SessionCard, verdict: Verdict) {
 
 @Composable
 private fun OverrideRow(state: AppState) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         OutlinedButton(
             onClick = { state.onSessionEvent(SessionEvent.Override(true)) },
             modifier = Modifier.weight(1f),
@@ -520,17 +521,17 @@ private fun Finished(state: AppState, finished: SessionState.Finished) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         AppHeader(title = "Lesson complete!", subtitle = summary.reviewed.toString() + " card(s) reviewed")
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             if (summary.streakDays > 0) {
                 StreakCelebration(summary)
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 StatTile("Reviewed", summary.reviewed.toString(), Modifier.weight(1f))
                 StatTile("Accuracy", VerdictPresentation.percent(summary.accuracy), Modifier.weight(1f))
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 StatTile("Correct", summary.correct.toString(), Modifier.weight(1f))
                 StatTile("Partly right", summary.partial.toString(), Modifier.weight(1f))
                 StatTile("Incorrect", summary.incorrect.toString(), Modifier.weight(1f))
@@ -572,12 +573,12 @@ private fun StreakCelebration(summary: SessionSummary) {
             Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.tertiaryContainer, appCornerShape(18.dp))
-                .padding(16.dp),
+                .padding(appInset(16.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             Text("🔥", style = MaterialTheme.typography.headlineLarge)
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(appInset(4.dp))) {
                 SectionLabel("STREAK CELEBRATION")
                 Text(
                     summary.streakDays.toString() + if (summary.streakDays == 1) " day" else " days",
@@ -602,9 +603,9 @@ private fun Panel(content: @Composable () -> Unit) {
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f), appCornerShape(12.dp))
-            .padding(14.dp),
+            .padding(appInset(14.dp)),
     ) {
-        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
             content()
         }
     }

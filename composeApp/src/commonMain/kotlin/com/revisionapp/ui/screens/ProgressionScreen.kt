@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.progression.AchievementProgress
@@ -35,11 +35,15 @@ import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** Daily and weekly learning goals, earned coins, streaks and a compact badge preview. */
 @Composable
@@ -53,12 +57,12 @@ fun ProgressionScreen(state: AppState) {
     Column(Modifier.fillMaxSize()) {
         AppHeader(title = "Progression", subtitle = "Practice, mastery and momentum")
         if (!ready) {
-            EmptyMessage("Loading your progress…", Modifier.padding(horizontal = 20.dp))
+            EmptyMessage("Loading your progress…", Modifier.padding(horizontal = appInset(20.dp)))
             return@Column
         }
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(16.dp)),
         ) {
             CoinsCard(progress.coinBalanceLabel, progress.characterAppearance)
             StreakCard(progress, state)
@@ -94,18 +98,20 @@ fun ProgressionScreen(state: AppState) {
 
 @Composable
 private fun CoinsCard(balance: String, appearance: CharacterAppearance) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(22.dp),
-        color = MaterialTheme.colorScheme.tertiaryContainer,
+        color = if (isDark) ExtendedTheme.colors.rewardContainer else MaterialTheme.colorScheme.tertiaryContainer,
+        border = if (isDark) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
     ) {
         Row(
-            Modifier.padding(16.dp),
+            Modifier.padding(appInset(16.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(13.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(13.dp)),
         ) {
             CharacterAvatar(appearance, size = 68.dp)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(3.dp))) {
                 SectionLabel("YOUR LEARNING COINS")
                 AnimatedContent(targetState = balance, label = "coin-balance") { shownBalance ->
                     Text("$shownBalance 🪙", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
@@ -120,24 +126,26 @@ private fun CoinsCard(balance: String, appearance: CharacterAppearance) {
 private fun AchievementSummaryCard(achievements: List<AchievementProgress>, onOpen: () -> Unit) {
     val unlocked = achievements.count { it.isUnlocked }
     val next = achievements.firstOrNull { !it.isUnlocked }
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.secondaryContainer,
+        color = if (isDark) ExtendedTheme.colors.rewardContainer else MaterialTheme.colorScheme.secondaryContainer,
+        border = if (isDark) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
     ) {
         Row(
-            Modifier.padding(16.dp),
+            Modifier.padding(appInset(16.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             Text("🏅", style = MaterialTheme.typography.headlineMedium)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(3.dp))) {
                 SectionLabel("MASTERY BADGES")
                 Text("$unlocked / ${achievements.size} unlocked", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
                     next?.let { "Next up: ${it.title}" } ?: "Every badge earned—fantastic work!",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = if (isDark) ExtendedTheme.colors.onRewardContainer else MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
             Button(onClick = onOpen) { Text("View") }
@@ -149,13 +157,15 @@ private fun AchievementSummaryCard(achievements: List<AchievementProgress>, onOp
 private fun StreakCard(progress: LearnerProgress, state: AppState) {
     val recovery = progress.streakRecovery
     val cost = recovery?.let { ProgressionRules.streakRecoveryCost(it.missedDays) }
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.primaryContainer,
+        color = if (isDark) ExtendedTheme.colors.streakContainer else MaterialTheme.colorScheme.primaryContainer,
+        border = if (isDark) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
     ) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.padding(appInset(18.dp)), verticalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(12.dp))) {
                 Text("🔥", style = MaterialTheme.typography.headlineLarge)
                 Column(Modifier.weight(1f)) {
                     SectionLabel("CURRENT STREAK")
@@ -166,7 +176,11 @@ private fun StreakCard(progress: LearnerProgress, state: AppState) {
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("BEST", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    Text(
+                        "BEST",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (isDark) ExtendedTheme.colors.onStreakContainer else MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
                     Text(progress.bestStreakDays.toString(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 }
             }
@@ -199,36 +213,49 @@ private fun StreakCard(progress: LearnerProgress, state: AppState) {
 
 @Composable
 private fun QuestCard(quest: DailyQuestProgress, cadence: String) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             1.dp,
-            if (quest.isComplete) {
+            if (quest.isComplete && isDark) {
+                ExtendedTheme.colors.correct
+            } else if (quest.isComplete) {
                 MaterialTheme.colorScheme.tertiary.copy(alpha = 0.65f)
             } else {
                 MaterialTheme.colorScheme.outlineVariant
             },
         ),
+        shadowElevation = if (isDark) 2.dp else 0.dp,
         tonalElevation = 1.dp,
     ) {
-        Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(Modifier.padding(appInset(15.dp)), verticalArrangement = Arrangement.spacedBy(appInset(9.dp))) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 Box(
-                    Modifier.background(MaterialTheme.colorScheme.secondaryContainer, CircleShape).padding(10.dp),
+                    Modifier.background(MaterialTheme.colorScheme.secondaryContainer, CircleShape).padding(appInset(10.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(if (cadence == "TODAY") "☀️" else "🗓️", style = MaterialTheme.typography.titleSmall)
                 }
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(quest.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
+                    Text(quest.title, style = MaterialTheme.typography.titleSmall, fontWeight = appHeadingWeight())
                     Text(quest.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("+${quest.rewardCoins} 🪙", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                    Text(
+                        "+${quest.rewardCoins} 🪙",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isDark) ExtendedTheme.colors.reward else MaterialTheme.colorScheme.onSurface,
+                    )
                     if (quest.isClaimed) {
-                        Text("Earned", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.tertiary)
+                        Text(
+                            "Earned",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isDark) ExtendedTheme.colors.correct else MaterialTheme.colorScheme.tertiary,
+                        )
                     }
                 }
             }

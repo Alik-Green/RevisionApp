@@ -26,14 +26,12 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -57,10 +55,12 @@ import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.theme.DarkAccentPalette
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appInset
 import kotlin.math.sin
 
 /** Course-first study home with a compact switch/info card and a centered topic path. */
@@ -81,13 +81,13 @@ fun CourseStudyScreen(state: AppState) {
         )
 
         if (loading || !progressionReady) {
-            EmptyMessage("Getting your course path ready…", Modifier.padding(horizontal = 20.dp))
+            EmptyMessage("Getting your course path ready…", Modifier.padding(horizontal = appInset(20.dp)))
             return@Column
         }
         if (course == null) {
             Column(
-                Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                Modifier.fillMaxSize().padding(horizontal = appInset(20.dp), vertical = appInset(18.dp)),
+                verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Surface(
@@ -96,7 +96,7 @@ fun CourseStudyScreen(state: AppState) {
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
-                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Column(Modifier.padding(appInset(18.dp)), verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
                         SectionLabel("ACTIVE COURSE")
                         Text("No course downloaded", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         Text(
@@ -117,8 +117,8 @@ fun CourseStudyScreen(state: AppState) {
         val completedCount = orderedLessons.count { state.isCourseLessonComplete(course.id, it.id) }
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 9.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
+                .padding(horizontal = appInset(16.dp), vertical = appInset(9.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(14.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ActiveCourseCard(
@@ -168,6 +168,7 @@ private fun ActiveCourseCard(
     onInfo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = modifier,
         shape = appCornerShape(18.dp),
@@ -175,9 +176,9 @@ private fun ActiveCourseCard(
         border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.42f)),
     ) {
         Row(
-            Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+            Modifier.padding(horizontal = appInset(13.dp), vertical = appInset(10.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(11.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(11.dp)),
         ) {
             Surface(
                 modifier = Modifier.size(44.dp),
@@ -188,7 +189,7 @@ private fun ActiveCourseCard(
                     Text("📘", style = MaterialTheme.typography.titleLarge)
                 }
             }
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
                 SectionLabel("ACTIVE COURSE")
                 Text(course.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                 Text(
@@ -198,7 +199,11 @@ private fun ActiveCourseCard(
                 )
             }
             IconButton(onClick = onInfo) {
-                Icon(Icons.Filled.Info, contentDescription = "Course details and switching")
+                Icon(
+                    Icons.Filled.Info,
+                    contentDescription = "Course details and switching",
+                    tint = if (isDark) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }
@@ -218,7 +223,7 @@ private fun CourseInfoDialog(
         text = {
             Column(
                 Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(appInset(10.dp)),
             ) {
                 Text(course.description, style = MaterialTheme.typography.bodyMedium)
                 Text(
@@ -262,6 +267,11 @@ private fun CoursePathSection(
     val sectionLessons = section.lessonIds.mapNotNull(course::lesson)
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val topicColour = coursePathColour(sectionIndex, isDark)
+    val topicTextColour = if (isDark && topicColour == DarkAccentPalette.HumpbackBlue) {
+        DarkAccentPalette.PrimaryText
+    } else {
+        topicColour
+    }
     val topicLabel = section.topicLabel.ifBlank { section.title }
 
     Surface(
@@ -271,8 +281,8 @@ private fun CoursePathSection(
         border = BorderStroke(1.dp, topicColour.copy(alpha = if (isDark) 0.48f else 0.38f)),
     ) {
         Column(
-            Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            Modifier.padding(horizontal = appInset(16.dp), vertical = appInset(14.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(4.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (section.title.isNotBlank() && section.title != topicLabel) {
@@ -282,7 +292,7 @@ private fun CoursePathSection(
                 topicLabel,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = topicColour,
+                color = topicTextColour,
             )
             Spacer(Modifier.height(5.dp))
             CoursePathNodes(
@@ -311,8 +321,8 @@ private fun CoursePathNodes(
     isDark: Boolean,
 ) {
     val nodeSize = 56.dp
-    val nodeSpacing = 84.dp
-    val topInset = 8.dp
+    val nodeSpacing = if (isDark) 78.dp else 84.dp
+    val topInset = if (isDark) 6.dp else 8.dp
     val pathHeight = if (sectionLessons.isEmpty()) {
         12.dp
     } else {
@@ -324,7 +334,9 @@ private fun CoursePathNodes(
         val offsets = remember(sectionLessons.size, maxWidth) {
             sectionLessons.indices.map { index -> amplitude * sin(index.toDouble() * 1.32).toFloat() }
         }
-        val nodeContentColour = if (isDark) Color(0xFF12201A) else Color.White
+        val completedPathSteps = sectionLessons.dropLast(1).map { lesson ->
+            state.isCourseLessonComplete(course.id, lesson.id)
+        }
 
         Canvas(Modifier.matchParentSize()) {
             if (sectionLessons.size > 1) {
@@ -332,22 +344,26 @@ private fun CoursePathNodes(
                 val step = nodeSpacing.toPx()
                 val firstY = topInset.toPx() + nodeRadius
                 fun x(index: Int): Float = size.width / 2f + offsets[index].toPx()
-                val line = Path().apply {
-                    moveTo(x(0), firstY)
-                    for (index in 0 until sectionLessons.lastIndex) {
-                        val startX = x(index)
-                        val endX = x(index + 1)
-                        val startY = firstY + step * index.toFloat()
-                        val endY = firstY + step * (index + 1).toFloat()
-                        val middleY = (startY + endY) / 2f
+                for (index in 0 until sectionLessons.lastIndex) {
+                    val startX = x(index)
+                    val endX = x(index + 1)
+                    val startY = firstY + step * index.toFloat()
+                    val endY = firstY + step * (index + 1).toFloat()
+                    val middleY = (startY + endY) / 2f
+                    val segment = Path().apply {
+                        moveTo(startX, startY)
                         cubicTo(startX, middleY, endX, middleY, endX, endY)
                     }
+                    drawPath(
+                        path = segment,
+                        color = if (isDark && completedPathSteps[index]) {
+                            DarkAccentPalette.FeatherGreen
+                        } else {
+                            topicColour.copy(alpha = if (isDark) 0.62f else 0.48f)
+                        },
+                        style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round),
+                    )
                 }
-                drawPath(
-                    path = line,
-                    color = topicColour.copy(alpha = if (isDark) 0.62f else 0.48f),
-                    style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round),
-                )
             }
         }
 
@@ -366,15 +382,41 @@ private fun CoursePathNodes(
                 completed -> "Completed lesson ${index + 1} in $topicLabel"
                 else -> "Lesson ${index + 1} in $topicLabel"
             }
+            val nodeAccent = when {
+                isDark && (current || completed) -> DarkAccentPalette.FeatherGreen
+                isDark && review -> DarkAccentPalette.HumpbackBlue
+                else -> topicColour
+            }
             val fillColour = if (unlocked) {
-                topicColour
+                nodeAccent
             } else {
                 topicColour.copy(alpha = if (isDark) 0.25f else 0.18f)
             }
+            val nodeContentColour = when {
+                !isDark -> Color.White
+                nodeAccent == DarkAccentPalette.HumpbackBlue -> DarkAccentPalette.PrimaryText
+                else -> DarkAccentPalette.Background
+            }
             val borderColour = when {
-                current -> nodeContentColour
+                current -> DarkAccentPalette.MaskGreen.takeIf { isDark } ?: nodeContentColour
+                completed && isDark -> DarkAccentPalette.FeatherGreen
+                review && isDark -> DarkAccentPalette.MacawBlue
                 unlocked -> topicColour
                 else -> MaterialTheme.colorScheme.outlineVariant
+            }
+            val nodeBorderWidth = when {
+                current -> 3.dp
+                completed && isDark -> 2.dp
+                review && isDark -> 2.dp
+                else -> 1.dp
+            }
+            val nodeDepth = when {
+                !isDark && current -> 5.dp
+                !isDark -> 1.dp
+                !unlocked -> 0.dp
+                current -> 8.dp
+                completed -> 6.dp
+                else -> 4.dp
             }
 
             Surface(
@@ -388,8 +430,8 @@ private fun CoursePathNodes(
                     },
                 shape = CircleShape,
                 color = fillColour,
-                border = BorderStroke(if (current) 3.dp else 1.dp, borderColour),
-                shadowElevation = if (current) 5.dp else 1.dp,
+                border = BorderStroke(nodeBorderWidth, borderColour),
+                shadowElevation = nodeDepth,
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     when {
@@ -431,11 +473,12 @@ private val LIGHT_COURSE_PATH_COLOURS = listOf(
 )
 
 private val DARK_COURSE_PATH_COLOURS = listOf(
-    DarkAccentPalette.Leaf,
-    DarkAccentPalette.Aqua,
-    DarkAccentPalette.Sky,
-    DarkAccentPalette.Amber,
-    DarkAccentPalette.Coral,
+    DarkAccentPalette.MaskGreen,
+    DarkAccentPalette.MacawBlue,
+    DarkAccentPalette.HumpbackBlue,
+    DarkAccentPalette.BeeYellow,
+    DarkAccentPalette.FoxOrange,
+    DarkAccentPalette.BeetlePurple,
 )
 
 private fun coursePathColour(sectionIndex: Int, isDark: Boolean): Color {

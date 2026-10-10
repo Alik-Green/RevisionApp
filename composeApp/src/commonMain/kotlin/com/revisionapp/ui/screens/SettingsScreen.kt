@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +32,10 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.SettingsUi
 import com.revisionapp.ui.SyncUiState
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.MetaRow
@@ -43,9 +43,10 @@ import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.ThemeMode
+import com.revisionapp.ui.theme.appInset
+import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Instant
 
 /**
  * Content sync status and controls, the retention setting and where the database
@@ -72,12 +73,12 @@ fun SettingsScreen(state: AppState) {
             },
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             SectionLabel("Appearance")
             Text("Light or dark", style = MaterialTheme.typography.bodyMedium)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 for (mode in ThemeMode.entries) {
                     ToggleChip(
                         label = when (mode) {
@@ -129,7 +130,7 @@ fun SettingsScreen(state: AppState) {
                 onValueChange = { urlDraft.value = it },
                 hint = ContentSync.DEFAULT_BASE_URL,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 Button(onClick = { state.setBaseUrl(urlDraft.value) }) { Text("Save source") }
                 TextButton(
                     onClick = {
@@ -152,7 +153,7 @@ fun SettingsScreen(state: AppState) {
                 EmptyMessage("No legacy packs installed. Tap \"Sync legacy packs\" to fetch them.")
             }
             for (pack in settings.packs) {
-                Column(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
+                Column(Modifier.fillMaxWidth().padding(vertical = appInset(3.dp))) {
                     Text(
                         pack.name + "  v" + pack.version.toString(),
                         style = MaterialTheme.typography.bodyMedium,
@@ -263,7 +264,7 @@ private fun SyncStatus(sync: SyncUiState) {
 
         SyncUiState.Running -> EmptyMessage("Checking the legacy content branch for updates...")
 
-        is SyncUiState.Done -> Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        is SyncUiState.Done -> Column(verticalArrangement = Arrangement.spacedBy(appInset(4.dp))) {
             Text("Last sync: " + formatTime(sync.at), style = MaterialTheme.typography.bodyMedium)
             Text(
                 "Updated " + sync.report.updated.size + ", unchanged " + sync.report.unchanged.size +
@@ -280,7 +281,7 @@ private fun SyncStatus(sync: SyncUiState) {
             }
         }
 
-        is SyncUiState.Failed -> Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        is SyncUiState.Failed -> Column(verticalArrangement = Arrangement.spacedBy(appInset(4.dp))) {
             Text("Last sync failed: " + formatTime(sync.at), style = MaterialTheme.typography.bodyMedium)
             Text(
                 sync.error.describe(),

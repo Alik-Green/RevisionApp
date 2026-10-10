@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,11 +28,15 @@ import com.revisionapp.domain.model.TagId
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.appInset
 
 private const val INDENT_SPACES = "    "
 
@@ -67,8 +68,8 @@ fun TopicEditorScreen(state: AppState, topicId: TopicId?, presetParentId: TopicI
             onBack = { state.back() },
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             if (builtIn) {
                 EmptyMessage(
@@ -93,7 +94,7 @@ fun TopicEditorScreen(state: AppState, topicId: TopicId?, presetParentId: TopicI
                 )
             }
             if (!builtIn) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                     Button(
                         onClick = {
                             state.saveTopic(topicId, name.value, parentId.value)
@@ -194,8 +195,8 @@ fun TagEditorScreen(state: AppState, tagId: TagId?) {
             onBack = { state.back() },
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             if (builtIn) {
                 EmptyMessage(
@@ -211,7 +212,7 @@ fun TagEditorScreen(state: AppState, tagId: TagId?) {
                 hint = "OCR",
             )
             SectionLabel("Group")
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
                 for (known in TagGroup.WellKnown) {
                     ToggleChip(
                         label = known.value,
@@ -233,7 +234,7 @@ fun TagEditorScreen(state: AppState, tagId: TagId?) {
                     "\"board\" and \"subject\" should be separate groups. $usedBy card(s) use this tag.",
             )
             if (!builtIn) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                     Button(
                         onClick = {
                             state.saveTag(tagId, name.value, group.value)

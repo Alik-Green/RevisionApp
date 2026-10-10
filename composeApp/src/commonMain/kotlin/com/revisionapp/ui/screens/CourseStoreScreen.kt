@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,17 +26,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseFileReference
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appInset
 
 /** Primary Store tab with separate course-download and avatar-cosmetic shelves. */
 @Composable
@@ -68,8 +70,8 @@ fun CourseStoreScreen(state: AppState) {
             },
         )
         Row(
-            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             ToggleChip(
                 label = "📚 Courses",
@@ -114,8 +116,8 @@ private fun CourseStoreContent(
 
     Column(
         modifier.fillMaxSize().verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(11.dp),
+            .padding(horizontal = appInset(16.dp), vertical = appInset(12.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(11.dp)),
     ) {
         SectionLabel("AVAILABLE COURSES")
         Text(
@@ -172,23 +174,31 @@ private fun CourseStoreRow(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
         shape = appCornerShape(19.dp),
-        color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
+        color = when {
+            selected && isDark -> MaterialTheme.colorScheme.tertiaryContainer
+            selected -> MaterialTheme.colorScheme.secondaryContainer
+            else -> MaterialTheme.colorScheme.surface
+        },
         border = BorderStroke(
             if (selected) 2.dp else 1.dp,
-            if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant,
+            if (selected && isDark) MaterialTheme.colorScheme.tertiary
+            else if (selected) MaterialTheme.colorScheme.secondary
+            else MaterialTheme.colorScheme.outlineVariant,
         ),
+        shadowElevation = if (isDark && selected) 6.dp else if (isDark) 3.dp else 0.dp,
         tonalElevation = 1.dp,
     ) {
         Row(
-            Modifier.padding(14.dp),
+            Modifier.padding(appInset(14.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(13.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(13.dp)),
         ) {
             CourseGlyph(reference, size = 58.dp)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(3.dp))) {
                 Text(reference.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
                     if (downloadedCourse != null) {
@@ -200,7 +210,11 @@ private fun CourseStoreRow(
                     color = if (downloadedCourse != null) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(if (selected) "⌃" else "›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
+            Text(
+                if (selected) "⌃" else "›",
+                style = MaterialTheme.typography.headlineSmall,
+                color = if (selected && isDark) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
@@ -215,17 +229,19 @@ private fun CourseDetailCard(
     onUpdate: () -> Unit,
     onOpen: () -> Unit,
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(22.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
+        shadowElevation = if (isDark) 4.dp else 0.dp,
         tonalElevation = 2.dp,
     ) {
-        Column(Modifier.padding(17.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.padding(appInset(17.dp)), verticalArrangement = Arrangement.spacedBy(appInset(11.dp))) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(12.dp))) {
                 CourseGlyph(reference, size = 64.dp)
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
                     SectionLabel(if (downloadedCourse == null) "COURSE DETAILS" else "DOWNLOADED COURSE")
                     Text(reference.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 }
@@ -253,7 +269,7 @@ private fun CourseDetailCard(
                     modifier = Modifier.fillMaxWidth(),
                 ) { Text(if (isDownloading) "Downloading…" else "Download course") }
             } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(appInset(9.dp))) {
                     Button(onClick = onOpen, modifier = Modifier.weight(1f)) { Text("Open course") }
                     OutlinedButton(
                         onClick = onUpdate,

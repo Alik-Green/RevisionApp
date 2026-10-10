@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.revisionapp.domain.check.VerdictKind
 import com.revisionapp.domain.srs.Rating
 import com.revisionapp.generated.resources.Res
@@ -65,58 +66,69 @@ val PlayfulLight: ColorScheme = lightColorScheme(
     scrim = Color(0xFF000000),
 )
 
-/** A five-colour dark-mode accent set: leaf, aqua, sky, amber, and coral. */
+/** The user's colour roles, kept together so every dark screen uses the same tokens. */
 object DarkAccentPalette {
-    val Leaf = Color(0xFFC4F27A)
-    val Aqua = Color(0xFF5AD9C4)
-    val Sky = Color(0xFF85B7FF)
-    val Amber = Color(0xFFF5C75E)
-    val Coral = Color(0xFFFF917C)
+    val FeatherGreen = Color(0xFF58CC02)
+    val MaskGreen = Color(0xFF89E219)
+    val MacawBlue = Color(0xFF1CB0F6)
+    val HumpbackBlue = Color(0xFF2B70C9)
+    val CardinalRed = Color(0xFFFF4B4B)
+    val BeeYellow = Color(0xFFFFC800)
+    val FoxOrange = Color(0xFFFF9600)
+    val BeetlePurple = Color(0xFFCE82FF)
+
+    val Background = Color(0xFF131F24)
+    val SecondaryBackground = Color(0xFF17272E)
+    val CardSurface = Color(0xFF202F36)
+    val SubtleBorder = Color(0xFF263941)
+    val StandardBorder = Color(0xFF37464F)
+    val PrimaryText = Color(0xFFF1F7FB)
+    val MutedText = Color(0xFFB7C7CF)
 }
 
-/** Deep, neutral-green surfaces keep the five bright accents intentional and readable. */
+/** Dark mode follows the supplied evergreen/slate neutrals and Duolingo-inspired roles. */
 val PlayfulDark: ColorScheme = darkColorScheme(
-    primary = DarkAccentPalette.Leaf,
-    onPrimary = Color(0xFF20300D),
-    primaryContainer = Color(0xFF2A3B1B),
-    onPrimaryContainer = Color(0xFFE5F6C9),
-    inversePrimary = Color(0xFF536E2A),
-    secondary = DarkAccentPalette.Aqua,
-    onSecondary = Color(0xFF07352D),
-    secondaryContainer = Color(0xFF173A33),
-    onSecondaryContainer = Color(0xFFC2F5E9),
-    tertiary = DarkAccentPalette.Sky,
-    onTertiary = Color(0xFF0E2B4C),
-    tertiaryContainer = Color(0xFF213753),
-    onTertiaryContainer = Color(0xFFD4E7FF),
-    background = Color(0xFF0A0D0B),
-    onBackground = Color(0xFFF1F6F2),
-    surface = Color(0xFF111613),
-    onSurface = Color(0xFFF1F6F2),
-    surfaceVariant = Color(0xFF242C27),
-    onSurfaceVariant = Color(0xFFB8C5BC),
-    surfaceContainerLowest = Color(0xFF080A08),
-    surfaceContainerLow = Color(0xFF141A16),
-    surfaceContainer = Color(0xFF1A221D),
-    surfaceContainerHigh = Color(0xFF222B25),
-    surfaceContainerHighest = Color(0xFF2B352E),
-    surfaceDim = Color(0xFF0A0D0B),
-    surfaceBright = Color(0xFF303B34),
-    inverseSurface = Color(0xFFE6EEE7),
-    inverseOnSurface = Color(0xFF1D241F),
-    error = DarkAccentPalette.Coral,
-    onError = Color(0xFF48150D),
-    errorContainer = Color(0xFF4A2922),
-    onErrorContainer = Color(0xFFFFDAD1),
-    outline = Color(0xFF87968A),
-    outlineVariant = Color(0xFF5B6A60),
+    primary = DarkAccentPalette.FeatherGreen,
+    onPrimary = DarkAccentPalette.Background,
+    primaryContainer = Color(0xFF263D20),
+    onPrimaryContainer = Color(0xFFDDF7D2),
+    inversePrimary = DarkAccentPalette.MaskGreen,
+    secondary = DarkAccentPalette.MacawBlue,
+    onSecondary = DarkAccentPalette.Background,
+    secondaryContainer = Color(0xFF173747),
+    onSecondaryContainer = Color(0xFFD4F2FF),
+    tertiary = DarkAccentPalette.HumpbackBlue,
+    onTertiary = DarkAccentPalette.PrimaryText,
+    tertiaryContainer = Color(0xFF1D3550),
+    onTertiaryContainer = Color(0xFFD9E9FF),
+    background = DarkAccentPalette.Background,
+    onBackground = DarkAccentPalette.PrimaryText,
+    surface = DarkAccentPalette.CardSurface,
+    onSurface = DarkAccentPalette.PrimaryText,
+    surfaceVariant = DarkAccentPalette.SubtleBorder,
+    onSurfaceVariant = DarkAccentPalette.MutedText,
+    surfaceContainerLowest = Color(0xFF101B20),
+    surfaceContainerLow = DarkAccentPalette.SecondaryBackground,
+    surfaceContainer = Color(0xFF1B2B32),
+    surfaceContainerHigh = DarkAccentPalette.CardSurface,
+    surfaceContainerHighest = DarkAccentPalette.SubtleBorder,
+    surfaceDim = DarkAccentPalette.Background,
+    surfaceBright = DarkAccentPalette.StandardBorder,
+    inverseSurface = DarkAccentPalette.PrimaryText,
+    inverseOnSurface = DarkAccentPalette.Background,
+    error = DarkAccentPalette.CardinalRed,
+    onError = DarkAccentPalette.Background,
+    errorContainer = Color(0xFF4A2730),
+    onErrorContainer = Color(0xFFFFE0E3),
+    outline = DarkAccentPalette.StandardBorder,
+    outlineVariant = DarkAccentPalette.SubtleBorder,
     scrim = Color(0xFF000000),
 )
 
 /**
- * Semantic colours Material 3 has no slot for: the three verdicts and their
- * containers. Kept out of [ColorScheme] because stuffing them into tertiary and
- * secondary would make "due soon" and "partly right" the same colour.
+ * Semantic colours Material 3 has no dedicated slot for: answer verdicts,
+ * rewards, streaks and premium/playful accents. Kept out of [ColorScheme] so
+ * course information, correct answers and reward feedback remain distinct.
  */
 data class ExtendedColors(
     val correct: Color,
@@ -131,6 +143,18 @@ data class ExtendedColors(
     val onIncorrect: Color,
     val incorrectContainer: Color,
     val onIncorrectContainer: Color,
+    val reward: Color,
+    val onReward: Color,
+    val rewardContainer: Color,
+    val onRewardContainer: Color,
+    val streak: Color,
+    val onStreak: Color,
+    val streakContainer: Color,
+    val onStreakContainer: Color,
+    val premium: Color,
+    val onPremium: Color,
+    val premiumContainer: Color,
+    val onPremiumContainer: Color,
 )
 
 val PlayfulExtendedLight = ExtendedColors(
@@ -146,21 +170,45 @@ val PlayfulExtendedLight = ExtendedColors(
     onIncorrect = Color(0xFFFFFFFF),
     incorrectContainer = Color(0xFFFFDAD9),
     onIncorrectContainer = Color(0xFF410006),
+    reward = Color(0xFF00685E),
+    onReward = Color(0xFFFFFFFF),
+    rewardContainer = Color(0xFFFFD9E8),
+    onRewardContainer = Color(0xFF3C0020),
+    streak = Color(0xFF4B35B5),
+    onStreak = Color(0xFFFFFFFF),
+    streakContainer = Color(0xFFE1D9FF),
+    onStreakContainer = Color(0xFF201157),
+    premium = Color(0xFF8E5BD9),
+    onPremium = Color(0xFFFFFFFF),
+    premiumContainer = Color(0xFFF1E9F3),
+    onPremiumContainer = Color(0xFF251D27),
 )
 
 val PlayfulExtendedDark = ExtendedColors(
-    correct = DarkAccentPalette.Leaf,
-    onCorrect = Color(0xFF20300D),
-    correctContainer = Color(0xFF2A3B1B),
-    onCorrectContainer = Color(0xFFE5F6C9),
-    partial = DarkAccentPalette.Amber,
-    onPartial = Color(0xFF30250A),
-    partialContainer = Color(0xFF3C3217),
-    onPartialContainer = Color(0xFFFFF0C1),
-    incorrect = DarkAccentPalette.Coral,
-    onIncorrect = Color(0xFF48150D),
-    incorrectContainer = Color(0xFF4A2922),
-    onIncorrectContainer = Color(0xFFFFDAD1),
+    correct = DarkAccentPalette.FeatherGreen,
+    onCorrect = DarkAccentPalette.Background,
+    correctContainer = Color(0xFF263D20),
+    onCorrectContainer = Color(0xFFDDF7D2),
+    partial = DarkAccentPalette.BeeYellow,
+    onPartial = DarkAccentPalette.Background,
+    partialContainer = Color(0xFF3F3419),
+    onPartialContainer = Color(0xFFFFEEB5),
+    incorrect = DarkAccentPalette.CardinalRed,
+    onIncorrect = DarkAccentPalette.Background,
+    incorrectContainer = Color(0xFF4A2730),
+    onIncorrectContainer = Color(0xFFFFE0E3),
+    reward = DarkAccentPalette.BeeYellow,
+    onReward = DarkAccentPalette.Background,
+    rewardContainer = Color(0xFF3F3419),
+    onRewardContainer = Color(0xFFFFEEB5),
+    streak = DarkAccentPalette.FoxOrange,
+    onStreak = DarkAccentPalette.Background,
+    streakContainer = Color(0xFF40291B),
+    onStreakContainer = Color(0xFFFFDFC5),
+    premium = DarkAccentPalette.BeetlePurple,
+    onPremium = DarkAccentPalette.Background,
+    premiumContainer = Color(0xFF34263F),
+    onPremiumContainer = Color(0xFFF0D9FF),
 )
 
 val LocalExtendedColors = staticCompositionLocalOf { PlayfulExtendedLight }
@@ -169,8 +217,8 @@ private val RevisionAppShapes = Shapes(
     extraSmall = RoundedCornerShape(6.dp),
     small = RoundedCornerShape(10.dp),
     medium = RoundedCornerShape(12.dp),
-    large = RoundedCornerShape(16.dp),
-    extraLarge = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(14.dp),
+    extraLarge = RoundedCornerShape(18.dp),
 )
 
 /** Keep each existing light-mode radius; unify larger dark-mode cards and controls. */
@@ -180,13 +228,27 @@ fun appCornerShape(lightRadius: Dp): Shape {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val radius = when {
         !isDark -> lightRadius
-        lightRadius > 16.dp -> 16.dp
+        lightRadius > 14.dp -> 14.dp
         lightRadius > 12.dp -> 12.dp
         lightRadius > 6.dp && lightRadius < 10.dp -> 10.dp
         else -> lightRadius
     }
     return RoundedCornerShape(radius)
 }
+
+/** Slightly tighter dark-mode insets; all existing light-mode spacing is preserved. */
+@Composable
+@ReadOnlyComposable
+fun appInset(lightInset: Dp): Dp {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    return if (isDark && lightInset >= 10.dp) (lightInset - 2.dp).coerceAtLeast(6.dp) else lightInset
+}
+
+/** Keep existing light weights, while making dark-mode headings more decisive. */
+@Composable
+@ReadOnlyComposable
+fun appHeadingWeight(lightWeight: FontWeight = FontWeight.SemiBold): FontWeight =
+    if (MaterialTheme.colorScheme.background.luminance() < 0.5f) FontWeight.Bold else lightWeight
 
 /** Applies the app colour palette and light/dark appearance across the whole app. */
 @Composable
@@ -208,7 +270,7 @@ fun RevisionAppTheme(
         Font(Res.font.nunito_variable, weight = FontWeight.Normal),
         Font(Res.font.nunito_variable, weight = FontWeight.Bold),
     )
-    val friendlyTypography = remember(friendlyFontFamily) { typographyWithFontFamily(friendlyFontFamily) }
+    val friendlyTypography = remember(friendlyFontFamily, dark) { typographyWithFontFamily(friendlyFontFamily, dark) }
 
     CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
         MaterialTheme(
@@ -220,24 +282,30 @@ fun RevisionAppTheme(
     }
 }
 
-private fun typographyWithFontFamily(fontFamily: FontFamily): Typography {
+private fun typographyWithFontFamily(fontFamily: FontFamily, darkMode: Boolean): Typography {
     val defaults = Typography()
+    fun style(default: androidx.compose.ui.text.TextStyle, heavy: Boolean = false, small: Boolean = false) =
+        default.copy(
+            fontFamily = fontFamily,
+            fontWeight = if (darkMode && heavy) FontWeight.Bold else default.fontWeight,
+            fontSize = default.fontSize + if (darkMode && small) 1.sp else 0.sp,
+        )
     return Typography(
-        displayLarge = defaults.displayLarge.copy(fontFamily = fontFamily),
-        displayMedium = defaults.displayMedium.copy(fontFamily = fontFamily),
-        displaySmall = defaults.displaySmall.copy(fontFamily = fontFamily),
-        headlineLarge = defaults.headlineLarge.copy(fontFamily = fontFamily),
-        headlineMedium = defaults.headlineMedium.copy(fontFamily = fontFamily),
-        headlineSmall = defaults.headlineSmall.copy(fontFamily = fontFamily),
-        titleLarge = defaults.titleLarge.copy(fontFamily = fontFamily),
-        titleMedium = defaults.titleMedium.copy(fontFamily = fontFamily),
-        titleSmall = defaults.titleSmall.copy(fontFamily = fontFamily),
-        bodyLarge = defaults.bodyLarge.copy(fontFamily = fontFamily),
-        bodyMedium = defaults.bodyMedium.copy(fontFamily = fontFamily),
-        bodySmall = defaults.bodySmall.copy(fontFamily = fontFamily),
-        labelLarge = defaults.labelLarge.copy(fontFamily = fontFamily),
-        labelMedium = defaults.labelMedium.copy(fontFamily = fontFamily),
-        labelSmall = defaults.labelSmall.copy(fontFamily = fontFamily),
+        displayLarge = style(defaults.displayLarge, heavy = true),
+        displayMedium = style(defaults.displayMedium, heavy = true),
+        displaySmall = style(defaults.displaySmall, heavy = true),
+        headlineLarge = style(defaults.headlineLarge, heavy = true),
+        headlineMedium = style(defaults.headlineMedium, heavy = true),
+        headlineSmall = style(defaults.headlineSmall, heavy = true),
+        titleLarge = style(defaults.titleLarge, heavy = true),
+        titleMedium = style(defaults.titleMedium, heavy = true),
+        titleSmall = style(defaults.titleSmall, heavy = true),
+        bodyLarge = style(defaults.bodyLarge),
+        bodyMedium = style(defaults.bodyMedium),
+        bodySmall = style(defaults.bodySmall, small = true),
+        labelLarge = style(defaults.labelLarge, heavy = true),
+        labelMedium = style(defaults.labelMedium, small = true),
+        labelSmall = style(defaults.labelSmall, small = true),
     )
 }
 
@@ -300,20 +368,21 @@ object SubjectAccents {
         Color(0xFFC2436B), Color(0xFF2F7D4F), Color(0xFFB06A12), Color(0xFF4A6FA5),
     )
     private val DarkBuiltInByName: Map<String, Color> = mapOf(
-        "physics" to DarkAccentPalette.Sky,
-        "maths" to DarkAccentPalette.Leaf,
-        "math" to DarkAccentPalette.Leaf,
-        "mathematics" to DarkAccentPalette.Leaf,
-        "further maths" to DarkAccentPalette.Leaf,
-        "computer science" to DarkAccentPalette.Aqua,
-        "tmua" to DarkAccentPalette.Coral,
+        "physics" to DarkAccentPalette.HumpbackBlue,
+        "maths" to DarkAccentPalette.FeatherGreen,
+        "math" to DarkAccentPalette.FeatherGreen,
+        "mathematics" to DarkAccentPalette.FeatherGreen,
+        "further maths" to DarkAccentPalette.FeatherGreen,
+        "computer science" to DarkAccentPalette.MacawBlue,
+        "tmua" to DarkAccentPalette.BeetlePurple,
     )
     private val DarkPalette: List<Color> = listOf(
-        DarkAccentPalette.Sky,
-        DarkAccentPalette.Leaf,
-        DarkAccentPalette.Aqua,
-        DarkAccentPalette.Amber,
-        DarkAccentPalette.Coral,
+        DarkAccentPalette.MaskGreen,
+        DarkAccentPalette.MacawBlue,
+        DarkAccentPalette.HumpbackBlue,
+        DarkAccentPalette.BeeYellow,
+        DarkAccentPalette.FoxOrange,
+        DarkAccentPalette.BeetlePurple,
     )
 
     fun forTopic(name: String, id: String, dark: Boolean = false): Color {

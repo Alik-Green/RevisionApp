@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Style
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,7 +49,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -78,12 +76,16 @@ import com.revisionapp.domain.usecase.TagGroupOptions
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.FeatureFlags
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.nav.WindowSizeClass
 import com.revisionapp.ui.theme.SubjectAccents
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /**
  * The Library: a file explorer over the topic tree, not a filter panel.
@@ -118,7 +120,7 @@ fun LibraryScreen(state: AppState) {
             if (!compact && filtersOpen.value) {
                 VerticalDivider(Modifier.fillMaxHeight())
                 Column(
-                    Modifier.width(320.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(16.dp),
+                    Modifier.width(320.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(appInset(16.dp)),
                 ) {
                     FilterPanel(state, snapshot, filter)
                 }
@@ -149,12 +151,12 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
     val children = if (node == null) snapshot.tree.roots else node.children
     val inSection = remember(snapshot, filter) { snapshot.filtered(filter).size }
 
-    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp), vertical = appInset(8.dp))) {
         // One compact row: where you are on the left, three small actions on the
         // right. The search field used to sit here permanently and dominated the
         // screen; it is now behind its icon, and New card / topic / tag live in one
         // overflow menu instead of a full-size plus.
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
             Column(Modifier.weight(1f)) {
                 BreadcrumbRow(state, snapshot)
                 Text(
@@ -242,7 +244,7 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
             OutlinedTextField(
                 value = query,
                 onValueChange = { state.setSearchQuery(it) },
-                modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = appInset(6.dp)),
                 singleLine = true,
                 placeholder = { Text("Search topics, tags and cards") },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
@@ -268,7 +270,7 @@ private fun BreadcrumbRow(state: AppState, snapshot: LibrarySnapshot) {
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
+        horizontalArrangement = Arrangement.spacedBy(appInset(3.dp)),
     ) {
         Text(
             "Library",
@@ -310,9 +312,9 @@ private fun BreadcrumbRow(state: AppState, snapshot: LibrarySnapshot) {
 private fun ActiveFilterRow(state: AppState, snapshot: LibrarySnapshot, filter: CardFilter) {
     if (filter.isUnfiltered) return
     FlowRow(
-        Modifier.fillMaxWidth().padding(top = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        Modifier.fillMaxWidth().padding(top = appInset(4.dp)),
+        horizontalArrangement = Arrangement.spacedBy(appInset(6.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
     ) {
         for (tagId in filter.tagIds) {
             val tag = snapshot.tags.firstOrNull { it.id == tagId }
@@ -371,11 +373,11 @@ private fun LocationView(state: AppState, snapshot: LibrarySnapshot, filter: Car
 
     LazyColumn(
         Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        contentPadding = PaddingValues(horizontal = appInset(16.dp), vertical = appInset(8.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
     ) {
         item(key = "header") {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 LibraryTabs()
                 Button(onClick = { state.switchTab(Route.Study) }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = null)
@@ -406,7 +408,7 @@ private fun LocationView(state: AppState, snapshot: LibrarySnapshot, filter: Car
 /** `Cards | Notes`, with Notes disabled until the notebook model exists. */
 @Composable
 private fun LibraryTabs() {
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
         ToggleChip("Cards", selected = true, onClick = {})
         ToggleChip(
             label = "Notes",
@@ -435,9 +437,9 @@ private fun FolderRow(state: AppState, snapshot: LibrarySnapshot, node: TopicNod
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(12.dp))
             .clickable { state.openTopic(node.id) }
-            .padding(horizontal = 12.dp, vertical = 10.dp),
+            .padding(horizontal = appInset(12.dp), vertical = appInset(10.dp)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
     ) {
         Box(
             Modifier.size(36.dp).background(accent.copy(alpha = 0.16f), appCornerShape(10.dp)),
@@ -520,18 +522,18 @@ private fun LibraryCardRow(state: AppState, snapshot: LibrarySnapshot, card: Car
         Modifier
             .fillMaxWidth()
             .clickable { state.navigate(Route.EditCard(card.id)) }
-            .padding(horizontal = 4.dp, vertical = 8.dp),
+            .padding(horizontal = appInset(4.dp), vertical = appInset(8.dp)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
     ) {
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
             MathText(
                 card.front,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
                 if (snapshot.isNew(card)) {
                     StatusPill("New", MaterialTheme.colorScheme.tertiaryContainer, MaterialTheme.colorScheme.onTertiaryContainer)
                 } else if (snapshot.isDue(card)) {
@@ -579,9 +581,9 @@ private fun LibraryCardRow(state: AppState, snapshot: LibrarySnapshot, card: Car
 @Composable
 private fun LibraryEmptyState(state: AppState, node: TopicNode?, nothingMatchesFilter: Boolean) {
     Column(
-        Modifier.fillMaxWidth().padding(vertical = 32.dp),
+        Modifier.fillMaxWidth().padding(vertical = appInset(32.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(appInset(10.dp)),
     ) {
         Icon(
             if (nothingMatchesFilter) Icons.Filled.FilterList else Icons.Filled.Notes,
@@ -606,7 +608,7 @@ private fun LibraryEmptyState(state: AppState, node: TopicNode?, nothingMatchesF
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
             if (nothingMatchesFilter) {
                 OutlinedActionButton("Clear filters", Icons.Filled.ClearAll) { state.clearFilters() }
             } else {
@@ -642,8 +644,8 @@ private fun FilterSheet(
 ) {
     ModalBottomSheet(onDismissRequest = onClose) {
         Column(
-            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(10.dp)),
         ) {
             FilterPanel(state, snapshot, filter)
             Button(onClick = onClose, modifier = Modifier.fillMaxWidth()) { Text("Done") }
@@ -664,9 +666,9 @@ private fun FilterPanel(state: AppState, snapshot: LibrarySnapshot, filter: Card
 
     SectionLabel("Filters")
     Row(
-        Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        Modifier.fillMaxWidth().padding(vertical = appInset(4.dp)),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
     ) {
         Column(Modifier.weight(1f)) {
             Text("Match all tags", style = MaterialTheme.typography.bodyMedium)
@@ -681,7 +683,7 @@ private fun FilterPanel(state: AppState, snapshot: LibrarySnapshot, filter: Card
             onCheckedChange = { state.setMatchAllTags(it) },
         )
     }
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
         ToggleChip("Due only", filter.dueOnly, { state.setDueOnly(!filter.dueOnly) })
         ToggleChip("New only", filter.newOnly, { state.setNewOnly(!filter.newOnly) })
     }
@@ -701,13 +703,13 @@ private fun FilterPanel(state: AppState, snapshot: LibrarySnapshot, filter: Card
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TagGroupRow(state: AppState, group: TagGroupOptions) {
-    Column(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(Modifier.fillMaxWidth().padding(vertical = appInset(4.dp)), verticalArrangement = Arrangement.spacedBy(appInset(4.dp))) {
         Text(
             group.group.value.replaceFirstChar { it.uppercase() },
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp)), verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
             for (option in group.tags) {
                 ScopedChip(state, option)
             }
@@ -738,11 +740,11 @@ private fun SearchResults(state: AppState, snapshot: LibrarySnapshot, filter: Ca
 
     LazyColumn(
         Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        contentPadding = PaddingValues(horizontal = appInset(16.dp), vertical = appInset(8.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
     ) {
         item(key = "scope") {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                 Text(
                     if (everywhere) "Searching everywhere" else "Searching within: " + (locationName ?: "Library"),
                     style = MaterialTheme.typography.bodyMedium,
@@ -761,7 +763,7 @@ private fun SearchResults(state: AppState, snapshot: LibrarySnapshot, filter: Ca
                 Text(
                     "Nothing matches \u201C" + query + "\u201D.",
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(vertical = 24.dp),
+                    modifier = Modifier.padding(vertical = appInset(24.dp)),
                 )
             }
         }
@@ -776,9 +778,9 @@ private fun SearchResults(state: AppState, snapshot: LibrarySnapshot, filter: Ca
                         Modifier.fillMaxWidth().clickable {
                             state.openTopic(topic.id)
                             state.setSearchQuery("")
-                        }.padding(vertical = 10.dp),
+                        }.padding(vertical = appInset(10.dp)),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(appInset(10.dp)),
                     ) {
                         Icon(Icons.Filled.Folder, contentDescription = null, tint = accentFor(snapshot, topic.id))
                         Column(Modifier.weight(1f)) {
@@ -800,9 +802,9 @@ private fun SearchResults(state: AppState, snapshot: LibrarySnapshot, filter: Ca
                         Modifier.fillMaxWidth().clickable {
                             state.toggleTag(tag.id)
                             state.setSearchQuery("")
-                        }.padding(vertical = 10.dp),
+                        }.padding(vertical = appInset(10.dp)),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(appInset(10.dp)),
                     ) {
                         Icon(Icons.Filled.Style, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                         Column(Modifier.weight(1f)) {
@@ -820,7 +822,7 @@ private fun SearchResults(state: AppState, snapshot: LibrarySnapshot, filter: Ca
                 is SearchSection.Cards -> items(section.items, key = { "sc:" + it.id.value }) { card ->
                     Column(
                         Modifier.fillMaxWidth().clickable { state.navigate(Route.EditCard(card.id)) }
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = appInset(8.dp)),
                     ) {
                         MathText(
                             LibrarySearch.snippet(card.front, query),
@@ -857,9 +859,9 @@ private fun DuePill(count: Int) {
 @Composable
 private fun StatusPill(label: String, container: Color, onContainer: Color) {
     Box(
-        Modifier.background(container, appCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 3.dp),
+        Modifier.background(container, appCornerShape(8.dp)).padding(horizontal = appInset(8.dp), vertical = appInset(3.dp)),
     ) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = onContainer, fontWeight = FontWeight.SemiBold)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = onContainer, fontWeight = appHeadingWeight())
     }
 }
 

@@ -17,17 +17,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -48,12 +45,17 @@ import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** One editable key point. Synonyms are typed as a comma-separated list. */
 private data class KeyPointDraft(
@@ -211,8 +213,8 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
             },
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             TopicPicker(state, snapshot, draft.value.topicId, builtIn) { chosen ->
                 draft.value = draft.value.copy(topicId = chosen)
@@ -246,7 +248,7 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
             )
 
             SectionLabel("Answer type")
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
                 for (type in AnswerType.entries) {
                     ToggleChip(
                         label = type.name,
@@ -405,15 +407,15 @@ private fun ExpandableSection(
             Modifier
                 .fillMaxWidth()
                 .clickable { expanded.value = !expanded.value }
-                .padding(vertical = 12.dp),
+                .padding(vertical = appInset(12.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             Column(Modifier.weight(1f)) {
                 Text(
                     title,
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = appHeadingWeight(),
                     color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (subtitle.isNotEmpty()) {
@@ -431,8 +433,8 @@ private fun ExpandableSection(
         }
         if (expanded.value) {
             Column(
-                Modifier.fillMaxWidth().padding(bottom = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                Modifier.fillMaxWidth().padding(bottom = appInset(10.dp)),
+                verticalArrangement = Arrangement.spacedBy(appInset(10.dp)),
             ) {
                 content()
             }
@@ -491,7 +493,7 @@ private const val INDENT = "    "
 
 @Composable
 private fun NumericFields(draft: CardDraft, enabled: Boolean, onUpdate: (CardDraft) -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         Box(Modifier.weight(1f)) {
             LabeledField(
                 label = "Expected value",
@@ -524,7 +526,7 @@ private fun NumericFields(draft: CardDraft, enabled: Boolean, onUpdate: (CardDra
 
 @Composable
 private fun KeyPointEditor(draft: CardDraft, enabled: Boolean, onUpdate: (CardDraft) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         SectionLabel("Key points (" + draft.keyPoints.size + ")")
         EmptyMessage(
             "Each point must appear in the answer for it to count. Points marked \"must include\" are " +
@@ -532,8 +534,8 @@ private fun KeyPointEditor(draft: CardDraft, enabled: Boolean, onUpdate: (CardDr
         )
         for ((index, point) in draft.keyPoints.withIndex()) {
             Column(
-                Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                Modifier.fillMaxWidth().padding(vertical = appInset(4.dp)),
+                verticalArrangement = Arrangement.spacedBy(appInset(4.dp)),
             ) {
                 OutlinedTextField(
                     value = point.text,
@@ -549,7 +551,7 @@ private fun KeyPointEditor(draft: CardDraft, enabled: Boolean, onUpdate: (CardDr
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("Synonyms, comma separated") },
                 )
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                     Checkbox(
                         checked = point.mustInclude,
                         onCheckedChange = { checked ->
@@ -584,7 +586,7 @@ private fun KeyPointEditor(draft: CardDraft, enabled: Boolean, onUpdate: (CardDr
 
 @Composable
 private fun McqFields(draft: CardDraft, enabled: Boolean, onUpdate: (CardDraft) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         SectionLabel("Multiple choice (optional)")
         EmptyMessage(
             "Leave blank to generate distractors from sibling cards in the same topic. Authored " +
@@ -620,14 +622,14 @@ private fun TagPicker(
     enabled: Boolean,
     onChange: (Set<TagId>) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
         SectionLabel("Tags")
         if (snapshot.tags.isEmpty()) {
             EmptyMessage("No tags exist yet.")
         }
         for ((groupName, tags) in snapshot.tags.groupBy { it.group.value }.toSortedMap()) {
             Text(groupName, style = MaterialTheme.typography.labelMedium)
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
                 for (tag in tags) {
                     ToggleChip(
                         label = tag.name,
@@ -646,11 +648,11 @@ private fun TagPicker(
 @Composable
 private fun SaveBar(canSave: Boolean, onSave: () -> Unit, onDelete: (() -> Unit)?) {
     val confirmDelete = remember { mutableStateOf(false) }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
         if (!canSave) {
             EmptyMessage("Pick a topic and fill in both the front and the back to save.")
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
             Button(onClick = onSave, enabled = canSave, modifier = Modifier.weight(1f)) { Text("Save card") }
             if (onDelete != null) {
                 OutlinedButton(onClick = { confirmDelete.value = true }) { Text("Delete") }

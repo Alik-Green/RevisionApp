@@ -2,6 +2,7 @@ package com.revisionapp.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,7 +33,9 @@ import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appInset
 
 /** Dedicated badge gallery so the main Progress screen can stay focused on next actions. */
 @Composable
@@ -48,21 +52,23 @@ fun AchievementsScreen(state: AppState) {
             onBack = { state.back() },
         )
         if (!ready) {
-            EmptyMessage("Loading your achievements…", Modifier.padding(horizontal = 20.dp))
+            EmptyMessage("Loading your achievements…", Modifier.padding(horizontal = appInset(20.dp)))
             return@Column
         }
+        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
         Surface(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = appInset(16.dp), vertical = appInset(6.dp)),
             shape = appCornerShape(22.dp),
-            color = MaterialTheme.colorScheme.tertiaryContainer,
+            color = if (isDark) ExtendedTheme.colors.rewardContainer else MaterialTheme.colorScheme.tertiaryContainer,
+            border = if (isDark) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
         ) {
             Row(
-                Modifier.padding(16.dp),
+                Modifier.padding(appInset(16.dp)),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                horizontalArrangement = Arrangement.spacedBy(appInset(14.dp)),
             ) {
                 Text("🏆", style = MaterialTheme.typography.displaySmall)
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
                     Text("$unlocked / ${achievements.size} badges", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text("Lessons, confident recall, streaks and steady practice all count.", style = MaterialTheme.typography.bodySmall)
                 }
@@ -71,9 +77,9 @@ fun AchievementsScreen(state: AppState) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(150.dp),
             modifier = Modifier.fillMaxWidth().weight(1f),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = appInset(16.dp), vertical = appInset(10.dp)),
+            horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             items(achievements, key = AchievementProgress::id) { achievement ->
                 AchievementBadge(achievement)
@@ -84,10 +90,11 @@ fun AchievementsScreen(state: AppState) {
 
 @Composable
 private fun AchievementBadge(achievement: AchievementProgress) {
-    val background = if (achievement.isUnlocked) {
-        MaterialTheme.colorScheme.secondaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerLow
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val background = when {
+        achievement.isUnlocked && isDark -> ExtendedTheme.colors.rewardContainer
+        achievement.isUnlocked -> MaterialTheme.colorScheme.secondaryContainer
+        else -> MaterialTheme.colorScheme.surfaceContainerLow
     }
     val animatedFraction = animateFloatAsState(
         targetValue = achievement.progressFraction,
@@ -98,16 +105,28 @@ private fun AchievementBadge(achievement: AchievementProgress) {
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(20.dp),
         color = background,
+        border = if (isDark) {
+            BorderStroke(
+                1.dp,
+                if (achievement.isUnlocked) ExtendedTheme.colors.reward.copy(alpha = 0.7f)
+                else MaterialTheme.colorScheme.outlineVariant,
+            )
+        } else {
+            null
+        },
+        shadowElevation = if (isDark && achievement.isUnlocked) 3.dp else 0.dp,
         tonalElevation = if (achievement.isUnlocked) 2.dp else 0.dp,
     ) {
         Column(
-            Modifier.padding(14.dp),
+            Modifier.padding(appInset(14.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(7.dp),
+            verticalArrangement = Arrangement.spacedBy(appInset(7.dp)),
         ) {
             Surface(
                 shape = CircleShape,
-                color = if (achievement.isUnlocked) {
+                color = if (achievement.isUnlocked && isDark) {
+                    ExtendedTheme.colors.reward
+                } else if (achievement.isUnlocked) {
                     MaterialTheme.colorScheme.tertiaryContainer
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
@@ -115,7 +134,7 @@ private fun AchievementBadge(achievement: AchievementProgress) {
             ) {
                 Text(
                     if (achievement.isUnlocked) achievement.icon else "🔒",
-                    modifier = Modifier.padding(13.dp),
+                    modifier = Modifier.padding(appInset(13.dp)),
                     style = MaterialTheme.typography.headlineSmall,
                 )
             }
@@ -139,7 +158,7 @@ private fun AchievementBadge(achievement: AchievementProgress) {
                     "+${achievement.rewardCoins} 🪙"
                 },
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
+                color = if (isDark) ExtendedTheme.colors.reward else MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
             )

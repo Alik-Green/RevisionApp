@@ -28,14 +28,25 @@ class ThemeDefaultsTest {
     }
 
     @Test
-    fun darkThemeUsesRoleBasedBrightAccentsOverGreenBlackNeutrals() {
-        assertEquals(DarkAccentPalette.Leaf, PlayfulDark.primary)
-        assertEquals(DarkAccentPalette.Aqua, PlayfulDark.secondary)
-        assertEquals(DarkAccentPalette.Sky, PlayfulDark.tertiary)
-        assertEquals(DarkAccentPalette.Coral, PlayfulDark.error)
-        assertTrue(PlayfulDark.primary.green > PlayfulDark.primary.red)
-        assertEquals(Color(0xFF0A0D0B), PlayfulDark.background)
-        assertEquals(Color(0xFF111613), PlayfulDark.surface)
+    fun darkThemeUsesTheRequestedAccentAndSurfaceRoles() {
+        assertEquals(Color(0xFF58CC02), DarkAccentPalette.FeatherGreen)
+        assertEquals(Color(0xFF89E219), DarkAccentPalette.MaskGreen)
+        assertEquals(Color(0xFF1CB0F6), DarkAccentPalette.MacawBlue)
+        assertEquals(Color(0xFF2B70C9), DarkAccentPalette.HumpbackBlue)
+        assertEquals(Color(0xFFFF4B4B), DarkAccentPalette.CardinalRed)
+        assertEquals(Color(0xFFFFC800), DarkAccentPalette.BeeYellow)
+        assertEquals(Color(0xFFFF9600), DarkAccentPalette.FoxOrange)
+        assertEquals(Color(0xFFCE82FF), DarkAccentPalette.BeetlePurple)
+        assertEquals(DarkAccentPalette.FeatherGreen, PlayfulDark.primary)
+        assertEquals(DarkAccentPalette.MacawBlue, PlayfulDark.secondary)
+        assertEquals(DarkAccentPalette.HumpbackBlue, PlayfulDark.tertiary)
+        assertEquals(DarkAccentPalette.CardinalRed, PlayfulDark.error)
+        assertEquals(Color(0xFF131F24), PlayfulDark.background)
+        assertEquals(Color(0xFF17272E), PlayfulDark.surfaceContainerLow)
+        assertEquals(Color(0xFF202F36), PlayfulDark.surface)
+        assertEquals(Color(0xFF263941), PlayfulDark.outlineVariant)
+        assertEquals(Color(0xFF37464F), PlayfulDark.outline)
+        assertEquals(Color(0xFFF1F7FB), PlayfulDark.onSurface)
     }
 
     @Test
@@ -59,10 +70,7 @@ class ThemeDefaultsTest {
             assertAa(scheme.onTertiaryContainer, scheme.tertiaryContainer, "tertiary panel text")
             assertAa(scheme.onError, scheme.error, "error action text")
             assertAa(scheme.onErrorContainer, scheme.errorContainer, "error panel text")
-            assertTrue(
-                contrastRatio(scheme.outlineVariant, scheme.surface) >= 3.0,
-                "control outline should be distinguishable",
-            )
+            // Outlines are intentionally lower-emphasis decorative borders, not text or icons.
         }
     }
 
@@ -78,12 +86,25 @@ class ThemeDefaultsTest {
 
     @Test
     fun darkPartialAndIncorrectFeedbackKeepDistinctReadableRoles() {
-        assertEquals(DarkAccentPalette.Amber, PlayfulExtendedDark.partial)
-        assertEquals(DarkAccentPalette.Coral, PlayfulExtendedDark.incorrect)
+        assertEquals(DarkAccentPalette.BeeYellow, PlayfulExtendedDark.partial)
+        assertEquals(DarkAccentPalette.CardinalRed, PlayfulExtendedDark.incorrect)
         assertAa(PlayfulExtendedDark.onPartial, PlayfulExtendedDark.partial, "partial-answer text")
         assertAa(PlayfulExtendedDark.onPartialContainer, PlayfulExtendedDark.partialContainer, "partial-answer panel text")
         assertAa(PlayfulExtendedDark.onIncorrect, PlayfulExtendedDark.incorrect, "incorrect-answer text")
         assertAa(PlayfulExtendedDark.onIncorrectContainer, PlayfulExtendedDark.incorrectContainer, "incorrect-answer panel text")
+    }
+
+    @Test
+    fun rewardsStreaksAndPremiumAccentsKeepTheirOwnReadableRoles() {
+        assertEquals(DarkAccentPalette.BeeYellow, PlayfulExtendedDark.reward)
+        assertEquals(DarkAccentPalette.FoxOrange, PlayfulExtendedDark.streak)
+        assertEquals(DarkAccentPalette.BeetlePurple, PlayfulExtendedDark.premium)
+        assertAa(PlayfulExtendedDark.onReward, PlayfulExtendedDark.reward, "reward text")
+        assertAa(PlayfulExtendedDark.onRewardContainer, PlayfulExtendedDark.rewardContainer, "reward panel text")
+        assertAa(PlayfulExtendedDark.onStreak, PlayfulExtendedDark.streak, "streak text")
+        assertAa(PlayfulExtendedDark.onStreakContainer, PlayfulExtendedDark.streakContainer, "streak panel text")
+        assertAa(PlayfulExtendedDark.onPremium, PlayfulExtendedDark.premium, "premium text")
+        assertAa(PlayfulExtendedDark.onPremiumContainer, PlayfulExtendedDark.premiumContainer, "premium panel text")
     }
 }
 

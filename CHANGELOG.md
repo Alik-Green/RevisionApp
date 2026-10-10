@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.0 — 2026-10-10
+
+- Rebuilt dark mode around the requested evergreen/slate surfaces and role-mapped Feather Green, Mask Green, Macaw Blue, Humpback Blue, Cardinal Red, Bee Yellow, Fox Orange and Beetle Purple accents; preserved the light palette.
+- Tightened dark-mode insets, slightly reduced card/control rounding while keeping cards generously rounded, and increased smaller text by 1 sp.
+- Strengthened dark headings and button labels, added blue secondary actions, bordered panels and state-aware raised controls, including course-path nodes.
+- Made course-path progress, rewards, achievements and streak visuals follow the green/yellow/orange semantic roles.
+
 ## v2.6.0 — 2026-10-10
 
 - Redesigned dark mode with near-black evergreen surfaces and five role-based bright accents; left the light palette and existing light-mode corner radii unchanged.

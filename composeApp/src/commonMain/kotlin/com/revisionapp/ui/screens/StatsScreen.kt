@@ -16,7 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,12 +32,15 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.TopicAccuracyRow
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.StatTile
 import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** Due today, streak, weekly quests and topic-tree progress. */
 @Composable
@@ -56,18 +58,18 @@ fun StatsScreen(state: AppState) {
             },
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = appInset(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 StatTile("Due today", stats.dueToday.toString(), Modifier.weight(1f))
                 StatTile("Due now", stats.dueNow.toString(), Modifier.weight(1f))
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 StatTile("Day streak", stats.streakDays.toString(), Modifier.weight(1f))
                 StatTile("Days studied", stats.daysStudied.toString(), Modifier.weight(1f))
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                 StatTile("Total reviews", stats.totalReviews.toString(), Modifier.weight(1f))
                 StatTile("Quest points", stats.questPoints.toString(), Modifier.weight(1f))
             }
@@ -119,12 +121,12 @@ private fun WeeklyQuestRow(quest: WeeklyQuestProgress) {
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(14.dp))
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(7.dp),
+            .padding(appInset(12.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(7.dp)),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
             Column(Modifier.weight(1f)) {
-                Text(quest.title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                Text(quest.title, style = MaterialTheme.typography.titleSmall, fontWeight = appHeadingWeight())
                 Text(
                     quest.description,
                     style = MaterialTheme.typography.bodySmall,
@@ -191,11 +193,11 @@ private fun TopicTreeProgress(state: AppState, snapshot: LibrarySnapshot, node: 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = (depth * 12).dp, top = 3.dp, bottom = 3.dp)
+                .padding(start = (depth * 12).dp, top = appInset(3.dp), bottom = appInset(3.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(12.dp))
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = appInset(12.dp), vertical = appInset(10.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             Column(
                 Modifier
@@ -204,11 +206,11 @@ private fun TopicTreeProgress(state: AppState, snapshot: LibrarySnapshot, node: 
                         state.openTopic(node.id)
                         state.switchTab(Route.Library)
                     },
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(appInset(2.dp)),
             ) {
                 MathText(
                     node.name,
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = appHeadingWeight()),
                     maxLines = 1,
                 )
                 Text(
@@ -250,10 +252,10 @@ private fun TopicTreeProgress(state: AppState, snapshot: LibrarySnapshot, node: 
 @Composable
 private fun AccuracyRow(row: TopicAccuracyRow) {
     Column(
-        Modifier.fillMaxWidth().padding(vertical = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        Modifier.fillMaxWidth().padding(vertical = appInset(4.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(4.dp)),
     ) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
             MathText(
                 row.topicName,
                 modifier = Modifier.weight(1f),

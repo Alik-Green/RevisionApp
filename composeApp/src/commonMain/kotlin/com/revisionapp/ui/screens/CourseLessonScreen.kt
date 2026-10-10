@@ -26,7 +26,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -54,6 +53,7 @@ import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.platform.SoundEffect
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
@@ -61,6 +61,8 @@ import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** Player for an ordered V2 lesson. Each answer is checked using the question's authored type. */
 @Composable
@@ -88,7 +90,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     if (course == null || lesson == null || questions.isEmpty()) {
         Column(Modifier.fillMaxSize()) {
             AppHeader(title = "Lesson", onBack = { state.back() })
-            EmptyMessage("This lesson is unavailable in the current course catalog.", Modifier.padding(horizontal = 20.dp))
+            EmptyMessage("This lesson is unavailable in the current course catalog.", Modifier.padding(horizontal = appInset(20.dp)))
         }
         return
     }
@@ -127,8 +129,8 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
         LessonProgressBar(questionIndex.value, questionQueue.size)
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
+                .padding(horizontal = appInset(20.dp), vertical = appInset(18.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(14.dp)),
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 SectionLabel("$questionLabel ${questionIndex.value + 1} OF ${questionQueue.size}")
@@ -144,7 +146,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                 shape = appCornerShape(20.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             ) {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Column(Modifier.padding(appInset(18.dp)), verticalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
                     if (section != null && section.topicIds.isNotEmpty() && question.topicId !in section.topicIds) {
                         Text(
                             "REVISIT · ${question.topicLabel}",
@@ -200,7 +202,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                 enter = fadeIn(tween(220)) + slideInVertically(tween(220)) { it / 8 },
             ) {
                 if (correct != null) {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(appInset(12.dp))) {
                         AnswerFeedback(question, correct, appearance)
                         Button(
                             onClick = {
@@ -255,9 +257,9 @@ private fun CourseAnswerOption(
         color = container,
     ) {
         Row(
-            Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            Modifier.padding(horizontal = appInset(16.dp), vertical = appInset(14.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             Text("$number", color = foreground, fontWeight = FontWeight.Bold)
             MathText(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge, color = foreground)
@@ -284,12 +286,12 @@ private fun AnswerFeedback(
             .fillMaxWidth()
             .background(container, appCornerShape(16.dp))
             .border(1.dp, color.copy(alpha = 0.72f), appCornerShape(16.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(appInset(16.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(8.dp)),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(appInset(12.dp))) {
             CharacterAvatar(appearance, size = 48.dp, celebratory = correct)
-            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(appInset(3.dp))) {
                 Text(
                     if (correct) "That’s it!" else "Not quite—and that’s okay.",
                     style = MaterialTheme.typography.titleMedium,
@@ -307,7 +309,7 @@ private fun AnswerFeedback(
             Text(
                 "Answer: ${CourseAnswerChecker.acceptedAnswerLabel(question.answer)}",
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = appHeadingWeight(),
                 color = onContainer,
             )
         }
@@ -340,14 +342,14 @@ private fun LessonComplete(
     val quests = ProgressionRules.dailyQuests(progress)
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(horizontal = appInset(20.dp), vertical = appInset(24.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(16.dp)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CharacterAvatar(appearance, size = 112.dp, celebratory = true)
         Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         SectionLabel("DAILY QUESTS")
-        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(appInset(10.dp))) {
             for (quest in quests) {
                 DailyQuestProgressCard(
                     quest = quest,
@@ -376,7 +378,7 @@ private fun DailyQuestProgressCard(quest: DailyQuestProgress, initialFraction: F
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(Modifier.padding(appInset(13.dp)), verticalArrangement = Arrangement.spacedBy(appInset(6.dp))) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     quest.title,
@@ -390,7 +392,7 @@ private fun DailyQuestProgressCard(quest: DailyQuestProgress, initialFraction: F
                     "${quest.current.coerceAtMost(quest.target)} / ${quest.target}",
                     style = MaterialTheme.typography.labelMedium,
                     color = if (quest.isComplete) ExtendedTheme.colors.correct else MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = appHeadingWeight(),
                 )
             }
             Text(

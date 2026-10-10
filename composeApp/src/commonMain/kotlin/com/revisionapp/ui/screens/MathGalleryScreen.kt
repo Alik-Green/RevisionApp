@@ -25,6 +25,7 @@ import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.render.RichTextRenderer
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appInset
 
 /**
  * A debug screen, reached from Settings > Developer, that shows representative
@@ -44,11 +45,11 @@ fun MathGalleryScreen(state: AppState) {
         )
         LazyColumn(
             Modifier.fillMaxWidth().weight(1f),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = appInset(16.dp), vertical = appInset(8.dp)),
+            verticalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             item {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
                     SectionLabel("Typeset (main renderer)", Modifier.weight(1f))
                     SectionLabel("Plain text (fallback)", Modifier.weight(1f))
                 }
@@ -68,8 +69,8 @@ private fun GalleryRow(source: String, renderer: RichTextRenderer) {
         Modifier
             .fillMaxWidth()
             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, appCornerShape(10.dp))
-            .padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+            .padding(appInset(10.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(6.dp)),
     ) {
         Text(
             source,
@@ -77,7 +78,7 @@ private fun GalleryRow(source: String, renderer: RichTextRenderer) {
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(appInset(8.dp))) {
             Column(Modifier.weight(1f)) {
                 MathText(source, style = MaterialTheme.typography.bodyLarge)
             }

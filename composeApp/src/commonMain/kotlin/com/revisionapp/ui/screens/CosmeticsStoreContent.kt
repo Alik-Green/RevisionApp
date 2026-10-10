@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -28,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.progression.AvatarPart
@@ -35,10 +35,14 @@ import com.revisionapp.domain.progression.AvatarPartCatalog
 import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
+import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
+import com.revisionapp.ui.theme.appHeadingWeight
+import com.revisionapp.ui.theme.appInset
 
 /** Cosmetics browser. The avatar and category controls stay fixed while options scroll below. */
 @Composable
@@ -59,8 +63,8 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
     val parts = selectedPartCategory?.let { AvatarPartCatalog.inCategory(it) }.orEmpty()
 
     Column(
-        modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(9.dp),
+        modifier.fillMaxSize().padding(horizontal = appInset(16.dp), vertical = appInset(8.dp)),
+        verticalArrangement = Arrangement.spacedBy(appInset(9.dp)),
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -69,12 +73,12 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
         ) {
             Row(
-                Modifier.padding(horizontal = 14.dp, vertical = 9.dp),
+                Modifier.padding(horizontal = appInset(14.dp), vertical = appInset(9.dp)),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(13.dp),
+                horizontalArrangement = Arrangement.spacedBy(appInset(13.dp)),
             ) {
                 CharacterAvatar(appearance, size = 76.dp, animated = false)
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(3.dp))) {
                     SectionLabel("YOUR LOOK · LIVE PREVIEW")
                     Text("${progress.displayName} · ${progress.coinBalanceLabel} coins", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                     Text("Choose a category, then open Style, Colour or Shape.", style = MaterialTheme.typography.bodySmall)
@@ -85,7 +89,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
         SectionLabel("CHOOSE A CATEGORY")
         Row(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             for (option in AvatarFeatureArea.entries) {
                 ToggleChip(
@@ -101,7 +105,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
         }
         Row(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
         ) {
             for (option in controlsForArea(area)) {
                 ToggleChip(
@@ -117,7 +121,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
 
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(11.dp),
+            verticalArrangement = Arrangement.spacedBy(appInset(11.dp)),
         ) {
             if (control == AvatarFeatureControl.SHAPE) {
                 CosmeticsShapeControls(
@@ -135,9 +139,9 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
                     Row(
-                        Modifier.padding(horizontal = 14.dp, vertical = 11.dp),
+                        Modifier.padding(horizontal = appInset(14.dp), vertical = appInset(11.dp)),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(appInset(8.dp)),
                     ) {
                         Column(Modifier.weight(1f)) {
                             Text("${area.title} · ${control.title}", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
@@ -186,28 +190,32 @@ private fun CosmeticPartCard(
     onEquip: () -> Unit,
     onUnlock: () -> Unit,
 ) {
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = appCornerShape(17.dp),
         color = if (equipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             if (equipped) 2.dp else 1.dp,
-            if (equipped) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant,
+            if (equipped && isDark) MaterialTheme.colorScheme.tertiary
+            else if (equipped) MaterialTheme.colorScheme.secondary
+            else MaterialTheme.colorScheme.outlineVariant,
         ),
+        shadowElevation = if (isDark) 2.dp else 0.dp,
     ) {
         Row(
-            Modifier.padding(13.dp),
+            Modifier.padding(appInset(13.dp)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(appInset(12.dp)),
         ) {
             PartPreview(part)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(part.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
+                Text(part.name, style = MaterialTheme.typography.titleSmall, fontWeight = appHeadingWeight())
                 Text(part.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
                     if (part.costCoins == 0L) "FREE" else "🪙 ${part.costCoins}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (isDark && part.costCoins > 0L) ExtendedTheme.colors.reward else MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -279,11 +287,11 @@ private fun CosmeticsShapeControls(
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
-        Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+        Column(Modifier.padding(appInset(15.dp)), verticalArrangement = Arrangement.spacedBy(appInset(7.dp))) {
             SectionLabel("FREE ${area.title.uppercase()} SHAPE")
             Text("Fine-tune this feature any time—no coins needed.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             for (control in controls) {
-                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(appInset(2.dp))) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(control.label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
                         Text("${(control.value * 100).toInt()}%", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
