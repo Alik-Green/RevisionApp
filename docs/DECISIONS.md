@@ -943,9 +943,21 @@ rejected by the active question factory. The legacy enum, database column, card
 field and stored history are left in place so pre-existing packs and local data
 continue to load without conversion.
 
-The default theme is now the brighter Playful palette, with Ink & Paper as an
-alternative and independent system/light/dark appearance controls. Weekly quest
+The default theme is the brighter Playful palette in light mode, with Ink &
+Paper as an alternative and independent system/light/dark appearance controls.
+Weekly quest
 points are derived from distinct review days rather than stored as a second
 wallet, and the Stats topic tree is explicitly a practice-coverage prototype,
 not a curriculum mastery score. No existing question packs or V2 lesson format
 are changed here.
+
+## D48 — Character parts are cosmetic and learner-controlled (2026-10-10)
+
+The learner is represented by a simple drawn person, not a paid companion skin.
+All eight natural skin tones and a small set of starter facial and hair styles are
+available at the start; coins can unlock additional styles and fantasy or
+colour variants. Size, spacing and position controls remain free after unlock.
+The Cosmetics shelf handles ownership while Profile holds the designer, keeping
+purchases optional and separate from lessons, answer checking and FSRS. Store is
+a primary destination with separate course and cosmetics shelves; achievements
+open as a child page from Progress rather than filling the main goals screen.

@@ -49,7 +49,7 @@ import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.CharacterPortrait
+import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
@@ -276,7 +276,7 @@ private fun AnswerFeedback(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            CharacterPortrait(appearance, width = 48.dp, height = 58.dp)
+            CharacterAvatar(appearance, size = 48.dp, celebratory = correct)
             Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 Text(
                     if (correct) "That’s it!" else "Not quite—and that’s okay.",
@@ -333,7 +333,7 @@ private fun LessonComplete(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CharacterPortrait(appearance, width = 104.dp, height = 126.dp)
+            CharacterAvatar(appearance, size = 104.dp, celebratory = true)
             Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(lesson.title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             Text(
@@ -341,7 +341,7 @@ private fun LessonComplete(
                 style = MaterialTheme.typography.bodyLarge,
             )
             Text(
-                "Quest and mastery coins are added automatically as you make progress. Spend them on a new look whenever you like.",
+                "Quest and mastery coins are added automatically. Save them for a new look in Store · Cosmetics.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

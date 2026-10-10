@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.revisionapp.domain.progression.AchievementProgress
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.DailyQuestProgress
 import com.revisionapp.domain.progression.LearnerProgress
@@ -36,16 +36,15 @@ import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.CharacterPortrait
+import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 
-/** Daily and weekly learning goals, earned coins, streaks and mastery milestones. */
+/** Daily and weekly learning goals, earned coins, streaks and a compact badge preview. */
 @Composable
 fun ProgressionScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val ready = state.progressionReady.collectAsState().value
-    val appearance = progress.characterAppearance
     LaunchedEffect(ready) {
         if (ready) state.refreshProgressionForToday()
     }
@@ -60,7 +59,7 @@ fun ProgressionScreen(state: AppState) {
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CoinsCard(progress.coins, appearance) { state.openCosmeticsStore() }
+            CoinsCard(progress.coins, progress.characterAppearance)
             StreakCard(progress, state)
 
             SectionLabel("TODAY'S QUESTS")
@@ -83,14 +82,17 @@ fun ProgressionScreen(state: AppState) {
                 QuestCard(quest, cadence = "WEEK")
             }
 
-            AchievementSummaryCard(progress) { state.navigate(Route.Achievements) }
+            AchievementSummaryCard(
+                achievements = ProgressionRules.achievements(progress),
+                onOpen = { state.navigate(Route.Achievements) },
+            )
             Spacer(Modifier.height(12.dp))
         }
     }
 }
 
 @Composable
-private fun CoinsCard(coins: Long, appearance: CharacterAppearance, onShop: () -> Unit) {
+private fun CoinsCard(coins: Long, appearance: CharacterAppearance) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
@@ -101,41 +103,43 @@ private fun CoinsCard(coins: Long, appearance: CharacterAppearance, onShop: () -
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(13.dp),
         ) {
-            CharacterPortrait(appearance, width = 60.dp, height = 74.dp)
+            CharacterAvatar(appearance, size = 68.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                 SectionLabel("YOUR LEARNING COINS")
                 AnimatedContent(targetState = coins, label = "coin-balance") { balance ->
                     Text("$balance 🪙", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                 }
-                Text("Earned through practice", style = MaterialTheme.typography.labelSmall)
+                Text("Spend on parts in Store · Cosmetics", style = MaterialTheme.typography.labelSmall)
             }
-            Button(onClick = onShop) { Text("Styles") }
         }
     }
 }
 
 @Composable
-private fun AchievementSummaryCard(progress: LearnerProgress, onOpen: () -> Unit) {
-    val milestones = ProgressionRules.achievements(progress)
-    val unlocked = milestones.count { it.isUnlocked }
+private fun AchievementSummaryCard(achievements: List<AchievementProgress>, onOpen: () -> Unit) {
+    val unlocked = achievements.count { it.isUnlocked }
+    val next = achievements.firstOrNull { !it.isUnlocked }
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         color = MaterialTheme.colorScheme.secondaryContainer,
     ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("🏆", style = MaterialTheme.typography.headlineMedium)
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    SectionLabel("MASTERY MILESTONES")
-                    Text("$unlocked of ${milestones.size} unlocked", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                }
-                Text("${progress.totalCorrectAnswers} correct", style = MaterialTheme.typography.labelSmall)
+        Row(
+            Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text("🏅", style = MaterialTheme.typography.headlineMedium)
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                SectionLabel("MASTERY BADGES")
+                Text("$unlocked / ${achievements.size} unlocked", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(
+                    next?.let { "Next up: ${it.title}" } ?: "Every badge earned—fantastic work!",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
             }
-            ProgressBar(if (milestones.isEmpty()) 0f else unlocked.toFloat() / milestones.size)
-            OutlinedButton(onClick = onOpen, modifier = Modifier.fillMaxWidth()) {
-                Text("Explore achievements")
-            }
+            Button(onClick = onOpen) { Text("View") }
         }
     }
 }

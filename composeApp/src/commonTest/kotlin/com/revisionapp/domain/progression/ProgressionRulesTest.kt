@@ -1,6 +1,8 @@
 package com.revisionapp.domain.progression
 
+import com.revisionapp.data.AppJson
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.decodeFromString
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -169,46 +171,88 @@ class ProgressionRulesTest {
     }
 
     @Test
-    fun starterCharacterHasTheNaturalSkinRangeAndOnlyStarterFeatureChoices() {
-        val progress = LearnerProgress()
-        val owned = progress.ownedAppearanceItemIds.toSet()
+    fun v21AvatarUnlocksAndShapeSettingsMigrateToTheNewDesigner() {
+        val legacyJson = """
+            {
+              "ownedAppearanceItemIds": [
+                "skin-porcelain", "skin-fair", "skin-light", "skin-medium", "skin-deep", "skin-dark",
+                "hair-short", "hair-long", "hair-curly", "hair-colour-blue",
+                "eyes-classic", "eyes-almond", "eye-colour-violet", "nose-classic", "nose-straight"
+              ],
+              "characterAppearance": {
+                "skinToneId": "skin-dark",
+                "hairStyleId": "hair-curly",
+                "hairColorId": "hair-colour-blue",
+                "eyeStyleId": "eyes-almond",
+                "eyeColorId": "eye-colour-violet",
+                "noseStyleId": "nose-straight",
+                "hairSize": 80,
+                "hairHeight": 32,
+                "eyeSize": 70,
+                "eyeSpacing": 75,
+                "eyeHeight": 45,
+                "noseSize": 60,
+                "noseHeight": 55
+              }
+            }
+        """.trimIndent()
+        val legacy = AppJson.instance.decodeFromString<LearnerProgress>(legacyJson)
 
-        assertEquals(6, AppearanceCatalog.inCategory(AppearanceCategory.SKIN_TONE).count { it.id in owned && it.cost == 0L })
-        assertEquals(2, AppearanceCatalog.inCategory(AppearanceCategory.HAIR_STYLE).count { it.id in owned })
-        assertEquals(1, AppearanceCatalog.inCategory(AppearanceCategory.EYE_STYLE).count { it.id in owned })
-        assertEquals(1, AppearanceCatalog.inCategory(AppearanceCategory.NOSE_STYLE).count { it.id in owned })
-        assertEquals(AppearanceCatalog.SKIN_MEDIUM, progress.characterAppearance.skinToneId)
+        val migrated = ProgressionRules.migrateLegacyAppearance(legacy)
+
+        assertTrue(migrated.ownedAppearanceItemIds.isEmpty())
+        assertTrue("hair-long" in migrated.ownedAvatarPartIds)
+        assertTrue("hair-blue" in migrated.ownedAvatarPartIds)
+        assertTrue("eyes-almond" in migrated.ownedAvatarPartIds)
+        assertTrue("nose-bridge" in migrated.ownedAvatarPartIds)
+        assertEquals("skin-deep", migrated.characterAppearance.skinToneId)
+        assertEquals("hair-curly", migrated.characterAppearance.hairStyleId)
+        assertEquals("hair-blue", migrated.characterAppearance.hairColorId)
+        assertEquals("eyes-violet", migrated.characterAppearance.eyeColorId)
+        assertEquals("nose-bridge", migrated.characterAppearance.noseStyleId)
+        assertEquals(0.8f, migrated.characterAppearance.hairSize)
+        assertEquals(0.32f, migrated.characterAppearance.hairHeight)
+        assertEquals(0.75f, migrated.characterAppearance.eyeSpacing)
     }
 
     @Test
-    fun cosmeticPiecesAreEarnedOnceAndShapeControlsStayFree() {
+    fun avatarStartsWithEveryNaturalSkinToneButOnlyStarterFeatures() {
+        val progress = LearnerProgress()
+        val owned = progress.ownedAvatarPartIds.toSet()
+
+        assertEquals(8, AvatarPartCatalog.naturalSkinToneIds.size)
+        assertTrue(AvatarPartCatalog.naturalSkinToneIds.all { it in owned })
+        assertFalse("skin-mint" in owned)
+        assertEquals(2, AvatarPartCatalog.inCategory(AvatarPartCategory.HAIR_STYLE).count { it.id in owned })
+        assertEquals(1, AvatarPartCatalog.inCategory(AvatarPartCategory.EYE_STYLE).count { it.id in owned })
+        assertEquals(1, AvatarPartCatalog.inCategory(AvatarPartCategory.NOSE_STYLE).count { it.id in owned })
+        assertEquals(AvatarPartCatalog.DEFAULT_HAIR_STYLE, progress.characterAppearance.hairStyleId)
+    }
+
+    @Test
+    fun avatarPartsCostCoinsAndUnownedFeaturesCannotBeEquipped() {
         val starting = LearnerProgress(coins = 100)
-        val purchase = ProgressionRules.unlockAppearanceItem(starting, "hair-wavy")
-        assertEquals(40L, purchase.coinsSpent)
-        assertEquals(60L, purchase.progress.coins)
-        assertTrue("hair-wavy" in purchase.progress.ownedAppearanceItemIds)
-        assertEquals(AppearanceCatalog.HAIR_SHORT, purchase.progress.characterAppearance.hairStyleId)
+        val purchase = ProgressionRules.unlockAvatarPart(starting, "hair-curly")
+        assertEquals(75L, purchase.coinsSpent)
+        assertEquals(25L, purchase.progress.coins)
+        assertTrue("hair-curly" in purchase.progress.ownedAvatarPartIds)
 
-        val selected = ProgressionRules.selectAppearanceItem(purchase.progress, "hair-wavy")
-        assertEquals("hair-wavy", selected.characterAppearance.hairStyleId)
-        val tuned = ProgressionRules.updateCharacterAppearance(
-            selected,
-            selected.characterAppearance.copy(eyeSpacing = 84, eyeSize = 72, noseHeight = 63),
+        val shaped = ProgressionRules.setCharacterAppearance(
+            purchase.progress,
+            CharacterAppearance(hairStyleId = "hair-curly", eyeSpacing = 1.5f, eyeSize = -0.2f),
         )
-        assertEquals(84, tuned.characterAppearance.eyeSpacing)
-        assertEquals(72, tuned.characterAppearance.eyeSize)
-        assertEquals(63, tuned.characterAppearance.noseHeight)
-        assertEquals(selected.coins, tuned.coins)
+        assertEquals("hair-curly", shaped.characterAppearance.hairStyleId)
+        assertEquals(1f, shaped.characterAppearance.eyeSpacing)
+        assertEquals(0f, shaped.characterAppearance.eyeSize)
 
-        val repeated = ProgressionRules.unlockAppearanceItem(tuned, "hair-wavy")
-        assertEquals(0L, repeated.coinsSpent)
-        assertEquals(60L, repeated.progress.coins)
-        assertEquals(tuned, repeated.progress)
-        val lockedSelection = ProgressionRules.selectAppearanceItem(tuned, "eyes-round")
-        assertEquals(tuned.characterAppearance.eyeStyleId, lockedSelection.characterAppearance.eyeStyleId)
-        val unaffordable = ProgressionRules.unlockAppearanceItem(tuned, "skin-sky")
-        assertEquals(tuned, unaffordable.progress)
-        assertEquals(0L, unaffordable.coinsSpent)
+        val lockedSelection = ProgressionRules.setCharacterAppearance(
+            shaped,
+            shaped.characterAppearance.copy(hairStyleId = "hair-long"),
+        )
+        assertEquals("hair-curly", lockedSelection.characterAppearance.hairStyleId)
+        val unaffordable = ProgressionRules.unlockAvatarPart(LearnerProgress(coins = 50), "hair-curly")
+        assertEquals(50L, unaffordable.progress.coins)
+        assertFalse("hair-curly" in unaffordable.progress.ownedAvatarPartIds)
     }
 
     @Test

@@ -13,15 +13,12 @@ and **Android**. Every line of logic and every screen is in `commonMain`; the tw
 platform source sets contain nothing but a database driver, an HTTP engine and an
 entry point.
 
-On phones the bottom navigation is **Study**, **Store**, **Progression** and
-**Profile**. Study shows one downloaded course at a time as an ordered lesson
-path; use Store → Courses to download another course, then switch among
-installed courses. Store → Cosmetics offers character styles and colours bought
-with earned coins. Detailed appearance editing lives in Profile: six natural
-skin tones are unlocked from the start, with free controls for feature size,
-spacing and height. Progression contains daily and weekly quests, streak recovery
-and a separate achievements page. The older card library remains available from
-Profile.
+The bottom navigation is **Study**, **Store**, **Progress** and **Profile**. Study
+shows one downloaded course at a time as an ordered lesson path. Store has
+separate **Courses** and **Cosmetics** shelves: downloads are opt-in, while coins
+unlock individual avatar parts. Profile contains the character designer and the
+legacy card library. Progress keeps quests, streaks and coins in view, with the
+full achievement gallery on its own page.
 
 ---
 
@@ -93,8 +90,8 @@ The V2 question model supports multiple choice and prompted text input. Answers
 get immediate feedback and an explanation, and initially missed questions return
 once at the end of the lesson for a retry. The repository-hosted pilot contains
 four short TMUA lessons and two Further Maths lessons; these examples are not
-verified exam material. Course downloads are available from the Study header's
-Store button.
+verified exam material. Browse and explicitly download courses from the **Store
+> Courses** shelf in the bottom navigation.
 
 The older card library and its FSRS review flow remain accessible from Profile.
 That legacy library is separate from the V2 lesson path and still accepts the
@@ -111,11 +108,20 @@ retired, while their stored metadata remains compatible with older packs.
 
 ### Progression and themes
 
-Progression shows current and best streaks, six daily quests, four Monday-reset weekly quests, a separate achievements board, and a streak-repair action. Coins are awarded for lessons, correct recall, streaks and consistent study days—not raw question volume—and can be spent on appearance items in Store → Cosmetics. New learners can choose from six natural skin tones, two hair styles, one eye style and one nose style, all included at no cost; additional hair, eye and nose styles and fantasy colours cost coins. Profile keeps appearance editing together with free sliders for hair size and hairline height, eye size, spacing and height, and nose size and height. Cosmetics never affect lesson access, answer checking or spaced-repetition scheduling. Restoring a broken streak costs more for every additional missed day, with the price doubling each time. All progression and purchases are stored locally.
+Progress shows current and best streaks, six daily quests, four Monday-reset
+weekly quests and a compact badge summary; the full achievement gallery is a
+separate page. Coins reward lessons, correct recall, streaks and consistent
+study days—not raw question volume—and can be spent in Store > Cosmetics on
+individual hairstyles, eye and nose styles, natural and fantasy skin tones, and
+hair and eye colours. Everyone starts with two hairstyles, one eye style, one
+nose style and all eight natural skin tones. Once a feature is unlocked, its
+applicable size, spacing and position controls are always free. Appearance
+purchases never affect lesson access, answer checking or spaced-repetition
+scheduling. Restoring a broken streak costs more for every additional missed
+day, with the price doubling each time. Progress and purchases are stored locally.
 
-The default appearance is light mode in the playful palette, with **Ink & Paper**
-available as an alternative. Both styles can follow the system or be fixed to
-light or dark appearance; existing explicit choices are preserved.
+The default palette is playful and **light**. **Ink & Paper** is available as an
+alternative; either style can follow the system or be fixed to light or dark.
 
 ### Maths
 
@@ -171,7 +177,12 @@ content, where it becomes fully editable.
 
 ### Progression and profile
 
-Progression includes daily and weekly learning quests, automatically rewarded mastery milestones on a dedicated Achievements page, coins and streak recovery with an exponentially increasing price. Profile keeps the display name, live character preview and detailed appearance editor together, links to the active course, and keeps the legacy card library reachable. Cosmetics are unlocked in Store and provide no learning advantages.
+Progression includes daily and weekly learning quests, automatically rewarded
+mastery milestones, coins and streak recovery with an exponentially increasing
+price. Profile stores the display name, previews the customizable learner avatar,
+opens the Character Designer, links to the active course and keeps the legacy
+card library reachable. Appearance unlocks are optional and provide no learning
+advantages.
 
 ---
 
@@ -347,8 +358,8 @@ or a proxy that adds the header. Avoid saving a secret-bearing URL on a shared d
   are now on the dedicated `course-content` branch and are opt-in through the Store.
 - **Production Android distribution.** The APK in Releases is a debug build signed
   with the debug key, not a Play Store release.
-- **Social/profile features.** Avatar customisation, friends and shared progress
-  are placeholders for later work; the profile name is stored locally.
+- **Social/profile features.** Avatar customisation and the local profile are
+  implemented; friends and shared progress are still future work.
 - **Richer learning plans.** One end-of-lesson retry is in place for missed
   questions. Opt-in reminders, daily study planning, pause/resume, worked examples
   and adaptive review plans still need design and evaluation.

@@ -19,8 +19,9 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppShell
 import com.revisionapp.ui.components.ProvideRichTextRenderer
-import com.revisionapp.ui.screens.AchievementScreen
+import com.revisionapp.ui.screens.AchievementsScreen
 import com.revisionapp.ui.screens.CardEditorScreen
+import com.revisionapp.ui.screens.CharacterCustomizationScreen
 import com.revisionapp.ui.screens.CourseLessonScreen
 import com.revisionapp.ui.screens.CourseStoreScreen
 import com.revisionapp.ui.screens.CourseStudyScreen
@@ -64,8 +65,9 @@ fun App(platform: PlatformServices) {
                             Route.Study -> CourseStudyScreen(appState)
                             Route.CourseStore -> CourseStoreScreen(appState)
                             Route.Progression, Route.Stats -> ProgressionScreen(appState)
-                            Route.Achievements -> AchievementScreen(appState)
+                            Route.Achievements -> AchievementsScreen(appState)
                             Route.Profile -> ProfileScreen(appState)
+                            Route.CharacterCustomizer -> CharacterCustomizationScreen(appState)
                             Route.Library -> LibraryScreen(appState)
                             Route.LegacyStudy -> StudyScreen(appState)
                             is Route.Lesson -> CourseLessonScreen(appState, route)

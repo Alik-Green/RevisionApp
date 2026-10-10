@@ -12,7 +12,7 @@ import com.revisionapp.ui.Route
 enum class Destination(val route: Route, val label: String, val icon: ImageVector) {
     Study(Route.Study, "Study", Icons.Filled.PlayArrow),
     Store(Route.CourseStore, "Store", Icons.Filled.Storefront),
-    Progression(Route.Progression, "Progression", Icons.Filled.EmojiEvents),
+    Progression(Route.Progression, "Progress", Icons.Filled.EmojiEvents),
     Profile(Route.Profile, "Profile", Icons.Filled.Person),
     ;
 
@@ -20,12 +20,13 @@ enum class Destination(val route: Route, val label: String, val icon: ImageVecto
         /** The destination a route belongs to, or null for a pushed sub-screen. */
         fun of(route: Route): Destination? = entries.firstOrNull { it.route == route }
 
-        /** Settings, achievements, the old library and editors are secondary routes. */
+        /** Settings, the old library, designers and editors are secondary routes. */
         fun owning(route: Route): Destination = when (route) {
             Route.Study, is Route.Lesson -> Study
             Route.CourseStore -> Store
-            Route.Progression, Route.Achievements, Route.Stats -> Progression
+            Route.Progression, Route.Stats, Route.Achievements -> Progression
             Route.Profile,
+            Route.CharacterCustomizer,
             Route.Settings,
             Route.Library,
             Route.LegacyStudy,

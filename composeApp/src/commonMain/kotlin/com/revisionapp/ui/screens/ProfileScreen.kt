@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.dp
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.CharacterPortrait
+import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 
-/** Local learner profile with an editable name and full character appearance controls. */
+/** Local learner profile with an editable name and earned-only character styling. */
 @Composable
 fun ProfileScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
@@ -69,11 +69,11 @@ fun ProfileScreen(state: AppState) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    CharacterPortrait(progress.characterAppearance, width = 96.dp, height = 118.dp)
+                    CharacterAvatar(progress.characterAppearance, size = 84.dp)
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
-                            "Your study character · ready for its next look",
+                            "Your learner character",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -81,9 +81,6 @@ fun ProfileScreen(state: AppState) {
                     }
                 }
             }
-
-            SectionLabel("CHARACTER STUDIO")
-            CharacterEditor(state, progress, progressionReady)
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -124,7 +121,7 @@ fun ProfileScreen(state: AppState) {
                     SectionLabel("ACTIVE COURSE")
                     Text(activeCourse?.name ?: "Choose a course", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text(
-                        activeCourse?.description ?: "Browse the Course Store and download a learning path to get started.",
+                        activeCourse?.description ?: "Browse Courses in the Store and download a learning path to get started.",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     OutlinedButton(
@@ -133,7 +130,33 @@ fun ProfileScreen(state: AppState) {
                         },
                         enabled = progressionReady,
                         modifier = Modifier.fillMaxWidth(),
-                    ) { Text(if (activeCourse == null) "Open course store" else "Go to Study") }
+                    ) { Text(if (activeCourse == null) "Open Store" else "Go to Study") }
+                }
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                color = MaterialTheme.colorScheme.secondaryContainer,
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionLabel("YOUR CHARACTER")
+                    Text("Design your learner", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "Choose skin tone, hair, eyes and nose. Shape and position unlocked features for free.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    )
+                    Button(
+                        onClick = { state.navigate(Route.CharacterCustomizer) },
+                        enabled = progressionReady,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Customize appearance") }
+                    OutlinedButton(
+                        onClick = { state.openCosmeticsStore() },
+                        enabled = progressionReady,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Browse cosmetic parts") }
                 }
             }
 

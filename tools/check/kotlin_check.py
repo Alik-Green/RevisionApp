@@ -331,10 +331,17 @@ def main(argv):
         if not indices:
             continue
         body = "\n".join(line for i, line in enumerate(lines) if i not in indices)
+        body_code = mask_non_code(body)
+        delegated_reads = re.search(r"\b(?:val|var)\s+[A-Za-z_]\w*\s+by\b", body_code)
+        delegated_writes = re.search(r"\bvar\s+[A-Za-z_]\w*\s+by\b", body_code)
         specs = [lines[i][len("import "):].strip() for i in sorted(indices)]
         for spec in specs:
             name = spec.split(" as ")[-1].strip() if " as " in spec else spec.rsplit(".", 1)[-1]
-            if not re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])", body):
+            used_by_delegate = (name == "getValue" and delegated_reads) or (name == "setValue" and delegated_writes)
+            if not used_by_delegate and not re.search(
+                r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])",
+                body_code,
+            ):
                 problems += 1
                 print("UNUSED   {}: {}".format(path, spec))
             if spec.startswith("com.revisionapp.") and name not in declared and name not in GENERATED:

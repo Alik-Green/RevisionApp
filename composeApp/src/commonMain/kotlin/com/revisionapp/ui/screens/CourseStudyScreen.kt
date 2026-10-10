@@ -44,11 +44,12 @@ import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
-import com.revisionapp.domain.progression.AppearanceCatalog
 import com.revisionapp.domain.progression.CharacterAppearance
+import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
+import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.CharacterPortrait
+import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 
@@ -89,9 +90,9 @@ fun CourseStudyScreen(state: AppState) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(14.dp),
                     ) {
-                        CharacterPortrait(AppearanceCatalog.defaultAppearance(), width = 82.dp, height = 100.dp)
+                        CharacterAvatar(progress.characterAppearance, size = 82.dp)
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text("Your character is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text("Your learner is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                             Text(
                                 "Choose a course and start a learning path at your own pace.",
                                 style = MaterialTheme.typography.bodyMedium,
@@ -101,11 +102,8 @@ fun CourseStudyScreen(state: AppState) {
                     }
                 }
                 EmptyMessage(
-                    loadError ?: "No courses are downloaded yet. Browse the Store to choose a learning path.",
+                    loadError ?: "No courses are downloaded yet. Open the Store tab to choose a learning path.",
                 )
-                Button(onClick = { state.openCourseStore() }, modifier = Modifier.fillMaxWidth()) {
-                    Text("Browse course store")
-                }
             }
             return@Column
         }
@@ -113,12 +111,13 @@ fun CourseStudyScreen(state: AppState) {
         val orderedLessons = course.orderedLessons()
         val completedCount = orderedLessons.count { state.isCourseLessonComplete(course.id, it.id) }
         val nextLesson = orderedLessons.firstOrNull { !state.isCourseLessonComplete(course.id, it.id) }
-        val appearance = progress.characterAppearance
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CourseSummaryCard(state, course, completedCount, orderedLessons.size, appearance, nextLesson)
+            CourseSummaryCard(state, course, completedCount, orderedLessons.size, progress.characterAppearance, nextLesson)
+            val dailyQuests = ProgressionRules.dailyQuests(progress)
+            QuestSpotlight(dailyQuests.firstOrNull { !it.isClaimed }, onOpen = { state.switchTab(Route.Progression) })
             if (catalog.courses.size > 1) {
                 Box {
                     TextButton(onClick = { menuExpanded.value = true }) {
@@ -155,10 +154,7 @@ fun CourseStudyScreen(state: AppState) {
                 }
             }
             if (!loadError.isNullOrBlank()) {
-                EmptyMessage("Saved course data needs to be downloaded again. $loadError")
-                Button(onClick = { state.openCourseStore() }, modifier = Modifier.fillMaxWidth()) {
-                    Text("Open course store")
-                }
+                EmptyMessage("Saved course data needs to be downloaded again. Open the Store tab to retry. $loadError")
             }
             Spacer(Modifier.height(12.dp))
         }
@@ -193,7 +189,7 @@ private fun CourseSummaryCard(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
-                CharacterPortrait(appearance, width = 74.dp, height = 90.dp)
+                CharacterAvatar(appearance, size = 74.dp)
             }
             Text(
                 "$completed of $total lessons complete",

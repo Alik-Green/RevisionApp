@@ -50,8 +50,10 @@ data class LearnerProgress(
     val bestCorrectAnswerStreak: Int = 0,
     val totalStudyDays: Int = 0,
     val unlockedAchievementIds: List<String> = emptyList(),
-    val ownedAppearanceItemIds: List<String> = AppearanceCatalog.starterItemIds,
-    val characterAppearance: CharacterAppearance = AppearanceCatalog.defaultAppearance(),
+    /** v2.1 field retained only to migrate existing cosmetic unlocks on startup. */
+    val ownedAppearanceItemIds: List<String> = emptyList(),
+    val characterAppearance: CharacterAppearance = CharacterAppearance(),
+    val ownedAvatarPartIds: List<String> = AvatarPartCatalog.startingOwnedIds,
     val daily: DailyProgress = DailyProgress(),
     val weekly: WeeklyProgress = WeeklyProgress(),
 )
@@ -459,57 +461,97 @@ object ProgressionRules {
         )
     }
 
-    fun unlockAppearanceItem(progress: LearnerProgress, itemId: String): ProgressionMutation {
-        val item = AppearanceCatalog.find(itemId) ?: return ProgressionMutation(progress)
-        if (item.id in progress.ownedAppearanceItemIds || progress.coins < item.cost) {
+    /** Converts v2.1 avatar IDs and 0..100 sliders into the current 0..1 model. */
+    fun migrateLegacyAppearance(progress: LearnerProgress): LearnerProgress {
+        val appearance = progress.characterAppearance
+        val legacyIds = listOf(
+            appearance.skinToneId,
+            appearance.hairStyleId,
+            appearance.hairColorId,
+            appearance.eyeStyleId,
+            appearance.eyeColorId,
+            appearance.noseStyleId,
+        )
+        val legacyShapeValues = listOf(
+            appearance.hairSize,
+            appearance.hairHeight,
+            appearance.eyeSize,
+            appearance.eyeSpacing,
+            appearance.eyeHeight,
+            appearance.noseSize,
+            appearance.noseHeight,
+        )
+        val hasLegacyFormat = progress.ownedAppearanceItemIds.isNotEmpty() ||
+            legacyIds.any { it in legacyAppearancePartIds } ||
+            legacyShapeValues.any { it > 1f }
+        if (!hasLegacyFormat) return progress
+
+        fun mapped(id: String): String = legacyAppearancePartIds[id] ?: id
+
+        val ownedIds = (progress.ownedAvatarPartIds + progress.ownedAppearanceItemIds.map(::mapped))
+            .filter { AvatarPartCatalog.find(it) != null }
+            .distinct()
+        val migratedAppearance = appearance.copy(
+            skinToneId = mapped(appearance.skinToneId),
+            hairStyleId = mapped(appearance.hairStyleId),
+            hairColorId = mapped(appearance.hairColorId),
+            eyeStyleId = mapped(appearance.eyeStyleId),
+            eyeColorId = mapped(appearance.eyeColorId),
+            noseStyleId = mapped(appearance.noseStyleId),
+            hairSize = legacySlider(appearance.hairSize),
+            hairHeight = legacySlider(appearance.hairHeight),
+            eyeSize = legacySlider(appearance.eyeSize),
+            eyeSpacing = legacySlider(appearance.eyeSpacing),
+            eyeHeight = legacySlider(appearance.eyeHeight),
+            noseSize = legacySlider(appearance.noseSize),
+            noseHeight = legacySlider(appearance.noseHeight),
+        )
+        val migrated = progress.copy(
+            ownedAppearanceItemIds = emptyList(),
+            ownedAvatarPartIds = (ownedIds + AvatarPartCatalog.startingOwnedIds).distinct(),
+            characterAppearance = migratedAppearance,
+        )
+        return setCharacterAppearance(migrated, migratedAppearance)
+    }
+
+    /** Unlock one avatar part with earned coins; purchases never alter study mechanics. */
+    fun unlockAvatarPart(progress: LearnerProgress, partId: String): ProgressionMutation {
+        val part = AvatarPartCatalog.find(partId) ?: return ProgressionMutation(progress)
+        if (part.id in progress.ownedAvatarPartIds || progress.coins < part.costCoins) {
             return ProgressionMutation(progress)
         }
         return ProgressionMutation(
             progress.copy(
-                coins = progress.coins - item.cost,
-                ownedAppearanceItemIds = (progress.ownedAppearanceItemIds + item.id).distinct(),
+                coins = progress.coins - part.costCoins,
+                ownedAvatarPartIds = (progress.ownedAvatarPartIds + part.id).distinct(),
             ),
-            coinsSpent = item.cost,
+            coinsSpent = part.costCoins,
         )
     }
 
-    fun selectAppearanceItem(progress: LearnerProgress, itemId: String): LearnerProgress {
-        val item = AppearanceCatalog.find(itemId) ?: return progress
-        if (item.id !in progress.ownedAppearanceItemIds) return progress
-        val appearance = when (item.category) {
-            AppearanceCategory.SKIN_TONE -> progress.characterAppearance.copy(skinToneId = item.id)
-            AppearanceCategory.HAIR_STYLE -> progress.characterAppearance.copy(hairStyleId = item.id)
-            AppearanceCategory.HAIR_COLOR -> progress.characterAppearance.copy(hairColorId = item.id)
-            AppearanceCategory.EYE_STYLE -> progress.characterAppearance.copy(eyeStyleId = item.id)
-            AppearanceCategory.EYE_COLOR -> progress.characterAppearance.copy(eyeColorId = item.id)
-            AppearanceCategory.NOSE_STYLE -> progress.characterAppearance.copy(noseStyleId = item.id)
-        }
-        return progress.copy(characterAppearance = appearance)
-    }
-
-    /** Shape sliders are intentionally free; only new cosmetic pieces cost coins. */
-    fun updateCharacterAppearance(progress: LearnerProgress, appearance: CharacterAppearance): LearnerProgress {
+    /** Only owned, correctly categorized pieces can be equipped; sizing remains free. */
+    fun setCharacterAppearance(progress: LearnerProgress, appearance: CharacterAppearance): LearnerProgress {
         val current = progress.characterAppearance
-        fun available(id: String, fallback: String, category: AppearanceCategory): String =
-            AppearanceCatalog.find(id)?.takeIf {
-                it.category == category && it.id in progress.ownedAppearanceItemIds
-            }?.id ?: fallback
+        val owned = progress.ownedAvatarPartIds.toSet()
+        fun ownedSelection(id: String, category: AvatarPartCategory, fallback: String): String =
+            id.takeIf { it in owned && AvatarPartCatalog.find(it)?.category == category } ?: fallback
 
         return progress.copy(
             characterAppearance = appearance.copy(
-                skinToneId = available(appearance.skinToneId, current.skinToneId, AppearanceCategory.SKIN_TONE),
-                hairStyleId = available(appearance.hairStyleId, current.hairStyleId, AppearanceCategory.HAIR_STYLE),
-                hairColorId = available(appearance.hairColorId, current.hairColorId, AppearanceCategory.HAIR_COLOR),
-                eyeStyleId = available(appearance.eyeStyleId, current.eyeStyleId, AppearanceCategory.EYE_STYLE),
-                eyeColorId = available(appearance.eyeColorId, current.eyeColorId, AppearanceCategory.EYE_COLOR),
-                noseStyleId = available(appearance.noseStyleId, current.noseStyleId, AppearanceCategory.NOSE_STYLE),
-                hairSize = appearance.hairSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                hairHeight = appearance.hairHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                eyeSize = appearance.eyeSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                eyeSpacing = appearance.eyeSpacing.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                eyeHeight = appearance.eyeHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                noseSize = appearance.noseSize.coerceIn(SHAPE_MIN, SHAPE_MAX),
-                noseHeight = appearance.noseHeight.coerceIn(SHAPE_MIN, SHAPE_MAX),
+                hairStyleId = ownedSelection(appearance.hairStyleId, AvatarPartCategory.HAIR_STYLE, current.hairStyleId),
+                eyeStyleId = ownedSelection(appearance.eyeStyleId, AvatarPartCategory.EYE_STYLE, current.eyeStyleId),
+                noseStyleId = ownedSelection(appearance.noseStyleId, AvatarPartCategory.NOSE_STYLE, current.noseStyleId),
+                skinToneId = ownedSelection(appearance.skinToneId, AvatarPartCategory.SKIN_TONE, current.skinToneId),
+                hairColorId = ownedSelection(appearance.hairColorId, AvatarPartCategory.HAIR_COLOR, current.hairColorId),
+                eyeColorId = ownedSelection(appearance.eyeColorId, AvatarPartCategory.EYE_COLOR, current.eyeColorId),
+                eyeSpacing = appearance.eyeSpacing.coerceIn(0f, 1f),
+                eyeSize = appearance.eyeSize.coerceIn(0f, 1f),
+                eyeHeight = appearance.eyeHeight.coerceIn(0f, 1f),
+                noseSize = appearance.noseSize.coerceIn(0f, 1f),
+                noseHeight = appearance.noseHeight.coerceIn(0f, 1f),
+                hairSize = appearance.hairSize.coerceIn(0f, 1f),
+                hairHeight = appearance.hairHeight.coerceIn(0f, 1f),
+                hairVolume = appearance.hairVolume.coerceIn(0f, 1f),
             ),
         )
     }
@@ -632,9 +674,33 @@ object ProgressionRules {
         return difference.takeIf { it >= 0 }
     }
 
+    private fun legacySlider(value: Float): Float = (value / 100f).coerceIn(0f, 1f)
+
+    private val legacyAppearancePartIds = mapOf(
+        "skin-deep" to "skin-brown",
+        "skin-dark" to "skin-deep",
+        "hair-short" to "hair-crop",
+        "hair-wavy" to "hair-waves",
+        "hair-colour-brown" to "hair-dark-brown",
+        "hair-colour-black" to "hair-black",
+        "hair-colour-blonde" to "hair-blonde",
+        "hair-colour-copper" to "hair-auburn",
+        "hair-colour-silver" to "hair-silver",
+        "hair-colour-rose" to "hair-rose",
+        "hair-colour-blue" to "hair-blue",
+        "eyes-classic" to "eyes-round",
+        "eye-colour-brown" to "eyes-brown",
+        "eye-colour-blue" to "eyes-blue",
+        "eye-colour-green" to "eyes-green",
+        "eye-colour-hazel" to "eyes-hazel",
+        "eye-colour-grey" to "eyes-grey",
+        "eye-colour-violet" to "eyes-violet",
+        "nose-classic" to "nose-button",
+        "nose-wide" to "nose-soft",
+        "nose-straight" to "nose-bridge",
+    )
+
     private const val MAX_DISPLAY_NAME_LENGTH = 24
-    private const val SHAPE_MIN = 0
-    private const val SHAPE_MAX = 100
     private const val BASE_STREAK_RECOVERY_COST = 25L
     private const val MAX_STREAK_RECOVERY_COST = 1_000_000L
     private const val MAX_COST_DOUBLINGS = 16

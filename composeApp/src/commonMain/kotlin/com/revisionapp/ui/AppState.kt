@@ -24,6 +24,7 @@ import com.revisionapp.domain.model.TagMatch
 import com.revisionapp.domain.model.Topic
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.model.randomUuid
+import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
@@ -66,8 +67,9 @@ sealed interface Route {
     data object Study : Route
     data object CourseStore : Route
     data object Progression : Route
-    data object Achievements : Route
     data object Profile : Route
+    data object CharacterCustomizer : Route
+    data object Achievements : Route
 
     /** Existing card-library screens are reachable from Profile, not the tab bar. */
     data object Library : Route
@@ -89,11 +91,6 @@ sealed interface Route {
 
     /** Debug screen under Settings > Developer: both maths renderers side by side. */
     data object MathGallery : Route
-}
-
-enum class StoreSection {
-    COURSES,
-    COSMETICS,
 }
 
 /** What the settings screen shows about content syncing. */
@@ -223,8 +220,11 @@ class AppState(
     private val _courseDownloadId = MutableStateFlow<String?>(null)
     val courseDownloadId: StateFlow<String?> = _courseDownloadId.asStateFlow()
 
-    private val _storeSection = MutableStateFlow(StoreSection.COURSES)
-    val storeSection: StateFlow<StoreSection> = _storeSection.asStateFlow()
+    private val _cosmeticsStoreSelected = MutableStateFlow(false)
+    val cosmeticsStoreSelected: StateFlow<Boolean> = _cosmeticsStoreSelected.asStateFlow()
+
+    private val _cosmeticsStoreCategory = MutableStateFlow(AvatarPartCategory.HAIR_STYLE)
+    val cosmeticsStoreCategory: StateFlow<AvatarPartCategory> = _cosmeticsStoreCategory.asStateFlow()
 
     private val _learnerProgress = MutableStateFlow(LearnerProgress())
     val learnerProgress: StateFlow<LearnerProgress> = _learnerProgress.asStateFlow()
@@ -303,11 +303,12 @@ class AppState(
             val restored = graph.settings.read(SettingKeys.LEARNER_PROGRESS_V2)?.let { raw ->
                 runCatching { graph.json.decodeFromString<LearnerProgress>(raw) }.getOrNull()
             } ?: LearnerProgress()
-            val selectedCourseId = restored.activeCourseId.takeIf { _courseCatalog.value.course(it) != null }
+            val migrated = ProgressionRules.migrateLegacyAppearance(restored)
+            val selectedCourseId = migrated.activeCourseId.takeIf { _courseCatalog.value.course(it) != null }
                 ?: _courseCatalog.value.courses.firstOrNull()?.id
                 ?: ""
             val readyProgress = ProgressionRules.forToday(
-                restored.copy(activeCourseId = selectedCourseId),
+                migrated.copy(activeCourseId = selectedCourseId),
                 localToday(),
             )
             val progress = ProgressionRules.claimAvailableRewards(readyProgress).progress
@@ -417,17 +418,22 @@ class AppState(
     }
 
     fun openCourseStore() {
-        _storeSection.value = StoreSection.COURSES
+        _cosmeticsStoreSelected.value = false
         switchTab(Route.CourseStore)
     }
 
-    fun openCosmeticsStore() {
-        _storeSection.value = StoreSection.COSMETICS
+    fun openCosmeticsStore(category: AvatarPartCategory? = null) {
+        if (category != null) _cosmeticsStoreCategory.value = category
+        _cosmeticsStoreSelected.value = true
         switchTab(Route.CourseStore)
     }
 
-    fun selectStoreSection(section: StoreSection) {
-        _storeSection.value = section
+    fun selectStoreShelf(cosmetics: Boolean) {
+        _cosmeticsStoreSelected.value = cosmetics
+    }
+
+    fun selectCosmeticsCategory(category: AvatarPartCategory) {
+        _cosmeticsStoreCategory.value = category
     }
 
     fun back() {
@@ -463,16 +469,12 @@ class AppState(
         updateProgression { ProgressionRules.setDisplayName(it, name) }
     }
 
-    fun unlockAppearanceItem(itemId: String) {
-        updateProgression { ProgressionRules.unlockAppearanceItem(it, itemId).progress }
-    }
-
-    fun selectAppearanceItem(itemId: String) {
-        updateProgression { ProgressionRules.selectAppearanceItem(it, itemId) }
+    fun unlockAvatarPart(partId: String) {
+        updateProgression { ProgressionRules.unlockAvatarPart(it, partId).progress }
     }
 
     fun updateCharacterAppearance(appearance: CharacterAppearance) {
-        updateProgression { ProgressionRules.updateCharacterAppearance(it, appearance) }
+        updateProgression { ProgressionRules.setCharacterAppearance(it, appearance) }
     }
 
     fun recordCourseQuestionAnswered(isCorrect: Boolean) {
