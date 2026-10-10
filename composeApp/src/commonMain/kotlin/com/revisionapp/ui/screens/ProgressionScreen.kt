@@ -205,8 +205,11 @@ private fun QuestCard(quest: DailyQuestProgress, cadence: String) {
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             1.dp,
-            if (quest.isComplete) MaterialTheme.colorScheme.tertiary.copy(alpha = 0.65f)
-            else MaterialTheme.colorScheme.outlineVariant,
+            if (quest.isComplete) {
+                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.65f)
+            } else {
+                MaterialTheme.colorScheme.outlineVariant
+            },
         ),
         tonalElevation = 1.dp,
     ) {
