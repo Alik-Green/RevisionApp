@@ -25,12 +25,16 @@ import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.study.QuestionFactory
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.domain.usecase.StreakCalculator
+import com.revisionapp.domain.usecase.WeeklyQuestCalculator
+import com.revisionapp.domain.usecase.WeeklyQuestProgress
 import com.revisionapp.ui.render.RichTextRenderer
 import com.revisionapp.ui.session.SessionCard
 import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
+import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.StudySession
 import com.revisionapp.ui.theme.ThemeMode
+import com.revisionapp.ui.theme.ThemeStyle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,11 +93,18 @@ data class SettingsUi(
     val baseUrl: String,
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
+    val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
 ) {
     companion object {
         fun initial(): SettingsUi =
-            SettingsUi(ContentSync.DEFAULT_BASE_URL, DEFAULT_RETENTION, emptyList(), ThemeMode.SYSTEM)
+            SettingsUi(
+                ContentSync.DEFAULT_BASE_URL,
+                DEFAULT_RETENTION,
+                emptyList(),
+                ThemeStyle.PLAYFUL,
+                ThemeMode.SYSTEM,
+            )
 
         const val DEFAULT_RETENTION: Double = 0.9
         const val MIN_RETENTION: Double = 0.7
@@ -110,11 +121,28 @@ data class StatsSnapshot(
     val totalCards: Int,
     val userCards: Int,
     val accuracy: List<TopicAccuracyRow>,
+    val questPoints: Int = 0,
+    val studiedDaysThisWeek: Int = 0,
+    val weeklyQuests: List<WeeklyQuestProgress> = emptyList(),
 ) {
     companion object {
-        fun empty(): StatsSnapshot = StatsSnapshot(0, 0, 0, 0, 0, 0, 0, emptyList())
+        fun empty(): StatsSnapshot = StatsSnapshot(
+            dueToday = 0,
+            dueNow = 0,
+            streakDays = 0,
+            daysStudied = 0,
+            totalReviews = 0,
+            totalCards = 0,
+            userCards = 0,
+            accuracy = emptyList(),
+        )
     }
 }
+
+private data class SessionStreakContext(
+    val alreadyStudiedToday: Boolean,
+    val currentStreak: Int,
+)
 
 /**
  * The one state holder every screen talks to. Unidirectional: screens read the
@@ -171,6 +199,7 @@ class AppState(
 
     private val backStack = ArrayDeque<Route>()
     private var session: StudySession? = null
+    private var sessionStreakContext: SessionStreakContext? = null
 
     val platformName: String get() = graph.platformName
     val dataDirectory: String get() = graph.dataDirectory
@@ -310,11 +339,6 @@ class AppState(
 
     // --------------------------------------------------------------- study ---
 
-    /**
-     * Builds a session from the current filter. Cards the chosen mode cannot
-     * present (a long paragraph in tile mode, a thin topic in MCQ) drop out
-     * silently here.
-     */
     /** How many cards the next session takes; [SESSION_SIZE_ALL] means no limit. */
     private fun sessionLimit(): Int {
         val size = _sessionSize.value
@@ -325,17 +349,30 @@ class AppState(
         _sessionSize.value = size
     }
 
-    fun startStudy(mode: StudyMode) {
+    /**
+     * Starts a lesson without asking the learner to choose a question mode. Due
+     * cards are preferred; when none are due, the scoped cards can be studied ahead.
+     */
+    fun startStudy() {
         scope.launch(Dispatchers.Default) {
             val snapshot = _snapshot.value
             val filter = _filter.value
-            val queue = snapshot.dueCards(filter)
+            val due = snapshot.dueCards(filter)
+            val queue = (if (due.isNotEmpty()) due else snapshot.filtered(filter))
                 .sortedBy { snapshot.stateOf(it.id).dueAt }
                 .take(sessionLimit())
 
+            val zone = TimeZone.currentSystemDefault()
+            val today = graph.clock.now().toLocalDateTime(zone).date
+            val reviewDays = graph.progress.reviewDays()
+            sessionStreakContext = SessionStreakContext(
+                alreadyStudiedToday = today.toString() in reviewDays,
+                currentStreak = StreakCalculator.currentStreak(reviewDays, today),
+            )
+
             val checker = DefaultAnswerChecker(corpus = graph.library.corpus())
             val scheduler = graph.scheduler()
-            val items = queue.mapNotNull { card -> buildSessionCard(card, mode, snapshot) }
+            val items = queue.mapNotNull { card -> buildSessionCard(card, StudyMode.MIXED, snapshot) }
             val learned = graph.learned.all()
 
             session = StudySession(
@@ -384,12 +421,41 @@ class AppState(
     fun onSessionEvent(event: SessionEvent) {
         val current = session ?: return
         current.onEvent(event)
-        _sessionState.value = current.state
-        if (current.state is SessionState.Finished) refresh()
+        val finished = current.state as? SessionState.Finished
+        if (finished == null) {
+            _sessionState.value = current.state
+        } else {
+            val context = sessionStreakContext ?: SessionStreakContext(false, 0)
+            val streakDays = when {
+                context.alreadyStudiedToday -> context.currentStreak
+                context.currentStreak > 0 -> context.currentStreak + 1
+                else -> 1
+            }
+            val summary = finished.summary.copy(
+                streakDays = streakDays,
+                streakAdvanced = !context.alreadyStudiedToday,
+            )
+            _sessionState.value = SessionState.Finished(summary)
+            refreshAfterSession(summary)
+        }
+    }
+
+    /** Refresh after the session and optimistically include today's completed review. */
+    private fun refreshAfterSession(summary: SessionSummary) {
+        scope.launch(Dispatchers.Default) {
+            val snapshot = graph.planner.snapshot(graph.clock.now())
+            _snapshot.value = snapshot
+            applyLocationToFilter()
+            val today = graph.clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val days = graph.progress.reviewDays()
+            val completedDays = if (summary.reviewed > 0) days + today.toString() else days
+            loadStatsInto(snapshot, completedDays)
+        }
     }
 
     fun endSession() {
         session = null
+        sessionStreakContext = null
         _sessionState.value = SessionState.Empty
         backStack.removeAll { it == Route.Study }
         _route.value = Route.Library
@@ -489,12 +555,13 @@ class AppState(
         scope.launch(Dispatchers.Default) { loadStatsInto(graph.planner.snapshot(graph.clock.now())) }
     }
 
-    private fun loadStatsInto(snapshot: LibrarySnapshot) {
+    private fun loadStatsInto(snapshot: LibrarySnapshot, knownReviewDays: Collection<String>? = null) {
         val zone = TimeZone.currentSystemDefault()
         val now = graph.clock.now()
         val today = now.toLocalDateTime(zone).date
         val endOfToday = today.atStartOfDayIn(zone) + 1.days
-        val days = graph.progress.reviewDays()
+        val days = (knownReviewDays ?: graph.progress.reviewDays()).distinct()
+        val quests = WeeklyQuestCalculator.calculate(days, today)
         val names = snapshot.topics.associate { it.id to it.name }
 
         _stats.value = StatsSnapshot(
@@ -516,6 +583,9 @@ class AppState(
                     )
                 }
                 .sortedByDescending { it.reviews },
+            questPoints = quests.totalPoints,
+            studiedDaysThisWeek = quests.studiedDaysThisWeek,
+            weeklyQuests = quests.quests,
         )
     }
 
@@ -585,7 +655,15 @@ class AppState(
         }
     }
 
-    /** Light, dark or follow the system. Applied by `InkPaperTheme` at the root. */
+    /** Stores the selected colour style; the playful palette is the default. */
+    fun setThemeStyle(style: ThemeStyle) {
+        scope.launch(Dispatchers.Default) {
+            graph.settings.write(SettingKeys.THEME_STYLE, style.name)
+            loadSettingsInto()
+        }
+    }
+
+    /** Light, dark or follow the system. Applied by `RevisionAppTheme` at the root. */
     fun setThemeMode(mode: ThemeMode) {
         scope.launch(Dispatchers.Default) {
             graph.settings.write(SettingKeys.THEME_MODE, mode.name)
@@ -604,6 +682,7 @@ class AppState(
             desiredRetention = graph.settings.read(SettingKeys.DESIRED_RETENTION)?.toDoubleOrNull()
                 ?: SettingsUi.DEFAULT_RETENTION,
             packs = graph.packs.installed(),
+            themeStyle = ThemeStyle.fromStored(graph.settings.read(SettingKeys.THEME_STYLE)),
             themeMode = ThemeMode.fromStored(graph.settings.read(SettingKeys.THEME_MODE)),
         )
     }

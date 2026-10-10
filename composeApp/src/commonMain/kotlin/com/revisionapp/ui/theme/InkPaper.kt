@@ -34,7 +34,7 @@ val InkPaperLight: ColorScheme = lightColorScheme(
     secondaryContainer = Color(0xFFCDEFF0),
     onSecondaryContainer = Color(0xFF00373A),
     tertiary = Color(0xFFC77510),
-    onTertiary = Color(0xFFFFFFFF),
+    onTertiary = Color(0xFF2C1700),
     tertiaryContainer = Color(0xFFFFEFD8),
     onTertiaryContainer = Color(0xFF4A2800),
     background = Color(0xFFF8F7F4),
@@ -99,6 +99,83 @@ val InkPaperDark: ColorScheme = darkColorScheme(
     scrim = Color(0xFF000000),
 )
 
+/** Default, brighter palette: orchid, berry and mint on warm, paper-like surfaces. */
+val PlayfulLight: ColorScheme = lightColorScheme(
+    primary = Color(0xFF5540C9),
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = Color(0xFFE8E0FF),
+    onPrimaryContainer = Color(0xFF21105E),
+    inversePrimary = Color(0xFFC9BCFF),
+    secondary = Color(0xFF9B245D),
+    onSecondary = Color(0xFFFFFFFF),
+    secondaryContainer = Color(0xFFFFD9E8),
+    onSecondaryContainer = Color(0xFF3C0020),
+    tertiary = Color(0xFF006B61),
+    onTertiary = Color(0xFFFFFFFF),
+    tertiaryContainer = Color(0xFFC5F2E9),
+    onTertiaryContainer = Color(0xFF002F2B),
+    background = Color(0xFFFFF8F5),
+    onBackground = Color(0xFF251D27),
+    surface = Color(0xFFFFFBFA),
+    onSurface = Color(0xFF251D27),
+    surfaceVariant = Color(0xFFF0E8F2),
+    onSurfaceVariant = Color(0xFF514853),
+    surfaceContainerLowest = Color(0xFFFFFFFF),
+    surfaceContainerLow = Color(0xFFFFF7FC),
+    surfaceContainer = Color(0xFFF9F0F7),
+    surfaceContainerHigh = Color(0xFFF3EAF2),
+    surfaceContainerHighest = Color(0xFFEDE4ED),
+    surfaceDim = Color(0xFFE7DDE6),
+    surfaceBright = Color(0xFFFFF9FD),
+    inverseSurface = Color(0xFF342D37),
+    inverseOnSurface = Color(0xFFF7EEF5),
+    error = Color(0xFFB3261E),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFFDAD4),
+    onErrorContainer = Color(0xFF410001),
+    outline = Color(0xFF817783),
+    outlineVariant = Color(0xFFD4CBD5),
+    scrim = Color(0xFF000000),
+)
+
+val PlayfulDark: ColorScheme = darkColorScheme(
+    primary = Color(0xFFD0C4FF),
+    onPrimary = Color(0xFF2B176D),
+    primaryContainer = Color(0xFF4935A7),
+    onPrimaryContainer = Color(0xFFEDE7FF),
+    inversePrimary = Color(0xFFB8A8FF),
+    secondary = Color(0xFFFFB1D0),
+    onSecondary = Color(0xFF5B1132),
+    secondaryContainer = Color(0xFF71234A),
+    onSecondaryContainer = Color(0xFFFFD9E9),
+    tertiary = Color(0xFF79DCCF),
+    onTertiary = Color(0xFF003731),
+    tertiaryContainer = Color(0xFF005047),
+    onTertiaryContainer = Color(0xFFA3F4E6),
+    background = Color(0xFF18121B),
+    onBackground = Color(0xFFF5EAF3),
+    surface = Color(0xFF211A23),
+    onSurface = Color(0xFFF5EAF3),
+    surfaceVariant = Color(0xFF39313C),
+    onSurfaceVariant = Color(0xFFD0C3D4),
+    surfaceContainerLowest = Color(0xFF120D15),
+    surfaceContainerLow = Color(0xFF1D161F),
+    surfaceContainer = Color(0xFF211A23),
+    surfaceContainerHigh = Color(0xFF2C242E),
+    surfaceContainerHighest = Color(0xFF372E39),
+    surfaceDim = Color(0xFF18121B),
+    surfaceBright = Color(0xFF403744),
+    inverseSurface = Color(0xFFF5EAF3),
+    inverseOnSurface = Color(0xFF342D37),
+    error = Color(0xFFFFB4AB),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF93000A),
+    onErrorContainer = Color(0xFFFFDAD4),
+    outline = Color(0xFF958A99),
+    outlineVariant = Color(0xFF4A414D),
+    scrim = Color(0xFF000000),
+)
+
 /**
  * Semantic colours Material 3 has no slot for: the three verdicts and their
  * containers. Kept out of [ColorScheme] because stuffing them into tertiary and
@@ -151,12 +228,10 @@ val InkPaperExtendedDark = ExtendedColors(
 
 val LocalExtendedColors = staticCompositionLocalOf { InkPaperExtendedLight }
 
-/**
- * @param themeMode the manual override from Settings; [ThemeMode.SYSTEM] follows
- * the platform.
- */
+/** Applies the chosen colour style and light/dark appearance across the whole app. */
 @Composable
-fun InkPaperTheme(
+fun RevisionAppTheme(
+    themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     content: @Composable () -> Unit,
 ) {
@@ -165,13 +240,26 @@ fun InkPaperTheme(
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
     }
-    CompositionLocalProvider(
-        LocalExtendedColors provides if (dark) InkPaperExtendedDark else InkPaperExtendedLight,
-    ) {
-        MaterialTheme(
-            colorScheme = if (dark) InkPaperDark else InkPaperLight,
-            content = content,
-        )
+    val colorScheme = when (themeStyle) {
+        ThemeStyle.PLAYFUL -> if (dark) PlayfulDark else PlayfulLight
+        ThemeStyle.INK_PAPER -> if (dark) InkPaperDark else InkPaperLight
+    }
+    val extendedColors = if (dark) InkPaperExtendedDark else InkPaperExtendedLight
+
+    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
+        MaterialTheme(colorScheme = colorScheme, content = content)
+    }
+}
+
+/** The selectable colour styles; the playful palette is the default for new installs. */
+enum class ThemeStyle(val title: String) {
+    PLAYFUL("Playful"),
+    INK_PAPER("Ink & Paper"),
+    ;
+
+    companion object {
+        fun fromStored(value: String?): ThemeStyle =
+            entries.firstOrNull { it.name == value } ?: PLAYFUL
     }
 }
 

@@ -1,9 +1,8 @@
 package com.revisionapp.domain.model
 
 /**
- * The five ways a card can be presented. A question is always *derived* from a
- * [Card] — there is no separate question entity — so one card can power every
- * mode.
+ * Study presentation modes. Active lessons choose a supported mode per card; the
+ * retired tile mode remains in the enum so existing review logs still decode.
  */
 enum class StudyMode(val title: String, val difficultyRank: Int) {
     /** Flip, then self-rate Again / Hard / Good / Easy. */
@@ -12,8 +11,8 @@ enum class StudyMode(val title: String, val difficultyRank: Int) {
     /** Type the answer; graded by the answer checker, always overridable. */
     TYPED("Typed answer", 3),
 
-    /** Order shuffled tiles to rebuild the answer (short answers only). */
-    TILES("Word tiles", 2),
+    /** Retired answer style; kept to read historical review logs. */
+    TILES("Word tiles (retired)", 2),
 
     /** Four options with immediate feedback and the explanation. */
     MCQ("Multiple choice", 1),
@@ -25,10 +24,11 @@ enum class StudyMode(val title: String, val difficultyRank: Int) {
     MIXED("Mixed", 0),
     ;
 
-    /** Modes a session can actually present a card in. */
+    /** A specific stored presentation mode rather than the automatic MIXED selector. */
     val isConcrete: Boolean get() = this != MIXED
 
     companion object {
+        /** Includes TILES for historical review-log compatibility; active lessons do not offer it. */
         val Concrete: List<StudyMode> = listOf(FLASHCARD, TYPED, TILES, MCQ)
         val All: List<StudyMode> = entries
     }

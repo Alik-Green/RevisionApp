@@ -27,7 +27,7 @@ import com.revisionapp.ui.screens.StatsScreen
 import com.revisionapp.ui.screens.StudyScreen
 import com.revisionapp.ui.screens.TagEditorScreen
 import com.revisionapp.ui.screens.TopicEditorScreen
-import com.revisionapp.ui.theme.InkPaperTheme
+import com.revisionapp.ui.theme.RevisionAppTheme
 
 /**
  * The whole UI: one state holder, one nav bar, and an exhaustive `when` over
@@ -45,8 +45,8 @@ fun App(platform: PlatformServices) {
     val appState = remember(graph) { AppState(graph, scope) }
     LaunchedEffect(appState) { appState.start() }
 
-    val themeMode = appState.settingsUi.collectAsState().value.themeMode
-    InkPaperTheme(themeMode) {
+    val settings = appState.settingsUi.collectAsState().value
+    RevisionAppTheme(themeStyle = settings.themeStyle, themeMode = settings.themeMode) {
         ProvideRichTextRenderer(appState.renderer) {
             Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 val route = appState.route.collectAsState().value

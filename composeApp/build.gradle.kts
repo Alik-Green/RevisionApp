@@ -33,6 +33,7 @@ kotlin {
             // same Compose artifacts without declaring them again.
             api(compose.runtime)
             api(compose.foundation)
+            api(compose.animation)
             api(compose.material3)
             api(compose.ui)
             // The full Material icon set. The brief asks for a consistent icon set

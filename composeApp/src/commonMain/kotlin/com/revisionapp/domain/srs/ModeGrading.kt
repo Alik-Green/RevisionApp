@@ -9,8 +9,9 @@ import com.revisionapp.domain.model.StudyMode
  * All modes feed the same schedule, and the brief requires a correct answer in a
  * harder mode to count for more than in an easier one. That is driven by
  * [StudyMode.difficultyRank]: a correct *typed* answer earns EASY (the biggest
- * interval increase), a correct tile or multiple-choice answer earns GOOD, and
- * anything wrong earns AGAIN in every mode.
+ * interval increase), a correct multiple-choice answer earns GOOD, and anything
+ * wrong earns AGAIN in every active mode. Historical tile reviews keep their old
+ * grading rank so imported review logs remain interpretable.
  *
  * Flashcard sessions are self-rated — the user picks Again/Hard/Good/Easy
  * directly and this mapping is not consulted. [StudyMode.MIXED] is always

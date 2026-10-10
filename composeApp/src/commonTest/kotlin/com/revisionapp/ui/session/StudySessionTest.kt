@@ -14,7 +14,6 @@ import com.revisionapp.domain.srs.Rating
 import com.revisionapp.domain.srs.ScheduleState
 import com.revisionapp.domain.study.McqOption
 import com.revisionapp.domain.study.Question
-import com.revisionapp.domain.study.Tile
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -25,7 +24,7 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 
 /**
- * The claim the whole design rests on: all four modes feed one schedule.
+ * The claim the whole design rests on: every supported mode feeds one schedule.
  *
  * These tests drive [StudySession] through its events and assert on what reaches
  * the two callbacks a real app wires to the database — the schedule write and the
@@ -55,12 +54,6 @@ class StudySessionTest {
         options = listOf("model answer", "one", "two", "three").mapIndexed { index, text ->
             McqOption(index = index, text = text, isCorrect = index == 0)
         },
-    )
-
-    private fun tileQuestion(): Question.Tiles = Question.Tiles(
-        cardId = cardId,
-        tiles = listOf(Tile(1, "model", false), Tile(2, "answer", false), Tile(3, "decoy", true)),
-        solution = listOf("model", "answer"),
     )
 
     private fun session(
@@ -139,35 +132,6 @@ class StudySessionTest {
         val finished = assertIs<SessionState.Finished>(session.state)
         assertEquals(1, finished.summary.incorrect)
         assertEquals(0, finished.summary.correct)
-    }
-
-    @Test
-    fun tileAnswersFeedTheSameSchedule() {
-        val session = session(listOf(item(StudyMode.TILES, tileQuestion())))
-
-        session.onEvent(SessionEvent.TapTile(1))
-        session.onEvent(SessionEvent.TapTile(2))
-        session.onEvent(SessionEvent.SubmitTiles)
-
-        val reviewing = assertIs<SessionState.Reviewing>(session.state)
-        assertEquals(VerdictKind.CORRECT, reviewing.verdict.kind)
-
-        session.onEvent(SessionEvent.Next)
-        assertEquals(Rating.GOOD, entries.single().rating)
-        assertEquals(1, saved.size)
-    }
-
-    @Test
-    fun aDecoyTileMakesTheAnswerWrong() {
-        val session = session(listOf(item(StudyMode.TILES, tileQuestion())))
-
-        session.onEvent(SessionEvent.TapTile(1))
-        session.onEvent(SessionEvent.TapTile(3))
-        session.onEvent(SessionEvent.SubmitTiles)
-        session.onEvent(SessionEvent.Next)
-
-        assertEquals(VerdictKind.INCORRECT, entries.single().verdict)
-        assertEquals(Rating.AGAIN, entries.single().rating)
     }
 
     @Test

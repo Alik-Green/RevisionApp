@@ -1,5 +1,9 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,18 +16,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.Keyboard
-import androidx.compose.material.icons.filled.Shuffle
-import androidx.compose.material.icons.filled.Style
-import androidx.compose.material.icons.filled.ViewModule
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,27 +30,22 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.check.Verdict
 import com.revisionapp.domain.check.VerdictKind
 import com.revisionapp.domain.check.VerdictReason
-import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.StudyMode
 import com.revisionapp.domain.srs.Rating
-import com.revisionapp.domain.study.McqQuestionFactory
 import com.revisionapp.domain.study.Question
-import com.revisionapp.domain.study.Tile
-import com.revisionapp.domain.study.TileQuestionFactory
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
@@ -66,15 +59,11 @@ import com.revisionapp.ui.session.AnswerDraft
 import com.revisionapp.ui.session.SessionCard
 import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
+import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.VerdictPresentation
+import com.revisionapp.ui.theme.verdictColour
 import com.revisionapp.ui.theme.verdictContainerColour
 import com.revisionapp.ui.theme.verdictOnContainerColour
-
-private val CorrectGreen = Color(0xFF2E7D32)
-private val PartialAmber = Color(0xFFB26A00)
-
-/** Tiles per row; `FlowRow` is experimental, so rows are chunked by hand. */
-private const val TILES_PER_ROW = 4
 
 /**
  * The study screen. It renders [SessionState] with an exhaustive `when`, so a new
@@ -85,45 +74,27 @@ private const val TILES_PER_ROW = 4
 fun StudyScreen(state: AppState) {
     val session = state.sessionState.collectAsState().value
     when (session) {
-        SessionState.Empty -> ModePicker(state)
+        SessionState.Empty -> StudySetup(state)
         is SessionState.Asking -> Asking(state, session)
         is SessionState.Reviewing -> Reviewing(state, session)
         is SessionState.Finished -> Finished(state, session)
     }
 }
 
-// ------------------------------------------------------------------ picker ---
-
-/** One mode, how many cards in scope it can actually present, and why. */
-private data class ModeOption(
-    val mode: StudyMode,
-    val eligible: Int,
-    val description: String,
-    val icon: ImageVector,
-) {
-    val isAvailable: Boolean get() = eligible > 0
-}
+// ------------------------------------------------------------------ setup ---
 
 /**
- * The setup screen shown when no session is running: what is due, what the scope
- * is, how big the session should be, and which modes can actually present these
- * cards.
- *
- * A mode with nothing to show is disabled and says why, rather than being offered
- * and producing an empty session. Tile mode silently skips long answers and
- * multiple choice silently skips topics with too few plausible siblings, so this
- * count is the only place that behaviour is visible before you commit to it.
+ * The setup screen shows the scope and session size. Question presentation is
+ * selected automatically for each card; learners never have to guess which mode
+ * fits a question.
  */
 @Composable
-private fun ModePicker(state: AppState) {
+private fun StudySetup(state: AppState) {
     val snapshot = state.snapshot.collectAsState().value
     val filter = state.filter.collectAsState().value
     val sessionSize = state.sessionSize.collectAsState().value
-    val chosen = remember { mutableStateOf(StudyMode.MIXED) }
     val due = snapshot.dueCount(filter)
     val scoped = remember(snapshot, filter) { snapshot.filtered(filter) }
-    val options = remember(snapshot, scoped) { modeOptions(snapshot, scoped) }
-    val selected = options.firstOrNull { it.mode == chosen.value } ?: options.last()
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
         AppHeader(
@@ -137,7 +108,7 @@ private fun ModePicker(state: AppState) {
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            DueCard(state, due, scoped.size)
+            DueCard(due, scoped.size)
             ScopeRow(state, snapshot)
 
             SectionLabel("Session size")
@@ -150,34 +121,23 @@ private fun ModePicker(state: AppState) {
                     )
                 }
             }
-
-            SectionLabel("Mode")
-            for (row in options.chunked(2)) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    for (option in row) {
-                        ModeCard(option, option.mode == selected.mode, Modifier.weight(1f)) {
-                            chosen.value = option.mode
-                        }
-                    }
-                    if (row.size == 1) Spacer(Modifier.weight(1f))
-                }
-            }
-            if (!selected.isAvailable) {
-                EmptyMessage(disabledReason(selected.mode))
-            }
-
+            EmptyMessage(
+                "We'll choose the best fit for every card automatically: typed answers when they can be " +
+                    "checked well, multiple choice when good options exist, and flashcards when self-checking " +
+                    "is fairest.",
+            )
             Button(
-                onClick = { state.startStudy(selected.mode) },
-                enabled = selected.isAvailable,
+                onClick = { state.startStudy() },
+                enabled = scoped.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
-            ) { Text("Start " + selected.mode.title.lowercase()) }
+            ) { Text(if (due > 0) "Start due cards" else "Study ahead") }
             Spacer(Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-private fun DueCard(state: AppState, due: Int, inScope: Int) {
+private fun DueCard(due: Int, inScope: Int) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -193,17 +153,17 @@ private fun DueCard(state: AppState, due: Int, inScope: Int) {
         )
         Text(
             if (due == 0) {
-                "Nothing is due. You can still study the " + inScope.toString() +
-                    " card(s) in scope to get ahead."
+                if (inScope == 0) {
+                    "Nothing is in this scope yet. Try a different topic or clear a filter."
+                } else {
+                    "Nothing is due. You can study the " + inScope.toString() + " card(s) in scope to get ahead."
+                }
             } else {
                 "From " + inScope.toString() + " card(s) in the current scope."
             },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
-        if (due > 0) {
-            Button(onClick = { state.startStudy(StudyMode.MIXED) }) { Text("Start due cards") }
-        }
     }
 }
 
@@ -237,109 +197,6 @@ private fun ScopeRow(state: AppState, snapshot: LibrarySnapshot) {
     }
 }
 
-@Composable
-private fun ModeCard(option: ModeOption, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
-    val scheme = MaterialTheme.colorScheme
-    Column(
-        modifier
-            .background(
-                if (selected) scheme.primaryContainer.copy(alpha = 0.45f) else scheme.surfaceContainerLow,
-                RoundedCornerShape(14.dp),
-            )
-            .border(
-                width = if (selected) 2.dp else 1.dp,
-                color = if (selected) scheme.primary else scheme.outlineVariant,
-                shape = RoundedCornerShape(14.dp),
-            )
-            .clickable(enabled = option.isAvailable, onClick = onClick)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(
-                option.icon,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp),
-                tint = if (option.isAvailable) scheme.primary else scheme.onSurfaceVariant,
-            )
-            Text(
-                option.mode.title,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = if (option.isAvailable) scheme.onSurface else scheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Text(
-            option.description,
-            style = MaterialTheme.typography.labelSmall,
-            color = scheme.onSurfaceVariant,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
-        Text(
-            if (option.isAvailable) option.eligible.toString() + " card(s)" else "none available",
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = if (option.isAvailable) scheme.primary else scheme.onSurfaceVariant,
-        )
-    }
-}
-
-private fun modeOptions(snapshot: LibrarySnapshot, cards: List<Card>): List<ModeOption> =
-    StudyMode.All.map { mode ->
-        when (mode) {
-            StudyMode.FLASHCARD -> ModeOption(
-                mode = mode,
-                eligible = cards.size,
-                description = "Flip the card, then rate yourself",
-                icon = Icons.Filled.Style,
-            )
-
-            StudyMode.TYPED -> ModeOption(
-                mode = mode,
-                eligible = cards.size,
-                description = "Type it; graded, and you can override",
-                icon = Icons.Filled.Keyboard,
-            )
-
-            StudyMode.TILES -> ModeOption(
-                mode = mode,
-                eligible = cards.count { TileQuestionFactory.isEligible(it) },
-                description = "Put shuffled tiles back in order",
-                icon = Icons.Filled.ViewModule,
-            )
-
-            StudyMode.MCQ -> ModeOption(
-                mode = mode,
-                eligible = cards.count { McqQuestionFactory.isEligible(it, snapshot.siblingsOf(it)) },
-                description = "Pick one of four options",
-                icon = Icons.Filled.Help,
-            )
-
-            StudyMode.MIXED -> ModeOption(
-                mode = mode,
-                eligible = cards.size,
-                description = "Best-fit mode for each card",
-                icon = Icons.Filled.Shuffle,
-            )
-        }
-    }
-
-private fun disabledReason(mode: StudyMode): String = when (mode) {
-    StudyMode.TILES ->
-        "No card in scope is short enough for tiles. Tile mode skips long answers rather than " +
-            "turning a paragraph into fifty tiles."
-
-    StudyMode.MCQ ->
-        "No card in scope can make four distinct options. A card needs three authored distractors, " +
-            "or three sibling cards in the same topic with the same answer type."
-
-    StudyMode.FLASHCARD, StudyMode.TYPED, StudyMode.MIXED ->
-        "Nothing in scope. Widen the location or clear a filter in the Library."
-}
-
 // ------------------------------------------------------------------ asking ---
 
 @Composable
@@ -355,7 +212,7 @@ private fun Asking(state: AppState, asking: SessionState.Asking) {
             when (val question = item.question) {
                 is Question.Flashcard -> FlashcardInput(state, item, asking.draft)
                 is Question.Typed -> TypedInput(state, asking.draft)
-                is Question.Tiles -> TilesInput(state, asking.draft, question)
+                is Question.Tiles -> EmptyMessage("This retired question format is no longer available. Restart the lesson to continue.")
                 is Question.MultipleChoice -> McqInput(state, question)
             }
             Spacer(Modifier.height(8.dp))
@@ -421,7 +278,7 @@ private fun FlashcardInput(state: AppState, item: SessionCard, draft: AnswerDraf
             }
         }
 
-        is AnswerDraft.Text, is AnswerDraft.Tiles, AnswerDraft.Choice ->
+        is AnswerDraft.Text, AnswerDraft.Unsupported, AnswerDraft.Choice ->
             EmptyMessage("This card is not a flashcard; restart the session.")
     }
 }
@@ -448,62 +305,6 @@ private fun TypedInput(state: AppState, draft: AnswerDraft) {
             onClick = { state.onSessionEvent(SessionEvent.SubmitText) },
             modifier = Modifier.fillMaxWidth(),
         ) { Text("Check answer") }
-    }
-}
-
-@Composable
-private fun TilesInput(state: AppState, draft: AnswerDraft, question: Question.Tiles) {
-    val chosen = draft as? AnswerDraft.Tiles ?: AnswerDraft.Tiles(emptyList())
-    val chosenIds = chosen.chosen.toSet()
-    val ordered = chosen.chosen.mapNotNull { id -> question.tiles.firstOrNull { it.id == id } }
-    val remaining = question.tiles.filter { it.id !in chosenIds }
-
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionLabel("Your answer (" + ordered.size + " of " + question.solution.size + " tiles)")
-        Panel {
-            if (ordered.isEmpty()) {
-                Text(
-                    "Tap the tiles below to build the answer, in order.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            for (row in ordered.chunked(TILES_PER_ROW)) {
-                TileRow(row, selected = true) { state.onSessionEvent(SessionEvent.TapTile(it)) }
-            }
-        }
-        SectionLabel("Tiles")
-        for (row in remaining.chunked(TILES_PER_ROW)) {
-            TileRow(row, selected = false) { state.onSessionEvent(SessionEvent.TapTile(it)) }
-        }
-        if (question.decoyCount > 0) {
-            EmptyMessage(question.decoyCount.toString() + " of these tiles do not belong in the answer.")
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = { state.onSessionEvent(SessionEvent.ClearTiles) }) { Text("Clear") }
-            Button(
-                onClick = { state.onSessionEvent(SessionEvent.SubmitTiles) },
-                modifier = Modifier.weight(1f),
-                enabled = ordered.isNotEmpty(),
-            ) { Text("Check answer") }
-        }
-    }
-}
-
-/** One wrapped row of tiles. Tap to add a tile to the answer, or take it back out. */
-@Composable
-private fun TileRow(tiles: List<Tile>, selected: Boolean, onTap: (Int) -> Unit) {
-    Row(
-        Modifier.fillMaxWidth().padding(vertical = 3.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-    ) {
-        for (tile in tiles) {
-            ToggleChip(
-                label = tile.text,
-                selected = selected,
-                onClick = { onTap(tile.id) },
-            )
-        }
     }
 }
 
@@ -641,11 +442,7 @@ private fun McqReview(question: Question.MultipleChoice, verdict: Verdict) {
 
 @Composable
 private fun VerdictPanel(verdict: Verdict) {
-    val colour = when (verdict.kind) {
-        VerdictKind.CORRECT -> CorrectGreen
-        VerdictKind.PARTIAL -> PartialAmber
-        VerdictKind.INCORRECT -> MaterialTheme.colorScheme.error
-    }
+    val colour = verdictColour(verdict.kind)
     Box(
         Modifier
             .fillMaxWidth()
@@ -721,11 +518,14 @@ private fun OverrideRow(state: AppState) {
 private fun Finished(state: AppState, finished: SessionState.Finished) {
     val summary = finished.summary
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        AppHeader(title = "Session complete", subtitle = summary.reviewed.toString() + " card(s) reviewed")
+        AppHeader(title = "Lesson complete!", subtitle = summary.reviewed.toString() + " card(s) reviewed")
         Column(
             Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            if (summary.streakDays > 0) {
+                StreakCelebration(summary)
+            }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 StatTile("Reviewed", summary.reviewed.toString(), Modifier.weight(1f))
                 StatTile("Accuracy", VerdictPresentation.percent(summary.accuracy), Modifier.weight(1f))
@@ -750,6 +550,50 @@ private fun Finished(state: AppState, finished: SessionState.Finished) {
 }
 
 // ------------------------------------------------------------------ shared ---
+
+/** Animated streak milestone shown when a lesson ends. */
+@Composable
+private fun StreakCelebration(summary: SessionSummary) {
+    val visible = remember(summary.streakDays) { mutableStateOf(false) }
+    LaunchedEffect(summary.streakDays) { visible.value = true }
+    val message = when {
+        !summary.streakAdvanced -> "You kept your streak going today. Keep the rhythm tomorrow!"
+        summary.streakDays == 1 -> "A new streak starts today. Come back tomorrow to keep it alive!"
+        else -> "Streak extended to ${summary.streakDays} days. Come back tomorrow to keep it alive!"
+    }
+    AnimatedVisibility(
+        visible = visible.value,
+        enter = fadeIn(animationSpec = tween(450)) + scaleIn(
+            initialScale = 0.88f,
+            animationSpec = tween(450),
+        ),
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(18.dp))
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text("🔥", style = MaterialTheme.typography.headlineLarge)
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                SectionLabel("STREAK CELEBRATION")
+                Text(
+                    summary.streakDays.toString() + if (summary.streakDays == 1) " day" else " days",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                )
+                Text(
+                    message,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                )
+            }
+        }
+    }
+}
 
 /** A rounded, lightly filled container for one block of content. */
 @Composable

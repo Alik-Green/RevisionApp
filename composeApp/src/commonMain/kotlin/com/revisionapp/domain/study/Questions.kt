@@ -17,8 +17,9 @@ data class McqOption(
 )
 
 /**
- * A question is always *derived* from a card and never stored, so a single card
- * powers flashcards, typed answers, word tiles and multiple choice.
+ * A question is always *derived* from a card and never stored. Active study uses
+ * flashcards, typed answers and multiple choice; the tile variant is retained only
+ * for compatibility with the retired internal factory.
  *
  * Sealed so that every screen renders it with an exhaustive `when`.
  */

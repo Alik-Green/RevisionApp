@@ -13,7 +13,6 @@ import com.revisionapp.domain.srs.Rating
 import com.revisionapp.domain.srs.ScheduleState
 import com.revisionapp.domain.study.McqGrader
 import com.revisionapp.domain.study.Question
-import com.revisionapp.domain.study.TileGrader
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -36,8 +35,8 @@ sealed interface AnswerDraft {
     /** A typed answer being composed. */
     data class Text(val value: String) : AnswerDraft
 
-    /** Tiles tapped so far, in order, by tile id. */
-    data class Tiles(val chosen: List<Int>) : AnswerDraft
+    /** Reserved for a retired question format; it deliberately has no answer controls. */
+    data object Unsupported : AnswerDraft
 
     /** Nothing to draft: multiple choice is answered by tapping an option. */
     data object Choice : AnswerDraft
@@ -48,6 +47,10 @@ data class SessionSummary(
     val correct: Int,
     val partial: Int,
     val incorrect: Int,
+    /** Streak value attached by AppState when it celebrates session completion. */
+    val streakDays: Int = 0,
+    /** False when today was already represented in the streak before this session. */
+    val streakAdvanced: Boolean = false,
 ) {
     val accuracy: Double get() = if (reviewed == 0) 0.0 else correct.toDouble() / reviewed
 }
@@ -85,9 +88,6 @@ sealed interface SessionEvent {
     data object Reveal : SessionEvent
     data class Type(val text: String) : SessionEvent
     data object SubmitText : SessionEvent
-    data class TapTile(val tileId: Int) : SessionEvent
-    data object ClearTiles : SessionEvent
-    data object SubmitTiles : SessionEvent
     data class ChooseOption(val index: Int) : SessionEvent
     data class Rate(val rating: Rating) : SessionEvent
     data class Override(val userSaysCorrect: Boolean) : SessionEvent
@@ -97,7 +97,7 @@ sealed interface SessionEvent {
 /**
  * The session state machine: unidirectional, [SessionEvent] in and
  * [SessionState] out. Every path that ends a card funnels through [commit], so
- * all four modes feed the same spaced-repetition schedule.
+ * every supported question format feeds the same spaced-repetition schedule.
  */
 class StudySession(
     private val items: List<SessionCard>,
@@ -143,14 +143,6 @@ class StudySession(
             }
 
             SessionEvent.SubmitText -> submitText(asking)
-
-            is SessionEvent.TapTile -> tapTile(asking, event.tileId)
-
-            SessionEvent.ClearTiles -> if (asking.draft is AnswerDraft.Tiles) {
-                state = asking.copy(draft = AnswerDraft.Tiles(emptyList()))
-            }
-
-            SessionEvent.SubmitTiles -> submitTiles(asking)
 
             is SessionEvent.ChooseOption -> chooseOption(asking, event.index)
 
@@ -207,7 +199,7 @@ class StudySession(
     private fun initialDraft(item: SessionCard): AnswerDraft = when (item.question) {
         is Question.Flashcard -> AnswerDraft.Hidden
         is Question.Typed -> AnswerDraft.Text("")
-        is Question.Tiles -> AnswerDraft.Tiles(emptyList())
+        is Question.Tiles -> AnswerDraft.Unsupported
         is Question.MultipleChoice -> AnswerDraft.Choice
     }
 
@@ -219,21 +211,6 @@ class StudySession(
             checker.check(asking.item.card, draft.value, learned[asking.item.card.id].orEmpty()),
             draft.value,
         )
-    }
-
-    private fun tapTile(asking: SessionState.Asking, tileId: Int) {
-        val draft = asking.draft
-        if (draft !is AnswerDraft.Tiles) return
-        val chosen = if (tileId in draft.chosen) draft.chosen - tileId else draft.chosen + tileId
-        state = asking.copy(draft = AnswerDraft.Tiles(chosen))
-    }
-
-    private fun submitTiles(asking: SessionState.Asking) {
-        val draft = asking.draft
-        val question = asking.item.question
-        if (draft !is AnswerDraft.Tiles || question !is Question.Tiles) return
-        val chosenText = draft.chosen.mapNotNull { id -> question.tiles.firstOrNull { it.id == id }?.text }
-        state = reviewing(asking, TileGrader.grade(question.solution, chosenText))
     }
 
     private fun chooseOption(asking: SessionState.Asking, index: Int) {
@@ -254,7 +231,7 @@ class StudySession(
      *
      * The wording is stored beside the card and matched ahead of key points from
      * then on, so the same answer is not marked wrong twice. Only typed answers
-     * learn: a multiple-choice or tile verdict is not in doubt, so an override
+     * learn: a multiple-choice verdict is not in doubt, so an override
      * there carries no new information about wording.
      */
     private fun learnFrom(reviewing: SessionState.Reviewing) {

@@ -1,9 +1,9 @@
 # RevisionApp
 
-A cross-platform revision app: flashcards and four question modes over a topic
-tree, with FSRS spaced repetition, tag filtering, your own editable content and
-built-in content packs that sync from a branch of this repository and then work
-offline forever.
+A cross-platform revision app with adaptive flashcard, typed-answer and
+multiple-choice practice over a topic tree, FSRS spaced repetition, weekly quests,
+and your own editable content. Built-in content packs sync from a branch of this
+repository and then work offline forever.
 
 Built with Kotlin Multiplatform and Compose Multiplatform for **desktop (JVM)**
 and **Android**. Every line of logic and every screen is in `commonMain`; the two
@@ -76,26 +76,36 @@ Configuration cache, build cache and parallel execution are all enabled in
 
 ## What the app does
 
-### Study modes
+### Adaptive study
 
-All four modes are derived from the *same* cards — there is no separate question
-entity, so authoring once powers every mode.
+A card's presentation is selected automatically; learners choose the scope and
+session size, not a question type. The active formats are:
 
-| Mode | What happens | How it is graded |
+| Format | What happens | How it is graded |
 | --- | --- | --- |
-| **Flashcards** | Flip the card, then rate yourself Again / Hard / Good / Easy | Your rating |
-| **Typed answer** | Type the answer; the checker returns a verdict, the key points you hit and missed, and the model answer | Automatic, and you can always override with "I was right" / "I was wrong" |
-| **Word tiles** | Put shuffled tiles back in order; a couple of decoys are mixed in | Exact order is CORRECT, 60% of positions is PARTIAL |
-| **Multiple choice** | Four options with immediate feedback and the explanation | All or nothing |
-| **Mixed** | Picks the best-fit mode per card, and escalates to a harder mode after a mistake | As the mode it resolved to |
+| **Flashcards** | Reveal the model answer, then rate yourself Again / Hard / Good / Easy | Your rating |
+| **Typed answer** | Type the answer; the checker returns a verdict, key points hit and missed, and the model answer | Automatic, with an override when needed |
+| **Multiple choice** | Pick from four plausible options when authored distractors or sibling answers are available | All or nothing |
 
-Cards a mode cannot present drop out silently: a long paragraph never becomes a
-tile question, and a topic with fewer than three plausible sibling answers never
-becomes multiple choice.
+Self-grade cards use flashcards; numeric, expression and key-point cards use typed
+answers; plain text uses multiple choice when suitable options exist and otherwise
+falls back to flashcards. Repeated success can move a multiple-choice card up to
+typed recall. Word-tile answering has been retired from lessons; legacy tile data
+is preserved so existing packs and saved review history continue to load.
 
-Every mode writes to **one** schedule, and a correct answer in a harder mode
-counts for more: correct typed answers earn Easy, correct tile or multiple-choice
-answers earn Good, anything wrong earns Again.
+Every active format writes to **one** FSRS schedule. Correct typed answers earn
+Easy, correct multiple-choice answers earn Good, and typed partial answers earn
+Hard. Flashcard ratings come directly from the learner.
+
+### Progress and themes
+
+Lesson completion celebrates the streak. Stats include repeatable weekly study-day
+quests, points calculated from review history, a topic-tree practice map and
+accuracy by topic. The topic map is practice coverage, not a formal curriculum
+mastery score.
+
+The default palette is playful, with **Ink & Paper** available as an alternative.
+Both styles can follow the system or be fixed to light or dark appearance.
 
 ### Maths
 
@@ -140,9 +150,10 @@ browse list *and* study sessions.
 ### Your own content
 
 Create, edit and delete topics at any depth, tags in any group, and cards with
-key points, synonyms, must-include flags, weights, accepted aliases, authored tile
-chunks, authored multiple-choice distractors, explanations, numeric tolerances and
-specification references.
+key points, synonyms, must-include flags, weights, accepted aliases, authored
+multiple-choice distractors, explanations, numeric tolerances and specification
+references. Existing tile metadata is preserved but is no longer exposed in the
+editor or used in lessons.
 
 Built-in content is read-only — a sync has to be able to replace it — but every
 built-in card has a **Duplicate as mine** button that copies it into your own
@@ -150,8 +161,8 @@ content, where it becomes fully editable.
 
 ### Stats
 
-Due today, due now, current day streak, days studied, total reviews and accuracy
-per topic, counting every mode together.
+Due today, due now, current day streak, days studied, total reviews, weekly quests
+and earned points, a topic-tree practice map, and accuracy per topic.
 
 ---
 
@@ -326,8 +337,9 @@ crypto/     SHA-256 in pure Kotlin
 Data flows one way. `AppState` exposes `StateFlow`s and intent methods; screens
 collect the flows and call the intents; nothing else writes state. `StudySession`
 is a sealed state machine driven by `SessionEvent`, and every path that ends a
-card funnels through a single `commit()`, which is what makes "all four modes
-feed one schedule" true rather than aspirational.
+card funnels through a single `commit()`, which keeps every supported question
+format on one schedule. Tile answer controls are retired; their stored metadata
+remains compatible with older packs and review logs.
 
 `domain` imports no framework at all — no Compose, no SQLDelight, no Ktor — so
 the answer checker, the scheduler and the topic tree are unit-testable as plain

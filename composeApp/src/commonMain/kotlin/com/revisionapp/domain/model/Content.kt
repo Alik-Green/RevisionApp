@@ -96,7 +96,7 @@ data class Card(
     val answerType: AnswerType = AnswerType.TEXT,
     val keyPoints: List<KeyPoint> = emptyList(),
     val acceptedAliases: List<String> = emptyList(),
-    /** Authored ordered chunks for tile mode; null means "tokenise [back]". */
+    /** Legacy authored tile chunks; preserved when older packs are imported or edited. */
     val tileAnswer: List<String>? = null,
     val mcq: Mcq? = null,
     val explanation: String? = null,

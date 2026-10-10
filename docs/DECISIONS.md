@@ -930,3 +930,22 @@ Appending a log segment is a read-modify-write, which would be unsafe under
 concurrent writers and is safe here because segments are per device: exactly one
 device ever appends to a given segment. That is a second reason the log is split
 per device rather than per library.
+
+## D47 — Lessons choose their format; word tiles are retired (2026-10-10)
+
+The learner chooses a topic scope and session size, not a question mode. The
+session builder selects per card: typed answers for numeric, expression and
+key-point cards; multiple choice for plain-text cards with plausible options; and
+self-rated flashcards when automatic grading would be weak. Successful MCQ
+reviews can still progress to typed recall. Word-tile answers are no longer
+available in the editor or study UI, are never selected automatically, and are
+rejected by the active question factory. The legacy enum, database column, card
+field and stored history are left in place so pre-existing packs and local data
+continue to load without conversion.
+
+The default theme is now the brighter Playful palette, with Ink & Paper as an
+alternative and independent system/light/dark appearance controls. Weekly quest
+points are derived from distinct review days rather than stored as a second
+wallet, and the Stats topic tree is explicitly a practice-coverage prototype,
+not a curriculum mastery score. No existing question packs or V2 lesson format
+are changed here.

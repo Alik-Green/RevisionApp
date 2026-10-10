@@ -34,7 +34,10 @@ import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.MetaRow
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.session.VerdictPresentation
+import com.revisionapp.ui.theme.ThemeMode
+import com.revisionapp.ui.theme.ThemeStyle
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Instant
@@ -62,6 +65,34 @@ fun SettingsScreen(state: AppState) {
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            SectionLabel("Appearance")
+            Text("Colour style", style = MaterialTheme.typography.bodyMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (style in ThemeStyle.entries) {
+                    ToggleChip(
+                        label = style.title,
+                        selected = style == settings.themeStyle,
+                        onClick = { state.setThemeStyle(style) },
+                    )
+                }
+            }
+            Text("Light or dark", style = MaterialTheme.typography.bodyMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (mode in ThemeMode.entries) {
+                    ToggleChip(
+                        label = when (mode) {
+                            ThemeMode.SYSTEM -> "System"
+                            ThemeMode.LIGHT -> "Light"
+                            ThemeMode.DARK -> "Dark"
+                        },
+                        selected = mode == settings.themeMode,
+                        onClick = { state.setThemeMode(mode) },
+                    )
+                }
+            }
+            EmptyMessage("Playful is the default; Ink & Paper keeps the original quieter palette.")
+
+            HorizontalDivider()
             SectionLabel("Content packs")
             SyncStatus(sync)
             Button(

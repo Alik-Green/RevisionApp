@@ -339,64 +339,58 @@ class QuestionDerivationTest {
     fun theBestFitModeFollowsTheAnswerType() {
         assertEquals(
             StudyMode.FLASHCARD,
-            ModeSelector.bestFit(card("c", "explain", answerType = AnswerType.SELF_GRADE), true, true),
+            ModeSelector.bestFit(card("c", "explain", answerType = AnswerType.SELF_GRADE), false),
         )
         assertEquals(
             StudyMode.TYPED,
-            ModeSelector.bestFit(card("c", "9.81", answerType = AnswerType.NUMERIC), true, true),
+            ModeSelector.bestFit(card("c", "9.81", answerType = AnswerType.NUMERIC), false),
         )
         assertEquals(
             StudyMode.TYPED,
-            ModeSelector.bestFit(card("c", "x^2-1", answerType = AnswerType.EXPRESSION), true, true),
+            ModeSelector.bestFit(card("c", "x^2-1", answerType = AnswerType.EXPRESSION), false),
         )
         assertEquals(
             StudyMode.TYPED,
-            ModeSelector.bestFit(card("c", "back", keyPoints = listOf(KeyPoint("back"))), true, true),
+            ModeSelector.bestFit(card("c", "back", keyPoints = listOf(KeyPoint("back"))), false),
         )
     }
 
     @Test
-    fun textWithoutKeyPointsFallsBackToTilesThenMcqThenFlashcards() {
+    fun textWithoutKeyPointsUsesMcqWhenAvailableAndFlashcardsOtherwise() {
         val plain = card("c", "a short answer")
 
-        assertEquals(StudyMode.TILES, ModeSelector.bestFit(plain, true, true))
-        assertEquals(StudyMode.MCQ, ModeSelector.bestFit(plain, false, true))
-        assertEquals(StudyMode.FLASHCARD, ModeSelector.bestFit(plain, false, false))
+        assertEquals(StudyMode.MCQ, ModeSelector.bestFit(plain, mcqAvailable = true))
+        assertEquals(StudyMode.FLASHCARD, ModeSelector.bestFit(plain, mcqAvailable = false))
     }
 
     @Test
-    fun masteryEscalatesTheModeUpTheLadder() {
+    fun masteryEscalatesMultipleChoiceToTypedAnswers() {
         val plain = card("c", "a short answer")
 
-        assertEquals(StudyMode.TILES, ModeSelector.bestFit(plain, true, true, 0))
-        assertEquals(StudyMode.TYPED, ModeSelector.bestFit(plain, true, true, 1))
-        assertEquals(StudyMode.TYPED, ModeSelector.bestFit(plain, true, true, 9))
-
-        assertEquals(StudyMode.MCQ, ModeSelector.bestFit(plain, false, true, 0))
-        assertEquals(StudyMode.TYPED, ModeSelector.bestFit(plain, false, true, 1))
+        assertEquals(StudyMode.MCQ, ModeSelector.bestFit(plain, mcqAvailable = true, modeEscalation = 0))
+        assertEquals(StudyMode.TYPED, ModeSelector.bestFit(plain, mcqAvailable = true, modeEscalation = 1))
+        assertEquals(StudyMode.TYPED, ModeSelector.bestFit(plain, mcqAvailable = true, modeEscalation = 9))
+        assertEquals(StudyMode.FLASHCARD, ModeSelector.bestFit(plain, mcqAvailable = false, modeEscalation = 9))
     }
 
     @Test
-    fun theLadderOnlyContainsModesTheCardCanActuallyUse() {
-        assertEquals(
-            listOf(StudyMode.TYPED),
-            ModeSelector.ladder(tilesAvailable = false, mcqAvailable = false),
-        )
-        assertEquals(
-            listOf(
-                StudyMode.MCQ,
-                StudyMode.TILES,
-                StudyMode.TYPED,
-            ),
-            ModeSelector.ladder(tilesAvailable = true, mcqAvailable = true),
-        )
+    fun theLadderOnlyContainsSupportedModes() {
+        assertEquals(listOf(StudyMode.TYPED), ModeSelector.ladder(mcqAvailable = false))
+        assertEquals(listOf(StudyMode.MCQ, StudyMode.TYPED), ModeSelector.ladder(mcqAvailable = true))
     }
 
     @Test
-    fun mixedModeProducesTheBestFitQuestion() {
+    fun mixedModeProducesTheBestFitQuestionWithoutTiles() {
         val question = QuestionFactory.create(shortCard, StudyMode.MIXED, siblings, random = Random(1))
 
-        assertIs<Question.Tiles>(question)
+        assertIs<Question.MultipleChoice>(question)
+    }
+
+    @Test
+    fun mixedModeFallsBackToFlashcardsWhenPlainTextHasNoGoodDistractors() {
+        val question = QuestionFactory.create(shortCard, StudyMode.MIXED, emptyList())
+
+        assertIs<Question.Flashcard>(question)
     }
 
     @Test
@@ -416,7 +410,8 @@ class QuestionDerivationTest {
     }
 
     @Test
-    fun aModeThatCannotShowTheCardProducesNothingSoTheSessionSkipsIt() {
+    fun tileQuestionsAreRejectedAndUnsupportedModesSkipTheCard() {
+        assertNull(QuestionFactory.create(shortCard, StudyMode.TILES, siblings, random = Random(2)))
         assertNull(QuestionFactory.create(longCard, StudyMode.TILES, siblings))
         assertNull(QuestionFactory.create(shortCard, StudyMode.MCQ, siblings.take(1)))
         assertNotNull(QuestionFactory.create(shortCard, StudyMode.FLASHCARD, siblings))
@@ -424,13 +419,13 @@ class QuestionDerivationTest {
     }
 
     @Test
-    fun everyQuestionCarriesItsCardId() {
+    fun everyGeneratedQuestionCarriesItsCardId() {
         val questions = listOf(
             QuestionFactory.create(shortCard, StudyMode.FLASHCARD, siblings),
             QuestionFactory.create(shortCard, StudyMode.TYPED, siblings),
-            QuestionFactory.create(shortCard, StudyMode.TILES, siblings, random = Random(2)),
             QuestionFactory.create(shortCard, StudyMode.MCQ, siblings, random = Random(2)),
         )
         questions.forEach { assertEquals(shortCard.id, it?.cardId) }
     }
+
 }

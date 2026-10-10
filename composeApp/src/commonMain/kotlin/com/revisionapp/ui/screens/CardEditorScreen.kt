@@ -78,6 +78,7 @@ private data class CardDraft(
     val answerType: AnswerType,
     val keyPoints: List<KeyPointDraft>,
     val aliases: String,
+    /** Kept round-tripped for older cards, but retired from authoring and study. */
     val tileChunks: String,
     val mcqCorrect: String,
     val mcqDistractors: String,
@@ -262,7 +263,7 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
             }
 
             // Everything below is optional and collapsed. A card needs a topic, a
-            // front and a back; the rest - key points, distractors, tiles, tags,
+            // front and a back; the rest - key points, distractors, aliases, tags,
             // an explanation - is what makes grading sharper, and showing all of it
             // at once made authoring one card look like filling in a form.
             ExpandableSection(
@@ -284,10 +285,10 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
             }
 
             ExpandableSection(
-                title = "Word tiles and accepted answers",
-                subtitle = tilesSubtitle(draft.value),
+                title = "Accepted answers",
+                subtitle = aliasesSubtitle(draft.value),
                 enabled = !builtIn,
-                initiallyExpanded = draft.value.tileChunks.isNotBlank() || draft.value.aliases.isNotBlank(),
+                initiallyExpanded = draft.value.aliases.isNotBlank(),
             ) {
                 LabeledField(
                     label = "Accepted aliases (comma separated)",
@@ -295,14 +296,6 @@ fun CardEditorScreen(state: AppState, cardId: CardId?, presetTopicId: TopicId?) 
                     onValueChange = { draft.value = draft.value.copy(aliases = it) },
                     enabled = !builtIn,
                     hint = "newton, N, kg m/s^2",
-                )
-                LabeledField(
-                    label = "Tile answer chunks (one per line)",
-                    value = draft.value.tileChunks,
-                    onValueChange = { draft.value = draft.value.copy(tileChunks = it) },
-                    enabled = !builtIn,
-                    minLines = 2,
-                    hint = "Leave blank to split the model answer into words automatically",
                 )
             }
 
@@ -383,13 +376,9 @@ private fun mcqSubtitle(draft: CardDraft): String {
     }
 }
 
-private fun tilesSubtitle(draft: CardDraft): String {
-    val chunks = splitList(draft.tileChunks).size
+private fun aliasesSubtitle(draft: CardDraft): String {
     val aliases = splitList(draft.aliases).size
-    val parts = ArrayList<String>(2)
-    parts += if (chunks == 0) "tiles split automatically" else chunks.toString() + " tile chunk(s)"
-    if (aliases > 0) parts += aliases.toString() + " alias(es)"
-    return parts.joinToString(", ")
+    return if (aliases == 0) "No alternate answers" else aliases.toString() + " accepted alias(es)"
 }
 
 /**

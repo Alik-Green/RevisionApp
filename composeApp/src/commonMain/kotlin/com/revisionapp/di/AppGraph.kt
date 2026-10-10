@@ -29,6 +29,7 @@ object SettingKeys {
     const val CONTENT_BASE_URL: String = "content.baseUrl"
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
     const val THEME_MODE: String = "appearance.themeMode"
+    const val THEME_STYLE: String = "appearance.themeStyle"
     const val LAST_SYNC_AT: String = "sync.lastAt"
     const val LAST_SYNC_SUMMARY: String = "sync.lastSummary"
 }
