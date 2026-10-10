@@ -317,12 +317,14 @@ of them have `structureVerified: false` because no awarding-body website was
 reachable from the environment they were written in; each pack README lists
 exactly what to check.
 
-### Private repositories
+### Legacy pack sync and private repositories
 
-The default base URL only works while this repository is public. Serving a
-private branch needs an authenticated URL — a fine-grained personal access token
-embedded in the base URL, or a proxy that adds the header. The base URL is
-editable on the settings screen; the app stores no credentials.
+The editable base URL in Settings is only for synchronising legacy card packs;
+V2 course content is bundled with the app and does not use it. The default pack URL
+works while the `content` branch is public. Serving a private legacy branch needs
+an authenticated URL — a fine-grained personal access token embedded in the base
+URL, or a proxy that adds the header. URLs are saved in local settings, so avoid
+storing a secret-bearing URL on a shared device.
 
 ---
 

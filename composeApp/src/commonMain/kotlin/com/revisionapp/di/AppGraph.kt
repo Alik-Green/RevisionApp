@@ -83,7 +83,7 @@ class AppGraph(platform: PlatformServices) {
         return FsrsScheduler(parameters)
     }
 
-    /** The content base URL is user-editable, with a sensible default constant. */
+    /** User-editable source for legacy card-pack sync; V2 courses are bundled. */
     fun contentBaseUrl(): String =
         settings.read(SettingKeys.CONTENT_BASE_URL)?.takeIf { it.isNotBlank() } ?: ContentSync.DEFAULT_BASE_URL
 

@@ -94,40 +94,40 @@ fun SettingsScreen(state: AppState) {
             EmptyMessage("Playful is the default; Ink & Paper keeps the original quieter palette.")
 
             HorizontalDivider()
-            SectionLabel("Content packs")
+            SectionLabel("Legacy card packs")
             SyncStatus(sync)
             Button(
                 onClick = { state.syncNow() },
                 enabled = sync != SyncUiState.Running,
                 modifier = Modifier.fillMaxWidth(),
-            ) { Text(if (sync == SyncUiState.Running) "Syncing..." else "Sync now") }
+            ) { Text(if (sync == SyncUiState.Running) "Syncing..." else "Sync legacy packs") }
             LabeledField(
-                label = "Content base URL",
+                label = "Legacy pack source URL",
                 value = urlDraft.value,
                 onValueChange = { urlDraft.value = it },
                 hint = ContentSync.DEFAULT_BASE_URL,
             )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = { state.setBaseUrl(urlDraft.value) }) { Text("Save URL") }
+                Button(onClick = { state.setBaseUrl(urlDraft.value) }) { Text("Save source") }
                 TextButton(
                     onClick = {
                         urlDraft.value = ContentSync.DEFAULT_BASE_URL
                         state.setBaseUrl(ContentSync.DEFAULT_BASE_URL)
                     },
-                ) { Text("Reset to default") }
+                ) { Text("Reset source") }
             }
             EmptyMessage(
-                "Packs are downloaded from the `content` branch of a public GitHub repository and " +
-                    "verified against their SHA-256 checksums. Only packs whose version or checksum " +
-                    "changed are fetched, everything is imported in one transaction, and a failed " +
-                    "import leaves the previous version in place. The app is fully offline after a " +
-                    "successful sync. A private repository needs a personal access token in the URL, " +
-                    "which this app does not store for you.",
+                "This URL is only for the legacy card packs used by the card library. V2 course paths " +
+                    "are bundled with the app and do not use this setting. Legacy packs are downloaded " +
+                    "from the `content` branch and verified against SHA-256 checksums. Only changed " +
+                    "packs are fetched; imports are transactional, and a failed import leaves the " +
+                    "previous version in place. After syncing, the card library also works offline. " +
+                    "A private source needs authentication; avoid saving a secret-bearing URL on a shared device.",
             )
 
-            SectionLabel("Installed packs (" + settings.packs.size + ")")
+            SectionLabel("Installed legacy packs (" + settings.packs.size + ")")
             if (settings.packs.isEmpty()) {
-                EmptyMessage("Nothing installed yet. Tap \"Sync now\" to fetch the built-in content packs.")
+                EmptyMessage("No legacy packs installed. Tap \"Sync legacy packs\" to fetch them.")
             }
             for (pack in settings.packs) {
                 Column(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
@@ -167,7 +167,7 @@ fun SettingsScreen(state: AppState) {
             SectionLabel("Storage")
             MetaRow("Platform", state.platformName)
             MetaRow("Database", state.dataDirectory)
-            MetaRow("Content base URL", settings.baseUrl)
+            MetaRow("Legacy pack source URL", settings.baseUrl)
 
             HorizontalDivider()
             SectionLabel("Developer")
@@ -188,9 +188,9 @@ fun SettingsScreen(state: AppState) {
 @Composable
 private fun SyncStatus(sync: SyncUiState) {
     when (sync) {
-        SyncUiState.Never -> EmptyMessage("Content has never been synced on this device.")
+        SyncUiState.Never -> EmptyMessage("Legacy card packs have never been synced on this device.")
 
-        SyncUiState.Running -> EmptyMessage("Checking the content branch for updates...")
+        SyncUiState.Running -> EmptyMessage("Checking the legacy content branch for updates...")
 
         is SyncUiState.Done -> Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text("Last sync: " + formatTime(sync.at), style = MaterialTheme.typography.bodyMedium)
