@@ -266,9 +266,12 @@ object CourseAnswerChecker {
             )
             val assumptionAndProof = hasNearWord(prefix, "assume", "assuming", "suppose", "supposing", "given") &&
                 hasNearWord(between, "prove", "proves", "show", "shows", "establish", "derive", "deduce")
-            val conditional = hasNearWord(prefix, "if", "when", "whenever") && !hasNearWord(between, "only") &&
-                (hasNearWord(between, "then") || hasNearWord(normalized.substring(next.range.last + 1), "holds", "true") ||
-                    hasNearWord(prefix, "whenever"))
+            val clearConditionalResult = hasNearWord(between, "then") ||
+                hasNearWord(normalized.substring(next.range.last + 1), "holds", "true") ||
+                hasNearWord(prefix, "whenever")
+            val conditional = hasNearWord(prefix, "if", "when", "whenever") &&
+                !hasNearWord(between, "only") &&
+                clearConditionalResult
             if (directArrow || directRelation || assumptionAndProof || conditional) return INDUCTION_CANONICAL
         } else {
             val between = normalized.substring(next.range.last + 1, base.range.first)
