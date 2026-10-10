@@ -36,6 +36,13 @@ class CourseCatalogTest {
     """.trimIndent()
 
     @Test
+    fun emptyInstalledCatalogIsValidForFreshInstalls() {
+        val empty = CourseCatalog(CourseCatalog.CURRENT_SCHEMA_VERSION, emptyList())
+
+        assertTrue(empty.validationErrors().isEmpty())
+    }
+
+    @Test
     fun storeFetchesOnlyManifestUntilASelectedCourseIsDownloaded() = runTest {
         val requestedPaths = mutableListOf<String>()
         val loader = loader(

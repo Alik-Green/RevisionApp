@@ -21,8 +21,8 @@ import com.revisionapp.ui.components.AppShell
 import com.revisionapp.ui.components.ProvideRichTextRenderer
 import com.revisionapp.ui.screens.CardEditorScreen
 import com.revisionapp.ui.screens.CourseLessonScreen
-import com.revisionapp.ui.screens.CourseStudyScreen
 import com.revisionapp.ui.screens.CourseStoreScreen
+import com.revisionapp.ui.screens.CourseStudyScreen
 import com.revisionapp.ui.screens.LibraryScreen
 import com.revisionapp.ui.screens.MathGalleryScreen
 import com.revisionapp.ui.screens.ProfileScreen

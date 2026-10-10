@@ -86,6 +86,7 @@ fun CourseStoreScreen(state: AppState) {
                     isDownloading = downloadingId == reference.id,
                     anotherDownloadInProgress = downloadingId != null && downloadingId != reference.id,
                     onDownload = { state.downloadCourse(reference) },
+                    onUpdate = { state.updateCourse(reference) },
                     onOpen = {
                         state.selectActiveCourse(reference.id)
                         state.switchTab(Route.Study)
@@ -103,6 +104,7 @@ private fun CourseStoreCard(
     isDownloading: Boolean,
     anotherDownloadInProgress: Boolean,
     onDownload: () -> Unit,
+    onUpdate: () -> Unit,
     onOpen: () -> Unit,
 ) {
     Surface(
@@ -153,6 +155,11 @@ private fun CourseStoreCard(
                 OutlinedButton(onClick = onOpen, modifier = Modifier.fillMaxWidth()) {
                     Text("Study this course")
                 }
+                OutlinedButton(
+                    onClick = onUpdate,
+                    enabled = !isDownloading && !anotherDownloadInProgress,
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(if (isDownloading) "Updating…" else "Update course") }
             }
         }
     }

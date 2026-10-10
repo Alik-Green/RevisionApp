@@ -3,9 +3,10 @@
 A mobile-first revision app built around curated course paths: ordered lessons
 contain reusable questions with multiple-choice or text-input answers. Progress,
 daily quests, coins, achievements and streak recovery sit alongside legacy FSRS
-cards and your own editable content. The Course Store lists repository-hosted V2
-courses; only courses explicitly chosen by the learner are downloaded and cached
-for offline study.
+cards and your own editable content. V2 courses are opt-in downloads from a
+dedicated, content-only Git branch. Startup does not fetch course content: the
+Store fetches its manifest only when opened, and downloads only the course the
+learner selects. Installed courses are cached for offline study.
 
 Built with Kotlin Multiplatform and Compose Multiplatform for **desktop (JVM)**
 and **Android**. Every line of logic and every screen is in `commonMain`; the two
@@ -196,13 +197,14 @@ works offline indefinitely.
 
 ### Curated course content V2
 
-The new question/lesson/course format is separate from legacy card packs. Its pilot
-is under the repository-root `content-v2/` directory. The Course Store fetches only
-the repository manifest when opened; a course file is downloaded and cached only
-after the learner chooses it. Previously downloaded courses remain available
-offline. Updating these JSON files does not require rebuilding the app. Lessons
-reference ordered question IDs and can reuse earlier questions for spiral review.
-See [the V2 authoring notes](docs/CONTENT_V2.md).
+The new question/lesson/course format is separate from legacy card packs. Its
+pilot lives on the content-only `course-content` branch under `content-v2/`.
+A fresh install has no V2 courses, and startup makes no V2 content request. The
+Course Store fetches the manifest when opened; a course file is downloaded only
+after the learner chooses it. An installed course can be explicitly updated from
+the Store, and installed files remain available offline. Updating the JSON branch
+does not require rebuilding the app. Lessons reference ordered question IDs and
+can reuse earlier questions for spiral review. See [the V2 authoring notes](docs/CONTENT_V2.md).
 
 **Content sync never touches your content or your study progress.** Built-in rows
 are namespaced by id *and* carry a `source` column, progress lives in a separate
@@ -323,12 +325,12 @@ exactly what to check.
 
 ### Legacy pack sync and private repositories
 
-V2 course downloads use a fixed raw GitHub URL in this repository; the source is
-not user-editable. The **Legacy pack source URL** in Settings controls only sync
-for the separate card library. The default pack URL works while the `content`
-branch is public. Serving a private legacy branch needs an authenticated URL — a
-fine-grained personal access token embedded in the base URL, or a proxy that adds
-the header. Avoid saving a secret-bearing URL on a shared device.
+V2 course downloads use a fixed raw GitHub URL pointing only to the `course-content`
+branch; the source is not user-editable. The **Legacy pack source URL** in Settings
+controls sync only for the separate card library. The default pack URL works while
+the `content` branch is public. Serving a private legacy branch needs an
+authenticated URL — a fine-grained personal access token embedded in the base URL,
+or a proxy that adds the header. Avoid saving a secret-bearing URL on a shared device.
 
 ---
 
@@ -344,14 +346,15 @@ the header. Avoid saving a secret-bearing URL on a shared device.
   counting are sealed and generic over item types so notebooks are one case each,
   but no notebook model, storage or editor exists.
 - **Verified V2 course content.** The TMUA and Further Maths samples are prototypes;
-  lesson/question facts and curriculum coverage still need human review. The default
-  course source currently uses the pinned app branch; no dedicated content branch is published.
+  lesson/question facts and curriculum coverage still need human review. Their files
+  are now on the dedicated `course-content` branch and are opt-in through the Store.
 - **Production Android distribution.** The APK in Releases is a debug build signed
   with the debug key, not a Play Store release.
 - **Social/profile features.** Avatar customisation, friends and shared progress
   are placeholders for later work; the profile name is stored locally.
-- **Richer learning plans.** Opt-in reminders, daily study planning, pause/resume,
-  worked examples and adaptive review plans have not been added.
+- **Richer learning plans.** One end-of-lesson retry is in place for missed
+  questions. Opt-in reminders, daily study planning, pause/resume, worked examples
+  and adaptive review plans still need design and evaluation.
 
 ## Architecture
 

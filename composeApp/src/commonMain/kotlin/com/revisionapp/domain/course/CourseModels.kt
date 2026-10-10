@@ -24,7 +24,6 @@ data class CourseCatalog(val schemaVersion: Int, val courses: List<LearningCours
 
     fun validationErrors(): List<String> = buildList {
         if (schemaVersion != CURRENT_SCHEMA_VERSION) add("Unsupported course schema version $schemaVersion")
-        if (courses.isEmpty()) add("Course catalog must include at least one course")
         if (courses.map { it.id }.distinct().size != courses.size) add("Course ids must be unique")
         courses.forEach { course ->
             course.validationErrors().forEach { add("${course.id}: $it") }
@@ -185,8 +184,16 @@ object CourseAnswerChecker {
     }
 
     private fun normalize(value: String): String =
-        value.lowercase().trim { it.isWhitespace() || it in EDGE_PUNCTUATION }.replace(WHITESPACE, " ")
+        value.lowercase()
+            .trim { it.isWhitespace() || it in EDGE_PUNCTUATION }
+            .replace(WHITESPACE, " ")
+            .replace(MATH_OPERATOR_SPACING) { match -> match.groupValues[1] }
+            .replace(COUNTER_EXAMPLE) { match ->
+                "counterexample" + if (match.value.endsWith("s")) "s" else ""
+            }
 
     private val EDGE_PUNCTUATION = setOf('.', ',', ';', ':', '!', '?', '\"', '\'', '“', '”', '‘', '’')
     private val WHITESPACE = Regex("\\s+")
+    private val MATH_OPERATOR_SPACING = Regex("\\s*([()^+=*/-])\\s*")
+    private val COUNTER_EXAMPLE = Regex("\\bcounter[\\s-]+examples?\\b")
 }

@@ -271,14 +271,23 @@ class AppState(
 
     private fun loadCourseCatalogAndProgression() {
         scope.launch(Dispatchers.Default) {
-            val cachedRaw = graph.settings.read(SettingKeys.V2_COURSE_CATALOG_CACHE)
-            val cachedCatalog = cachedRaw?.let { raw ->
+            // Earlier builds fetched every V2 course into this automatic cache. Clear it
+            // once so upgrading to the opt-in Store does not silently install those files.
+            if (graph.settings.read(SettingKeys.V2_COURSE_STORE_MIGRATED) != "1") {
+                graph.settings.write(SettingKeys.V2_COURSE_CATALOG_CACHE, "")
+                graph.settings.write(SettingKeys.V2_COURSE_STORE_MIGRATED, "1")
+            }
+
+            val installedRaw = graph.settings.read(SettingKeys.V2_INSTALLED_COURSES)
+            val installedCatalog = installedRaw?.takeIf { it.isNotBlank() }?.let { raw ->
                 runCatching { graph.json.decodeFromString<CourseCatalog>(raw) }.getOrNull()
-            }?.takeIf { it.courses.isNotEmpty() && it.validationErrors().isEmpty() }
-            if (cachedCatalog != null) {
-                _courseCatalog.value = cachedCatalog
-            } else if (cachedRaw != null) {
-                _courseCatalogError.value = "Saved course data could not be read. Open the Course Store to download it again."
+            }?.takeIf { it.validationErrors().isEmpty() }
+            _courseCatalog.value = installedCatalog
+                ?: CourseCatalog(CourseCatalog.CURRENT_SCHEMA_VERSION, emptyList())
+            _courseCatalogError.value = if (installedRaw.isNullOrBlank() || installedCatalog != null) {
+                null
+            } else {
+                "Saved course data could not be read. Open the Course Store to download it again."
             }
 
             val restored = graph.settings.read(SettingKeys.LEARNER_PROGRESS_V2)?.let { raw ->
@@ -336,7 +345,7 @@ class AppState(
                 )
                 val errors = catalog.validationErrors()
                 require(errors.isEmpty()) { errors.joinToString("; ") }
-                graph.settings.write(SettingKeys.V2_COURSE_CATALOG_CACHE, graph.json.encodeToString(catalog))
+                graph.settings.write(SettingKeys.V2_INSTALLED_COURSES, graph.json.encodeToString(catalog))
                 _courseCatalog.value = catalog
                 _courseCatalogError.value = null
                 if (_learnerProgress.value.activeCourseId.isBlank()) {
@@ -352,11 +361,15 @@ class AppState(
         }
     }
 
+    /** Explicitly replace an installed course with the current branch version. */
+    fun updateCourse(reference: CourseFileReference) {
+        if (_courseCatalog.value.course(reference.id) == null) return
+        downloadCourse(reference)
+    }
+
     /**
-     * Fetches the built-in packs when none are installed, so a fresh install has
-     * content without the user having to find the settings screen, and so a first
-     * sync that failed offline is retried on the next launch. Once a pack exists
-     * the app never syncs on its own again: updates stay an explicit choice.
+     * Fetches the legacy packs when none are installed. This existing card-pack
+     * behavior is separate from V2 courses; V2 downloads require Store selection.
      */
     private fun syncOnFirstRun() {
         scope.launch(Dispatchers.Default) {

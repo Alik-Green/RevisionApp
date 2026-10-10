@@ -87,13 +87,21 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
         is QuestionAnswer.TextInput -> question.answerInstruction.ifBlank { "Type a short answer." }
     }
 
+    fun recordAnswer(isCorrect: Boolean) {
+        state.recordCourseQuestionAnswered()
+        answerCorrect.value = isCorrect
+        if (!isCorrect && retryQueue.scheduleRetry(question, questionIndex.value)) {
+            questionQueue.add(question)
+        }
+    }
+
     Column(Modifier.fillMaxSize()) {
         AppHeader(
             title = lesson.title,
             subtitle = course.name,
             onBack = { state.back() },
         )
-        LessonProgressBar(questionIndex.value, questions.size)
+        LessonProgressBar(questionIndex.value, questionQueue.size)
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 18.dp),
@@ -142,8 +150,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                             enabled = correct == null,
                             onClick = {
                                 selectedOption.value = option.id
-                                state.recordCourseQuestionAnswered()
-                                answerCorrect.value = CourseAnswerChecker.check(answer, option.id)
+                                recordAnswer(CourseAnswerChecker.check(answer, option.id))
                             },
                         )
                     }
@@ -161,8 +168,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                     if (correct == null) {
                         Button(
                             onClick = {
-                                state.recordCourseQuestionAnswered()
-                                answerCorrect.value = CourseAnswerChecker.check(answer, draft.value)
+                                recordAnswer(CourseAnswerChecker.check(answer, draft.value))
                             },
                             enabled = draft.value.isNotBlank(),
                             modifier = Modifier.fillMaxWidth(),
@@ -175,9 +181,6 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                 AnswerFeedback(question, correct)
                 Button(
                     onClick = {
-                        if (!correct && retryQueue.scheduleRetry(question, questionIndex.value)) {
-                            questionQueue.add(question)
-                        }
                         if (questionIndex.value == questionQueue.lastIndex) {
                             state.completeCourseLesson(course.id, lesson.id)
                             finished.value = true
@@ -187,7 +190,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                     },
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(if (questionIndex.value == questions.lastIndex) "Finish lesson" else "Continue")
+                    Text(if (questionIndex.value == questionQueue.lastIndex) "Finish lesson" else "Continue")
                 }
             }
             Spacer(Modifier.height(12.dp))

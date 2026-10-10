@@ -29,6 +29,8 @@ import kotlin.time.Clock
 object SettingKeys {
     const val CONTENT_BASE_URL: String = "content.baseUrl"
     const val V2_COURSE_CATALOG_CACHE: String = "content.v2.catalogCache"
+    const val V2_INSTALLED_COURSES: String = "content.v2.installedCourses"
+    const val V2_COURSE_STORE_MIGRATED: String = "content.v2.storeMigrated"
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
     const val THEME_MODE: String = "appearance.themeMode"
     const val THEME_STYLE: String = "appearance.themeStyle"

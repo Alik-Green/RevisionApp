@@ -64,7 +64,7 @@ class CourseCatalogLoader(
     companion object {
         /** Fixed repository source; the app downloads only a manifest until the Store is opened. */
         const val DEFAULT_BASE_URL: String =
-            "https://raw.githubusercontent.com/Alik-Green/RevisionApp/arena/299725bb-revisionapp/content-v2"
+            "https://raw.githubusercontent.com/Alik-Green/RevisionApp/course-content/content-v2"
         const val MANIFEST_PATH: String = "manifest.json"
 
         private const val COURSE_PATH_PREFIX = "courses/"
