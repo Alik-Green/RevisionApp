@@ -253,8 +253,11 @@ private fun AchievementRow(achievement: AchievementProgress) {
             }
             ProgressBar(achievement.progressFraction)
             Text(
-                if (achievement.isUnlocked) "Mastered · ${achievement.rewardCoins} coins earned"
-                else "${achievement.current.coerceAtMost(achievement.target)} / ${achievement.target} · reward ${achievement.rewardCoins} coins",
+                if (achievement.isUnlocked) {
+                    "Mastered · ${achievement.rewardCoins} coins earned"
+                } else {
+                    "${achievement.current.coerceAtMost(achievement.target)} / ${achievement.target} · reward ${achievement.rewardCoins} coins"
+                },
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

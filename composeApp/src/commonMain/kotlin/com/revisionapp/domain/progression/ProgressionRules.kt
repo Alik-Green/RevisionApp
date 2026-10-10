@@ -565,8 +565,7 @@ object ProgressionRules {
         val achievementCoins = newlyUnlocked.sumOf { it.rewardCoins }
         val updated = withQuestRewards.copy(
             coins = withQuestRewards.coins + achievementCoins,
-            unlockedAchievementIds =
-                (withQuestRewards.unlockedAchievementIds + newlyUnlocked.map { it.id }).distinct(),
+            unlockedAchievementIds = (withQuestRewards.unlockedAchievementIds + newlyUnlocked.map { it.id }).distinct(),
         )
         return ProgressionMutation(updated, dailyCoins + weeklyCoins + achievementCoins)
     }

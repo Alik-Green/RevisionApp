@@ -85,8 +85,11 @@ fun CharacterShopScreen(state: AppState) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
-                    color = if (equipped) MaterialTheme.colorScheme.secondaryContainer
-                    else MaterialTheme.colorScheme.surfaceContainerLow,
+                    color = if (equipped) {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerLow
+                    },
                 ) {
                     Row(
                         Modifier.padding(13.dp),
