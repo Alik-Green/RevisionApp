@@ -28,15 +28,15 @@ import com.revisionapp.domain.model.TagId
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.LabeledField
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 private const val INDENT_SPACES = "    "
 

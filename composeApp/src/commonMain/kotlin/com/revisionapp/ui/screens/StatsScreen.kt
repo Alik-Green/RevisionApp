@@ -32,7 +32,6 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.TopicAccuracyRow
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
@@ -41,6 +40,7 @@ import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /** Due today, streak, weekly quests and topic-tree progress. */
 @Composable

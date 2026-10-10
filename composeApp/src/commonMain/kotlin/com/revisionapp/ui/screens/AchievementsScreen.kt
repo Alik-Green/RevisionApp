@@ -108,8 +108,10 @@ private fun AchievementBadge(achievement: AchievementProgress) {
         border = if (isDark) {
             BorderStroke(
                 1.dp,
-                if (achievement.isUnlocked) ExtendedTheme.colors.reward.copy(alpha = 0.7f)
-                else MaterialTheme.colorScheme.outlineVariant,
+                when {
+                    achievement.isUnlocked -> ExtendedTheme.colors.reward.copy(alpha = 0.7f)
+                    else -> MaterialTheme.colorScheme.outlineVariant
+                },
             )
         } else {
             null

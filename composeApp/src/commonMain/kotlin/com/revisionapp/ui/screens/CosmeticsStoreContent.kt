@@ -35,7 +35,6 @@ import com.revisionapp.domain.progression.AvatarPartCatalog
 import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
@@ -43,6 +42,7 @@ import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
 
 /** Cosmetics browser. The avatar and category controls stay fixed while options scroll below. */
 @Composable
@@ -197,9 +197,11 @@ private fun CosmeticPartCard(
         color = if (equipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             if (equipped) 2.dp else 1.dp,
-            if (equipped && isDark) MaterialTheme.colorScheme.tertiary
-            else if (equipped) MaterialTheme.colorScheme.secondary
-            else MaterialTheme.colorScheme.outlineVariant,
+            when {
+                equipped && isDark -> MaterialTheme.colorScheme.tertiary
+                equipped -> MaterialTheme.colorScheme.secondary
+                else -> MaterialTheme.colorScheme.outlineVariant
+            },
         ),
         shadowElevation = if (isDark) 2.dp else 0.dp,
     ) {

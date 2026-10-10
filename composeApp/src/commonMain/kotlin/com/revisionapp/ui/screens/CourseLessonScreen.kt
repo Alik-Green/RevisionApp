@@ -53,7 +53,6 @@ import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.platform.SoundEffect
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
@@ -63,6 +62,7 @@ import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
 
 /** Player for an ordered V2 lesson. Each answer is checked using the question's authored type. */
 @Composable

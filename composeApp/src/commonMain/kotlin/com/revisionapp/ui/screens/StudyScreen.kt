@@ -45,10 +45,7 @@ import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
@@ -65,6 +62,9 @@ import com.revisionapp.ui.theme.appInset
 import com.revisionapp.ui.theme.verdictColour
 import com.revisionapp.ui.theme.verdictContainerColour
 import com.revisionapp.ui.theme.verdictOnContainerColour
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /**
  * The study screen. It renders [SessionState] with an exhaustive `when`, so a new

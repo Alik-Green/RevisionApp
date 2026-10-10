@@ -89,7 +89,11 @@ fun AppOutlinedButton(
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val shape = MaterialTheme.shapes.small
-    val depth = if (!isDark || !enabled) 0.dp else if (pressed) 1.dp else 3.dp
+    val depth = when {
+        !isDark || !enabled -> 0.dp
+        pressed -> 1.dp
+        else -> 3.dp
+    }
     val raisedModifier = if (depth > 0.dp) modifier.shadow(depth, shape, clip = false) else modifier
     OutlinedButton(
         onClick = onClick,

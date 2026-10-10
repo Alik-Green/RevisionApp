@@ -33,15 +33,15 @@ import com.revisionapp.domain.course.CourseFileReference
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /** Primary Store tab with separate course-download and avatar-cosmetic shelves. */
 @Composable
@@ -185,11 +185,17 @@ private fun CourseStoreRow(
         },
         border = BorderStroke(
             if (selected) 2.dp else 1.dp,
-            if (selected && isDark) MaterialTheme.colorScheme.tertiary
-            else if (selected) MaterialTheme.colorScheme.secondary
-            else MaterialTheme.colorScheme.outlineVariant,
+            when {
+                selected && isDark -> MaterialTheme.colorScheme.tertiary
+                selected -> MaterialTheme.colorScheme.secondary
+                else -> MaterialTheme.colorScheme.outlineVariant
+            },
         ),
-        shadowElevation = if (isDark && selected) 6.dp else if (isDark) 3.dp else 0.dp,
+        shadowElevation = when {
+            !isDark -> 0.dp
+            selected -> 6.dp
+            else -> 3.dp
+        },
         tonalElevation = 1.dp,
     ) {
         Row(

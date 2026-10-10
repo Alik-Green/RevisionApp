@@ -55,13 +55,13 @@ import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.theme.DarkAccentPalette
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appInset
 import kotlin.math.sin
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /** Course-first study home with a compact switch/info card and a centered topic path. */
 @Composable

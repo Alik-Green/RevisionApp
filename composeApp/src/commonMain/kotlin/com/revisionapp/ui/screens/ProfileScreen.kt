@@ -35,15 +35,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
 
 /** Local learner profile with an editable name and earned-only character styling. */
 @Composable

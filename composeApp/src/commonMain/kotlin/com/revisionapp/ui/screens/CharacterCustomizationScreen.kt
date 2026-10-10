@@ -39,10 +39,7 @@ import com.revisionapp.domain.progression.AvatarPartCatalog
 import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.ui.AppState
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
-import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
@@ -50,6 +47,9 @@ import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppOutlinedButton as OutlinedButton
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /** Avatar editor lives under Profile; sizing and positioning are always free. */
 @Composable
@@ -214,19 +214,27 @@ private fun AvatarOptionTile(
     onClick: () -> Unit,
 ) {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val outline = if (selected && isDark) MaterialTheme.colorScheme.tertiary
-    else if (selected) MaterialTheme.colorScheme.primary
-    else MaterialTheme.colorScheme.outlineVariant
+    val outline = when {
+        selected && isDark -> MaterialTheme.colorScheme.tertiary
+        selected -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.outlineVariant
+    }
     Surface(
         modifier = Modifier
             .width(104.dp)
             .clickable(onClick = onClick),
         shape = appCornerShape(15.dp),
-        color = if (selected && isDark) MaterialTheme.colorScheme.tertiaryContainer
-        else if (selected) MaterialTheme.colorScheme.secondaryContainer
-        else MaterialTheme.colorScheme.surface,
+        color = when {
+            selected && isDark -> MaterialTheme.colorScheme.tertiaryContainer
+            selected -> MaterialTheme.colorScheme.secondaryContainer
+            else -> MaterialTheme.colorScheme.surface
+        },
         border = BorderStroke(if (selected) 2.dp else 1.dp, outline),
-        shadowElevation = if (isDark && selected) 5.dp else if (isDark) 2.dp else 0.dp,
+        shadowElevation = when {
+            !isDark -> 0.dp
+            selected -> 5.dp
+            else -> 2.dp
+        },
     ) {
         Column(
             Modifier.padding(horizontal = appInset(8.dp), vertical = appInset(10.dp)),

@@ -76,8 +76,6 @@ import com.revisionapp.domain.usecase.TagGroupOptions
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.FeatureFlags
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
-import com.revisionapp.ui.components.AppTextButton as TextButton
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
@@ -86,6 +84,8 @@ import com.revisionapp.ui.theme.SubjectAccents
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
+import com.revisionapp.ui.components.AppTextButton as TextButton
 
 /**
  * The Library: a file explorer over the topic tree, not a filter panel.

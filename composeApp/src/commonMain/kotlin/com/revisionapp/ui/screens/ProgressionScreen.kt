@@ -35,7 +35,6 @@ import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
-import com.revisionapp.ui.components.AppButton as Button
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
@@ -44,6 +43,7 @@ import com.revisionapp.ui.theme.ExtendedTheme
 import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.appHeadingWeight
 import com.revisionapp.ui.theme.appInset
+import com.revisionapp.ui.components.AppButton as Button
 
 /** Daily and weekly learning goals, earned coins, streaks and a compact badge preview. */
 @Composable
