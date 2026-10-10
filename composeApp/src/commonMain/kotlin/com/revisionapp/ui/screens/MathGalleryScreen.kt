@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +24,7 @@ import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.render.RichTextRenderer
+import com.revisionapp.ui.theme.appCornerShape
 
 /**
  * A debug screen, reached from Settings > Developer, that shows representative
@@ -67,7 +67,7 @@ private fun GalleryRow(source: String, renderer: RichTextRenderer) {
     Column(
         Modifier
             .fillMaxWidth()
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, appCornerShape(10.dp))
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {

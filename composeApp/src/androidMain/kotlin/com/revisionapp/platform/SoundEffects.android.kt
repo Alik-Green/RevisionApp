@@ -1,78 +1,67 @@
 package com.revisionapp.platform
 
-import android.media.AudioManager
-import android.media.ToneGenerator
+import android.media.AudioAttributes
+import android.media.MediaDataSource
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import java.util.ArrayDeque
 
 actual object PlatformSoundEffects {
-    private data class Tone(
-        val value: Int,
-        val durationMs: Long,
-        val pauseAfterMs: Long = 45,
-    )
-
     private val handler = Handler(Looper.getMainLooper())
-    private val pending = ArrayDeque<SoundEffect>()
-    private var isPlaying = false
+    private val pending = ArrayDeque<ByteArray>()
+    private var currentPlayer: MediaPlayer? = null
 
-    actual fun play(effect: SoundEffect) {
+    actual fun play(waveData: ByteArray) {
         handler.post {
-            pending.addLast(effect)
+            pending.addLast(waveData)
             playNext()
         }
     }
 
     private fun playNext() {
-        if (isPlaying || pending.isEmpty()) return
-        val effect = pending.removeFirst()
-        val generator = try {
-            ToneGenerator(AudioManager.STREAM_MUSIC, 78)
-        } catch (_: RuntimeException) {
-            playNext()
-            return
-        }
-        val tones = tonesFor(effect)
-        isPlaying = true
-
-        fun playTone(index: Int) {
-            if (index >= tones.size) {
-                handler.postDelayed(
-                    {
-                        generator.release()
-                        isPlaying = false
-                        playNext()
-                    },
-                    30,
-                )
-                return
+        if (currentPlayer != null || pending.isEmpty()) return
+        val player = MediaPlayer()
+        currentPlayer = player
+        try {
+            player.setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build(),
+            )
+            player.setVolume(0.58f, 0.58f)
+            player.setDataSource(ByteArrayMediaDataSource(pending.removeFirst()))
+            player.setOnPreparedListener { it.start() }
+            player.setOnCompletionListener { finish(it) }
+            player.setOnErrorListener { mediaPlayer, _, _ ->
+                finish(mediaPlayer)
+                true
             }
-            val tone = tones[index]
-            generator.startTone(tone.value, tone.durationMs.toInt())
-            handler.postDelayed({ playTone(index + 1) }, tone.durationMs + tone.pauseAfterMs)
+            player.prepareAsync()
+        } catch (_: RuntimeException) {
+            finish(player)
         }
-
-        playTone(0)
     }
 
-    private fun tonesFor(effect: SoundEffect): List<Tone> = when (effect) {
-        SoundEffect.CORRECT -> listOf(Tone(ToneGenerator.TONE_PROP_ACK, 120))
-        SoundEffect.INCORRECT -> listOf(Tone(ToneGenerator.TONE_PROP_NACK, 180))
-        SoundEffect.LESSON_COMPLETE -> listOf(
-            Tone(ToneGenerator.TONE_PROP_PROMPT, 110),
-            Tone(ToneGenerator.TONE_PROP_ACK, 150),
-            Tone(ToneGenerator.TONE_PROP_BEEP2, 210, pauseAfterMs = 0),
-        )
-        SoundEffect.QUEST_COMPLETE -> listOf(
-            Tone(ToneGenerator.TONE_PROP_ACK, 100),
-            Tone(ToneGenerator.TONE_PROP_BEEP2, 130),
-            Tone(ToneGenerator.TONE_PROP_ACK, 220, pauseAfterMs = 0),
-        )
-        SoundEffect.STREAK_EXTENDED -> listOf(
-            Tone(ToneGenerator.TONE_PROP_BEEP, 100),
-            Tone(ToneGenerator.TONE_PROP_PROMPT, 140),
-            Tone(ToneGenerator.TONE_PROP_ACK, 220, pauseAfterMs = 0),
-        )
+    private fun finish(player: MediaPlayer) {
+        if (currentPlayer !== player) return
+        currentPlayer = null
+        player.release()
+        playNext()
+    }
+
+    private class ByteArrayMediaDataSource(private val bytes: ByteArray) : MediaDataSource() {
+        override fun readAt(position: Long, buffer: ByteArray, offset: Int, size: Int): Int {
+            if (position < 0 || position >= bytes.size) return -1
+            val start = position.toInt()
+            val count = minOf(size, bytes.size - start)
+            bytes.copyInto(buffer, destinationOffset = offset, startIndex = start, endIndex = start + count)
+            return count
+        }
+
+        override fun getSize(): Long = bytes.size.toLong()
+
+        override fun close() = Unit
     }
 }

@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -60,6 +59,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -83,6 +83,7 @@ import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.nav.WindowSizeClass
 import com.revisionapp.ui.theme.SubjectAccents
+import com.revisionapp.ui.theme.appCornerShape
 
 /**
  * The Library: a file explorer over the topic tree, not a filter panel.
@@ -196,7 +197,7 @@ private fun LibraryTopBar(state: AppState, onFilters: () -> Unit) {
                             Modifier
                                 .align(Alignment.TopEnd)
                                 .size(8.dp)
-                                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+                                .background(MaterialTheme.colorScheme.primary, appCornerShape(4.dp)),
                         )
                     }
                 }
@@ -432,14 +433,14 @@ private fun FolderRow(state: AppState, snapshot: LibrarySnapshot, node: TopicNod
     Row(
         Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerLow, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(12.dp))
             .clickable { state.openTopic(node.id) }
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Box(
-            Modifier.size(36.dp).background(accent.copy(alpha = 0.16f), RoundedCornerShape(10.dp)),
+            Modifier.size(36.dp).background(accent.copy(alpha = 0.16f), appCornerShape(10.dp)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(Icons.Filled.Folder, contentDescription = null, tint = accent, modifier = Modifier.size(20.dp))
@@ -856,18 +857,21 @@ private fun DuePill(count: Int) {
 @Composable
 private fun StatusPill(label: String, container: Color, onContainer: Color) {
     Box(
-        Modifier.background(container, RoundedCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 3.dp),
+        Modifier.background(container, appCornerShape(8.dp)).padding(horizontal = 8.dp, vertical = 3.dp),
     ) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = onContainer, fontWeight = FontWeight.SemiBold)
     }
 }
 
 /** The colour of the top-level subject this topic sits under. */
+@Composable
 private fun accentFor(snapshot: LibrarySnapshot, node: TopicNode): Color = accentFor(snapshot, node.id)
 
+@Composable
 private fun accentFor(snapshot: LibrarySnapshot, id: TopicId): Color {
     val root = snapshot.tree.pathTo(id).firstOrNull()
-    return SubjectAccents.forTopic(root?.name.orEmpty(), root?.id?.value ?: id.value)
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    return SubjectAccents.forTopic(root?.name.orEmpty(), root?.id?.value ?: id.value, dark = isDark)
 }
 
 /** "Physics › Circular motion", for a search result's location line. */

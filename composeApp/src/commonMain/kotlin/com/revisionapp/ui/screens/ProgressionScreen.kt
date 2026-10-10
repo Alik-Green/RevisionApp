@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +39,7 @@ import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Daily and weekly learning goals, earned coins, streaks and a compact badge preview. */
 @Composable
@@ -96,7 +96,7 @@ fun ProgressionScreen(state: AppState) {
 private fun CoinsCard(balance: String, appearance: CharacterAppearance) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(22.dp),
+        shape = appCornerShape(22.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
     ) {
         Row(
@@ -122,7 +122,7 @@ private fun AchievementSummaryCard(achievements: List<AchievementProgress>, onOp
     val next = achievements.firstOrNull { !it.isUnlocked }
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = appCornerShape(20.dp),
         color = MaterialTheme.colorScheme.secondaryContainer,
     ) {
         Row(
@@ -151,7 +151,7 @@ private fun StreakCard(progress: LearnerProgress, state: AppState) {
     val cost = recovery?.let { ProgressionRules.streakRecoveryCost(it.missedDays) }
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = appCornerShape(20.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -201,7 +201,7 @@ private fun StreakCard(progress: LearnerProgress, state: AppState) {
 private fun QuestCard(quest: DailyQuestProgress, cadence: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = appCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             1.dp,
@@ -250,12 +250,12 @@ private fun ProgressBar(fraction: Float) {
         label = "progress-bar",
     ).value
     Box(
-        Modifier.fillMaxWidth().height(7.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp)),
+        Modifier.fillMaxWidth().height(7.dp).background(MaterialTheme.colorScheme.surfaceVariant, appCornerShape(4.dp)),
     ) {
         if (animatedFraction > 0f) {
             Box(
                 Modifier.fillMaxWidth(animatedFraction).height(7.dp)
-                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+                    .background(MaterialTheme.colorScheme.primary, appCornerShape(4.dp)),
             )
         }
     }

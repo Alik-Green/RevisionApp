@@ -38,6 +38,7 @@ import com.revisionapp.domain.usecase.WeeklyQuestCalculator
 import com.revisionapp.domain.usecase.WeeklyQuestProgress
 import com.revisionapp.platform.PlatformSoundEffects
 import com.revisionapp.platform.SoundEffect
+import com.revisionapp.platform.SoundEffectAudio
 import com.revisionapp.ui.render.RichTextRenderer
 import com.revisionapp.ui.session.AnswerDraft
 import com.revisionapp.ui.session.SessionCard
@@ -242,6 +243,7 @@ class AppState(
     val progressionReady: StateFlow<Boolean> = _progressionReady.asStateFlow()
 
     private val progressionWriteMutex = Mutex()
+    private val soundPlaybackMutex = Mutex()
 
     /**
      * Where the user currently is in the topic tree; null is the Library root.
@@ -509,7 +511,14 @@ class AppState(
     }
 
     fun playSoundEffect(effect: SoundEffect) {
-        if (_settingsUi.value.soundEffectsEnabled) PlatformSoundEffects.play(effect)
+        if (!_settingsUi.value.soundEffectsEnabled) return
+        scope.launch(Dispatchers.Default) {
+            soundPlaybackMutex.withLock {
+                if (!_settingsUi.value.soundEffectsEnabled) return@withLock
+                val waveData = runCatching { SoundEffectAudio.load(effect) }.getOrNull() ?: return@withLock
+                if (_settingsUi.value.soundEffectsEnabled) PlatformSoundEffects.play(waveData)
+            }
+        }
     }
 
     fun setSoundEffectsEnabled(enabled: Boolean) {

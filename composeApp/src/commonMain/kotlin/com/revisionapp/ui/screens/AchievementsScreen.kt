@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +31,7 @@ import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Dedicated badge gallery so the main Progress screen can stay focused on next actions. */
 @Composable
@@ -53,7 +53,7 @@ fun AchievementsScreen(state: AppState) {
         }
         Surface(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
-            shape = RoundedCornerShape(22.dp),
+            shape = appCornerShape(22.dp),
             color = MaterialTheme.colorScheme.tertiaryContainer,
         ) {
             Row(
@@ -96,7 +96,7 @@ private fun AchievementBadge(achievement: AchievementProgress) {
     ).value
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = appCornerShape(20.dp),
         color = background,
         tonalElevation = if (achievement.isUnlocked) 2.dp else 0.dp,
     ) {
@@ -145,12 +145,12 @@ private fun AchievementBadge(achievement: AchievementProgress) {
             )
             Box(
                 Modifier.fillMaxWidth().height(6.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp)),
+                    .background(MaterialTheme.colorScheme.surfaceVariant, appCornerShape(4.dp)),
             ) {
                 if (animatedFraction > 0f) {
                     Box(
                         Modifier.fillMaxWidth(animatedFraction.coerceIn(0f, 1f)).height(6.dp)
-                            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+                            .background(MaterialTheme.colorScheme.primary, appCornerShape(4.dp)),
                     )
                 }
             }

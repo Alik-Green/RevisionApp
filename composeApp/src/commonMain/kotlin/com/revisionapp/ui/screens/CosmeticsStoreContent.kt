@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +38,7 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Cosmetics browser. The avatar and category controls stay fixed while options scroll below. */
 @Composable
@@ -64,7 +64,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
+            shape = appCornerShape(20.dp),
             color = MaterialTheme.colorScheme.primaryContainer,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
         ) {
@@ -130,7 +130,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
                 val category = selectedPartCategory
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(18.dp),
+                    shape = appCornerShape(18.dp),
                     color = MaterialTheme.colorScheme.surfaceContainerHigh,
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
@@ -188,7 +188,7 @@ private fun CosmeticPartCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(17.dp),
+        shape = appCornerShape(17.dp),
         color = if (equipped) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             if (equipped) 2.dp else 1.dp,
@@ -275,7 +275,7 @@ private fun CosmeticsShapeControls(
     }
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(19.dp),
+        shape = appCornerShape(19.dp),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {

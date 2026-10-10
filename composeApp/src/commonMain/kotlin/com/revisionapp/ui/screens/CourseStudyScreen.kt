@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -60,6 +59,8 @@ import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.DarkAccentPalette
+import com.revisionapp.ui.theme.appCornerShape
 import kotlin.math.sin
 
 /** Course-first study home with a compact switch/info card and a centered topic path. */
@@ -91,7 +92,7 @@ fun CourseStudyScreen(state: AppState) {
             ) {
                 Surface(
                     modifier = Modifier.widthIn(max = 600.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
+                    shape = appCornerShape(20.dp),
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 ) {
@@ -169,7 +170,7 @@ private fun ActiveCourseCard(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(18.dp),
+        shape = appCornerShape(18.dp),
         color = MaterialTheme.colorScheme.secondaryContainer,
         border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.42f)),
     ) {
@@ -265,7 +266,7 @@ private fun CoursePathSection(
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(22.dp),
+        shape = appCornerShape(22.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, topicColour.copy(alpha = if (isDark) 0.48f else 0.38f)),
     ) {
@@ -323,7 +324,7 @@ private fun CoursePathNodes(
         val offsets = remember(sectionLessons.size, maxWidth) {
             sectionLessons.indices.map { index -> amplitude * sin(index.toDouble() * 1.32).toFloat() }
         }
-        val nodeContentColour = if (isDark) Color(0xFF17202B) else Color.White
+        val nodeContentColour = if (isDark) Color(0xFF12201A) else Color.White
 
         Canvas(Modifier.matchParentSize()) {
             if (sectionLessons.size > 1) {
@@ -430,12 +431,11 @@ private val LIGHT_COURSE_PATH_COLOURS = listOf(
 )
 
 private val DARK_COURSE_PATH_COLOURS = listOf(
-    Color(0xFFC6B8FF),
-    Color(0xFF79E5D2),
-    Color(0xFFFFB8D2),
-    Color(0xFF9BCFFF),
-    Color(0xFFC8E98D),
-    Color(0xFFFFCF7B),
+    DarkAccentPalette.Leaf,
+    DarkAccentPalette.Aqua,
+    DarkAccentPalette.Sky,
+    DarkAccentPalette.Amber,
+    DarkAccentPalette.Coral,
 )
 
 private fun coursePathColour(sectionIndex: Int, isDark: Boolean): Color {

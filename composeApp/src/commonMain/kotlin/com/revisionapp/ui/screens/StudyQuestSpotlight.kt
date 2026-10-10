@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,13 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.progression.DailyQuestProgress
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.appCornerShape
 
 /** A single next-action card keeps the study loop visibly connected to rewards. */
 @Composable
 fun QuestSpotlight(quest: DailyQuestProgress?, onOpen: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onOpen),
-        shape = RoundedCornerShape(20.dp),
+        shape = appCornerShape(20.dp),
         color = MaterialTheme.colorScheme.tertiaryContainer,
     ) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -58,12 +58,12 @@ fun QuestSpotlight(quest: DailyQuestProgress?, onOpen: () -> Unit) {
                 val fraction = quest.progressFraction.coerceIn(0f, 1f)
                 Box(
                     Modifier.fillMaxWidth().height(6.dp)
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f), RoundedCornerShape(4.dp)),
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f), appCornerShape(4.dp)),
                 ) {
                     if (fraction > 0f) {
                         Box(
                             Modifier.fillMaxWidth(fraction).height(6.dp)
-                                .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(4.dp)),
+                                .background(MaterialTheme.colorScheme.tertiary, appCornerShape(4.dp)),
                         )
                     }
                 }

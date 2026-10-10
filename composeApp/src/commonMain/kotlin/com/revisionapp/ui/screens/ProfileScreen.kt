@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -40,6 +39,7 @@ import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Local learner profile with an editable name and earned-only character styling. */
 @Composable
@@ -67,7 +67,7 @@ fun ProfileScreen(state: AppState) {
         ) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(22.dp),
+                shape = appCornerShape(22.dp),
                 color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Row(
@@ -103,7 +103,7 @@ fun ProfileScreen(state: AppState) {
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
+                shape = appCornerShape(18.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             ) {
                 Column(
@@ -133,7 +133,7 @@ fun ProfileScreen(state: AppState) {
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
+                shape = appCornerShape(18.dp),
                 color = MaterialTheme.colorScheme.secondaryContainer,
             ) {
                 Row(
@@ -168,7 +168,7 @@ fun ProfileScreen(state: AppState) {
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
+                shape = appCornerShape(18.dp),
                 color = MaterialTheme.colorScheme.secondaryContainer,
             ) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {

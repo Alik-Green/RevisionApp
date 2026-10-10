@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +38,7 @@ import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.StatTile
 import com.revisionapp.ui.session.VerdictPresentation
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Due today, streak, weekly quests and topic-tree progress. */
 @Composable
@@ -118,7 +118,7 @@ private fun WeeklyQuestRow(quest: WeeklyQuestProgress) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerLow, RoundedCornerShape(14.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(14.dp))
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp),
     ) {
@@ -139,14 +139,14 @@ private fun WeeklyQuestRow(quest: WeeklyQuestProgress) {
             )
         }
         Box(
-            Modifier.fillMaxWidth().height(7.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp)),
+            Modifier.fillMaxWidth().height(7.dp).background(MaterialTheme.colorScheme.surfaceVariant, appCornerShape(4.dp)),
         ) {
             if (quest.progressFraction > 0f) {
                 Box(
                     Modifier
                         .fillMaxWidth(quest.progressFraction)
                         .height(7.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp)),
+                        .background(MaterialTheme.colorScheme.primary, appCornerShape(4.dp)),
                 )
             }
         }
@@ -192,7 +192,7 @@ private fun TopicTreeProgress(state: AppState, snapshot: LibrarySnapshot, node: 
             Modifier
                 .fillMaxWidth()
                 .padding(start = (depth * 12).dp, top = 3.dp, bottom = 3.dp)
-                .background(MaterialTheme.colorScheme.surfaceContainerLow, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow, appCornerShape(12.dp))
                 .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -228,14 +228,14 @@ private fun TopicTreeProgress(state: AppState, snapshot: LibrarySnapshot, node: 
                 .fillMaxWidth()
                 .padding(start = (depth * 12).dp)
                 .height(5.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(3.dp)),
+                .background(MaterialTheme.colorScheme.surfaceVariant, appCornerShape(3.dp)),
         ) {
             if (progress.fraction > 0f) {
                 Box(
                     Modifier
                         .fillMaxWidth(progress.fraction.coerceIn(0f, 1f))
                         .height(5.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(3.dp)),
+                        .background(MaterialTheme.colorScheme.primary, appCornerShape(3.dp)),
                 )
             }
         }
@@ -269,10 +269,10 @@ private fun AccuracyRow(row: TopicAccuracyRow) {
         }
         val fraction = row.accuracy.toFloat().coerceIn(0f, 1f)
         Box(
-            Modifier.fillMaxWidth().height(6.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(3.dp)),
+            Modifier.fillMaxWidth().height(6.dp).background(MaterialTheme.colorScheme.surfaceVariant, appCornerShape(3.dp)),
         ) {
             Box(
-                Modifier.fillMaxWidth(fraction).height(6.dp).background(MaterialTheme.colorScheme.primary, RoundedCornerShape(3.dp)),
+                Modifier.fillMaxWidth(fraction).height(6.dp).background(MaterialTheme.colorScheme.primary, appCornerShape(3.dp)),
             )
         }
     }

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -61,6 +60,7 @@ import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.theme.ExtendedTheme
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Player for an ordered V2 lesson. Each answer is checked using the question's authored type. */
 @Composable
@@ -141,7 +141,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
             }
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
+                shape = appCornerShape(20.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             ) {
                 Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -249,9 +249,9 @@ private fun CourseAnswerOption(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), RoundedCornerShape(14.dp))
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), appCornerShape(14.dp))
             .clickable(enabled = enabled, onClick = onClick),
-        shape = RoundedCornerShape(14.dp),
+        shape = appCornerShape(14.dp),
         color = container,
     ) {
         Row(
@@ -282,8 +282,8 @@ private fun AnswerFeedback(
     Column(
         Modifier
             .fillMaxWidth()
-            .background(container, RoundedCornerShape(16.dp))
-            .border(1.dp, color.copy(alpha = 0.72f), RoundedCornerShape(16.dp))
+            .background(container, appCornerShape(16.dp))
+            .border(1.dp, color.copy(alpha = 0.72f), appCornerShape(16.dp))
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -372,7 +372,7 @@ private fun DailyQuestProgressCard(quest: DailyQuestProgress, initialFraction: F
     }
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = appCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {

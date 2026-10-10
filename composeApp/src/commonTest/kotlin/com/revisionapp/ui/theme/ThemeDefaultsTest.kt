@@ -28,9 +28,21 @@ class ThemeDefaultsTest {
     }
 
     @Test
-    fun darkPlayfulPrimaryUsesCoolBlueGreenInsteadOfPurple() {
+    fun darkThemeUsesRoleBasedBrightAccentsOverGreenBlackNeutrals() {
+        assertEquals(DarkAccentPalette.Leaf, PlayfulDark.primary)
+        assertEquals(DarkAccentPalette.Aqua, PlayfulDark.secondary)
+        assertEquals(DarkAccentPalette.Sky, PlayfulDark.tertiary)
+        assertEquals(DarkAccentPalette.Coral, PlayfulDark.error)
         assertTrue(PlayfulDark.primary.green > PlayfulDark.primary.red)
-        assertTrue(PlayfulDark.primary.blue > PlayfulDark.primary.red)
+        assertEquals(Color(0xFF0A0D0B), PlayfulDark.background)
+        assertEquals(Color(0xFF111613), PlayfulDark.surface)
+    }
+
+    @Test
+    fun lightPaletteKeepsItsExistingVioletAndWarmBackground() {
+        assertEquals(Color(0xFF4B35B5), PlayfulLight.primary)
+        assertEquals(Color(0xFFFFF7EE), PlayfulLight.background)
+        assertEquals(Color(0xFFA50F55), PlayfulLight.secondary)
     }
 
     @Test
@@ -62,6 +74,16 @@ class ThemeDefaultsTest {
             assertAa(colors.correct, colors.correctContainer, "correct-answer accent")
             assertAa(colors.onCorrectContainer, colors.correctContainer, "correct-answer panel text")
         }
+    }
+
+    @Test
+    fun darkPartialAndIncorrectFeedbackKeepDistinctReadableRoles() {
+        assertEquals(DarkAccentPalette.Amber, PlayfulExtendedDark.partial)
+        assertEquals(DarkAccentPalette.Coral, PlayfulExtendedDark.incorrect)
+        assertAa(PlayfulExtendedDark.onPartial, PlayfulExtendedDark.partial, "partial-answer text")
+        assertAa(PlayfulExtendedDark.onPartialContainer, PlayfulExtendedDark.partialContainer, "partial-answer panel text")
+        assertAa(PlayfulExtendedDark.onIncorrect, PlayfulExtendedDark.incorrect, "incorrect-answer text")
+        assertAa(PlayfulExtendedDark.onIncorrectContainer, PlayfulExtendedDark.incorrectContainer, "incorrect-answer panel text")
     }
 }
 

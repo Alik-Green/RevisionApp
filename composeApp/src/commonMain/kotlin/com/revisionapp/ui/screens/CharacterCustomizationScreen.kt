@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +45,7 @@ import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Avatar editor lives under Profile; sizing and positioning are always free. */
 @Composable
@@ -78,7 +78,7 @@ fun CharacterCustomizationScreen(state: AppState) {
         ) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
+                shape = appCornerShape(24.dp),
                 color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Row(
@@ -139,7 +139,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                 val selectedPartId = appearance.partId(selectedCategory)
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(19.dp),
+                    shape = appCornerShape(19.dp),
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                 ) {
                     Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -214,7 +214,7 @@ private fun AvatarOptionTile(
         modifier = Modifier
             .width(104.dp)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(15.dp),
+        shape = appCornerShape(15.dp),
         color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
         border = BorderStroke(if (selected) 2.dp else 1.dp, outline),
     ) {
@@ -294,7 +294,7 @@ private fun ShapeControls(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(19.dp),
+        shape = appCornerShape(19.dp),
         color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {

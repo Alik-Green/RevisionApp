@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -61,6 +60,7 @@ import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
 import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.VerdictPresentation
+import com.revisionapp.ui.theme.appCornerShape
 import com.revisionapp.ui.theme.verdictColour
 import com.revisionapp.ui.theme.verdictContainerColour
 import com.revisionapp.ui.theme.verdictOnContainerColour
@@ -141,7 +141,7 @@ private fun DueCard(due: Int, inScope: Int) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(14.dp))
+            .background(MaterialTheme.colorScheme.primaryContainer, appCornerShape(14.dp))
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
@@ -232,7 +232,7 @@ private fun SessionHeader(state: AppState, position: Int, total: Int, item: Sess
             if (item.schedule.isNew) {
                 Box(
                     Modifier
-                        .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.tertiary, appCornerShape(8.dp))
                         .padding(horizontal = 8.dp, vertical = 3.dp),
                 ) {
                     Text(
@@ -316,7 +316,7 @@ private fun McqInput(state: AppState, question: Question.MultipleChoice) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(10.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.outline, appCornerShape(10.dp))
                     .clickable { state.onSessionEvent(SessionEvent.ChooseOption(option.index)) }
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
@@ -414,7 +414,7 @@ private fun McqReview(question: Question.MultipleChoice, verdict: Verdict) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .background(container, RoundedCornerShape(10.dp))
+                    .background(container, appCornerShape(10.dp))
                     .padding(horizontal = 12.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -446,8 +446,8 @@ private fun VerdictPanel(verdict: Verdict) {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(colour.copy(alpha = 0.12f), RoundedCornerShape(10.dp))
-            .border(1.dp, colour, RoundedCornerShape(10.dp))
+            .background(colour.copy(alpha = 0.12f), appCornerShape(10.dp))
+            .border(1.dp, colour, appCornerShape(10.dp))
             .padding(14.dp),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -571,7 +571,7 @@ private fun StreakCelebration(summary: SessionSummary) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(18.dp))
+                .background(MaterialTheme.colorScheme.tertiaryContainer, appCornerShape(18.dp))
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -601,7 +601,7 @@ private fun Panel(content: @Composable () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f), RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f), appCornerShape(12.dp))
             .padding(14.dp),
     ) {
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {

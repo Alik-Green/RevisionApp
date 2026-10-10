@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +39,7 @@ import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
+import com.revisionapp.ui.theme.appCornerShape
 
 /** Primary Store tab with separate course-download and avatar-cosmetic shelves. */
 @Composable
@@ -174,7 +174,7 @@ private fun CourseStoreRow(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        shape = RoundedCornerShape(19.dp),
+        shape = appCornerShape(19.dp),
         color = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface,
         border = BorderStroke(
             if (selected) 2.dp else 1.dp,
@@ -217,7 +217,7 @@ private fun CourseDetailCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(22.dp),
+        shape = appCornerShape(22.dp),
         color = MaterialTheme.colorScheme.primaryContainer,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.42f)),
         tonalElevation = 2.dp,
