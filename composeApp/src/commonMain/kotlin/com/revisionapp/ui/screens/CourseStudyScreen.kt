@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -61,29 +62,7 @@ fun CourseStudyScreen(state: AppState) {
         AppHeader(
             title = "Study",
             subtitle = course?.name ?: "Your learning path",
-            trailing = {
-                if (catalog.courses.size > 1) {
-                    Box {
-                        TextButton(onClick = { menuExpanded.value = true }) {
-                            Text("Change course")
-                        }
-                        DropdownMenu(
-                            expanded = menuExpanded.value,
-                            onDismissRequest = { menuExpanded.value = false },
-                        ) {
-                            for (option in catalog.courses) {
-                                DropdownMenuItem(
-                                    text = { Text(option.name) },
-                                    onClick = {
-                                        state.selectActiveCourse(option.id)
-                                        menuExpanded.value = false
-                                    },
-                                )
-                            }
-                        }
-                    }
-                }
-            },
+            trailing = { TextButton(onClick = { state.openCourseStore() }) { Text("Store") } },
         )
 
         if (loading || !progressionReady) {
@@ -91,10 +70,18 @@ fun CourseStudyScreen(state: AppState) {
             return@Column
         }
         if (course == null) {
-            EmptyMessage(
-                loadError ?: "No V2 course is bundled yet.",
-                Modifier.padding(horizontal = 20.dp),
-            )
+            Column(
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                EmptyMessage(
+                    loadError ?: "No courses are downloaded yet. Browse the Store to choose a learning path.",
+                )
+                Button(onClick = { state.openCourseStore() }, modifier = Modifier.fillMaxWidth()) {
+                    Text("Browse course store")
+                }
+            }
             return@Column
         }
 
@@ -105,6 +92,27 @@ fun CourseStudyScreen(state: AppState) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             CourseSummaryCard(course, completedCount, orderedLessons.size)
+            if (catalog.courses.size > 1) {
+                Box {
+                    TextButton(onClick = { menuExpanded.value = true }) {
+                        Text("Switch downloaded course")
+                    }
+                    DropdownMenu(
+                        expanded = menuExpanded.value,
+                        onDismissRequest = { menuExpanded.value = false },
+                    ) {
+                        for (option in catalog.courses) {
+                            DropdownMenuItem(
+                                text = { Text(option.name) },
+                                onClick = {
+                                    state.selectActiveCourse(option.id)
+                                    menuExpanded.value = false
+                                },
+                            )
+                        }
+                    }
+                }
+            }
             SectionLabel("YOUR PATH")
             if (course.sections.isEmpty()) {
                 EmptyMessage("This course has no lesson sections yet.")
@@ -120,7 +128,10 @@ fun CourseStudyScreen(state: AppState) {
                 }
             }
             if (!loadError.isNullOrBlank()) {
-                EmptyMessage("Couldn't refresh V2 course content; showing the saved copy. $loadError")
+                EmptyMessage("Saved course data needs to be downloaded again. $loadError")
+                Button(onClick = { state.openCourseStore() }, modifier = Modifier.fillMaxWidth()) {
+                    Text("Open course store")
+                }
             }
             Spacer(Modifier.height(12.dp))
         }

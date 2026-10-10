@@ -131,14 +131,16 @@ fun ProfileScreen(state: AppState) {
                     SectionLabel("ACTIVE COURSE")
                     Text(activeCourse?.name ?: "Choose a course", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text(
-                        activeCourse?.description ?: "Pick a course from the Study tab to set your learning path.",
+                        activeCourse?.description ?: "Browse the Course Store and download a learning path to get started.",
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     OutlinedButton(
-                        onClick = { state.switchTab(Route.Study) },
+                        onClick = {
+                            if (activeCourse == null) state.openCourseStore() else state.switchTab(Route.Study)
+                        },
                         enabled = progressionReady,
                         modifier = Modifier.fillMaxWidth(),
-                    ) { Text("Go to Study") }
+                    ) { Text(if (activeCourse == null) "Open course store" else "Go to Study") }
                 }
             }
 

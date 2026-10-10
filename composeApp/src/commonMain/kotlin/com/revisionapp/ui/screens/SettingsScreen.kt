@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.revisionapp.data.content.CourseCatalogLoader
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
@@ -52,9 +51,6 @@ fun SettingsScreen(state: AppState) {
     val settings = state.settingsUi.collectAsState().value
     val sync = state.syncState.collectAsState().value
     val urlDraft = remember(settings.baseUrl) { mutableStateOf(settings.baseUrl) }
-    val courseContentUrlDraft = remember(settings.courseContentBaseUrl) {
-        mutableStateOf(settings.courseContentBaseUrl)
-    }
     val retention = remember(settings.desiredRetention) { mutableStateOf(settings.desiredRetention.toFloat()) }
 
     Column(Modifier.fillMaxSize()) {
@@ -98,29 +94,14 @@ fun SettingsScreen(state: AppState) {
             EmptyMessage("Playful is the default; Ink & Paper keeps the original quieter palette.")
 
             HorizontalDivider()
-            SectionLabel("V2 course content")
-            LabeledField(
-                label = "GitHub raw base URL",
-                value = courseContentUrlDraft.value,
-                onValueChange = { courseContentUrlDraft.value = it },
-                hint = CourseCatalogLoader.DEFAULT_BASE_URL,
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = { state.setCourseContentBaseUrl(courseContentUrlDraft.value) }) {
-                    Text("Save course source")
-                }
-                TextButton(
-                    onClick = {
-                        courseContentUrlDraft.value = CourseCatalogLoader.DEFAULT_BASE_URL
-                        state.setCourseContentBaseUrl(CourseCatalogLoader.DEFAULT_BASE_URL)
-                    },
-                ) { Text("Reset course source") }
-            }
+            SectionLabel("V2 course store")
             EmptyMessage(
-                "V2 courses are fetched from the folder containing `manifest.json` on a raw GitHub " +
-                    "branch. The app refreshes them on launch and keeps the last successful catalog " +
-                    "for offline use, so updating course JSON does not require a new app build.",
+                "The Store lists courses from this repository. The app does not download courses " +
+                    "at startup: open the Store and choose a course to download and cache it for offline use.",
             )
+            OutlinedButton(onClick = { state.openCourseStore() }, modifier = Modifier.fillMaxWidth()) {
+                Text("Open course store")
+            }
 
             HorizontalDivider()
             SectionLabel("Legacy card packs")
@@ -146,8 +127,8 @@ fun SettingsScreen(state: AppState) {
                 ) { Text("Reset source") }
             }
             EmptyMessage(
-                "This URL is only for the legacy card packs used by the card library. V2 course paths " +
-                    "are bundled with the app and do not use this setting. Legacy packs are downloaded " +
+                "This URL is only for legacy card packs used by the card library. V2 courses use the " +
+                    "separate Course Store. Legacy packs are downloaded " +
                     "from the `content` branch and verified against SHA-256 checksums. Only changed " +
                     "packs are fetched; imports are transactional, and a failed import leaves the " +
                     "previous version in place. After syncing, the card library also works offline. " +

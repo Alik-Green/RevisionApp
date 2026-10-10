@@ -15,6 +15,7 @@ data class CourseFileReference(
     val id: String,
     val name: String,
     val file: String,
+    val description: String = "",
 )
 
 @Serializable
@@ -127,7 +128,27 @@ data class CourseQuestion(
     val prompt: String,
     val answer: QuestionAnswer,
     val explanation: String,
+    val answerInstruction: String = "",
 )
+
+/** A lesson-local queue that appends each initially missed question exactly once. */
+class CourseQuestionRetryQueue(initialQuestions: List<CourseQuestion>) {
+    private val initialQuestionCount = initialQuestions.size
+    private val questions = initialQuestions.toMutableList()
+    private val retriedQuestionIndices = mutableSetOf<Int>()
+
+    fun snapshot(): List<CourseQuestion> = questions.toList()
+
+    fun isRetry(queueIndex: Int): Boolean = queueIndex >= initialQuestionCount
+
+    /** Returns true only when this initial question occurrence is appended once. */
+    fun scheduleRetry(question: CourseQuestion, queueIndex: Int): Boolean {
+        if (queueIndex !in 0 until initialQuestionCount || questions[queueIndex] != question) return false
+        if (!retriedQuestionIndices.add(queueIndex)) return false
+        questions.add(question)
+        return true
+    }
+}
 
 @Serializable
 sealed interface QuestionAnswer {
@@ -163,7 +184,9 @@ object CourseAnswerChecker {
         is QuestionAnswer.TextInput -> answer.acceptedAnswers.firstOrNull().orEmpty()
     }
 
-    private fun normalize(value: String): String = value.trim().lowercase().replace(WHITESPACE, " ")
+    private fun normalize(value: String): String =
+        value.lowercase().trim { it.isWhitespace() || it in EDGE_PUNCTUATION }.replace(WHITESPACE, " ")
 
+    private val EDGE_PUNCTUATION = setOf('.', ',', ';', ':', '!', '?', '\"', '\'', '“', '”', '‘', '’')
     private val WHITESPACE = Regex("\\s+")
 }

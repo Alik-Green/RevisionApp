@@ -27,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseAnswerChecker
 import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseQuestion
+import com.revisionapp.domain.course.CourseQuestionRetryQueue
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.course.QuestionAnswer
 import com.revisionapp.ui.AppState
@@ -52,6 +54,10 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val course = catalog.course(route.courseId)
     val lesson = course?.lesson(route.lessonId)
     val questions = if (course != null && lesson != null) course.questionsFor(lesson) else emptyList()
+    val retryQueue = remember(route.courseId, route.lessonId) { CourseQuestionRetryQueue(questions) }
+    val questionQueue = remember(route.courseId, route.lessonId) {
+        mutableStateListOf<CourseQuestion>().apply { addAll(retryQueue.snapshot()) }
+    }
     val questionIndex = remember(route.courseId, route.lessonId) { mutableStateOf(0) }
     val draft = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf("") }
     val selectedOption = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<String?>(null) }
@@ -67,13 +73,19 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     }
 
     if (finished.value) {
-        LessonComplete(state, course, lesson, questions.size)
+        LessonComplete(state, course, lesson, questionQueue.size)
         return
     }
 
-    val question = questions[questionIndex.value.coerceIn(questions.indices)]
+    val question = questionQueue[questionIndex.value.coerceIn(questionQueue.indices)]
     val section = course.sectionFor(lesson)
     val correct = answerCorrect.value
+    val isRetry = retryQueue.isRetry(questionIndex.value)
+    val questionLabel = if (isRetry) "RETRY" else "QUESTION"
+    val answerFormat = when (question.answer) {
+        is QuestionAnswer.MultipleChoice -> "Select one option."
+        is QuestionAnswer.TextInput -> question.answerInstruction.ifBlank { "Type a short answer." }
+    }
 
     Column(Modifier.fillMaxSize()) {
         AppHeader(
@@ -88,7 +100,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                SectionLabel("QUESTION ${questionIndex.value + 1} OF ${questions.size}")
+                SectionLabel("$questionLabel ${questionIndex.value + 1} OF ${questionQueue.size}")
                 Spacer(Modifier.weight(1f))
                 Text(
                     question.topicLabel,
@@ -111,6 +123,11 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                     }
                     MathText(question.prompt, style = MaterialTheme.typography.titleLarge)
                 }
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                SectionLabel("ANSWER FORMAT")
+                Text(answerFormat, style = MaterialTheme.typography.bodyMedium)
             }
 
             when (val answer = question.answer) {
@@ -158,7 +175,10 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                 AnswerFeedback(question, correct)
                 Button(
                     onClick = {
-                        if (questionIndex.value == questions.lastIndex) {
+                        if (!correct && retryQueue.scheduleRetry(question, questionIndex.value)) {
+                            questionQueue.add(question)
+                        }
+                        if (questionIndex.value == questionQueue.lastIndex) {
                             state.completeCourseLesson(course.id, lesson.id)
                             finished.value = true
                         } else {

@@ -22,6 +22,7 @@ import com.revisionapp.ui.components.ProvideRichTextRenderer
 import com.revisionapp.ui.screens.CardEditorScreen
 import com.revisionapp.ui.screens.CourseLessonScreen
 import com.revisionapp.ui.screens.CourseStudyScreen
+import com.revisionapp.ui.screens.CourseStoreScreen
 import com.revisionapp.ui.screens.LibraryScreen
 import com.revisionapp.ui.screens.MathGalleryScreen
 import com.revisionapp.ui.screens.ProfileScreen
@@ -60,6 +61,7 @@ fun App(platform: PlatformServices) {
                     AppShell(appState, route) {
                         when (route) {
                             Route.Study -> CourseStudyScreen(appState)
+                            Route.CourseStore -> CourseStoreScreen(appState)
                             Route.Progression, Route.Stats -> ProgressionScreen(appState)
                             Route.Profile -> ProfileScreen(appState)
                             Route.Library -> LibraryScreen(appState)

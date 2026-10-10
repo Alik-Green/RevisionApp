@@ -111,10 +111,13 @@
         "type": "text_input",
         "acceptedAnswers": [
           "sufficient",
-          "a sufficient"
+          "a sufficient",
+          "sufficient condition",
+          "a sufficient condition"
         ]
       },
-      "explanation": "A sufficient condition guarantees the outcome: passing implies entry."
+      "explanation": "A sufficient condition guarantees the outcome: passing implies entry.",
+      "answerInstruction": "Enter a single word to complete the blank."
     },
     {
       "id": "tmua-fallacy",
@@ -151,10 +154,21 @@
         "acceptedAnswers": [
           "one counterexample",
           "a counterexample",
-          "one example where it is false"
+          "counterexample",
+          "one counter example",
+          "a counter example",
+          "counter example",
+          "one counter-example",
+          "a counter-example",
+          "counter-example",
+          "a single counterexample",
+          "one example where it is false",
+          "a case where it is false",
+          "one false case"
         ]
       },
-      "explanation": "A universal claim fails as soon as a single case makes it false."
+      "explanation": "A universal claim fails as soon as a single case makes it false.",
+      "answerInstruction": "Type a short phrase naming one counterexample."
     },
     {
       "id": "tmua-induction-step",
@@ -166,10 +180,15 @@
         "acceptedAnswers": [
           "p(k) implies p(k+1)",
           "p(k) => p(k+1)",
-          "if p(k) then p(k+1)"
+          "p(k) -> p(k+1)",
+          "p(k) ⇒ p(k+1)",
+          "if p(k) then p(k+1)",
+          "p(k+1) follows from p(k)",
+          "assume p(k) prove p(k+1)"
         ]
       },
-      "explanation": "Assume the statement holds for k, then prove it holds for k + 1. Together with a base case, this establishes the result for all relevant integers."
+      "explanation": "Assume the statement holds for k, then prove it holds for k + 1. Together with a base case, this establishes the result for all relevant integers.",
+      "answerInstruction": "Enter an implication linking the statement for k with the statement for k + 1."
     },
     {
       "id": "tmua-contradiction",
@@ -227,12 +246,26 @@
       "topicLabel": "Algebra",
       "prompt": "Expand and simplify (x + 2)(x - 3).",
       "answer": {
-        "type": "text_input",
-        "acceptedAnswers": [
-          "x^2 - x - 6",
-          "x^2-x-6",
-          "x² - x - 6"
-        ]
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "x^2 - x - 6"
+          },
+          {
+            "id": "b",
+            "text": "x^2 + x - 6"
+          },
+          {
+            "id": "c",
+            "text": "x^2 - 5x - 6"
+          },
+          {
+            "id": "d",
+            "text": "x^2 - x + 6"
+          }
+        ],
+        "correctOptionId": "a"
       },
       "explanation": "Multiply each term: x squared minus 3x plus 2x minus 6, which simplifies to x squared minus x minus 6."
     },

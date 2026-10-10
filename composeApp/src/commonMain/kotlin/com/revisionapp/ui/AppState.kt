@@ -1,6 +1,5 @@
 package com.revisionapp.ui
 
-import com.revisionapp.data.content.CourseCatalogLoader
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.data.sync.SyncError
 import com.revisionapp.data.sync.SyncReport
@@ -9,6 +8,8 @@ import com.revisionapp.di.AppGraph
 import com.revisionapp.di.SettingKeys
 import com.revisionapp.domain.check.DefaultAnswerChecker
 import com.revisionapp.domain.course.CourseCatalog
+import com.revisionapp.domain.course.CourseCatalogManifest
+import com.revisionapp.domain.course.CourseFileReference
 import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.CardFilter
 import com.revisionapp.domain.model.CardId
@@ -56,11 +57,13 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
 /** Destinations. Hand-rolled rather than a navigation library: see DECISIONS.md D6. */
 sealed interface Route {
     data object Study : Route
+    data object CourseStore : Route
     data object Progression : Route
     data object Profile : Route
 
@@ -110,7 +113,6 @@ data class TopicAccuracyRow(
  */
 data class SettingsUi(
     val baseUrl: String,
-    val courseContentBaseUrl: String,
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
     val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
@@ -120,7 +122,6 @@ data class SettingsUi(
         fun initial(): SettingsUi =
             SettingsUi(
                 baseUrl = ContentSync.DEFAULT_BASE_URL,
-                courseContentBaseUrl = CourseCatalogLoader.DEFAULT_BASE_URL,
                 desiredRetention = DEFAULT_RETENTION,
                 packs = emptyList(),
                 themeStyle = ThemeStyle.PLAYFUL,
@@ -203,6 +204,18 @@ class AppState(
     private val _courseCatalogError = MutableStateFlow<String?>(null)
     val courseCatalogError: StateFlow<String?> = _courseCatalogError.asStateFlow()
 
+    private val _courseStoreManifest = MutableStateFlow<CourseCatalogManifest?>(null)
+    val courseStoreManifest: StateFlow<CourseCatalogManifest?> = _courseStoreManifest.asStateFlow()
+
+    private val _courseStoreLoading = MutableStateFlow(false)
+    val courseStoreLoading: StateFlow<Boolean> = _courseStoreLoading.asStateFlow()
+
+    private val _courseStoreError = MutableStateFlow<String?>(null)
+    val courseStoreError: StateFlow<String?> = _courseStoreError.asStateFlow()
+
+    private val _courseDownloadId = MutableStateFlow<String?>(null)
+    val courseDownloadId: StateFlow<String?> = _courseDownloadId.asStateFlow()
+
     private val _learnerProgress = MutableStateFlow(LearnerProgress())
     val learnerProgress: StateFlow<LearnerProgress> = _learnerProgress.asStateFlow()
 
@@ -258,63 +271,84 @@ class AppState(
 
     private fun loadCourseCatalogAndProgression() {
         scope.launch(Dispatchers.Default) {
-            val cachedCatalog = graph.settings.read(SettingKeys.V2_COURSE_CATALOG_CACHE)?.let { raw ->
+            val cachedRaw = graph.settings.read(SettingKeys.V2_COURSE_CATALOG_CACHE)
+            val cachedCatalog = cachedRaw?.let { raw ->
                 runCatching { graph.json.decodeFromString<CourseCatalog>(raw) }.getOrNull()
-            }?.takeIf { it.validationErrors().isEmpty() }
+            }?.takeIf { it.courses.isNotEmpty() && it.validationErrors().isEmpty() }
             if (cachedCatalog != null) {
                 _courseCatalog.value = cachedCatalog
-                _courseCatalogLoading.value = false
+            } else if (cachedRaw != null) {
+                _courseCatalogError.value = "Saved course data could not be read. Open the Course Store to download it again."
             }
 
             val restored = graph.settings.read(SettingKeys.LEARNER_PROGRESS_V2)?.let { raw ->
                 runCatching { graph.json.decodeFromString<LearnerProgress>(raw) }.getOrNull()
             } ?: LearnerProgress()
-            val firstCourse = _courseCatalog.value.courses.firstOrNull()?.id
-            val selectedCourseId = if (_courseCatalog.value.course(restored.activeCourseId) != null) {
-                restored.activeCourseId
-            } else {
-                firstCourse ?: restored.activeCourseId
-            }
+            val selectedCourseId = restored.activeCourseId.takeIf { _courseCatalog.value.course(it) != null }
+                ?: _courseCatalog.value.courses.firstOrNull()?.id
+                ?: ""
             val progress = ProgressionRules.forToday(restored.copy(activeCourseId = selectedCourseId), localToday())
             _learnerProgress.value = progress
             graph.settings.write(SettingKeys.LEARNER_PROGRESS_V2, graph.json.encodeToString(progress))
             _progressionReady.value = true
-            refreshCourseCatalog()
+            _courseCatalogLoading.value = false
         }
     }
 
-    /** Load the latest branch content, keeping the last successful catalog for offline use. */
-    private fun refreshCourseCatalog() {
-        if (_courseCatalog.value.courses.isEmpty()) _courseCatalogLoading.value = true
+    /** Fetch just the manifest when the learner opens the Store; course files stay remote until selected. */
+    fun refreshCourseStore() {
+        if (_courseStoreLoading.value) return
+        _courseStoreLoading.value = true
+        _courseStoreError.value = null
         scope.launch(Dispatchers.Default) {
-            var failure: Throwable? = null
-            val catalog = try {
-                withTimeoutOrNull(COURSE_CONTENT_FETCH_TIMEOUT_MS) {
-                    graph.courseCatalogLoader().load()
-                }.also { result ->
-                    if (result == null) failure = IllegalStateException("Timed out loading V2 course content")
+            try {
+                val manifest = withTimeoutOrNull(COURSE_CONTENT_FETCH_TIMEOUT.inWholeMilliseconds) {
+                    graph.courseCatalogLoader().loadManifest()
+                } ?: error("Timed out loading the Course Store")
+                _courseStoreManifest.value = manifest
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Throwable) {
+                _courseStoreError.value = error.message ?: "Could not load the Course Store"
+            } finally {
+                _courseStoreLoading.value = false
+            }
+        }
+    }
+
+    /** Download and cache one course only after the learner explicitly chooses it. */
+    fun downloadCourse(reference: CourseFileReference) {
+        if (_courseDownloadId.value != null) return
+        if (reference !in _courseStoreManifest.value?.courses.orEmpty()) {
+            _courseStoreError.value = "Choose a course listed in the Course Store."
+            return
+        }
+        _courseDownloadId.value = reference.id
+        _courseStoreError.value = null
+        scope.launch(Dispatchers.Default) {
+            try {
+                val course = withTimeoutOrNull(COURSE_CONTENT_FETCH_TIMEOUT.inWholeMilliseconds) {
+                    graph.courseCatalogLoader().downloadCourse(reference)
+                } ?: error("Timed out downloading ${reference.name}")
+                val catalog = CourseCatalog(
+                    schemaVersion = CourseCatalog.CURRENT_SCHEMA_VERSION,
+                    courses = _courseCatalog.value.courses.filterNot { it.id == course.id } + course,
+                )
+                val errors = catalog.validationErrors()
+                require(errors.isEmpty()) { errors.joinToString("; ") }
+                graph.settings.write(SettingKeys.V2_COURSE_CATALOG_CACHE, graph.json.encodeToString(catalog))
+                _courseCatalog.value = catalog
+                _courseCatalogError.value = null
+                if (_learnerProgress.value.activeCourseId.isBlank()) {
+                    updateProgression { ProgressionRules.setActiveCourse(it, course.id) }
                 }
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Throwable) {
-                failure = error
-                null
+                _courseStoreError.value = error.message ?: "Could not download ${reference.name}"
+            } finally {
+                _courseDownloadId.value = null
             }
-
-            if (catalog != null) {
-                _courseCatalog.value = catalog
-                _courseCatalogError.value = null
-                runCatching {
-                    graph.settings.write(SettingKeys.V2_COURSE_CATALOG_CACHE, graph.json.encodeToString(catalog))
-                }
-                catalog.courses.firstOrNull { it.id == _learnerProgress.value.activeCourseId }
-                    ?: catalog.courses.firstOrNull()?.let { course ->
-                        updateProgression { ProgressionRules.setActiveCourse(it, course.id) }
-                    }
-            } else {
-                _courseCatalogError.value = failure?.message ?: "Could not load V2 course content"
-            }
-            _courseCatalogLoading.value = false
         }
     }
 
@@ -353,6 +387,10 @@ class AppState(
         if (_route.value == route) return
         backStack.clear()
         _route.value = route
+    }
+
+    fun openCourseStore() {
+        navigate(Route.CourseStore)
     }
 
     fun back() {
@@ -805,18 +843,6 @@ class AppState(
         }
     }
 
-    fun setCourseContentBaseUrl(url: String) {
-        scope.launch(Dispatchers.Default) {
-            val value = url.trim().trimEnd('/')
-            graph.settings.write(
-                SettingKeys.V2_COURSE_CONTENT_URL,
-                value.ifBlank { CourseCatalogLoader.DEFAULT_BASE_URL },
-            )
-            loadSettingsInto()
-            refreshCourseCatalog()
-        }
-    }
-
     fun setDesiredRetention(value: Double) {
         scope.launch(Dispatchers.Default) {
             val clamped = value.coerceIn(SettingsUi.MIN_RETENTION, SettingsUi.MAX_RETENTION)
@@ -849,7 +875,6 @@ class AppState(
     private fun loadSettingsInto() {
         _settingsUi.value = SettingsUi(
             baseUrl = graph.contentBaseUrl(),
-            courseContentBaseUrl = graph.courseContentBaseUrl(),
             desiredRetention = graph.settings.read(SettingKeys.DESIRED_RETENTION)?.toDoubleOrNull()
                 ?: SettingsUi.DEFAULT_RETENTION,
             packs = graph.packs.installed(),
@@ -863,7 +888,7 @@ class AppState(
         const val SESSION_SIZE_ALL: Int = 0
         val SessionSizes: List<Int> = listOf(10, 20, 50, SESSION_SIZE_ALL)
         const val DEFAULT_SESSION_SIZE: Int = 20
-        private const val COURSE_CONTENT_FETCH_TIMEOUT_MS: Long = 20_000
+        private val COURSE_CONTENT_FETCH_TIMEOUT = 20.seconds
 
         fun sessionSizeLabel(size: Int): String =
             if (size == SESSION_SIZE_ALL) "All" else size.toString()

@@ -22,7 +22,7 @@ data class StreakRecovery(
 @Serializable
 data class LearnerProgress(
     val displayName: String = "Learner",
-    val activeCourseId: String = "tmua",
+    val activeCourseId: String = "",
     val coins: Long = 0,
     val streakDays: Int = 0,
     val bestStreakDays: Int = 0,

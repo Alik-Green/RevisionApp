@@ -28,7 +28,6 @@ import kotlin.time.Clock
 /** Setting keys stored in the `setting` table. */
 object SettingKeys {
     const val CONTENT_BASE_URL: String = "content.baseUrl"
-    const val V2_COURSE_CONTENT_URL: String = "content.v2.baseUrl"
     const val V2_COURSE_CATALOG_CACHE: String = "content.v2.catalogCache"
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
     const val THEME_MODE: String = "appearance.themeMode"
@@ -90,15 +89,9 @@ class AppGraph(platform: PlatformServices) {
     fun contentBaseUrl(): String =
         settings.read(SettingKeys.CONTENT_BASE_URL)?.takeIf { it.isNotBlank() } ?: ContentSync.DEFAULT_BASE_URL
 
-    /** User-editable raw GitHub source for V2 course JSON. */
-    fun courseContentBaseUrl(): String =
-        settings.read(SettingKeys.V2_COURSE_CONTENT_URL)?.takeIf { it.isNotBlank() }
-            ?: CourseCatalogLoader.DEFAULT_BASE_URL
-
-    fun courseCatalogLoader(): CourseCatalogLoader {
-        val baseUrl = courseContentBaseUrl()
-        return CourseCatalogLoader(ContentApiClient(httpClient) { baseUrl }, json)
-    }
+    /** Fixed repository source for V2 courses; legacy card-pack sync remains separate. */
+    fun courseCatalogLoader(): CourseCatalogLoader =
+        CourseCatalogLoader(ContentApiClient(httpClient) { CourseCatalogLoader.DEFAULT_BASE_URL }, json)
 
     fun contentSync(): ContentSync =
         ContentSync(ContentApiClient(httpClient) { contentBaseUrl() }, packs, json)

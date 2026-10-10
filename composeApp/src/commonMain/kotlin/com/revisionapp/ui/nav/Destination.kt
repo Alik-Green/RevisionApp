@@ -20,7 +20,7 @@ enum class Destination(val route: Route, val label: String, val icon: ImageVecto
 
         /** Settings, the old library and editors are secondary Profile routes. */
         fun owning(route: Route): Destination = when (route) {
-            Route.Study, is Route.Lesson -> Study
+            Route.Study, Route.CourseStore, is Route.Lesson -> Study
             Route.Progression, Route.Stats -> Progression
             Route.Profile,
             Route.Settings,

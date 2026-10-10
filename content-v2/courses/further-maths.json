@@ -84,10 +84,12 @@
       "answer": {
         "type": "text_input",
         "acceptedAnswers": [
-          "5"
+          "5",
+          "5.0"
         ]
       },
-      "explanation": "The modulus is the distance from the origin: square root of 3 squared plus 4 squared, which is 5."
+      "explanation": "The modulus is the distance from the origin: square root of 3 squared plus 4 squared, which is 5.",
+      "answerInstruction": "Type the numerical value of the modulus."
     },
     {
       "id": "fm-conjugate",
@@ -101,7 +103,8 @@
           "2+5i"
         ]
       },
-      "explanation": "The conjugate keeps the real part and changes the sign of the imaginary part."
+      "explanation": "The conjugate keeps the real part and changes the sign of the imaginary part.",
+      "answerInstruction": "Type the complex number in a + bi form."
     },
     {
       "id": "fm-determinant",

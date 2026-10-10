@@ -3,8 +3,9 @@
 A mobile-first revision app built around curated course paths: ordered lessons
 contain reusable questions with multiple-choice or text-input answers. Progress,
 daily quests, coins, achievements and streak recovery sit alongside legacy FSRS
-cards and your own editable content. V2 course JSON refreshes from a GitHub branch
-and is cached locally for offline study.
+cards and your own editable content. The Course Store lists repository-hosted V2
+courses; only courses explicitly chosen by the learner are downloaded and cached
+for offline study.
 
 Built with Kotlin Multiplatform and Compose Multiplatform for **desktop (JVM)**
 and **Android**. Every line of logic and every screen is in `commonMain`; the two
@@ -12,9 +13,9 @@ platform source sets contain nothing but a database driver, an HTTP engine and a
 entry point.
 
 On phones the bottom navigation is **Study**, **Progression** and **Profile**.
-Study shows one active course at a time as an ordered lesson path; use the course
-switcher at the top to change courses. Progression contains the streak, daily
-quests, coins and achievements. Profile holds the learner name and the settings
+Study shows one downloaded course at a time as an ordered lesson path; use the
+Course Store to download another course, then switch among downloaded courses.
+Progression contains the streak, daily quests, coins and achievements. Profile holds the learner name and the settings
 shortcut; the older card library remains available from Profile.
 
 ---
@@ -83,11 +84,12 @@ split into topic-shaped sections; each lesson is an ordered list of question IDs
 Questions live in a reusable bank, so a later section can bring back earlier
 questions for spiral review instead of duplicating their content.
 
-The V2 question model supports multiple choice and text input. Answers get
-immediate feedback and an explanation, and lessons unlock in path order. The
-initial bundled pilot contains four short TMUA lessons and two Further Maths
-lessons; these examples are not verified exam material. Course selection is
-available from the Study header.
+The V2 question model supports multiple choice and prompted text input. Answers
+get immediate feedback and an explanation, and initially missed questions return
+once at the end of the lesson for a retry. The repository-hosted pilot contains
+four short TMUA lessons and two Further Maths lessons; these examples are not
+verified exam material. Course downloads are available from the Study header's
+Store button.
 
 The older card library and its FSRS review flow remain accessible from Profile.
 That legacy library is separate from the V2 lesson path and still accepts the
@@ -195,11 +197,12 @@ works offline indefinitely.
 ### Curated course content V2
 
 The new question/lesson/course format is separate from legacy card packs. Its pilot
-is under the repository-root `content-v2/` directory. The app fetches a manifest
-and the referenced course files from the configured raw GitHub URL at launch, then
-caches the last valid catalog for offline study. Updates to these JSON files do not
-require rebuilding the app. Lessons reference ordered question IDs and can reuse
-earlier questions for spiral review. See [the V2 authoring notes](docs/CONTENT_V2.md).
+is under the repository-root `content-v2/` directory. The Course Store fetches only
+the repository manifest when opened; a course file is downloaded and cached only
+after the learner chooses it. Previously downloaded courses remain available
+offline. Updating these JSON files does not require rebuilding the app. Lessons
+reference ordered question IDs and can reuse earlier questions for spiral review.
+See [the V2 authoring notes](docs/CONTENT_V2.md).
 
 **Content sync never touches your content or your study progress.** Built-in rows
 are namespaced by id *and* carry a `source` column, progress lives in a separate
@@ -320,10 +323,9 @@ exactly what to check.
 
 ### Legacy pack sync and private repositories
 
-Settings keeps separate sources for V2 courses and legacy card packs. The
-**Legacy pack source URL** only controls sync for the card library; the **GitHub
-raw base URL** under V2 course content controls the remote course JSON. Both URLs
-are editable and saved locally. The default pack URL works while the `content`
+V2 course downloads use a fixed raw GitHub URL in this repository; the source is
+not user-editable. The **Legacy pack source URL** in Settings controls only sync
+for the separate card library. The default pack URL works while the `content`
 branch is public. Serving a private legacy branch needs an authenticated URL — a
 fine-grained personal access token embedded in the base URL, or a proxy that adds
 the header. Avoid saving a secret-bearing URL on a shared device.
@@ -348,8 +350,8 @@ the header. Avoid saving a secret-bearing URL on a shared device.
   with the debug key, not a Play Store release.
 - **Social/profile features.** Avatar customisation, friends and shared progress
   are placeholders for later work; the profile name is stored locally.
-- **Richer learning plans.** Opt-in reminders, daily study planning, pause/resume
-  and a more detailed hint/retry loop have not been added.
+- **Richer learning plans.** Opt-in reminders, daily study planning, pause/resume,
+  worked examples and adaptive review plans have not been added.
 
 ## Architecture
 
