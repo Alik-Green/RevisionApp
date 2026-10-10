@@ -1,5 +1,8 @@
 package com.revisionapp.domain.course
 
+import com.revisionapp.domain.check.EditDistance
+import com.revisionapp.domain.check.NegationGuard
+import com.revisionapp.domain.check.TextNormaliser
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -168,19 +171,171 @@ sealed interface QuestionAnswer {
 @Serializable
 data class CourseOption(val id: String, val text: String)
 
-/** The small first V2 pilot uses exact normalized text matching and authored choices. */
+/** Multiple choice stays exact; free text accepts authored variants, typos and close wording. */
 object CourseAnswerChecker {
     fun check(answer: QuestionAnswer, input: String): Boolean = when (answer) {
         is QuestionAnswer.MultipleChoice -> input == answer.correctOptionId
-        is QuestionAnswer.TextInput -> {
-            val normalized = normalize(input)
-            normalized.isNotEmpty() && answer.acceptedAnswers.any { normalize(it) == normalized }
-        }
+        is QuestionAnswer.TextInput -> checkText(answer.acceptedAnswers, input)
     }
 
     fun acceptedAnswerLabel(answer: QuestionAnswer): String = when (answer) {
         is QuestionAnswer.MultipleChoice -> answer.options.firstOrNull { it.id == answer.correctOptionId }?.text.orEmpty()
         is QuestionAnswer.TextInput -> answer.acceptedAnswers.firstOrNull().orEmpty()
+    }
+
+    private fun checkText(acceptedAnswers: List<String>, input: String): Boolean {
+        if (input.isBlank()) return false
+        val normalizedInput = normalize(input)
+        if (acceptedAnswers.any { normalize(it) == normalizedInput }) return true
+
+        val inputLogic = inductionImplication(input)
+        if (inputLogic != null && acceptedAnswers.any { inductionImplication(it) == inputLogic }) return true
+
+        // A mathematical statement with different or reversed structure must not
+        // fall through to order-insensitive word similarity.
+        if (containsInductionFormula(input)) return false
+
+        val inputTokens = TextNormaliser.matchTokens(input)
+        return acceptedAnswers.asSequence()
+            .filter { it.isNotBlank() }
+            .any { expected ->
+                if (containsInductionFormula(expected)) {
+                    false
+                } else {
+                    fuzzyPhraseMatch(expected, input, inputTokens)
+                }
+            }
+    }
+
+    private fun fuzzyPhraseMatch(expected: String, input: String, inputTokens: List<String>): Boolean {
+        if (hasMathStructure(expected) || hasMathStructure(input)) return false
+
+        val expectedGuardTokens = TextNormaliser.matchTokens(expected).toSet()
+        if (NegationGuard.findConflict(expectedGuardTokens, inputTokens.toSet()) != null) return false
+
+        val expectedWords = TextNormaliser.tokens(expected).filterNot { it in FUZZY_FILLER_WORDS }
+        val inputWords = TextNormaliser.tokens(input).filterNot { it in FUZZY_FILLER_WORDS }
+        if (expectedWords.isEmpty() || inputWords.isEmpty()) return false
+
+        val matched = maximumTokenMatches(expectedWords, inputWords)
+        val recall = matched.toDouble() / expectedWords.size
+        val precision = matched.toDouble() / inputWords.size
+        return recall >= PHRASE_COVERAGE_THRESHOLD && precision >= PHRASE_COVERAGE_THRESHOLD
+    }
+
+    /**
+     * Recognises the equivalent ways of writing the induction implication used
+     * by the course (including "if ... then", "assume ... prove ...", and the
+     * reversed surface wording "P(k+1) follows from P(k)").
+     */
+    private fun inductionImplication(value: String): String? {
+        val normalized = normalize(value)
+        val base = INDUCTION_BASE.findAll(normalized).toList().singleOrNull() ?: return null
+        val next = INDUCTION_NEXT.findAll(normalized).toList().singleOrNull() ?: return null
+        if (NegationGuard.isNegated(TextNormaliser.matchTokens(value))) return null
+
+        if (base.range.first < next.range.first) {
+            val prefix = normalized.substring(0, base.range.first)
+            val between = normalized.substring(base.range.last + 1, next.range.first)
+            val directArrow = ARROWS.any(between::contains)
+            val directRelation = hasNearWord(
+                between,
+                "implies",
+                "imply",
+                "means",
+                "then",
+                "yields",
+                "leads",
+                "results",
+                "causes",
+                "produces",
+                "ensures",
+                "gives",
+                "proves",
+                "prove",
+                "shows",
+                "show",
+                "entails",
+                "guarantees",
+                "therefore",
+                "hence",
+                "gets",
+                "get",
+                "sufficient",
+                "enough",
+            )
+            val assumptionAndProof = hasNearWord(prefix, "assume", "assuming", "suppose", "supposing", "given") &&
+                hasNearWord(between, "prove", "proves", "show", "shows", "establish", "derive", "deduce")
+            val conditional = hasNearWord(prefix, "if", "when", "whenever") && !hasNearWord(between, "only") &&
+                (hasNearWord(between, "then") || hasNearWord(normalized.substring(next.range.last + 1), "holds", "true") ||
+                    hasNearWord(prefix, "whenever"))
+            if (directArrow || directRelation || assumptionAndProof || conditional) return INDUCTION_CANONICAL
+        } else {
+            val between = normalized.substring(next.range.last + 1, base.range.first)
+            val outcomeAfterSource = hasNearWord(between, "follows", "follow", "results", "result", "arises", "comes") &&
+                !hasNearWord(between, "only", "unless")
+            val impliedBy = hasNearWord(between, "implied", "deduced", "derived", "guaranteed", "proved", "established") &&
+                hasNearWord(between, "by", "from")
+            val consequenceOf = hasNearWord(between, "consequence") && hasNearWord(between, "of")
+            val conditionAtEnd = hasNearWord(between, "if", "when", "whenever") &&
+                (!hasNearWord(between, "only") || hasNearWord(between, "and"))
+            val causeAtEnd = hasNearWord(between, "because", "since")
+            if (outcomeAfterSource || impliedBy || consequenceOf || conditionAtEnd || causeAtEnd) return INDUCTION_CANONICAL
+        }
+        return null
+    }
+
+    private fun containsInductionFormula(value: String): Boolean {
+        val normalized = normalize(value)
+        return INDUCTION_BASE.containsMatchIn(normalized) || INDUCTION_NEXT.containsMatchIn(normalized)
+    }
+
+    private fun hasMathStructure(value: String): Boolean = MATH_STRUCTURE.containsMatchIn(normalize(value))
+
+    private fun hasNearWord(text: String, vararg targets: String): Boolean {
+        val words = WORD_TOKEN.findAll(text.lowercase()).map { it.value }.toList()
+        return words.any { word -> targets.any { target -> wordMatchesWithOneTypo(word, target) } }
+    }
+
+    private fun maximumTokenMatches(expected: List<String>, input: List<String>): Int {
+        val consumed = BooleanArray(input.size)
+        var matched = 0
+        val orderedExpected = expected.sortedBy { expectedWord ->
+            input.count { inputWord -> fuzzyWordMatch(expectedWord, inputWord) }
+        }
+        for (expectedWord in orderedExpected) {
+            val candidate = input.indices
+                .filterNot { consumed[it] }
+                .filter { fuzzyWordMatch(expectedWord, input[it]) }
+                .minByOrNull { EditDistance.between(expectedWord, input[it]) }
+            if (candidate != null) {
+                consumed[candidate] = true
+                matched++
+            }
+        }
+        return matched
+    }
+
+    private fun fuzzyWordMatch(expected: String, input: String): Boolean {
+        if (expected == input) return true
+        if (!expected.all { it.isLetter() } || !input.all { it.isLetter() }) return false
+        return wordMatchesWithOneTypo(expected, input)
+    }
+
+    private fun wordMatchesWithOneTypo(first: String, second: String): Boolean {
+        if (first == second) return true
+        if (first.length < MIN_FUZZY_WORD_LENGTH || second.length < MIN_FUZZY_WORD_LENGTH) return false
+        if (EditDistance.between(first, second) == 1) return true
+        return isAdjacentTransposition(first, second)
+    }
+
+    private fun isAdjacentTransposition(first: String, second: String): Boolean {
+        if (first.length != second.length) return false
+        val differences = first.indices.filter { first[it] != second[it] }
+        if (differences.size != 2) return false
+        val left = differences[0]
+        val right = differences[1]
+        return right == left + 1 && first[left] == second[right] && first[right] == second[left]
     }
 
     private fun normalize(value: String): String =
@@ -196,4 +351,13 @@ object CourseAnswerChecker {
     private val WHITESPACE = Regex("\\s+")
     private val MATH_OPERATOR_SPACING = Regex("\\s*([()^+=*/-])\\s*")
     private val COUNTER_EXAMPLE = Regex("\\bcounter[\\s-]+examples?\\b")
+    private val INDUCTION_BASE = Regex("p\\s*\\(\\s*k\\s*\\)")
+    private val INDUCTION_NEXT = Regex("p\\s*\\(\\s*k\\s*\\+\\s*1\\s*\\)")
+    private val WORD_TOKEN = Regex("[a-z]+")
+    private val MATH_STRUCTURE = Regex("[0-9()^=<>+*/]|=>|->|⇒|→|≤|≥")
+    private val ARROWS = listOf("=>", "->", "⇒", "→")
+    private val FUZZY_FILLER_WORDS = setOf("a", "an", "the", "where", "it", "is", "that", "one", "single")
+    private const val INDUCTION_CANONICAL = "p(k)->p(k+1)"
+    private const val MIN_FUZZY_WORD_LENGTH = 5
+    private const val PHRASE_COVERAGE_THRESHOLD = 0.9
 }

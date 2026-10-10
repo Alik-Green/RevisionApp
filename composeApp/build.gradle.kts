@@ -36,6 +36,7 @@ kotlin {
             api(compose.animation)
             api(compose.material3)
             api(compose.ui)
+            implementation(compose.components.resources)
             // The full Material icon set. The brief asks for a consistent icon set
             // across the redesigned UI; material3 only brings the ~50 core icons,
             // which has no folder, book, chart or sync glyph. This accessor is
@@ -77,6 +78,11 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.revisionapp.generated.resources"
 }
 
 sqldelight {

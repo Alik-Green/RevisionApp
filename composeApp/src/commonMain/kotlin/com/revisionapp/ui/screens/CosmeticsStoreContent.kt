@@ -40,28 +40,14 @@ import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 
-private enum class CosmeticsArea(val title: String) {
-    HAIR("Hair"),
-    EYES("Eyes"),
-    NOSE("Nose"),
-    FACE("Face"),
-}
-
-private enum class CosmeticsControl(val title: String) {
-    STYLE("Style"),
-    COLOUR("Colour"),
-    SKIN("Skin"),
-    SHAPE("Shape"),
-}
-
 /** Cosmetics browser. The avatar and category controls stay fixed while options scroll below. */
 @Composable
 fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
     val progress = state.learnerProgress.collectAsState().value
     val ready = state.progressionReady.collectAsState().value
     val storedCategory = state.cosmeticsStoreCategory.collectAsState().value
-    var area by remember(storedCategory) { mutableStateOf(areaFor(storedCategory)) }
-    var control by remember(storedCategory) { mutableStateOf(controlFor(storedCategory)) }
+    var area by remember(storedCategory) { mutableStateOf(areaForCategory(storedCategory)) }
+    var control by remember(storedCategory) { mutableStateOf(controlForCategory(storedCategory)) }
     var appearance by remember(progress.characterAppearance) { mutableStateOf(progress.characterAppearance) }
 
     fun save(next: CharacterAppearance) {
@@ -69,7 +55,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
         state.updateCharacterAppearance(next)
     }
 
-    val selectedPartCategory = partCategory(area, control)
+    val selectedPartCategory = partCategoryFor(area, control)
     val parts = selectedPartCategory?.let { AvatarPartCatalog.inCategory(it) }.orEmpty()
 
     Column(
@@ -101,14 +87,14 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            for (option in CosmeticsArea.entries) {
+            for (option in AvatarFeatureArea.entries) {
                 ToggleChip(
-                    label = "${areaIcon(option)} ${option.title}",
+                    label = "${option.icon} ${option.title}",
                     selected = option == area,
                     onClick = {
                         area = option
-                        control = defaultControl(option)
-                        partCategory(option, control)?.let(state::selectCosmeticsCategory)
+                        control = defaultControlFor(option)
+                        partCategoryFor(option, control)?.let(state::selectCosmeticsCategory)
                     },
                 )
             }
@@ -117,13 +103,13 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            for (option in controlsFor(area)) {
+            for (option in controlsForArea(area)) {
                 ToggleChip(
                     label = option.title,
                     selected = option == control,
                     onClick = {
                         control = option
-                        partCategory(area, option)?.let(state::selectCosmeticsCategory)
+                        partCategoryFor(area, option)?.let(state::selectCosmeticsCategory)
                     },
                 )
             }
@@ -133,7 +119,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(11.dp),
         ) {
-            if (control == CosmeticsControl.SHAPE) {
+            if (control == AvatarFeatureControl.SHAPE) {
                 CosmeticsShapeControls(
                     area = area,
                     appearance = appearance,
@@ -161,7 +147,7 @@ fun CosmeticsStoreContent(state: AppState, modifier: Modifier = Modifier) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
-                        if (area == CosmeticsArea.FACE && control == CosmeticsControl.SKIN) {
+                        if (area == AvatarFeatureArea.FACE && control == AvatarFeatureControl.SKIN) {
                             Text("8 natural tones free", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
                         }
                     }
@@ -260,28 +246,28 @@ private fun PartPreview(part: AvatarPart) {
 
 @Composable
 private fun CosmeticsShapeControls(
-    area: CosmeticsArea,
+    area: AvatarFeatureArea,
     appearance: CharacterAppearance,
     onAppearanceChange: (CharacterAppearance) -> Unit,
     onFinished: (CharacterAppearance) -> Unit,
 ) {
     var draft by remember(area, appearance) { mutableStateOf(appearance) }
     val controls = when (area) {
-        CosmeticsArea.HAIR -> listOf(
+        AvatarFeatureArea.HAIR -> listOf(
             CosmeticsShapeControl("Hair size", draft.hairSize, "Small", "Large") { draft.copy(hairSize = it) },
             CosmeticsShapeControl("Hair height", draft.hairHeight, "Higher", "Lower") { draft.copy(hairHeight = it) },
             CosmeticsShapeControl("Hair volume", draft.hairVolume, "Neat", "Full") { draft.copy(hairVolume = it) },
         )
-        CosmeticsArea.EYES -> listOf(
+        AvatarFeatureArea.EYES -> listOf(
             CosmeticsShapeControl("Eye spacing", draft.eyeSpacing, "Close", "Wide") { draft.copy(eyeSpacing = it) },
             CosmeticsShapeControl("Eye size", draft.eyeSize, "Small", "Large") { draft.copy(eyeSize = it) },
             CosmeticsShapeControl("Eye height", draft.eyeHeight, "Higher", "Lower") { draft.copy(eyeHeight = it) },
         )
-        CosmeticsArea.NOSE -> listOf(
+        AvatarFeatureArea.NOSE -> listOf(
             CosmeticsShapeControl("Nose size", draft.noseSize, "Small", "Large") { draft.copy(noseSize = it) },
             CosmeticsShapeControl("Nose height", draft.noseHeight, "Higher", "Lower") { draft.copy(noseHeight = it) },
         )
-        CosmeticsArea.FACE -> listOf(
+        AvatarFeatureArea.FACE -> listOf(
             CosmeticsShapeControl("Face width", draft.faceWidth, "Narrow", "Wide") { draft.copy(faceWidth = it) },
             CosmeticsShapeControl("Face height", draft.faceHeight, "Short", "Long") { draft.copy(faceHeight = it) },
             CosmeticsShapeControl("Jaw roundness", draft.faceRoundness, "Tapered", "Round") { draft.copy(faceRoundness = it) },
@@ -328,48 +314,6 @@ private data class CosmeticsShapeControl(
     val highLabel: String,
     val update: (Float) -> CharacterAppearance,
 )
-
-private fun controlsFor(area: CosmeticsArea): List<CosmeticsControl> = when (area) {
-    CosmeticsArea.HAIR -> listOf(CosmeticsControl.STYLE, CosmeticsControl.COLOUR, CosmeticsControl.SHAPE)
-    CosmeticsArea.EYES -> listOf(CosmeticsControl.STYLE, CosmeticsControl.COLOUR, CosmeticsControl.SHAPE)
-    CosmeticsArea.NOSE -> listOf(CosmeticsControl.STYLE, CosmeticsControl.SHAPE)
-    CosmeticsArea.FACE -> listOf(CosmeticsControl.SKIN, CosmeticsControl.SHAPE)
-}
-
-private fun defaultControl(area: CosmeticsArea): CosmeticsControl = when (area) {
-    CosmeticsArea.HAIR, CosmeticsArea.EYES, CosmeticsArea.NOSE -> CosmeticsControl.STYLE
-    CosmeticsArea.FACE -> CosmeticsControl.SKIN
-}
-
-private fun partCategory(area: CosmeticsArea, control: CosmeticsControl): AvatarPartCategory? = when (area to control) {
-    CosmeticsArea.HAIR to CosmeticsControl.STYLE -> AvatarPartCategory.HAIR_STYLE
-    CosmeticsArea.HAIR to CosmeticsControl.COLOUR -> AvatarPartCategory.HAIR_COLOR
-    CosmeticsArea.EYES to CosmeticsControl.STYLE -> AvatarPartCategory.EYE_STYLE
-    CosmeticsArea.EYES to CosmeticsControl.COLOUR -> AvatarPartCategory.EYE_COLOR
-    CosmeticsArea.NOSE to CosmeticsControl.STYLE -> AvatarPartCategory.NOSE_STYLE
-    CosmeticsArea.FACE to CosmeticsControl.SKIN -> AvatarPartCategory.SKIN_TONE
-    else -> null
-}
-
-private fun areaFor(category: AvatarPartCategory): CosmeticsArea = when (category) {
-    AvatarPartCategory.HAIR_STYLE, AvatarPartCategory.HAIR_COLOR -> CosmeticsArea.HAIR
-    AvatarPartCategory.EYE_STYLE, AvatarPartCategory.EYE_COLOR -> CosmeticsArea.EYES
-    AvatarPartCategory.NOSE_STYLE -> CosmeticsArea.NOSE
-    AvatarPartCategory.SKIN_TONE -> CosmeticsArea.FACE
-}
-
-private fun controlFor(category: AvatarPartCategory): CosmeticsControl = when (category) {
-    AvatarPartCategory.HAIR_STYLE, AvatarPartCategory.EYE_STYLE, AvatarPartCategory.NOSE_STYLE -> CosmeticsControl.STYLE
-    AvatarPartCategory.HAIR_COLOR, AvatarPartCategory.EYE_COLOR -> CosmeticsControl.COLOUR
-    AvatarPartCategory.SKIN_TONE -> CosmeticsControl.SKIN
-}
-
-private fun areaIcon(area: CosmeticsArea): String = when (area) {
-    CosmeticsArea.HAIR -> "✂️"
-    CosmeticsArea.EYES -> "👁️"
-    CosmeticsArea.NOSE -> "◉"
-    CosmeticsArea.FACE -> "☺️"
-}
 
 private fun CharacterAppearance.withPart(category: AvatarPartCategory, partId: String): CharacterAppearance = when (category) {
     AvatarPartCategory.HAIR_STYLE -> copy(hairStyleId = partId)

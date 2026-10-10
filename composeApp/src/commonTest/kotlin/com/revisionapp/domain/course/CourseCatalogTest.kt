@@ -111,6 +111,33 @@ class CourseCatalogTest {
         assertTrue(CourseAnswerChecker.check(sufficient, "sufficient condition"))
         assertTrue(CourseAnswerChecker.check(counterexample, "A COUNTER EXAMPLE!"))
         assertTrue(CourseAnswerChecker.check(counterexample, "a counter-example."))
+        assertTrue(CourseAnswerChecker.check(counterexample, "one counterexampl"))
+        assertFalse(CourseAnswerChecker.check(counterexample, "a false example"))
+        assertFalse(CourseAnswerChecker.check(counterexample, "not a counterexample"))
+
+        val induction = QuestionAnswer.TextInput(
+            listOf(
+                "p(k) implies p(k+1)",
+                "p(k) => p(k+1)",
+                "if p(k) then p(k+1)",
+                "p(k+1) follows from p(k)",
+                "assume p(k) prove p(k+1)",
+            ),
+        )
+        assertTrue(CourseAnswerChecker.check(induction, "If P(k), then P(k + 1)."))
+        assertTrue(CourseAnswerChecker.check(induction, "P(k + 1) follows from P(k)."))
+        assertTrue(CourseAnswerChecker.check(induction, "Assume P(k), show P(k + 1)."))
+        assertTrue(CourseAnswerChecker.check(induction, "P(k + 1) holds whenever P(k) holds."))
+        assertTrue(CourseAnswerChecker.check(induction, "P(k + 1) is true if P(k) is true."))
+        assertTrue(CourseAnswerChecker.check(induction, "P(k) imples P(k + 1)"))
+        assertFalse(CourseAnswerChecker.check(induction, "P(k + 1) implies P(k)"))
+        assertFalse(CourseAnswerChecker.check(induction, "P(k) follows from P(k + 1)"))
+        assertFalse(CourseAnswerChecker.check(induction, "P(k + 1) is true only if P(k)"))
+        assertFalse(CourseAnswerChecker.check(induction, "P(k) does not imply P(k + 1)"))
+
+        assertTrue(CourseAnswerChecker.check(sufficient, "sufficent"))
+        assertTrue(CourseAnswerChecker.check(sufficient, "a sufficient condition"))
+        assertFalse(CourseAnswerChecker.check(sufficient, "not sufficient"))
         assertTrue(CourseAnswerChecker.check(choice, "b"))
         assertFalse(CourseAnswerChecker.check(choice, "a"))
     }

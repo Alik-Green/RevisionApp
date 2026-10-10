@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.4.0 — 2026-10-10
+
+- Turned the V2 course path into centered, gently winding, topic-coloured lesson circles; stars mark the next lesson and weights mark curated cross-topic review.
+- Grouped hair and eye colours under their matching avatar features in both the character designer and Cosmetics.
+- Raised light/dark palette contrast, used green for correct-answer feedback in either mode, and applied the friendly Nunito typeface.
+- Removed the answer-format helper, made free-text marking more forgiving of small typos and close wording, and protected the direction of induction implications.
+- Simplified lesson completion to the avatar, “Lesson complete!”, animated daily-quest progress and one Continue action back to the pathway.
+
 ## v2.3.0 — 2026-10-10
 
 - Made hairstyles visibly distinct in the live avatar renderer and added adjustable face width, height and jaw shape.

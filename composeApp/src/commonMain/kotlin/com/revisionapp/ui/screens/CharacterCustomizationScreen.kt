@@ -53,7 +53,8 @@ fun CharacterCustomizationScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val ready = state.progressionReady.collectAsState().value
     var appearance by remember(progress.characterAppearance) { mutableStateOf(progress.characterAppearance) }
-    var selectedCategory by remember { mutableStateOf(AvatarPartCategory.HAIR_STYLE) }
+    var selectedArea by remember { mutableStateOf(AvatarFeatureArea.HAIR) }
+    var selectedControl by remember { mutableStateOf(AvatarFeatureControl.STYLE) }
 
     fun save(next: CharacterAppearance) {
         appearance = next
@@ -90,7 +91,7 @@ fun CharacterCustomizationScreen(state: AppState) {
                         SectionLabel("YOUR AVATAR")
                         Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
-                            "Pick a feature, then shape it with free controls.",
+                            "Choose Hair, Eyes, Nose or Face, then explore its options.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
@@ -99,67 +100,92 @@ fun CharacterCustomizationScreen(state: AppState) {
                 }
             }
 
+            SectionLabel("CHOOSE A FEATURE")
             Row(
                 Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                for (category in AvatarPartCategory.entries) {
+                for (area in AvatarFeatureArea.entries) {
                     ToggleChip(
-                        label = "${category.icon} ${category.title}",
-                        selected = category == selectedCategory,
-                        onClick = { selectedCategory = category },
+                        label = "${area.icon} ${area.title}",
+                        selected = area == selectedArea,
+                        onClick = {
+                            selectedArea = area
+                            selectedControl = defaultControlFor(area)
+                        },
+                    )
+                }
+            }
+            Row(
+                Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                for (control in controlsForArea(selectedArea)) {
+                    ToggleChip(
+                        label = control.title,
+                        selected = control == selectedControl,
+                        onClick = { selectedControl = control },
                     )
                 }
             }
 
-            val categoryParts = AvatarPartCatalog.inCategory(selectedCategory)
-            val selectedPartId = appearance.partId(selectedCategory)
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(19.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-            ) {
-                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            SectionLabel("${selectedCategory.icon} ${selectedCategory.title.uppercase()}")
-                            Text(
-                                "${categoryParts.count { it.id in progress.ownedAvatarPartIds }} unlocked · tap a tile to equip",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
+            val selectedCategory = if (selectedControl == AvatarFeatureControl.SHAPE) {
+                shapeCategoryFor(selectedArea)
+            } else {
+                requireNotNull(partCategoryFor(selectedArea, selectedControl))
+            }
+            if (selectedControl != AvatarFeatureControl.SHAPE) {
+                val categoryParts = AvatarPartCatalog.inCategory(selectedCategory)
+                val selectedPartId = appearance.partId(selectedCategory)
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(19.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                ) {
+                    Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                SectionLabel("${selectedCategory.icon} ${selectedCategory.title.uppercase()}")
+                                Text(
+                                    "${categoryParts.count { it.id in progress.ownedAvatarPartIds }} unlocked · tap a tile to equip",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                            TextButton(onClick = { state.openCosmeticsStore(selectedCategory) }) { Text("Shop") }
                         }
-                        TextButton(onClick = { state.openCosmeticsStore(selectedCategory) }) { Text("Shop") }
-                    }
-                    Row(
-                        Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(9.dp),
-                    ) {
-                        for (part in categoryParts) {
-                            val owned = part.id in progress.ownedAvatarPartIds
-                            AvatarOptionTile(
-                                part = part,
-                                owned = owned,
-                                selected = part.id == selectedPartId,
-                                onClick = {
-                                    if (owned) {
-                                        save(appearance.withPart(selectedCategory, part.id))
-                                    } else {
-                                        state.openCosmeticsStore(selectedCategory)
-                                    }
-                                },
-                            )
+                        Row(
+                            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(9.dp),
+                        ) {
+                            for (part in categoryParts) {
+                                val owned = part.id in progress.ownedAvatarPartIds
+                                AvatarOptionTile(
+                                    part = part,
+                                    owned = owned,
+                                    selected = part.id == selectedPartId,
+                                    onClick = {
+                                        if (owned) {
+                                            save(appearance.withPart(selectedCategory, part.id))
+                                        } else {
+                                            state.openCosmeticsStore(selectedCategory)
+                                        }
+                                    },
+                                )
+                            }
                         }
                     }
                 }
             }
 
-            ShapeControls(
-                category = selectedCategory,
-                appearance = appearance,
-                onAppearanceChange = { appearance = it },
-                onFinished = { state.updateCharacterAppearance(it) },
-            )
+            if (selectedControl == AvatarFeatureControl.SHAPE) {
+                ShapeControls(
+                    category = selectedCategory,
+                    appearance = appearance,
+                    onAppearanceChange = { appearance = it },
+                    onFinished = { state.updateCharacterAppearance(it) },
+                )
+            }
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedButton(

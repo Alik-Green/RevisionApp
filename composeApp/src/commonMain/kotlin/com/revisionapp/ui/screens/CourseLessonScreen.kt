@@ -1,6 +1,8 @@
 package com.revisionapp.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -31,6 +34,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -38,14 +42,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseAnswerChecker
-import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseQuestion
 import com.revisionapp.domain.course.CourseQuestionRetryQueue
-import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.course.QuestionAnswer
 import com.revisionapp.domain.progression.CharacterAppearance
+import com.revisionapp.domain.progression.DailyQuestProgress
+import com.revisionapp.domain.progression.LearnerProgress
+import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
@@ -53,6 +59,7 @@ import com.revisionapp.ui.components.CharacterAvatar
 import com.revisionapp.ui.components.EmptyMessage
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
+import com.revisionapp.ui.theme.ExtendedTheme
 
 /** Player for an ordered V2 lesson. Each answer is checked using the question's authored type. */
 @Composable
@@ -70,7 +77,11 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val selectedOption = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<String?>(null) }
     val answerCorrect = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<Boolean?>(null) }
     val finished = remember(route.courseId, route.lessonId) { mutableStateOf(false) }
+    val completionProgress = remember(route.courseId, route.lessonId) { mutableStateOf<LearnerProgress?>(null) }
     val learnerProgress = state.learnerProgress.collectAsState().value
+    val initialQuestProgress = remember(route.courseId, route.lessonId) {
+        ProgressionRules.dailyQuests(learnerProgress).associate { quest -> quest.id to quest.progressFraction }
+    }
     val appearance = learnerProgress.characterAppearance
 
     if (course == null || lesson == null || questions.isEmpty()) {
@@ -82,7 +93,12 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     }
 
     if (finished.value) {
-        LessonComplete(state, course, lesson, questionQueue.size, appearance)
+        LessonComplete(
+            state = state,
+            appearance = completionProgress.value?.characterAppearance ?: appearance,
+            progress = completionProgress.value ?: learnerProgress,
+            initialQuestProgress = initialQuestProgress,
+        )
         return
     }
 
@@ -91,10 +107,6 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val correct = answerCorrect.value
     val isRetry = retryQueue.isRetry(questionIndex.value)
     val questionLabel = if (isRetry) "RETRY" else "QUESTION"
-    val answerFormat = when (question.answer) {
-        is QuestionAnswer.MultipleChoice -> "Select one option."
-        is QuestionAnswer.TextInput -> question.answerInstruction.ifBlank { "Type a short answer." }
-    }
 
     fun recordAnswer(isCorrect: Boolean) {
         state.recordCourseQuestionAnswered(isCorrect)
@@ -140,11 +152,6 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                     }
                     MathText(question.prompt, style = MaterialTheme.typography.titleLarge)
                 }
-            }
-
-            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                SectionLabel("ANSWER FORMAT")
-                Text(answerFormat, style = MaterialTheme.typography.bodyMedium)
             }
 
             when (val answer = question.answer) {
@@ -197,6 +204,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                             onClick = {
                                 if (questionIndex.value == questionQueue.lastIndex) {
                                     state.completeCourseLesson(course.id, lesson.id)
+                                    completionProgress.value = state.learnerProgress.value
                                     finished.value = true
                                 } else {
                                     questionIndex.value++
@@ -225,13 +233,13 @@ private fun CourseAnswerOption(
     onClick: () -> Unit,
 ) {
     val container = when {
-        answerCorrect != null && isCorrectOption -> MaterialTheme.colorScheme.tertiaryContainer
+        answerCorrect != null && isCorrectOption -> ExtendedTheme.colors.correctContainer
         answerCorrect == false && selected -> MaterialTheme.colorScheme.errorContainer
         selected -> MaterialTheme.colorScheme.primaryContainer
         else -> MaterialTheme.colorScheme.surfaceContainerLow
     }
     val foreground = when {
-        answerCorrect != null && isCorrectOption -> MaterialTheme.colorScheme.onTertiaryContainer
+        answerCorrect != null && isCorrectOption -> ExtendedTheme.colors.onCorrectContainer
         answerCorrect == false && selected -> MaterialTheme.colorScheme.onErrorContainer
         selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurface
@@ -266,12 +274,14 @@ private fun AnswerFeedback(
     correct: Boolean,
     appearance: CharacterAppearance,
 ) {
-    val color = if (correct) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
+    val color = if (correct) ExtendedTheme.colors.correct else MaterialTheme.colorScheme.error
+    val container = if (correct) ExtendedTheme.colors.correctContainer else MaterialTheme.colorScheme.errorContainer
+    val onContainer = if (correct) ExtendedTheme.colors.onCorrectContainer else MaterialTheme.colorScheme.onErrorContainer
     Column(
         Modifier
             .fillMaxWidth()
-            .background(color.copy(alpha = 0.10f), RoundedCornerShape(16.dp))
-            .border(1.dp, color.copy(alpha = 0.65f), RoundedCornerShape(16.dp))
+            .background(container, RoundedCornerShape(16.dp))
+            .border(1.dp, color.copy(alpha = 0.72f), RoundedCornerShape(16.dp))
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -287,7 +297,7 @@ private fun AnswerFeedback(
                 Text(
                     if (correct) "Nice recall. Keep the idea moving." else "Use the explanation, then try it again later.",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = onContainer,
                 )
             }
         }
@@ -296,9 +306,10 @@ private fun AnswerFeedback(
                 "Answer: ${CourseAnswerChecker.acceptedAnswerLabel(question.answer)}",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
+                color = onContainer,
             )
         }
-        Text(question.explanation, style = MaterialTheme.typography.bodyMedium)
+        Text(question.explanation, style = MaterialTheme.typography.bodyMedium, color = onContainer)
     }
 }
 
@@ -320,41 +331,87 @@ private fun LessonProgressBar(index: Int, total: Int) {
 @Composable
 private fun LessonComplete(
     state: AppState,
-    course: LearningCourse,
-    lesson: CourseLesson,
-    questionCount: Int,
     appearance: CharacterAppearance,
+    progress: LearnerProgress,
+    initialQuestProgress: Map<String, Float>,
 ) {
-    Column(Modifier.fillMaxSize()) {
-        AppHeader(title = "Lesson complete", subtitle = course.name)
-        Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            CharacterAvatar(appearance, size = 104.dp, celebratory = true)
-            Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-            Text(lesson.title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
-            Text(
-                "$questionCount questions answered. Your path progress is saved.",
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Text(
-                "Quest and mastery coins are added automatically. Save them for a new look in Store · Cosmetics.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Button(onClick = { state.switchTab(Route.Study) }, modifier = Modifier.fillMaxWidth()) {
-                Text("Back to your path")
+    val quests = ProgressionRules.dailyQuests(progress)
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+            .padding(horizontal = 20.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CharacterAvatar(appearance, size = 112.dp, celebratory = true)
+        Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        SectionLabel("DAILY QUESTS")
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            for (quest in quests) {
+                DailyQuestProgressCard(
+                    quest = quest,
+                    initialFraction = initialQuestProgress[quest.id] ?: quest.progressFraction,
+                )
             }
-            val orderedLessons = course.orderedLessons()
-            val hasNextLesson = orderedLessons.indexOfFirst { it.id == lesson.id } in 0 until orderedLessons.lastIndex
+        }
+        Button(onClick = { state.switchTab(Route.Study) }, modifier = Modifier.fillMaxWidth()) {
+            Text("Continue")
+        }
+    }
+}
+
+@Composable
+private fun DailyQuestProgressCard(quest: DailyQuestProgress, initialFraction: Float) {
+    val animatedProgress = remember(quest.id) { Animatable(initialFraction.coerceIn(0f, 1f)) }
+    LaunchedEffect(quest.id, quest.progressFraction) {
+        animatedProgress.animateTo(
+            targetValue = quest.progressFraction.coerceIn(0f, 1f),
+            animationSpec = tween(durationMillis = 900, easing = FastOutSlowInEasing),
+        )
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    ) {
+        Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    quest.title,
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    "${quest.current.coerceAtMost(quest.target)} / ${quest.target}",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = if (quest.isComplete) ExtendedTheme.colors.correct else MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
             Text(
-                if (hasNextLesson) "Next lesson unlocked" else "Course path complete",
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.SemiBold,
+                quest.description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
+            Box(
+                Modifier.fillMaxWidth().height(9.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape),
+            ) {
+                if (animatedProgress.value > 0f) {
+                    Box(
+                        Modifier.fillMaxWidth(animatedProgress.value.coerceIn(0f, 1f)).height(9.dp)
+                            .background(
+                                if (quest.isComplete) ExtendedTheme.colors.correct else MaterialTheme.colorScheme.primary,
+                                CircleShape,
+                            ),
+                    )
+                }
+            }
         }
     }
 }
