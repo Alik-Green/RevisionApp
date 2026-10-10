@@ -43,7 +43,6 @@ kotlin {
             // compose.* accessors, is not deprecated. See docs/DECISIONS.md D33.
             api(compose.materialIconsExtended)
 
-            implementation(compose.components.resources)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
@@ -78,11 +77,6 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
     }
-}
-
-compose.resources {
-    publicResClass = true
-    packageOfResClass = "com.revisionapp.resources"
 }
 
 sqldelight {

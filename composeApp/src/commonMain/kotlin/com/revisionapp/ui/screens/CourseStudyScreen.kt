@@ -120,7 +120,7 @@ fun CourseStudyScreen(state: AppState) {
                 }
             }
             if (!loadError.isNullOrBlank()) {
-                EmptyMessage("Some bundled course content could not be read: $loadError")
+                EmptyMessage("Couldn't refresh V2 course content; showing the saved copy. $loadError")
             }
             Spacer(Modifier.height(12.dp))
         }

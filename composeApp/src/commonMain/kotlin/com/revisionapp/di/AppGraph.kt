@@ -2,6 +2,7 @@ package com.revisionapp.di
 
 import app.cash.sqldelight.db.SqlDriver
 import com.revisionapp.data.AppJson
+import com.revisionapp.data.content.CourseCatalogLoader
 import com.revisionapp.data.db.RevisionDatabase
 import com.revisionapp.data.repository.SqlLearnedAnswerStore
 import com.revisionapp.data.repository.SqlLibraryRepository
@@ -27,6 +28,8 @@ import kotlin.time.Clock
 /** Setting keys stored in the `setting` table. */
 object SettingKeys {
     const val CONTENT_BASE_URL: String = "content.baseUrl"
+    const val V2_COURSE_CONTENT_URL: String = "content.v2.baseUrl"
+    const val V2_COURSE_CATALOG_CACHE: String = "content.v2.catalogCache"
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
     const val THEME_MODE: String = "appearance.themeMode"
     const val THEME_STYLE: String = "appearance.themeStyle"
@@ -83,9 +86,19 @@ class AppGraph(platform: PlatformServices) {
         return FsrsScheduler(parameters)
     }
 
-    /** User-editable source for legacy card-pack sync; V2 courses are bundled. */
+    /** User-editable source for legacy card-pack sync. */
     fun contentBaseUrl(): String =
         settings.read(SettingKeys.CONTENT_BASE_URL)?.takeIf { it.isNotBlank() } ?: ContentSync.DEFAULT_BASE_URL
+
+    /** User-editable raw GitHub source for V2 course JSON. */
+    fun courseContentBaseUrl(): String =
+        settings.read(SettingKeys.V2_COURSE_CONTENT_URL)?.takeIf { it.isNotBlank() }
+            ?: CourseCatalogLoader.DEFAULT_BASE_URL
+
+    fun courseCatalogLoader(): CourseCatalogLoader {
+        val baseUrl = courseContentBaseUrl()
+        return CourseCatalogLoader(ContentApiClient(httpClient) { baseUrl }, json)
+    }
 
     fun contentSync(): ContentSync =
         ContentSync(ContentApiClient(httpClient) { contentBaseUrl() }, packs, json)

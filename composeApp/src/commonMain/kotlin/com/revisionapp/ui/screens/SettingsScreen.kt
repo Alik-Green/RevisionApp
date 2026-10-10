@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.revisionapp.data.content.CourseCatalogLoader
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
@@ -51,6 +52,9 @@ fun SettingsScreen(state: AppState) {
     val settings = state.settingsUi.collectAsState().value
     val sync = state.syncState.collectAsState().value
     val urlDraft = remember(settings.baseUrl) { mutableStateOf(settings.baseUrl) }
+    val courseContentUrlDraft = remember(settings.courseContentBaseUrl) {
+        mutableStateOf(settings.courseContentBaseUrl)
+    }
     val retention = remember(settings.desiredRetention) { mutableStateOf(settings.desiredRetention.toFloat()) }
 
     Column(Modifier.fillMaxSize()) {
@@ -92,6 +96,31 @@ fun SettingsScreen(state: AppState) {
                 }
             }
             EmptyMessage("Playful is the default; Ink & Paper keeps the original quieter palette.")
+
+            HorizontalDivider()
+            SectionLabel("V2 course content")
+            LabeledField(
+                label = "GitHub raw base URL",
+                value = courseContentUrlDraft.value,
+                onValueChange = { courseContentUrlDraft.value = it },
+                hint = CourseCatalogLoader.DEFAULT_BASE_URL,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = { state.setCourseContentBaseUrl(courseContentUrlDraft.value) }) {
+                    Text("Save course source")
+                }
+                TextButton(
+                    onClick = {
+                        courseContentUrlDraft.value = CourseCatalogLoader.DEFAULT_BASE_URL
+                        state.setCourseContentBaseUrl(CourseCatalogLoader.DEFAULT_BASE_URL)
+                    },
+                ) { Text("Reset course source") }
+            }
+            EmptyMessage(
+                "V2 courses are fetched from the folder containing `manifest.json` on a raw GitHub " +
+                    "branch. The app refreshes them on launch and keeps the last successful catalog " +
+                    "for offline use, so updating course JSON does not require a new app build.",
+            )
 
             HorizontalDivider()
             SectionLabel("Legacy card packs")

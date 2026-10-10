@@ -3,8 +3,8 @@
 A mobile-first revision app built around curated course paths: ordered lessons
 contain reusable questions with multiple-choice or text-input answers. Progress,
 daily quests, coins, achievements and streak recovery sit alongside legacy FSRS
-cards and your own editable content. V2 course examples ship separately from the
-legacy content packs and work offline.
+cards and your own editable content. V2 course JSON refreshes from a GitHub branch
+and is cached locally for offline study.
 
 Built with Kotlin Multiplatform and Compose Multiplatform for **desktop (JVM)**
 and **Android**. Every line of logic and every screen is in `commonMain`; the two
@@ -26,7 +26,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-2.0.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.0.1.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -194,11 +194,12 @@ works offline indefinitely.
 
 ### Curated course content V2
 
-The new question/lesson/course format is separate from legacy card packs. Its bundled
-pilot is under `composeApp/src/commonMain/composeResources/files/content-v2/`; the
-manifest points to course files, lessons reference ordered question IDs, and
-questions can be reused across sections. See [the V2 authoring notes](docs/CONTENT_V2.md).
-The existing remote `content` branch has not been changed or migrated.
+The new question/lesson/course format is separate from legacy card packs. Its pilot
+is under the repository-root `content-v2/` directory. The app fetches a manifest
+and the referenced course files from the configured raw GitHub URL at launch, then
+caches the last valid catalog for offline study. Updates to these JSON files do not
+require rebuilding the app. Lessons reference ordered question IDs and can reuse
+earlier questions for spiral review. See [the V2 authoring notes](docs/CONTENT_V2.md).
 
 **Content sync never touches your content or your study progress.** Built-in rows
 are namespaced by id *and* carry a `source` column, progress lives in a separate
@@ -319,12 +320,13 @@ exactly what to check.
 
 ### Legacy pack sync and private repositories
 
-The editable base URL in Settings is only for synchronising legacy card packs;
-V2 course content is bundled with the app and does not use it. The default pack URL
-works while the `content` branch is public. Serving a private legacy branch needs
-an authenticated URL — a fine-grained personal access token embedded in the base
-URL, or a proxy that adds the header. URLs are saved in local settings, so avoid
-storing a secret-bearing URL on a shared device.
+Settings keeps separate sources for V2 courses and legacy card packs. The
+**Legacy pack source URL** only controls sync for the card library; the **GitHub
+raw base URL** under V2 course content controls the remote course JSON. Both URLs
+are editable and saved locally. The default pack URL works while the `content`
+branch is public. Serving a private legacy branch needs an authenticated URL — a
+fine-grained personal access token embedded in the base URL, or a proxy that adds
+the header. Avoid saving a secret-bearing URL on a shared device.
 
 ---
 
@@ -340,8 +342,8 @@ storing a secret-bearing URL on a shared device.
   counting are sealed and generic over item types so notebooks are one case each,
   but no notebook model, storage or editor exists.
 - **Verified V2 course content.** The TMUA and Further Maths samples are prototypes;
-  lesson/question facts and curriculum coverage still need human review. No
-  separate remote `content-v2` branch has been published.
+  lesson/question facts and curriculum coverage still need human review. The default
+  course source currently uses the pinned app branch; no dedicated content branch is published.
 - **Production Android distribution.** The APK in Releases is a debug build signed
   with the debug key, not a Play Store release.
 - **Social/profile features.** Avatar customisation, friends and shared progress

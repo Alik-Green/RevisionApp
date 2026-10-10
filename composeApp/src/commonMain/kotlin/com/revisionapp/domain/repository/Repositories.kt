@@ -111,7 +111,7 @@ interface PackStore {
     fun import(pack: InstalledPack, topics: List<Topic>, tags: List<Tag>, cards: List<Card>)
 }
 
-/** Small key/value store for user settings (content base URL, retention, ...). */
+/** Small key/value store for user settings (content sources, retention, ...). */
 interface SettingsStore {
     fun read(key: String): String?
     fun write(key: String, value: String)

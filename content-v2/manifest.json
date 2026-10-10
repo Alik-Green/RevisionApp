@@ -4,12 +4,12 @@
     {
       "id": "tmua",
       "name": "TMUA",
-      "file": "files/content-v2/courses/tmua.json"
+      "file": "courses/tmua.json"
     },
     {
       "id": "further-maths",
       "name": "Further Maths",
-      "file": "files/content-v2/courses/further-maths.json"
+      "file": "courses/further-maths.json"
     }
   ]
 }

@@ -23,6 +23,7 @@ data class CourseCatalog(val schemaVersion: Int, val courses: List<LearningCours
 
     fun validationErrors(): List<String> = buildList {
         if (schemaVersion != CURRENT_SCHEMA_VERSION) add("Unsupported course schema version $schemaVersion")
+        if (courses.isEmpty()) add("Course catalog must include at least one course")
         if (courses.map { it.id }.distinct().size != courses.size) add("Course ids must be unique")
         courses.forEach { course ->
             course.validationErrors().forEach { add("${course.id}: $it") }

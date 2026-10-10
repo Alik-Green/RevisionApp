@@ -47,12 +47,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 
@@ -108,6 +110,7 @@ data class TopicAccuracyRow(
  */
 data class SettingsUi(
     val baseUrl: String,
+    val courseContentBaseUrl: String,
     val desiredRetention: Double,
     val packs: List<InstalledPack>,
     val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
@@ -116,11 +119,12 @@ data class SettingsUi(
     companion object {
         fun initial(): SettingsUi =
             SettingsUi(
-                ContentSync.DEFAULT_BASE_URL,
-                DEFAULT_RETENTION,
-                emptyList(),
-                ThemeStyle.PLAYFUL,
-                ThemeMode.SYSTEM,
+                baseUrl = ContentSync.DEFAULT_BASE_URL,
+                courseContentBaseUrl = CourseCatalogLoader.DEFAULT_BASE_URL,
+                desiredRetention = DEFAULT_RETENTION,
+                packs = emptyList(),
+                themeStyle = ThemeStyle.PLAYFUL,
+                themeMode = ThemeMode.SYSTEM,
             )
 
         const val DEFAULT_RETENTION: Double = 0.9
@@ -254,14 +258,13 @@ class AppState(
 
     private fun loadCourseCatalogAndProgression() {
         scope.launch(Dispatchers.Default) {
-            val catalog = runCatching { CourseCatalogLoader.load() }
-                .onFailure { _courseCatalogError.value = it.message ?: "Could not load V2 course content" }
-                .getOrNull()
-            if (catalog != null) {
-                _courseCatalog.value = catalog
-                _courseCatalogError.value = null
+            val cachedCatalog = graph.settings.read(SettingKeys.V2_COURSE_CATALOG_CACHE)?.let { raw ->
+                runCatching { graph.json.decodeFromString<CourseCatalog>(raw) }.getOrNull()
+            }?.takeIf { it.validationErrors().isEmpty() }
+            if (cachedCatalog != null) {
+                _courseCatalog.value = cachedCatalog
+                _courseCatalogLoading.value = false
             }
-            _courseCatalogLoading.value = false
 
             val restored = graph.settings.read(SettingKeys.LEARNER_PROGRESS_V2)?.let { raw ->
                 runCatching { graph.json.decodeFromString<LearnerProgress>(raw) }.getOrNull()
@@ -272,16 +275,49 @@ class AppState(
             } else {
                 firstCourse ?: restored.activeCourseId
             }
-            val today = localToday()
-            val progress = ProgressionRules.forToday(
-                restored.copy(activeCourseId = selectedCourseId),
-                today,
-            )
+            val progress = ProgressionRules.forToday(restored.copy(activeCourseId = selectedCourseId), localToday())
             _learnerProgress.value = progress
             graph.settings.write(SettingKeys.LEARNER_PROGRESS_V2, graph.json.encodeToString(progress))
             _progressionReady.value = true
+            refreshCourseCatalog()
         }
     }
+
+    /** Load the latest branch content, keeping the last successful catalog for offline use. */
+    private fun refreshCourseCatalog() {
+        if (_courseCatalog.value.courses.isEmpty()) _courseCatalogLoading.value = true
+        scope.launch(Dispatchers.Default) {
+            var failure: Throwable? = null
+            val catalog = try {
+                withTimeoutOrNull(COURSE_CONTENT_FETCH_TIMEOUT_MS) {
+                    graph.courseCatalogLoader().load()
+                }.also { result ->
+                    if (result == null) failure = IllegalStateException("Timed out loading V2 course content")
+                }
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Throwable) {
+                failure = error
+                null
+            }
+
+            if (catalog != null) {
+                _courseCatalog.value = catalog
+                _courseCatalogError.value = null
+                runCatching {
+                    graph.settings.write(SettingKeys.V2_COURSE_CATALOG_CACHE, graph.json.encodeToString(catalog))
+                }
+                catalog.courses.firstOrNull { it.id == _learnerProgress.value.activeCourseId }
+                    ?: catalog.courses.firstOrNull()?.let { course ->
+                        updateProgression { ProgressionRules.setActiveCourse(it, course.id) }
+                    }
+            } else {
+                _courseCatalogError.value = failure?.message ?: "Could not load V2 course content"
+            }
+            _courseCatalogLoading.value = false
+        }
+    }
+
 
     /**
      * Fetches the built-in packs when none are installed, so a fresh install has
@@ -770,6 +806,18 @@ class AppState(
         }
     }
 
+    fun setCourseContentBaseUrl(url: String) {
+        scope.launch(Dispatchers.Default) {
+            val value = url.trim().trimEnd('/')
+            graph.settings.write(
+                SettingKeys.V2_COURSE_CONTENT_URL,
+                value.ifBlank { CourseCatalogLoader.DEFAULT_BASE_URL },
+            )
+            loadSettingsInto()
+            refreshCourseCatalog()
+        }
+    }
+
     fun setDesiredRetention(value: Double) {
         scope.launch(Dispatchers.Default) {
             val clamped = value.coerceIn(SettingsUi.MIN_RETENTION, SettingsUi.MAX_RETENTION)
@@ -802,6 +850,7 @@ class AppState(
     private fun loadSettingsInto() {
         _settingsUi.value = SettingsUi(
             baseUrl = graph.contentBaseUrl(),
+            courseContentBaseUrl = graph.courseContentBaseUrl(),
             desiredRetention = graph.settings.read(SettingKeys.DESIRED_RETENTION)?.toDoubleOrNull()
                 ?: SettingsUi.DEFAULT_RETENTION,
             packs = graph.packs.installed(),
@@ -815,6 +864,7 @@ class AppState(
         const val SESSION_SIZE_ALL: Int = 0
         val SessionSizes: List<Int> = listOf(10, 20, 50, SESSION_SIZE_ALL)
         const val DEFAULT_SESSION_SIZE: Int = 20
+        private const val COURSE_CONTENT_FETCH_TIMEOUT_MS: Long = 20_000
 
         fun sessionSizeLabel(size: Int): String =
             if (size == SESSION_SIZE_ALL) "All" else size.toString()
