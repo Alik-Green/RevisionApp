@@ -20,10 +20,13 @@ import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppShell
 import com.revisionapp.ui.components.ProvideRichTextRenderer
 import com.revisionapp.ui.screens.CardEditorScreen
+import com.revisionapp.ui.screens.CourseLessonScreen
+import com.revisionapp.ui.screens.CourseStudyScreen
 import com.revisionapp.ui.screens.LibraryScreen
 import com.revisionapp.ui.screens.MathGalleryScreen
+import com.revisionapp.ui.screens.ProfileScreen
+import com.revisionapp.ui.screens.ProgressionScreen
 import com.revisionapp.ui.screens.SettingsScreen
-import com.revisionapp.ui.screens.StatsScreen
 import com.revisionapp.ui.screens.StudyScreen
 import com.revisionapp.ui.screens.TagEditorScreen
 import com.revisionapp.ui.screens.TopicEditorScreen
@@ -56,9 +59,12 @@ fun App(platform: PlatformServices) {
                 Box(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
                     AppShell(appState, route) {
                         when (route) {
+                            Route.Study -> CourseStudyScreen(appState)
+                            Route.Progression, Route.Stats -> ProgressionScreen(appState)
+                            Route.Profile -> ProfileScreen(appState)
                             Route.Library -> LibraryScreen(appState)
-                            Route.Study -> StudyScreen(appState)
-                            Route.Stats -> StatsScreen(appState)
+                            Route.LegacyStudy -> StudyScreen(appState)
+                            is Route.Lesson -> CourseLessonScreen(appState, route)
                             Route.Settings -> SettingsScreen(appState)
                             Route.MathGallery -> MathGalleryScreen(appState)
                             is Route.EditCard -> CardEditorScreen(appState, route.cardId, route.presetTopicId)

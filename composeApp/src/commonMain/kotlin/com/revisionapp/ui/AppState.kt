@@ -1,5 +1,6 @@
 package com.revisionapp.ui
 
+import com.revisionapp.data.content.CourseCatalogLoader
 import com.revisionapp.data.sync.ContentSync
 import com.revisionapp.data.sync.SyncError
 import com.revisionapp.data.sync.SyncReport
@@ -7,6 +8,8 @@ import com.revisionapp.data.sync.SyncResult
 import com.revisionapp.di.AppGraph
 import com.revisionapp.di.SettingKeys
 import com.revisionapp.domain.check.DefaultAnswerChecker
+import com.revisionapp.domain.course.CourseCatalog
+import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.model.Card
 import com.revisionapp.domain.model.CardFilter
 import com.revisionapp.domain.model.CardId
@@ -21,6 +24,8 @@ import com.revisionapp.domain.model.TagMatch
 import com.revisionapp.domain.model.Topic
 import com.revisionapp.domain.model.TopicId
 import com.revisionapp.domain.model.randomUuid
+import com.revisionapp.domain.progression.LearnerProgress
+import com.revisionapp.domain.progression.ProgressionRules
 import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.study.QuestionFactory
 import com.revisionapp.domain.usecase.LibrarySnapshot
@@ -35,24 +40,37 @@ import com.revisionapp.ui.session.SessionSummary
 import com.revisionapp.ui.session.StudySession
 import com.revisionapp.ui.theme.ThemeMode
 import com.revisionapp.ui.theme.ThemeStyle
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Instant
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 
 /** Destinations. Hand-rolled rather than a navigation library: see DECISIONS.md D6. */
 sealed interface Route {
-    data object Library : Route
     data object Study : Route
+    data object Progression : Route
+    data object Profile : Route
+
+    /** Existing card-library screens are reachable from Profile, not the tab bar. */
+    data object Library : Route
+
+    /** Kept as an alias so older internal links land on the new progression hub. */
     data object Stats : Route
     data object Settings : Route
+    data object LegacyStudy : Route
+    data class Lesson(val courseId: String, val lessonId: String) : Route
 
     /** Editing an existing card, or creating a new one when [cardId] is null. */
     data class EditCard(val cardId: CardId?, val presetTopicId: TopicId? = null) : Route
@@ -155,7 +173,7 @@ class AppState(
     private val graph: AppGraph,
     private val scope: CoroutineScope,
 ) {
-    private val _route = MutableStateFlow<Route>(Route.Library)
+    private val _route = MutableStateFlow<Route>(Route.Study)
     val route: StateFlow<Route> = _route.asStateFlow()
 
     private val _snapshot = MutableStateFlow(LibrarySnapshot.Empty)
@@ -172,6 +190,23 @@ class AppState(
 
     private val _sessionState = MutableStateFlow<SessionState>(SessionState.Empty)
     val sessionState: StateFlow<SessionState> = _sessionState.asStateFlow()
+
+    private val _courseCatalog = MutableStateFlow(CourseCatalog(CourseCatalog.CURRENT_SCHEMA_VERSION, emptyList()))
+    val courseCatalog: StateFlow<CourseCatalog> = _courseCatalog.asStateFlow()
+
+    private val _courseCatalogLoading = MutableStateFlow(true)
+    val courseCatalogLoading: StateFlow<Boolean> = _courseCatalogLoading.asStateFlow()
+
+    private val _courseCatalogError = MutableStateFlow<String?>(null)
+    val courseCatalogError: StateFlow<String?> = _courseCatalogError.asStateFlow()
+
+    private val _learnerProgress = MutableStateFlow(LearnerProgress())
+    val learnerProgress: StateFlow<LearnerProgress> = _learnerProgress.asStateFlow()
+
+    private val _progressionReady = MutableStateFlow(false)
+    val progressionReady: StateFlow<Boolean> = _progressionReady.asStateFlow()
+
+    private val progressionWriteMutex = Mutex()
 
     /**
      * Where the user currently is in the topic tree; null is the Library root.
@@ -214,7 +249,39 @@ class AppState(
         restoreSyncState()
         refresh()
         loadSettings()
+        loadCourseCatalogAndProgression()
         syncOnFirstRun()
+    }
+
+    private fun loadCourseCatalogAndProgression() {
+        scope.launch(Dispatchers.Default) {
+            val catalog = runCatching { CourseCatalogLoader.load() }
+                .onFailure { _courseCatalogError.value = it.message ?: "Could not load V2 course content" }
+                .getOrNull()
+            if (catalog != null) {
+                _courseCatalog.value = catalog
+                _courseCatalogError.value = null
+            }
+            _courseCatalogLoading.value = false
+
+            val restored = graph.settings.read(SettingKeys.LEARNER_PROGRESS_V2)?.let { raw ->
+                runCatching { graph.json.decodeFromString<LearnerProgress>(raw) }.getOrNull()
+            } ?: LearnerProgress()
+            val firstCourse = _courseCatalog.value.courses.firstOrNull()?.id
+            val selectedCourseId = if (_courseCatalog.value.course(restored.activeCourseId) != null) {
+                restored.activeCourseId
+            } else {
+                firstCourse ?: restored.activeCourseId
+            }
+            val today = localToday()
+            val progress = ProgressionRules.forToday(
+                restored.copy(activeCourseId = selectedCourseId),
+                today,
+            )
+            _learnerProgress.value = progress
+            graph.settings.write(SettingKeys.LEARNER_PROGRESS_V2, graph.json.encodeToString(progress))
+            _progressionReady.value = true
+        }
     }
 
     /**
@@ -247,22 +314,79 @@ class AppState(
         _route.value = route
     }
 
-    /**
-     * Switches between the four top-level tabs. Unlike [navigate] this does not
-     * grow the back stack, so Back from an editor still returns to the tab the
-     * editor was opened from rather than to a tab visited on the way.
-     */
+    /** Switches to a primary tab and discards any secondary route history. */
     fun switchTab(route: Route) {
         if (_route.value == route) return
-        backStack.removeAll { it in TopLevelTabs }
+        backStack.clear()
         _route.value = route
     }
 
     fun back() {
         val previous = backStack.removeLastOrNull()
-        _route.value = previous ?: Route.Library
-        if (_route.value != Route.Study) session = null
+        _route.value = previous ?: Route.Study
+        if (_route.value != Route.LegacyStudy) session = null
     }
+
+    // ---------------------------------------------------------- V2 courses ---
+
+    fun canOpenCourseLesson(courseId: String, lessonId: String): Boolean {
+        val course = _courseCatalog.value.course(courseId) ?: return false
+        val ordered = course.orderedLessons()
+        val index = ordered.indexOfFirst { it.id == lessonId }
+        if (index < 0) return false
+        return ordered.take(index).all { ProgressionRules.hasCompleted(_learnerProgress.value, courseId, it.id) }
+    }
+
+    fun isCourseLessonComplete(courseId: String, lessonId: String): Boolean =
+        ProgressionRules.hasCompleted(_learnerProgress.value, courseId, lessonId)
+
+    fun openCourseLesson(courseId: String, lessonId: String) {
+        if (!_progressionReady.value || !canOpenCourseLesson(courseId, lessonId)) return
+        navigate(Route.Lesson(courseId, lessonId))
+    }
+
+    fun selectActiveCourse(courseId: String) {
+        if (_courseCatalog.value.course(courseId) == null) return
+        updateProgression { ProgressionRules.setActiveCourse(it, courseId) }
+    }
+
+    fun setDisplayName(name: String) {
+        updateProgression { ProgressionRules.setDisplayName(it, name) }
+    }
+
+    fun recordCourseQuestionAnswered() {
+        updateProgression { ProgressionRules.answerQuestion(it, localToday()).progress }
+    }
+
+    fun completeCourseLesson(courseId: String, lessonId: String) {
+        val course = _courseCatalog.value.course(courseId) ?: return
+        if (course.lesson(lessonId) == null) return
+        updateProgression { ProgressionRules.completeLesson(it, courseId, lessonId, localToday()).progress }
+    }
+
+    fun buyBackStreak() {
+        updateProgression { ProgressionRules.buyBackStreak(it, localToday()).progress }
+    }
+
+    fun refreshProgressionForToday() {
+        updateProgression { it }
+    }
+
+    private fun updateProgression(transform: (LearnerProgress) -> LearnerProgress) {
+        if (!_progressionReady.value) return
+        val today = localToday()
+        _learnerProgress.value = transform(ProgressionRules.forToday(_learnerProgress.value, today))
+        scope.launch(Dispatchers.Default) {
+            progressionWriteMutex.withLock {
+                graph.settings.write(
+                    SettingKeys.LEARNER_PROGRESS_V2,
+                    graph.json.encodeToString(_learnerProgress.value),
+                )
+            }
+        }
+    }
+
+    private fun localToday(): LocalDate = graph.clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
     // ------------------------------------------------------------- filters ---
 
@@ -395,7 +519,7 @@ class AppState(
                 },
             )
             _sessionState.value = session?.state ?: SessionState.Empty
-            navigate(Route.Study)
+            navigate(Route.LegacyStudy)
         }
     }
 
@@ -457,7 +581,7 @@ class AppState(
         session = null
         sessionStreakContext = null
         _sessionState.value = SessionState.Empty
-        backStack.removeAll { it == Route.Study }
+        backStack.clear()
         _route.value = Route.Library
         refresh()
     }
@@ -688,9 +812,6 @@ class AppState(
     }
 
     companion object {
-        /** The four tabs. Editors are pushed on top of them, never beside them. */
-        private val TopLevelTabs: Set<Route> = setOf(Route.Library, Route.Study, Route.Stats, Route.Settings)
-
         /** The session-size choices the Study setup screen offers; 0 means "All". */
         const val SESSION_SIZE_ALL: Int = 0
         val SessionSizes: List<Int> = listOf(10, 20, 50, SESSION_SIZE_ALL)

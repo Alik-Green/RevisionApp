@@ -1,21 +1,21 @@
 # RevisionApp
 
-A cross-platform revision app with adaptive flashcard, typed-answer and
-multiple-choice practice over a topic tree, FSRS spaced repetition, weekly quests,
-and your own editable content. Built-in content packs sync from a branch of this
-repository and then work offline forever.
+A mobile-first revision app built around curated course paths: ordered lessons
+contain reusable questions with multiple-choice or text-input answers. Progress,
+daily quests, coins, achievements and streak recovery sit alongside legacy FSRS
+cards and your own editable content. V2 course examples ship separately from the
+legacy content packs and work offline.
 
 Built with Kotlin Multiplatform and Compose Multiplatform for **desktop (JVM)**
 and **Android**. Every line of logic and every screen is in `commonMain`; the two
 platform source sets contain nothing but a database driver, an HTTP engine and an
 entry point.
 
-The interface is an explorer, not a control panel: you are always *in* one place in
-the topic tree, named in large type with a breadcrumb above it, and every folder,
-card, filter and count on screen is relative to that place. Navigation adapts to
-the window — a bottom bar on a phone, a rail on a tablet or desktop — and the
-number of cards due is a badge on Study rather than a counter floating over
-everything.
+On phones the bottom navigation is **Study**, **Progression** and **Profile**.
+Study shows one active course at a time as an ordered lesson path; use the course
+switcher at the top to change courses. Progression contains the streak, daily
+quests, coins and achievements. Profile holds the learner name and the settings
+shortcut; the older card library remains available from Profile.
 
 ---
 
@@ -26,7 +26,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-1.0.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.0.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -76,33 +76,39 @@ Configuration cache, build cache and parallel execution are all enabled in
 
 ## What the app does
 
-### Adaptive study
+### Course paths and lessons
 
-A card's presentation is selected automatically; learners choose the scope and
-session size, not a question type. The active formats are:
+The Study tab shows only the selected course and its ordered path. A course is
+split into topic-shaped sections; each lesson is an ordered list of question IDs.
+Questions live in a reusable bank, so a later section can bring back earlier
+questions for spiral review instead of duplicating their content.
 
-| Format | What happens | How it is graded |
-| --- | --- | --- |
-| **Flashcards** | Reveal the model answer, then rate yourself Again / Hard / Good / Easy | Your rating |
-| **Typed answer** | Type the answer; the checker returns a verdict, key points hit and missed, and the model answer | Automatic, with an override when needed |
-| **Multiple choice** | Pick from four plausible options when authored distractors or sibling answers are available | All or nothing |
+The V2 question model supports multiple choice and text input. Answers get
+immediate feedback and an explanation, and lessons unlock in path order. The
+initial bundled pilot contains four short TMUA lessons and two Further Maths
+lessons; these examples are not verified exam material. Course selection is
+available from the Study header.
 
-Self-grade cards use flashcards; numeric, expression and key-point cards use typed
-answers; plain text uses multiple choice when suitable options exist and otherwise
-falls back to flashcards. Repeated success can move a multiple-choice card up to
-typed recall. Word-tile answering has been retired from lessons; legacy tile data
-is preserved so existing packs and saved review history continue to load.
+The older card library and its FSRS review flow remain accessible from Profile.
+That legacy library is separate from the V2 lesson path and still accepts the
+existing synchronized content packs.
 
-Every active format writes to **one** FSRS schedule. Correct typed answers earn
-Easy, correct multiple-choice answers earn Good, and typed partial answers earn
-Hard. Flashcard ratings come directly from the learner.
+### Legacy card practice
 
-### Progress and themes
+Question formats are chosen automatically from each card's answer metadata; the
+learner does not select a question type. Self-grade cards use flashcards, numeric,
+expression and key-point cards use typed answers, and plain-text cards use multiple
+choice when suitable distractors exist, otherwise flashcards. The supported
+formats continue to share the existing FSRS schedule. Tile answer controls are
+retired, while their stored metadata remains compatible with older packs.
 
-Lesson completion celebrates the streak. Stats include repeatable weekly study-day
-quests, points calculated from review history, a topic-tree practice map and
-accuracy by topic. The topic map is practice coverage, not a formal curriculum
-mastery score.
+### Progression and themes
+
+Progression shows the current and best streak, daily quests, a coin balance,
+achievements, and a streak-repair action. The initial quests are to complete two
+lessons and answer ten questions; each gives coins once per day. Restoring a broken
+streak costs more for every additional missed day, with the price doubling each
+time. Coins are local progression data and do not affect question scheduling.
 
 The default palette is playful, with **Ink & Paper** available as an alternative.
 Both styles can follow the system or be fixed to light or dark appearance.
@@ -159,14 +165,17 @@ Built-in content is read-only — a sync has to be able to replace it — but ev
 built-in card has a **Duplicate as mine** button that copies it into your own
 content, where it becomes fully editable.
 
-### Stats
+### Progression and profile
 
-Due today, due now, current day streak, days studied, total reviews, weekly quests
-and earned points, a topic-tree practice map, and accuracy per topic.
+Progression includes daily quest counters, auto-awarded coins, streak recovery with
+an exponentially increasing price, and four starter achievements. The Profile tab
+stores a display name, provides the Settings icon, links to the active course and
+keeps the legacy card library reachable. Character and friend features are not
+implemented yet.
 
 ---
 
-## Built-in content and the `content` branch
+## Legacy built-in packs and the `content` branch
 
 Built-in content lives on an orphan branch called
 [`content`](../../tree/content) that contains **no app code**. The app fetches it
@@ -182,6 +191,14 @@ packs that changed, verifies the SHA-256 of each one, and imports it in a single
 database transaction. A pack that fails any check is left exactly as it was, so a
 truncated download cannot damage your library. After one successful sync the app
 works offline indefinitely.
+
+### Curated course content V2
+
+The new question/lesson/course format is separate from legacy card packs. Its bundled
+pilot is under `composeApp/src/commonMain/composeResources/files/content-v2/`; the
+manifest points to course files, lessons reference ordered question IDs, and
+questions can be reused across sections. See [the V2 authoring notes](docs/CONTENT_V2.md).
+The existing remote `content` branch has not been changed or migrated.
 
 **Content sync never touches your content or your study progress.** Built-in rows
 are namespaced by id *and* carry a `source` column, progress lives in a separate
@@ -320,8 +337,15 @@ editable on the settings screen; the app stores no credentials.
   `FeatureFlags.NOTES_ENABLED`. `LibraryItem`, `SearchSection` and the scoped-filter
   counting are sealed and generic over item types so notebooks are one case each,
   but no notebook model, storage or editor exists.
-- **A released Android build.** The APK in Releases is a debug build signed with the
-  debug key.
+- **Verified V2 course content.** The TMUA and Further Maths samples are prototypes;
+  lesson/question facts and curriculum coverage still need human review. No
+  separate remote `content-v2` branch has been published.
+- **Production Android distribution.** The APK in Releases is a debug build signed
+  with the debug key, not a Play Store release.
+- **Social/profile features.** Avatar customisation, friends and shared progress
+  are placeholders for later work; the profile name is stored locally.
+- **Richer learning plans.** Opt-in reminders, daily study planning, pause/resume
+  and a more detailed hint/retry loop have not been added.
 
 ## Architecture
 
@@ -335,11 +359,13 @@ crypto/     SHA-256 in pure Kotlin
 ```
 
 Data flows one way. `AppState` exposes `StateFlow`s and intent methods; screens
-collect the flows and call the intents; nothing else writes state. `StudySession`
-is a sealed state machine driven by `SessionEvent`, and every path that ends a
-card funnels through a single `commit()`, which keeps every supported question
-format on one schedule. Tile answer controls are retired; their stored metadata
-remains compatible with older packs and review logs.
+collect the flows and call the intents; nothing else writes state. The legacy
+`StudySession` is a sealed state machine driven by `SessionEvent`, and every path
+that ends a card funnels through a single `commit()` on the FSRS schedule. V2
+course lessons use a separate question model and catalog loader; coins, quests,
+streaks and completed lesson IDs are serialized locally through the settings
+store and never alter legacy review scheduling. Tile answer controls are retired;
+their stored metadata remains compatible with older packs and review logs.
 
 `domain` imports no framework at all — no Compose, no SQLDelight, no Ktor — so
 the answer checker, the scheduler and the topic tree are unit-testable as plain

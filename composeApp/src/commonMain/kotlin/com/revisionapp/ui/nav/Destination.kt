@@ -1,57 +1,46 @@
 package com.revisionapp.ui.nav
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.revisionapp.ui.Route
 
-/**
- * Every top-level destination, in the order they appear.
- *
- * One list, so adding a destination is a one-line change here plus a branch in
- * `App`'s `when` — which the compiler then forces you to write. The navigation bar
- * and the rail are both driven by this, so the two can never disagree about what
- * exists or what order it is in.
- */
+/** The three primary mobile destinations, in bottom-bar order. */
 enum class Destination(val route: Route, val label: String, val icon: ImageVector) {
-    Library(Route.Library, "Library", Icons.Filled.MenuBook),
     Study(Route.Study, "Study", Icons.Filled.PlayArrow),
-    Stats(Route.Stats, "Stats", Icons.Filled.BarChart),
-    Settings(Route.Settings, "Settings", Icons.Filled.Settings),
+    Progression(Route.Progression, "Progression", Icons.Filled.EmojiEvents),
+    Profile(Route.Profile, "Profile", Icons.Filled.Person),
     ;
 
     companion object {
         /** The destination a route belongs to, or null for a pushed sub-screen. */
         fun of(route: Route): Destination? = entries.firstOrNull { it.route == route }
 
-        /**
-         * The destination to highlight while a sub-screen is open, so the shell
-         * still shows where you are. Editors and the gallery hang off Library and
-         * Settings respectively.
-         */
+        /** Settings, the old library and editors are secondary Profile routes. */
         fun owning(route: Route): Destination = when (route) {
-            is Route.EditCard, is Route.EditTopic, is Route.EditTag -> Library
-            Route.MathGallery -> Settings
-            else -> of(route) ?: Library
+            Route.Study, is Route.Lesson -> Study
+            Route.Progression, Route.Stats -> Progression
+            Route.Profile,
+            Route.Settings,
+            Route.Library,
+            Route.LegacyStudy,
+            Route.MathGallery,
+            is Route.EditCard,
+            is Route.EditTopic,
+            is Route.EditTag -> Profile
         }
     }
 }
 
-/**
- * Material 3 window-size classes, from the adaptive layout guidance: compact is a
- * phone in portrait, medium a small tablet or a narrow desktop window, expanded
- * anything wider.
- */
+/** Material 3 window-size classes, from compact phones to wider layouts. */
 enum class WindowSizeClass {
     COMPACT,
     MEDIUM,
     EXPANDED,
     ;
 
-    /** Below 600dp the bar fits and the rail would eat width a phone does not have. */
     val usesBottomBar: Boolean get() = this == COMPACT
 
     companion object {

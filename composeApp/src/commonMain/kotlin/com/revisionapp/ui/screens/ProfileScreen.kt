@@ -1,0 +1,168 @@
+package com.revisionapp.ui.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.revisionapp.ui.AppState
+import com.revisionapp.ui.Route
+import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.SectionLabel
+
+/** A deliberately simple local profile, ready to grow into avatars and friends later. */
+@Composable
+fun ProfileScreen(state: AppState) {
+    val progress = state.learnerProgress.collectAsState().value
+    val progressionReady = state.progressionReady.collectAsState().value
+    val catalog = state.courseCatalog.collectAsState().value
+    val activeCourse = catalog.course(progress.activeCourseId)
+    val nameDraft = remember(progress.displayName) { mutableStateOf(progress.displayName) }
+
+    Column(Modifier.fillMaxSize()) {
+        AppHeader(
+            title = "Profile",
+            subtitle = "Your learning space",
+            trailing = {
+                IconButton(onClick = { state.navigate(Route.Settings) }) {
+                    Icon(Icons.Filled.Settings, contentDescription = "Open settings")
+                }
+            },
+        )
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                Box(
+                    Modifier
+                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                        .padding(4.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        Modifier
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
+                            .padding(horizontal = 22.dp, vertical = 18.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            progress.displayName.firstOrNull()?.uppercase() ?: "L",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
+                }
+                Column {
+                    Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text("Learner", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+            ) {
+                Column(
+                    Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    SectionLabel("YOUR NAME")
+                    OutlinedTextField(
+                        value = nameDraft.value,
+                        onValueChange = { nameDraft.value = it.take(32) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        label = { Text("Display name") },
+                        enabled = progressionReady,
+                    )
+                    Button(
+                        onClick = {
+                            val name = nameDraft.value.trim().take(24).ifBlank { "Learner" }
+                            nameDraft.value = name
+                            state.setDisplayName(name)
+                        },
+                        enabled = progressionReady,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Save name") }
+                }
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                color = MaterialTheme.colorScheme.primaryContainer,
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionLabel("ACTIVE COURSE")
+                    Text(activeCourse?.name ?: "Choose a course", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text(
+                        activeCourse?.description ?: "Pick a course from the Study tab to set your learning path.",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    OutlinedButton(
+                        onClick = { state.switchTab(Route.Study) },
+                        enabled = progressionReady,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Go to Study") }
+                }
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionLabel("COMING LATER")
+                    Text("Character and friends", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "This profile is local for now. Personalisation and social features can be added later.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            OutlinedButton(
+                onClick = { state.navigate(Route.Library) },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Open card library") }
+            Spacer(Modifier.height(12.dp))
+        }
+    }
+}

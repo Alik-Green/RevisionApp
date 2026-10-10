@@ -32,7 +32,7 @@ compose.desktop {
             targetFormats(TargetFormat.Deb, TargetFormat.Msi, TargetFormat.Exe)
             packageName = "RevisionApp"
             packageVersion = providers.gradleProperty("version_name").get()
-            description = "Flashcards and question-mode revision app"
+            description = "Course-based revision and spaced-repetition app"
             vendor = "RevisionApp"
             copyright = "© 2026 RevisionApp contributors"
 

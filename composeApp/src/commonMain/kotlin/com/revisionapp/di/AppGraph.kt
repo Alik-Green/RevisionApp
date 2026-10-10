@@ -21,8 +21,8 @@ import com.revisionapp.domain.usecase.StudyPlanner
 import com.revisionapp.platform.PlatformServices
 import com.revisionapp.ui.render.RichTextRenderer
 import com.revisionapp.ui.render.UnicodeRichTextRenderer
-import kotlinx.serialization.json.Json
 import kotlin.time.Clock
+import kotlinx.serialization.json.Json
 
 /** Setting keys stored in the `setting` table. */
 object SettingKeys {
@@ -30,6 +30,7 @@ object SettingKeys {
     const val DESIRED_RETENTION: String = "srs.desiredRetention"
     const val THEME_MODE: String = "appearance.themeMode"
     const val THEME_STYLE: String = "appearance.themeStyle"
+    const val LEARNER_PROGRESS_V2: String = "learner.progress.v2"
     const val LAST_SYNC_AT: String = "sync.lastAt"
     const val LAST_SYNC_SUMMARY: String = "sync.lastSummary"
 }

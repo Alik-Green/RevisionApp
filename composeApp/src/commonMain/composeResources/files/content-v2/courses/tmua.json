@@ -1,0 +1,265 @@
+{
+  "id": "tmua",
+  "name": "TMUA",
+  "description": "A short, mixed-topic path through mathematical thinking and reasoning. Later lessons deliberately revisit earlier ideas.",
+  "sections": [
+    {
+      "id": "logic-proof",
+      "title": "Logic & proof",
+      "topicLabel": "Mathematical reasoning",
+      "lessonIds": [
+        "tmua-implications",
+        "tmua-proof-moves"
+      ],
+      "topicIds": [
+        "logic",
+        "proof"
+      ]
+    },
+    {
+      "id": "algebra",
+      "title": "Algebra & structure",
+      "topicLabel": "Algebraic reasoning",
+      "lessonIds": [
+        "tmua-surds",
+        "tmua-spiral-review"
+      ],
+      "topicIds": [
+        "algebra",
+        "sequences"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "tmua-implications",
+      "title": "Implications and reverses",
+      "sectionId": "logic-proof",
+      "description": "Read implications carefully and spot a tempting but invalid reverse.",
+      "questionIds": [
+        "tmua-contrapositive",
+        "tmua-sufficient",
+        "tmua-fallacy"
+      ]
+    },
+    {
+      "id": "tmua-proof-moves",
+      "title": "Proof moves",
+      "sectionId": "logic-proof",
+      "description": "Choose a useful proof strategy and state its key step.",
+      "questionIds": [
+        "tmua-counterexample",
+        "tmua-induction-step",
+        "tmua-contradiction"
+      ]
+    },
+    {
+      "id": "tmua-surds",
+      "title": "Surds and patterns",
+      "sectionId": "algebra",
+      "description": "Use structure rather than expanding or calculating blindly.",
+      "questionIds": [
+        "tmua-surd",
+        "tmua-expand",
+        "tmua-odd-sum"
+      ]
+    },
+    {
+      "id": "tmua-spiral-review",
+      "title": "Mixed retrieval",
+      "sectionId": "algebra",
+      "description": "A short spiral review: earlier logic and proof return alongside algebra.",
+      "questionIds": [
+        "tmua-contrapositive",
+        "tmua-induction-step",
+        "tmua-expand"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "tmua-contrapositive",
+      "topicId": "logic",
+      "topicLabel": "Logic & proof",
+      "prompt": "What is the contrapositive of P implies Q?",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "Q implies P"
+          },
+          {
+            "id": "b",
+            "text": "Not P implies not Q"
+          },
+          {
+            "id": "c",
+            "text": "Not Q implies not P"
+          }
+        ],
+        "correctOptionId": "c"
+      },
+      "explanation": "Reverse the order and negate both statements. An implication and its contrapositive are logically equivalent."
+    },
+    {
+      "id": "tmua-sufficient",
+      "topicId": "logic",
+      "topicLabel": "Logic & proof",
+      "prompt": "If passing an exam guarantees entry to a course, passing is a ___ condition for entry.",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "sufficient",
+          "a sufficient"
+        ]
+      },
+      "explanation": "A sufficient condition guarantees the outcome: passing implies entry."
+    },
+    {
+      "id": "tmua-fallacy",
+      "topicId": "logic",
+      "topicLabel": "Logic & proof",
+      "prompt": "All multiples of 4 are even. A number is even, so a student concludes it must be a multiple of 4. Name the error.",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "Affirming the consequent"
+          },
+          {
+            "id": "b",
+            "text": "Proof by contradiction"
+          },
+          {
+            "id": "c",
+            "text": "Taking the contrapositive"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "From P implies Q and Q, one cannot conclude P. For example, 6 is even but is not a multiple of 4."
+    },
+    {
+      "id": "tmua-counterexample",
+      "topicId": "proof",
+      "topicLabel": "Proof strategies",
+      "prompt": "What is enough to disprove a claim that a statement is true for every integer?",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "one counterexample",
+          "a counterexample",
+          "one example where it is false"
+        ]
+      },
+      "explanation": "A universal claim fails as soon as a single case makes it false."
+    },
+    {
+      "id": "tmua-induction-step",
+      "topicId": "proof",
+      "topicLabel": "Proof strategies",
+      "prompt": "In the inductive step, what implication do you prove?",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "p(k) implies p(k+1)",
+          "p(k) => p(k+1)",
+          "if p(k) then p(k+1)"
+        ]
+      },
+      "explanation": "Assume the statement holds for k, then prove it holds for k + 1. Together with a base case, this establishes the result for all relevant integers."
+    },
+    {
+      "id": "tmua-contradiction",
+      "topicId": "proof",
+      "topicLabel": "Proof strategies",
+      "prompt": "In a proof by contradiction, what do you assume first?",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "The statement you want to prove is false"
+          },
+          {
+            "id": "b",
+            "text": "The statement is true for one random example"
+          },
+          {
+            "id": "c",
+            "text": "The conclusion of the statement"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "Assume the negation of the claim and derive an impossibility; that contradiction shows the negation cannot hold."
+    },
+    {
+      "id": "tmua-surd",
+      "topicId": "algebra",
+      "topicLabel": "Surds",
+      "prompt": "Simplify the square root of 72.",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "6 square root 2"
+          },
+          {
+            "id": "b",
+            "text": "8 square root 2"
+          },
+          {
+            "id": "c",
+            "text": "36 square root 2"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "Write 72 as 36 times 2, then take the square root of the perfect square 36."
+    },
+    {
+      "id": "tmua-expand",
+      "topicId": "algebra",
+      "topicLabel": "Algebra",
+      "prompt": "Expand and simplify (x + 2)(x - 3).",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "x^2 - x - 6",
+          "x^2-x-6",
+          "x² - x - 6"
+        ]
+      },
+      "explanation": "Multiply each term: x squared minus 3x plus 2x minus 6, which simplifies to x squared minus x minus 6."
+    },
+    {
+      "id": "tmua-odd-sum",
+      "topicId": "sequences",
+      "topicLabel": "Sequences",
+      "prompt": "What is the sum of the first n positive odd integers?",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "n squared"
+          },
+          {
+            "id": "b",
+            "text": "2n"
+          },
+          {
+            "id": "c",
+            "text": "n(n + 1)"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "1 + 3 + 5 + ... + (2n - 1) = n squared."
+    }
+  ]
+}

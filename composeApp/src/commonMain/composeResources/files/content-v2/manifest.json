@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "courses": [
+    {
+      "id": "tmua",
+      "name": "TMUA",
+      "file": "files/content-v2/courses/tmua.json"
+    },
+    {
+      "id": "further-maths",
+      "name": "Further Maths",
+      "file": "files/content-v2/courses/further-maths.json"
+    }
+  ]
+}
