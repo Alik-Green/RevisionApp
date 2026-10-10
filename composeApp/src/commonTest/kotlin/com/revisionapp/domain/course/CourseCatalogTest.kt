@@ -1,11 +1,11 @@
 package com.revisionapp.domain.course
 
 import com.revisionapp.data.content.CourseCatalogLoader
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlinx.coroutines.test.runTest
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 class CourseCatalogTest {

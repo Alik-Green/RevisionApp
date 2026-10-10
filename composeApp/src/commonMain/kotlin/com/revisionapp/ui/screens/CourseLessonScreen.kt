@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseAnswerChecker
+import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseQuestion
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.course.QuestionAnswer
