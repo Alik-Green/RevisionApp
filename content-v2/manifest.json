@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 2,
+  "courses": [
+    {
+      "id": "tmua",
+      "name": "TMUA",
+      "file": "courses/tmua.json",
+      "description": "Build confidence with mathematical reasoning, logic, proof, and algebra for TMUA-style questions."
+    },
+    {
+      "id": "further-maths",
+      "name": "Further Maths",
+      "file": "courses/further-maths.json",
+      "description": "Explore complex numbers, matrices, and other Further Mathematics foundations."
+    }
+  ]
+}

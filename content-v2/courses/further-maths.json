@@ -1,0 +1,160 @@
+{
+  "id": "further-maths",
+  "name": "Further Maths",
+  "description": "A small Further Maths sampler that introduces complex numbers and matrices, then brings them together in a mixed review.",
+  "sections": [
+    {
+      "id": "complex-numbers",
+      "title": "Complex numbers",
+      "topicLabel": "Complex numbers",
+      "lessonIds": [
+        "fm-complex-numbers"
+      ],
+      "topicIds": [
+        "complex-numbers"
+      ]
+    },
+    {
+      "id": "matrices",
+      "title": "Matrices & spiral review",
+      "topicLabel": "Matrices",
+      "lessonIds": [
+        "fm-matrices-review"
+      ],
+      "topicIds": [
+        "matrices"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "fm-complex-numbers",
+      "title": "The complex plane",
+      "sectionId": "complex-numbers",
+      "description": "Start with i, modulus and conjugates.",
+      "questionIds": [
+        "fm-i-square",
+        "fm-modulus",
+        "fm-conjugate"
+      ]
+    },
+    {
+      "id": "fm-matrices-review",
+      "title": "Determinants and recall",
+      "sectionId": "matrices",
+      "description": "Learn a matrix fact and revisit a complex-number question from the previous section.",
+      "questionIds": [
+        "fm-determinant",
+        "fm-invertible",
+        "fm-modulus"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "fm-i-square",
+      "topicId": "complex-numbers",
+      "topicLabel": "Complex numbers",
+      "prompt": "What is i squared?",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "-1"
+          },
+          {
+            "id": "b",
+            "text": "1"
+          },
+          {
+            "id": "c",
+            "text": "-i"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "The imaginary unit is defined by i squared equals -1."
+    },
+    {
+      "id": "fm-modulus",
+      "topicId": "complex-numbers",
+      "topicLabel": "Complex numbers",
+      "prompt": "Find the modulus of 3 + 4i.",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "5",
+          "5.0"
+        ]
+      },
+      "explanation": "The modulus is the distance from the origin: square root of 3 squared plus 4 squared, which is 5.",
+      "answerInstruction": "Type the numerical value of the modulus."
+    },
+    {
+      "id": "fm-conjugate",
+      "topicId": "complex-numbers",
+      "topicLabel": "Complex numbers",
+      "prompt": "What is the complex conjugate of 2 - 5i?",
+      "answer": {
+        "type": "text_input",
+        "acceptedAnswers": [
+          "2 + 5i",
+          "2+5i"
+        ]
+      },
+      "explanation": "The conjugate keeps the real part and changes the sign of the imaginary part.",
+      "answerInstruction": "Type the complex number in a + bi form."
+    },
+    {
+      "id": "fm-determinant",
+      "topicId": "matrices",
+      "topicLabel": "Matrices",
+      "prompt": "Find the determinant of the matrix with rows (1, 2) and (3, 4).",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "-2"
+          },
+          {
+            "id": "b",
+            "text": "2"
+          },
+          {
+            "id": "c",
+            "text": "10"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "For a 2 by 2 matrix, the determinant is ad minus bc: 1 times 4 minus 2 times 3 equals -2."
+    },
+    {
+      "id": "fm-invertible",
+      "topicId": "matrices",
+      "topicLabel": "Matrices",
+      "prompt": "For a square matrix, what does a non-zero determinant tell you?",
+      "answer": {
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "The matrix is invertible"
+          },
+          {
+            "id": "b",
+            "text": "Every entry is positive"
+          },
+          {
+            "id": "c",
+            "text": "The matrix must be diagonal"
+          }
+        ],
+        "correctOptionId": "a"
+      },
+      "explanation": "A square matrix has an inverse exactly when its determinant is non-zero."
+    }
+  ]
+}
