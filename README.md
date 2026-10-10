@@ -31,7 +31,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-2.4.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.5.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -125,10 +125,13 @@ access, answer checking or spaced-repetition scheduling. Restoring a broken
 streak costs more for every additional missed day, with the price doubling each
 time. Progress and purchases are stored locally.
 
-The default Playful palette follows the device's **light or dark setting**.
-**Ink & Paper** is available as an alternative; either style can also be fixed
-to light or dark. Store, course and quest cards use raised, bordered surfaces to
-stand apart from the page background.
+The single Playful palette follows the device's **light or dark setting**, or
+can be fixed to either mode. Its dark-mode primary is blue-green for clear
+contrast against the dark surfaces. Settings also offers sound effects, enabled
+by default, for answer feedback and lesson, quest and streak milestones; they can
+be switched off at any time.
+Store, course and quest cards use raised, bordered surfaces to stand apart from
+the page background.
 
 Settings > Developer mode accepts the local unlock code `REVISION-DEV-2026`.
 It enables an unlimited coin balance and unlocks the current cosmetic catalog.

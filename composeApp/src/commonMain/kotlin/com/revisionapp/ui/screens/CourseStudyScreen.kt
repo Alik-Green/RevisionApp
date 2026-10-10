@@ -414,6 +414,7 @@ private fun isCuratedReviewLesson(
     section: CourseSection,
     lesson: CourseLesson,
 ): Boolean {
+    if (lesson.isCuratedReview) return true
     if (section.topicIds.isEmpty()) return false
     val currentTopicIds = section.topicIds.toSet()
     return course.questionsFor(lesson).any { question -> question.topicId !in currentTopicIds }

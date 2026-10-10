@@ -20,93 +20,7 @@ import com.revisionapp.generated.resources.Res
 import com.revisionapp.generated.resources.nunito_variable
 import org.jetbrains.compose.resources.Font
 
-/**
- * "Ink & Paper": warm off-white paper, ink-dark text, an indigo primary, a teal
- * secondary and an amber tertiary reserved for *time pressure* — due counts and
- * streaks — so amber always means "this needs attention soon".
- *
- * Every colour pair below was chosen for WCAG AA text contrast: body text uses
- * onSurface on background (about 15:1 light, 13:1 dark), and coloured text always
- * uses an on*Container colour on its container rather than white on a mid-tone,
- * which is where amber and green usually fail.
- */
-val InkPaperLight: ColorScheme = lightColorScheme(
-    primary = Color(0xFF2F40C7),
-    onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFDDE2FF),
-    onPrimaryContainer = Color(0xFF131D67),
-    inversePrimary = Color(0xFFBFC8FF),
-    secondary = Color(0xFF006C70),
-    onSecondary = Color(0xFFFFFFFF),
-    secondaryContainer = Color(0xFFBDECEE),
-    onSecondaryContainer = Color(0xFF00393C),
-    tertiary = Color(0xFFAD4E00),
-    onTertiary = Color(0xFFFFFFFF),
-    tertiaryContainer = Color(0xFFFFE7CC),
-    onTertiaryContainer = Color(0xFF492000),
-    background = Color(0xFFFAF8F2),
-    onBackground = Color(0xFF16151A),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF16151A),
-    surfaceVariant = Color(0xFFE5E2D9),
-    onSurfaceVariant = Color(0xFF45434D),
-    surfaceContainerLowest = Color(0xFFFFFFFF),
-    surfaceContainerLow = Color(0xFFFBFAF7),
-    surfaceContainer = Color(0xFFF2EFE8),
-    surfaceContainerHigh = Color(0xFFE9E5DC),
-    surfaceContainerHighest = Color(0xFFE1DDD4),
-    surfaceDim = Color(0xFFDEDAD0),
-    surfaceBright = Color(0xFFFCFAF6),
-    inverseSurface = Color(0xFF2F3039),
-    inverseOnSurface = Color(0xFFF3F0F0),
-    error = Color(0xFFB3263E),
-    onError = Color(0xFFFFFFFF),
-    errorContainer = Color(0xFFFFDAD9),
-    onErrorContainer = Color(0xFF410006),
-    outline = Color(0xFF706B60),
-    outlineVariant = Color(0xFF969080),
-    scrim = Color(0xFF000000),
-)
-
-val InkPaperDark: ColorScheme = darkColorScheme(
-    primary = Color(0xFFC1C9FF),
-    onPrimary = Color(0xFF101653),
-    primaryContainer = Color(0xFF283285),
-    onPrimaryContainer = Color(0xFFDDE2FF),
-    inversePrimary = Color(0xFF2F40C7),
-    secondary = Color(0xFF5CD1D3),
-    onSecondary = Color(0xFF00393C),
-    secondaryContainer = Color(0xFF075255),
-    onSecondaryContainer = Color(0xFFBDECEE),
-    tertiary = Color(0xFFFFC16B),
-    onTertiary = Color(0xFF422400),
-    tertiaryContainer = Color(0xFF624000),
-    onTertiaryContainer = Color(0xFFFFE0AF),
-    background = Color(0xFF101117),
-    onBackground = Color(0xFFF2F1F6),
-    surface = Color(0xFF191A22),
-    onSurface = Color(0xFFF2F1F6),
-    surfaceVariant = Color(0xFF343540),
-    onSurfaceVariant = Color(0xFFDDDCE7),
-    surfaceContainerLowest = Color(0xFF101117),
-    surfaceContainerLow = Color(0xFF15161C),
-    surfaceContainer = Color(0xFF191A22),
-    surfaceContainerHigh = Color(0xFF25262F),
-    surfaceContainerHighest = Color(0xFF30313B),
-    surfaceDim = Color(0xFF101117),
-    surfaceBright = Color(0xFF383943),
-    inverseSurface = Color(0xFFF2F1F6),
-    inverseOnSurface = Color(0xFF2F3039),
-    error = Color(0xFFFF8A93),
-    onError = Color(0xFF69000A),
-    errorContainer = Color(0xFF4A1518),
-    onErrorContainer = Color(0xFFFFDAD9),
-    outline = Color(0xFF9B9DAA),
-    outlineVariant = Color(0xFF686A76),
-    scrim = Color(0xFF000000),
-)
-
-/** Default, brighter palette: orchid, berry and mint on warm, paper-like surfaces. */
+/** The single palette: violet in light mode, with a cool blue-green primary in dark mode. */
 val PlayfulLight: ColorScheme = lightColorScheme(
     primary = Color(0xFF4B35B5),
     onPrimary = Color(0xFFFFFFFF),
@@ -146,11 +60,11 @@ val PlayfulLight: ColorScheme = lightColorScheme(
 )
 
 val PlayfulDark: ColorScheme = darkColorScheme(
-    primary = Color(0xFFD2C8FF),
-    onPrimary = Color(0xFF291460),
-    primaryContainer = Color(0xFF4733A0),
-    onPrimaryContainer = Color(0xFFF2EDFF),
-    inversePrimary = Color(0xFFB8A8FF),
+    primary = Color(0xFF76DDE8),
+    onPrimary = Color(0xFF00363C),
+    primaryContainer = Color(0xFF004F58),
+    onPrimaryContainer = Color(0xFFB5F4FA),
+    inversePrimary = Color(0xFF2A737D),
     secondary = Color(0xFFFFB7D1),
     onSecondary = Color(0xFF54112D),
     secondaryContainer = Color(0xFF79224D),
@@ -203,7 +117,7 @@ data class ExtendedColors(
     val onIncorrectContainer: Color,
 )
 
-val InkPaperExtendedLight = ExtendedColors(
+val PlayfulExtendedLight = ExtendedColors(
     correct = Color(0xFF1D7445),
     onCorrect = Color(0xFFFFFFFF),
     correctContainer = Color(0xFFD6F0E0),
@@ -218,7 +132,7 @@ val InkPaperExtendedLight = ExtendedColors(
     onIncorrectContainer = Color(0xFF410006),
 )
 
-val InkPaperExtendedDark = ExtendedColors(
+val PlayfulExtendedDark = ExtendedColors(
     correct = Color(0xFF72E3A1),
     onCorrect = Color(0xFF00381F),
     correctContainer = Color(0xFF14392A),
@@ -233,9 +147,9 @@ val InkPaperExtendedDark = ExtendedColors(
     onIncorrectContainer = Color(0xFFFFDAD9),
 )
 
-val LocalExtendedColors = staticCompositionLocalOf { InkPaperExtendedLight }
+val LocalExtendedColors = staticCompositionLocalOf { PlayfulExtendedLight }
 
-/** Applies the chosen colour style and light/dark appearance across the whole app. */
+/** Applies the app colour palette and light/dark appearance across the whole app. */
 @Composable
 fun RevisionAppTheme(
     themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
@@ -249,9 +163,8 @@ fun RevisionAppTheme(
     }
     val colorScheme = when (themeStyle) {
         ThemeStyle.PLAYFUL -> if (dark) PlayfulDark else PlayfulLight
-        ThemeStyle.INK_PAPER -> if (dark) InkPaperDark else InkPaperLight
     }
-    val extendedColors = if (dark) InkPaperExtendedDark else InkPaperExtendedLight
+    val extendedColors = if (dark) PlayfulExtendedDark else PlayfulExtendedLight
     val friendlyFontFamily = FontFamily(
         Font(Res.font.nunito_variable, weight = FontWeight.Normal),
         Font(Res.font.nunito_variable, weight = FontWeight.Bold),
@@ -284,10 +197,9 @@ private fun typographyWithFontFamily(fontFamily: FontFamily): Typography {
     )
 }
 
-/** The selectable colour styles; the playful palette is the default for new installs. */
-enum class ThemeStyle(val title: String) {
-    PLAYFUL("Playful"),
-    INK_PAPER("Ink & Paper"),
+/** Kept for stored-setting compatibility; the Playful palette is the only available style. */
+enum class ThemeStyle {
+    PLAYFUL,
     ;
 
     companion object {

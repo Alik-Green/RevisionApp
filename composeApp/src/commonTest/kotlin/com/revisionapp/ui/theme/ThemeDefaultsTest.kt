@@ -21,8 +21,21 @@ class ThemeDefaultsTest {
     }
 
     @Test
-    fun bothColourStylesKeepTextAndControlsHighContrastInLightAndDarkModes() {
-        listOf(InkPaperLight, InkPaperDark, PlayfulLight, PlayfulDark).forEach { scheme ->
+    fun retiredInkPaperPreferenceFallsBackToPlayfulAndSoundEffectsDefaultToOn() {
+        assertEquals(ThemeStyle.PLAYFUL, ThemeStyle.fromStored("INK_PAPER"))
+        assertEquals(ThemeStyle.PLAYFUL, ThemeStyle.fromStored(null))
+        assertTrue(SettingsUi.initial().soundEffectsEnabled)
+    }
+
+    @Test
+    fun darkPlayfulPrimaryUsesCoolBlueGreenInsteadOfPurple() {
+        assertTrue(PlayfulDark.primary.green > PlayfulDark.primary.red)
+        assertTrue(PlayfulDark.primary.blue > PlayfulDark.primary.red)
+    }
+
+    @Test
+    fun thePlayfulPaletteKeepsTextAndControlsHighContrastInLightAndDarkModes() {
+        listOf(PlayfulLight, PlayfulDark).forEach { scheme ->
             assertAa(scheme.onBackground, scheme.background, "background text")
             assertAa(scheme.onSurface, scheme.surface, "surface text")
             assertAa(scheme.onSurfaceVariant, scheme.surfaceVariant, "secondary surface text")
@@ -43,7 +56,7 @@ class ThemeDefaultsTest {
 
     @Test
     fun correctAnswerFeedbackIsGreenAndReadableInBothAppearances() {
-        listOf(InkPaperExtendedLight, InkPaperExtendedDark).forEach { colors ->
+        listOf(PlayfulExtendedLight, PlayfulExtendedDark).forEach { colors ->
             assertTrue(colors.correct.green > colors.correct.red, "correct-answer accent should be green")
             assertAa(colors.onCorrect, colors.correct, "correct-answer badge text")
             assertAa(colors.correct, colors.correctContainer, "correct-answer accent")

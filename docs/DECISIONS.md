@@ -671,7 +671,9 @@ revisited in D34.
 
 **Decision.** `ui/theme/InkPaper.kt` holds the light and dark `ColorScheme` and a
 separate `ExtendedColors` for the three verdicts, exposed through a
-`staticCompositionLocalOf`. `AppShell` renders a `NavigationBar` below 600dp and a
+`staticCompositionLocalOf`. As of v2.5.0, Settings exposes the Playful palette only;
+the retired Ink & Paper stored value falls back to Playful, whose dark primary is
+blue-green. `AppShell` renders a `NavigationBar` below 600dp and a
 `NavigationRail` from 600dp up, both driven by one `Destination` enum, and renders
 nothing at all during a live session. The due count is a badge on the Study
 destination.

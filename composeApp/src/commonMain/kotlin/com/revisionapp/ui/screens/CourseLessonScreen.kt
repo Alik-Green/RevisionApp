@@ -52,6 +52,7 @@ import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.DailyQuestProgress
 import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
+import com.revisionapp.platform.SoundEffect
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
@@ -109,6 +110,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val questionLabel = if (isRetry) "RETRY" else "QUESTION"
 
     fun recordAnswer(isCorrect: Boolean) {
+        state.playSoundEffect(if (isCorrect) SoundEffect.CORRECT else SoundEffect.INCORRECT)
         state.recordCourseQuestionAnswered(isCorrect)
         answerCorrect.value = isCorrect
         if (!isCorrect && retryQueue.scheduleRetry(question, questionIndex.value)) {

@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.5.0 — 2026-10-10
+
+- Removed the Ink & Paper selector so Settings exposes a single colour style; kept the device-following light/dark default and gave dark mode a cool blue-green primary accent.
+- Added a saved Settings switch for answer, lesson-completion, quest-completion and streak-extension sounds on desktop and Android.
+- Added an explicit `isCuratedReview` marker for authored V2 review lessons, independent of lesson completion.
+- Prepared a separate TMUA V2 JSON patch with 10 topics, 6 lessons per topic and 6 multiple-choice questions per lesson. It is not live in the Store until applied to the `course-content` branch.
+- Replaced the narrow induction-step text answer in the separate TMUA patch with an objective multiple-choice question.
+
 ## v2.4.0 — 2026-10-10
 
 - Turned the V2 course path into centered, gently winding, topic-coloured lesson circles; stars mark the next lesson and weights mark curated cross-topic review.

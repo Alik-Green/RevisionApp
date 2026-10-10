@@ -28,16 +28,23 @@ card-pack sync remains separate and is not used by V2 courses.
   order and the topic IDs it introduces.
 - A lesson lists `questionIds` in the exact order the learner first sees them. The
   same question ID may appear in a later lesson, which is how spiral review
-  revisits an earlier topic without copying the question. A question missed in a
-  lesson is appended to that lesson once for an end-of-lesson retry; it is not
-  queued again if the retry is also missed.
-- Each question has its own `topicId`, answer type and explanation. Text-input
-  questions should include an `answerInstruction` that clearly says whether to
-  enter a word, phrase, number or expression. `acceptedAnswers` should include
-  reasonable variants. The checker accepts case and spacing variations, and
-  normalises the common `counterexample` / `counter example` spelling.
+  revisits an earlier topic without copying the question. Set `isCuratedReview`
+  when the lesson is intentionally authored as practice/review; that marker, not
+  lesson age or completion, controls the weight icon on the path. A question
+  missed in a lesson is appended to that lesson once for an end-of-lesson retry;
+  it is not queued again if the retry is also missed.
+- Each question has its own `topicId`, answer type and explanation. Prefer
+  multiple choice whenever a short free-text response would be hard to grade
+  robustly. Text-input prompts must be self-explanatory; do not rely on
+  `answerInstruction`, which is intentionally not shown to learners. If text
+  entry is appropriate, `acceptedAnswers` should include reasonable variants.
+  The checker normalises case and spacing and tolerates small typos, but it does
+  not understand arbitrary semantic paraphrases; use an objective question type
+  for logic statements whose meaning must be checked exactly.
 
 The loader validates the manifest before showing its course list, then validates
 each selected course before saving it. A failed download leaves an installed copy
-in place. The TMUA and Further Maths examples are small product prototypes, not
-verified exam content; review them before treating either course as authoritative.
+in place. The Store's current TMUA and Further Maths files are prototypes, not
+verified exam content. A separate TMUA expansion patch has been prepared for
+publication; it is not Store content until applied to `course-content`, and it
+should be reviewed before being treated as authoritative exam material.

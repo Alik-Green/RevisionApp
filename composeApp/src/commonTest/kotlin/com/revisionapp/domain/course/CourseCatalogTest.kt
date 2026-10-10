@@ -25,7 +25,7 @@ class CourseCatalogTest {
           "sections":[{"id":"topic-a","title":"Topic A","topicLabel":"Topic A","topicIds":["topic-a"],"lessonIds":["first","review"]}],
           "lessons":[
             {"id":"first","title":"First","sectionId":"topic-a","questionIds":["q1"]},
-            {"id":"review","title":"Review","sectionId":"topic-a","questionIds":["q1"]}
+            {"id":"review","title":"Review","sectionId":"topic-a","questionIds":["q1"],"isCuratedReview":true}
           ],
           "questions":[{
             "id":"q1","topicId":"topic-a","topicLabel":"Topic A","prompt":"Choose the answer.",
@@ -60,6 +60,8 @@ class CourseCatalogTest {
         val course = loader.downloadCourse(remoteManifest.courses.single())
         assertEquals(listOf("manifest.json", "courses/sample.json"), requestedPaths)
         assertEquals("q1", course.questionsFor(course.orderedLessons().last()).single().id)
+        assertFalse(course.orderedLessons().first().isCuratedReview)
+        assertTrue(course.orderedLessons().last().isCuratedReview)
     }
 
     @Test

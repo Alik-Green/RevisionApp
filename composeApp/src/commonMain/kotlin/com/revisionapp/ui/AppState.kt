@@ -7,6 +7,7 @@ import com.revisionapp.data.sync.SyncResult
 import com.revisionapp.di.AppGraph
 import com.revisionapp.di.SettingKeys
 import com.revisionapp.domain.check.DefaultAnswerChecker
+import com.revisionapp.domain.check.VerdictKind
 import com.revisionapp.domain.course.CourseCatalog
 import com.revisionapp.domain.course.CourseCatalogManifest
 import com.revisionapp.domain.course.CourseFileReference
@@ -28,13 +29,17 @@ import com.revisionapp.domain.progression.AvatarPartCategory
 import com.revisionapp.domain.progression.CharacterAppearance
 import com.revisionapp.domain.progression.LearnerProgress
 import com.revisionapp.domain.progression.ProgressionRules
+import com.revisionapp.domain.srs.Rating
 import com.revisionapp.domain.study.Question
 import com.revisionapp.domain.study.QuestionFactory
 import com.revisionapp.domain.usecase.LibrarySnapshot
 import com.revisionapp.domain.usecase.StreakCalculator
 import com.revisionapp.domain.usecase.WeeklyQuestCalculator
 import com.revisionapp.domain.usecase.WeeklyQuestProgress
+import com.revisionapp.platform.PlatformSoundEffects
+import com.revisionapp.platform.SoundEffect
 import com.revisionapp.ui.render.RichTextRenderer
+import com.revisionapp.ui.session.AnswerDraft
 import com.revisionapp.ui.session.SessionCard
 import com.revisionapp.ui.session.SessionEvent
 import com.revisionapp.ui.session.SessionState
@@ -123,6 +128,7 @@ data class SettingsUi(
     val packs: List<InstalledPack>,
     val themeStyle: ThemeStyle = ThemeStyle.PLAYFUL,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val soundEffectsEnabled: Boolean = true,
 ) {
     companion object {
         fun initial(): SettingsUi =
@@ -132,6 +138,7 @@ data class SettingsUi(
                 packs = emptyList(),
                 themeStyle = ThemeStyle.PLAYFUL,
                 themeMode = ThemeMode.SYSTEM,
+                soundEffectsEnabled = true,
             )
 
         const val DEFAULT_RETENTION: Double = 0.9
@@ -498,6 +505,18 @@ class AppState(
         val course = _courseCatalog.value.course(courseId) ?: return
         if (course.lesson(lessonId) == null) return
         updateProgression { ProgressionRules.completeLesson(it, courseId, lessonId, localToday()).progress }
+        playSoundEffect(SoundEffect.LESSON_COMPLETE)
+    }
+
+    fun playSoundEffect(effect: SoundEffect) {
+        if (_settingsUi.value.soundEffectsEnabled) PlatformSoundEffects.play(effect)
+    }
+
+    fun setSoundEffectsEnabled(enabled: Boolean) {
+        _settingsUi.value = _settingsUi.value.copy(soundEffectsEnabled = enabled)
+        scope.launch(Dispatchers.Default) {
+            graph.settings.write(SettingKeys.SOUND_EFFECTS_ENABLED, enabled.toString())
+        }
     }
 
     fun buyBackStreak() {
@@ -512,9 +531,27 @@ class AppState(
         if (!_progressionReady.value) return
         val today = localToday()
         val current = ProgressionRules.forToday(_learnerProgress.value, today)
+        val completedDailyQuestsBefore = ProgressionRules.dailyQuests(current)
+            .filter { it.isComplete }
+            .map { it.id }
+            .toSet()
+        val completedWeeklyQuestsBefore = ProgressionRules.weeklyQuests(current)
+            .filter { it.isComplete }
+            .map { it.id }
+            .toSet()
         val transformed = transform(current)
         val updated = if (transformed.developerMode) transformed.copy(coins = Long.MAX_VALUE) else transformed
+        val streakExtended = current.streakDays > 0 &&
+            current.lastStudyDate != today.toString() &&
+            updated.streakDays == current.streakDays + 1
+        val questCompleted = ProgressionRules.dailyQuests(updated).any {
+            it.isComplete && it.id !in completedDailyQuestsBefore
+        } || ProgressionRules.weeklyQuests(updated).any {
+            it.isComplete && it.id !in completedWeeklyQuestsBefore
+        }
         _learnerProgress.value = updated
+        if (streakExtended) playSoundEffect(SoundEffect.STREAK_EXTENDED)
+        if (questCompleted) playSoundEffect(SoundEffect.QUEST_COMPLETE)
         scope.launch(Dispatchers.Default) {
             progressionWriteMutex.withLock {
                 graph.settings.write(
@@ -683,7 +720,9 @@ class AppState(
 
     fun onSessionEvent(event: SessionEvent) {
         val current = session ?: return
+        val previousState = current.state
         current.onEvent(event)
+        playSessionFeedbackSound(previousState, current.state, event)
         val finished = current.state as? SessionState.Finished
         if (finished == null) {
             _sessionState.value = current.state
@@ -699,8 +738,31 @@ class AppState(
                 streakAdvanced = !context.alreadyStudiedToday,
             )
             _sessionState.value = SessionState.Finished(summary)
+            playSoundEffect(SoundEffect.LESSON_COMPLETE)
+            if (summary.streakAdvanced && context.currentStreak > 0) {
+                playSoundEffect(SoundEffect.STREAK_EXTENDED)
+            }
             refreshAfterSession(summary)
         }
+    }
+
+    private fun playSessionFeedbackSound(previous: SessionState, next: SessionState, event: SessionEvent) {
+        val effect = when {
+            previous is SessionState.Asking && next is SessionState.Reviewing -> when (next.verdict.kind) {
+                VerdictKind.CORRECT -> SoundEffect.CORRECT
+                VerdictKind.INCORRECT -> SoundEffect.INCORRECT
+                VerdictKind.PARTIAL -> null
+            }
+
+            previous is SessionState.Asking && previous.draft == AnswerDraft.Revealed && event is SessionEvent.Rate ->
+                if (event.rating == Rating.AGAIN) SoundEffect.INCORRECT else SoundEffect.CORRECT
+
+            previous is SessionState.Reviewing && event is SessionEvent.Override ->
+                if (event.userSaysCorrect) SoundEffect.CORRECT else SoundEffect.INCORRECT
+
+            else -> null
+        }
+        if (effect != null) playSoundEffect(effect)
     }
 
     /** Refresh after the session and optimistically include today's completed review. */
@@ -947,6 +1009,8 @@ class AppState(
             packs = graph.packs.installed(),
             themeStyle = ThemeStyle.fromStored(graph.settings.read(SettingKeys.THEME_STYLE)),
             themeMode = ThemeMode.fromStored(graph.settings.read(SettingKeys.THEME_MODE)),
+            soundEffectsEnabled = graph.settings.read(SettingKeys.SOUND_EFFECTS_ENABLED)
+                ?.toBooleanStrictOrNull() ?: true,
         )
     }
 

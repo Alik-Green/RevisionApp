@@ -16,13 +16,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -39,7 +43,6 @@ import com.revisionapp.ui.components.SectionLabel
 import com.revisionapp.ui.components.ToggleChip
 import com.revisionapp.ui.session.VerdictPresentation
 import com.revisionapp.ui.theme.ThemeMode
-import com.revisionapp.ui.theme.ThemeStyle
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Instant
@@ -73,16 +76,6 @@ fun SettingsScreen(state: AppState) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             SectionLabel("Appearance")
-            Text("Colour style", style = MaterialTheme.typography.bodyMedium)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                for (style in ThemeStyle.entries) {
-                    ToggleChip(
-                        label = style.title,
-                        selected = style == settings.themeStyle,
-                        onClick = { state.setThemeStyle(style) },
-                    )
-                }
-            }
             Text("Light or dark", style = MaterialTheme.typography.bodyMedium)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (mode in ThemeMode.entries) {
@@ -97,7 +90,20 @@ fun SettingsScreen(state: AppState) {
                     )
                 }
             }
-            EmptyMessage("Playful is the default; Ink & Paper keeps the original quieter palette.")
+
+            SectionLabel("Sound effects")
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "Correct/incorrect answers, lesson, quest and streak milestones",
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Switch(
+                    modifier = Modifier.semantics { contentDescription = "Sound effects" },
+                    checked = settings.soundEffectsEnabled,
+                    onCheckedChange = { state.setSoundEffectsEnabled(it) },
+                )
+            }
 
             HorizontalDivider()
             SectionLabel("V2 course store")

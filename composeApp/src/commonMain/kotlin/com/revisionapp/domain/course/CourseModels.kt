@@ -120,6 +120,7 @@ data class CourseLesson(
     val sectionId: String,
     val questionIds: List<String>,
     val description: String = "",
+    val isCuratedReview: Boolean = false,
 )
 
 @Serializable
