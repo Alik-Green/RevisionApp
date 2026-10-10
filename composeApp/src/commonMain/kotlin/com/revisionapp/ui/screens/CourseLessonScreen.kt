@@ -1,5 +1,10 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,10 +45,13 @@ import com.revisionapp.domain.course.CourseQuestion
 import com.revisionapp.domain.course.CourseQuestionRetryQueue
 import com.revisionapp.domain.course.LearningCourse
 import com.revisionapp.domain.course.QuestionAnswer
+import com.revisionapp.domain.progression.CharacterCosmetic
+import com.revisionapp.domain.progression.CharacterCosmetics
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.MathText
 import com.revisionapp.ui.components.SectionLabel
 
@@ -63,6 +71,8 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     val selectedOption = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<String?>(null) }
     val answerCorrect = remember(route.courseId, route.lessonId, questionIndex.value) { mutableStateOf<Boolean?>(null) }
     val finished = remember(route.courseId, route.lessonId) { mutableStateOf(false) }
+    val learnerProgress = state.learnerProgress.collectAsState().value
+    val buddy = CharacterCosmetics.find(learnerProgress.selectedCosmeticId) ?: CharacterCosmetics.starter
 
     if (course == null || lesson == null || questions.isEmpty()) {
         Column(Modifier.fillMaxSize()) {
@@ -73,7 +83,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     }
 
     if (finished.value) {
-        LessonComplete(state, course, lesson, questionQueue.size)
+        LessonComplete(state, course, lesson, questionQueue.size, buddy)
         return
     }
 
@@ -88,7 +98,7 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
     }
 
     fun recordAnswer(isCorrect: Boolean) {
-        state.recordCourseQuestionAnswered()
+        state.recordCourseQuestionAnswered(isCorrect)
         answerCorrect.value = isCorrect
         if (!isCorrect && retryQueue.scheduleRetry(question, questionIndex.value)) {
             questionQueue.add(question)
@@ -177,20 +187,27 @@ fun CourseLessonScreen(state: AppState, route: Route.Lesson) {
                 }
             }
 
-            if (correct != null) {
-                AnswerFeedback(question, correct)
-                Button(
-                    onClick = {
-                        if (questionIndex.value == questionQueue.lastIndex) {
-                            state.completeCourseLesson(course.id, lesson.id)
-                            finished.value = true
-                        } else {
-                            questionIndex.value++
+            AnimatedVisibility(
+                visible = correct != null,
+                enter = fadeIn(tween(220)) + slideInVertically(tween(220)) { it / 8 },
+            ) {
+                if (correct != null) {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        AnswerFeedback(question, correct, buddy)
+                        Button(
+                            onClick = {
+                                if (questionIndex.value == questionQueue.lastIndex) {
+                                    state.completeCourseLesson(course.id, lesson.id)
+                                    finished.value = true
+                                } else {
+                                    questionIndex.value++
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(if (questionIndex.value == questionQueue.lastIndex) "Finish lesson" else "Continue")
                         }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(if (questionIndex.value == questionQueue.lastIndex) "Finish lesson" else "Continue")
+                    }
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -245,26 +262,41 @@ private fun CourseAnswerOption(
 }
 
 @Composable
-private fun AnswerFeedback(question: CourseQuestion, correct: Boolean) {
+private fun AnswerFeedback(
+    question: CourseQuestion,
+    correct: Boolean,
+    buddy: CharacterCosmetic,
+) {
     val color = if (correct) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
     Column(
         Modifier
             .fillMaxWidth()
             .background(color.copy(alpha = 0.10f), RoundedCornerShape(16.dp))
-            .border(1.dp, color, RoundedCornerShape(16.dp))
+            .border(1.dp, color.copy(alpha = 0.65f), RoundedCornerShape(16.dp))
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(
-            if (correct) "Correct!" else "Not quite",
-            style = MaterialTheme.typography.titleMedium,
-            color = color,
-            fontWeight = FontWeight.Bold,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            LearningBuddy(buddy, size = 48.dp, celebratory = correct)
+            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(
+                    if (correct) "That’s it!" else "Not quite—and that’s okay.",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = color,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    if (correct) "Nice recall. Keep the idea moving." else "Use the explanation, then try it again later.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
         if (!correct) {
             Text(
                 "Answer: ${CourseAnswerChecker.acceptedAnswerLabel(question.answer)}",
                 style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
             )
         }
         Text(question.explanation, style = MaterialTheme.typography.bodyMedium)
@@ -274,15 +306,26 @@ private fun AnswerFeedback(question: CourseQuestion, correct: Boolean) {
 @Composable
 private fun LessonProgressBar(index: Int, total: Int) {
     val fraction = if (total == 0) 0f else ((index + 1).toFloat() / total).coerceIn(0f, 1f)
+    val animatedFraction = animateFloatAsState(fraction, animationSpec = tween(380), label = "lesson-progress").value
     Box(Modifier.fillMaxWidth().height(5.dp).background(MaterialTheme.colorScheme.surfaceVariant)) {
-        if (fraction > 0f) {
-            Box(Modifier.fillMaxWidth(fraction).height(5.dp).background(MaterialTheme.colorScheme.primary))
+        if (animatedFraction > 0f) {
+            Box(
+                Modifier.fillMaxWidth(animatedFraction)
+                    .height(5.dp)
+                    .background(MaterialTheme.colorScheme.primary),
+            )
         }
     }
 }
 
 @Composable
-private fun LessonComplete(state: AppState, course: LearningCourse, lesson: CourseLesson, questionCount: Int) {
+private fun LessonComplete(
+    state: AppState,
+    course: LearningCourse,
+    lesson: CourseLesson,
+    questionCount: Int,
+    buddy: CharacterCosmetic,
+) {
     Column(Modifier.fillMaxSize()) {
         AppHeader(title = "Lesson complete", subtitle = course.name)
         Column(
@@ -291,14 +334,15 @@ private fun LessonComplete(state: AppState, course: LearningCourse, lesson: Cour
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("🎉", style = MaterialTheme.typography.displayMedium)
-            Text(lesson.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            LearningBuddy(buddy, size = 104.dp, celebratory = true)
+            Text("Lesson complete!", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(lesson.title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
             Text(
                 "$questionCount questions answered. Your path progress is saved.",
                 style = MaterialTheme.typography.bodyLarge,
             )
             Text(
-                "Daily quest coins are added automatically when you reach a goal.",
+                "Quest and mastery coins are added automatically as you make progress. Spend them on a new buddy style whenever you like.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

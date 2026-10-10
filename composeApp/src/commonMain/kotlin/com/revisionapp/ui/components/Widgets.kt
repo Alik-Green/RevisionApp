@@ -26,10 +26,9 @@ import androidx.compose.ui.unit.dp
 /**
  * Small building blocks shared by every screen.
  *
- * The app deliberately uses no icon set and no `Scaffold`/`TopAppBar`: both are
- * either an extra dependency or behind `ExperimentalMaterial3Api`, and opting in
- * to experimental APIs is exactly the kind of thing that breaks a build later.
- * See docs/DECISIONS.md D7.
+ * Shared widgets stay small and explicit: the app uses Material icons, but keeps
+ * its own `AppHeader` rather than opting into the experimental `TopAppBar` API.
+ * See docs/DECISIONS.md D7 for the original navigation and shell decision.
  */
 
 /** Screen title bar. Hand-rolled rather than `TopAppBar`, which is experimental. */

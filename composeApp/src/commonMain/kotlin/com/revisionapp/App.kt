@@ -20,6 +20,7 @@ import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppShell
 import com.revisionapp.ui.components.ProvideRichTextRenderer
 import com.revisionapp.ui.screens.CardEditorScreen
+import com.revisionapp.ui.screens.CharacterShopScreen
 import com.revisionapp.ui.screens.CourseLessonScreen
 import com.revisionapp.ui.screens.CourseStoreScreen
 import com.revisionapp.ui.screens.CourseStudyScreen
@@ -64,6 +65,7 @@ fun App(platform: PlatformServices) {
                             Route.CourseStore -> CourseStoreScreen(appState)
                             Route.Progression, Route.Stats -> ProgressionScreen(appState)
                             Route.Profile -> ProfileScreen(appState)
+                            Route.CharacterShop -> CharacterShopScreen(appState)
                             Route.Library -> LibraryScreen(appState)
                             Route.LegacyStudy -> StudyScreen(appState)
                             is Route.Lesson -> CourseLessonScreen(appState, route)

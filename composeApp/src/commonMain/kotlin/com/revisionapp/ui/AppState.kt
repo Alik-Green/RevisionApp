@@ -66,6 +66,7 @@ sealed interface Route {
     data object CourseStore : Route
     data object Progression : Route
     data object Profile : Route
+    data object CharacterShop : Route
 
     /** Existing card-library screens are reachable from Profile, not the tab bar. */
     data object Library : Route
@@ -296,7 +297,11 @@ class AppState(
             val selectedCourseId = restored.activeCourseId.takeIf { _courseCatalog.value.course(it) != null }
                 ?: _courseCatalog.value.courses.firstOrNull()?.id
                 ?: ""
-            val progress = ProgressionRules.forToday(restored.copy(activeCourseId = selectedCourseId), localToday())
+            val readyProgress = ProgressionRules.forToday(
+                restored.copy(activeCourseId = selectedCourseId),
+                localToday(),
+            )
+            val progress = ProgressionRules.claimAvailableRewards(readyProgress).progress
             _learnerProgress.value = progress
             graph.settings.write(SettingKeys.LEARNER_PROGRESS_V2, graph.json.encodeToString(progress))
             _progressionReady.value = true
@@ -439,8 +444,16 @@ class AppState(
         updateProgression { ProgressionRules.setDisplayName(it, name) }
     }
 
-    fun recordCourseQuestionAnswered() {
-        updateProgression { ProgressionRules.answerQuestion(it, localToday()).progress }
+    fun buyCharacterCosmetic(cosmeticId: String) {
+        updateProgression { ProgressionRules.buyCosmetic(it, cosmeticId).progress }
+    }
+
+    fun equipCharacterCosmetic(cosmeticId: String) {
+        updateProgression { ProgressionRules.equipCosmetic(it, cosmeticId) }
+    }
+
+    fun recordCourseQuestionAnswered(isCorrect: Boolean) {
+        updateProgression { ProgressionRules.answerQuestion(it, localToday(), isCorrect).progress }
     }
 
     fun completeCourseLesson(courseId: String, lessonId: String) {

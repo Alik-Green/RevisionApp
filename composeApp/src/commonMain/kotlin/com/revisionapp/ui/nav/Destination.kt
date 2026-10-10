@@ -23,6 +23,7 @@ enum class Destination(val route: Route, val label: String, val icon: ImageVecto
             Route.Study, Route.CourseStore, is Route.Lesson -> Study
             Route.Progression, Route.Stats -> Progression
             Route.Profile,
+            Route.CharacterShop,
             Route.Settings,
             Route.Library,
             Route.LegacyStudy,

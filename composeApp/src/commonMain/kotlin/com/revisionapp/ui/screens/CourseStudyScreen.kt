@@ -1,5 +1,7 @@
 package com.revisionapp.ui.screens
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,9 +44,12 @@ import androidx.compose.ui.unit.dp
 import com.revisionapp.domain.course.CourseLesson
 import com.revisionapp.domain.course.CourseSection
 import com.revisionapp.domain.course.LearningCourse
+import com.revisionapp.domain.progression.CharacterCosmetic
+import com.revisionapp.domain.progression.CharacterCosmetics
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.components.AppHeader
 import com.revisionapp.ui.components.EmptyMessage
+import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.SectionLabel
 
 /** Mobile-first course path. Only the selected course's ordered lesson trail is shown. */
@@ -75,6 +80,27 @@ fun CourseStudyScreen(state: AppState) {
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(22.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                ) {
+                    Row(
+                        Modifier.padding(18.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    ) {
+                        LearningBuddy(CharacterCosmetics.starter, size = 82.dp)
+                        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text("Your study buddy is ready", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                            Text(
+                                "Choose a course and start a learning path at your own pace.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            )
+                        }
+                    }
+                }
                 EmptyMessage(
                     loadError ?: "No courses are downloaded yet. Browse the Store to choose a learning path.",
                 )
@@ -87,11 +113,13 @@ fun CourseStudyScreen(state: AppState) {
 
         val orderedLessons = course.orderedLessons()
         val completedCount = orderedLessons.count { state.isCourseLessonComplete(course.id, it.id) }
+        val nextLesson = orderedLessons.firstOrNull { !state.isCourseLessonComplete(course.id, it.id) }
+        val buddy = CharacterCosmetics.find(progress.selectedCosmeticId) ?: CharacterCosmetics.starter
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            CourseSummaryCard(course, completedCount, orderedLessons.size)
+            CourseSummaryCard(state, course, completedCount, orderedLessons.size, buddy, nextLesson)
             if (catalog.courses.size > 1) {
                 Box {
                     TextButton(onClick = { menuExpanded.value = true }) {
@@ -139,22 +167,59 @@ fun CourseStudyScreen(state: AppState) {
 }
 
 @Composable
-private fun CourseSummaryCard(course: LearningCourse, completed: Int, total: Int) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(22.dp))
-            .padding(18.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+private fun CourseSummaryCard(
+    state: AppState,
+    course: LearningCourse,
+    completed: Int,
+    total: Int,
+    buddy: CharacterCosmetic,
+    nextLesson: CourseLesson?,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        color = MaterialTheme.colorScheme.primaryContainer,
     ) {
-        Text(course.name, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        Text(course.description, style = MaterialTheme.typography.bodyMedium)
-        Text(
-            "$completed of $total lessons complete",
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-        PathProgressBar(completed, total, MaterialTheme.colorScheme.primary)
+        Column(
+            Modifier.padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(11.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    SectionLabel("YOUR CURRENT PATH")
+                    Text(course.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text(
+                        course.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+                LearningBuddy(buddy, size = 74.dp)
+            }
+            Text(
+                "$completed of $total lessons complete",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            PathProgressBar(completed, total, MaterialTheme.colorScheme.primary)
+            if (nextLesson != null) {
+                Button(
+                    onClick = { state.openCourseLesson(course.id, nextLesson.id) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                    Spacer(Modifier.width(7.dp))
+                    Text("Continue · ${nextLesson.title}")
+                }
+            } else {
+                Text(
+                    "Every lesson complete — brilliant work!",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
     }
 }
 
@@ -318,11 +383,12 @@ private fun LessonPathNode(
 @Composable
 private fun PathProgressBar(completed: Int, total: Int, color: Color) {
     val fraction = if (total == 0) 0f else (completed.toFloat() / total).coerceIn(0f, 1f)
+    val animatedFraction = animateFloatAsState(fraction, animationSpec = tween(520), label = "course-progress").value
     Box(
         Modifier.fillMaxWidth().height(8.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(4.dp)),
     ) {
-        if (fraction > 0f) {
-            Box(Modifier.fillMaxWidth(fraction).height(8.dp).background(color, RoundedCornerShape(4.dp)))
+        if (animatedFraction > 0f) {
+            Box(Modifier.fillMaxWidth(animatedFraction).height(8.dp).background(color, RoundedCornerShape(4.dp)))
         }
     }
 }

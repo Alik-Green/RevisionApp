@@ -1,8 +1,6 @@
 package com.revisionapp.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,18 +29,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.revisionapp.domain.progression.CharacterCosmetics
 import com.revisionapp.ui.AppState
 import com.revisionapp.ui.Route
 import com.revisionapp.ui.components.AppHeader
+import com.revisionapp.ui.components.LearningBuddy
 import com.revisionapp.ui.components.SectionLabel
 
-/** A deliberately simple local profile, ready to grow into avatars and friends later. */
+/** Local learner profile with an editable name and earned-only character styling. */
 @Composable
 fun ProfileScreen(state: AppState) {
     val progress = state.learnerProgress.collectAsState().value
     val progressionReady = state.progressionReady.collectAsState().value
     val catalog = state.courseCatalog.collectAsState().value
     val activeCourse = catalog.course(progress.activeCourseId)
+    val buddy = CharacterCosmetics.find(progress.selectedCosmeticId) ?: CharacterCosmetics.starter
     val nameDraft = remember(progress.displayName) { mutableStateOf(progress.displayName) }
 
     Column(Modifier.fillMaxSize()) {
@@ -61,34 +61,26 @@ fun ProfileScreen(state: AppState) {
                 .padding(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(18.dp),
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(22.dp),
+                color = MaterialTheme.colorScheme.primaryContainer,
             ) {
-                Box(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
-                        .padding(4.dp),
-                    contentAlignment = Alignment.Center,
+                Row(
+                    Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    Box(
-                        Modifier
-                            .background(MaterialTheme.colorScheme.primary, CircleShape)
-                            .padding(horizontal = 22.dp, vertical = 18.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
+                    LearningBuddy(buddy, size = 84.dp)
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         Text(
-                            progress.displayName.firstOrNull()?.uppercase() ?: "L",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            "${buddy.name} · your learning companion",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
+                        Text("🪙 ${progress.coins} coins", style = MaterialTheme.typography.labelLarge)
                     }
-                }
-                Column {
-                    Text(progress.displayName, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                    Text("Learner", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
 
@@ -147,16 +139,21 @@ fun ProfileScreen(state: AppState) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                color = MaterialTheme.colorScheme.secondaryContainer,
             ) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SectionLabel("COMING LATER")
-                    Text("Character and friends", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                    SectionLabel("CHARACTER STUDIO")
+                    Text("Make your buddy yours", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                     Text(
-                        "This profile is local for now. Personalisation and social features can be added later.",
+                        "Earn coins by learning, then choose a new look. Every style is cosmetic—your study tools stay fair.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
+                    OutlinedButton(
+                        onClick = { state.navigate(Route.CharacterShop) },
+                        enabled = progressionReady,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text("Customize character") }
                 }
             }
 

@@ -16,8 +16,7 @@ entry point.
 On phones the bottom navigation is **Study**, **Progression** and **Profile**.
 Study shows one downloaded course at a time as an ordered lesson path; use the
 Course Store to download another course, then switch among downloaded courses.
-Progression contains the streak, daily quests, coins and achievements. Profile holds the learner name and the settings
-shortcut; the older card library remains available from Profile.
+Progression contains daily and weekly quests, mastery achievements, coins and streak recovery. Earned coins can be spent on cosmetic character styles from the Character Studio; the Profile tab holds the learner name, companion and settings shortcut. The older card library remains available from Profile.
 
 ---
 
@@ -107,11 +106,7 @@ retired, while their stored metadata remains compatible with older packs.
 
 ### Progression and themes
 
-Progression shows the current and best streak, daily quests, a coin balance,
-achievements, and a streak-repair action. The initial quests are to complete two
-lessons and answer ten questions; each gives coins once per day. Restoring a broken
-streak costs more for every additional missed day, with the price doubling each
-time. Coins are local progression data and do not affect question scheduling.
+Progression shows current and best streaks, six daily quests, four Monday-reset weekly quests, mastery achievements, and a streak-repair action. Coins are awarded for lessons, correct recall, streaks and consistent study days—not raw question volume—and can be spent on eight cosmetic character styles. Character purchases never affect lesson access, answer checking or spaced-repetition scheduling. Restoring a broken streak costs more for every additional missed day, with the price doubling each time. All progression and purchases are stored locally.
 
 The default palette is playful, with **Ink & Paper** available as an alternative.
 Both styles can follow the system or be fixed to light or dark appearance.
@@ -170,11 +165,7 @@ content, where it becomes fully editable.
 
 ### Progression and profile
 
-Progression includes daily quest counters, auto-awarded coins, streak recovery with
-an exponentially increasing price, and four starter achievements. The Profile tab
-stores a display name, provides the Settings icon, links to the active course and
-keeps the legacy card library reachable. Character and friend features are not
-implemented yet.
+Progression includes daily and weekly learning quests, automatically rewarded mastery milestones, coins and streak recovery with an exponentially increasing price. The Profile tab stores a display name, previews the learner's companion, opens the earned-only Character Studio, links to the active course and keeps the legacy card library reachable. Cosmetic styles do not provide learning advantages.
 
 ---
 

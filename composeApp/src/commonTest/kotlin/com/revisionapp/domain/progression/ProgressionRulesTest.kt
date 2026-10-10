@@ -101,22 +101,92 @@ class ProgressionRulesTest {
         var progress = LearnerProgress()
         val firstLesson = ProgressionRules.completeLesson(progress, "tmua", "lesson-1", today)
         progress = firstLesson.progress
-        assertEquals(0L, firstLesson.coinsEarned)
+        assertEquals(20L, firstLesson.coinsEarned) // first-step quest + first-lesson milestone
 
         val secondLesson = ProgressionRules.completeLesson(progress, "tmua", "lesson-2", today)
         progress = secondLesson.progress
-        assertEquals(30L, secondLesson.coinsEarned)
-        assertEquals(30L, progress.coins)
+        assertEquals(12L, secondLesson.coinsEarned)
+        assertEquals(32L, progress.coins)
 
         val tenAnswers = (1..10).fold(progress) { current, _ ->
             ProgressionRules.answerQuestion(current, today).progress
         }
-        assertEquals(50L, tenAnswers.coins)
+        assertEquals(162L, tenAnswers.coins)
         assertTrue(ProgressionRules.dailyQuests(tenAnswers).all { it.isClaimed })
+        assertTrue(ProgressionRules.weeklyQuests(tenAnswers).any { it.id == "weekly-recall-streak" && it.isClaimed })
 
         val extraLesson = ProgressionRules.completeLesson(tenAnswers, "tmua", "lesson-3", today)
         assertEquals(0L, extraLesson.coinsEarned)
-        assertEquals(50L, extraLesson.progress.coins)
+        assertEquals(162L, extraLesson.progress.coins)
+    }
+
+    @Test
+    fun incorrectAnswersCountAsAttemptsButDoNotEarnMasteryProgress() {
+        val today = LocalDate(2026, 10, 10)
+        var progress = LearnerProgress()
+        repeat(5) { progress = ProgressionRules.answerQuestion(progress, today, isCorrect = false).progress }
+
+        assertEquals(5, progress.totalQuestionsAnswered)
+        assertEquals(0, progress.totalCorrectAnswers)
+        assertEquals(0, progress.consecutiveCorrectAnswers)
+        assertFalse(ProgressionRules.dailyQuests(progress).first { it.id == "five-correct" }.isComplete)
+        assertFalse("five-correct-answers" in progress.unlockedAchievementIds)
+    }
+
+    @Test
+    fun studyDayAndWeeklyQuestsUseDistinctDatesAndResetOnMonday() {
+        var progress = LearnerProgress()
+        val friday = LocalDate(2026, 10, 9)
+        progress = ProgressionRules.answerQuestion(progress, friday, isCorrect = true).progress
+        progress = ProgressionRules.answerQuestion(progress, friday, isCorrect = true).progress
+        progress = ProgressionRules.answerQuestion(progress, LocalDate(2026, 10, 10), isCorrect = true).progress
+        val sunday = ProgressionRules.answerQuestion(progress, LocalDate(2026, 10, 11), isCorrect = true).progress
+
+        assertEquals(3, sunday.totalStudyDays)
+        assertEquals(3, sunday.weekly.studyDates.distinct().size)
+        assertTrue(ProgressionRules.weeklyQuests(sunday).first { it.id == "weekly-rhythm-three-days" }.isClaimed)
+        val monday = ProgressionRules.forToday(sunday, LocalDate(2026, 10, 12))
+        assertTrue(monday.weekly.studyDates.isEmpty())
+        assertTrue(ProgressionRules.weeklyQuests(monday).none { it.isClaimed })
+        assertTrue(monday.coins >= sunday.coins)
+    }
+
+    @Test
+    fun achievementsUnlockFromLearningMilestonesAndPayOnlyOnce() {
+        val today = LocalDate(2026, 10, 10)
+        var progress = LearnerProgress()
+        for (lesson in 1..5) {
+            progress = ProgressionRules.completeLesson(progress, "tmua", "lesson-$lesson", today).progress
+        }
+        assertTrue("first-lesson" in progress.unlockedAchievementIds)
+        assertTrue("five-lessons" in progress.unlockedAchievementIds)
+        val earned = progress.coins
+
+        val secondCheck = ProgressionRules.claimAvailableRewards(progress)
+        assertEquals(0L, secondCheck.coinsEarned)
+        assertEquals(earned, secondCheck.progress.coins)
+        assertTrue(ProgressionRules.achievements(secondCheck.progress).first { it.id == "five-lessons" }.isUnlocked)
+    }
+
+    @Test
+    fun characterCosmeticsRequireEarnedCoinsAndNeverGrantStudyAdvantages() {
+        val starting = LearnerProgress(coins = 100)
+        val purchase = ProgressionRules.buyCosmetic(starting, "sprout")
+        assertEquals(55L, purchase.coinsSpent)
+        assertEquals(45L, purchase.progress.coins)
+        assertTrue("sprout" in purchase.progress.ownedCosmeticIds)
+        assertEquals("sprout", purchase.progress.selectedCosmeticId)
+
+        val repeated = ProgressionRules.buyCosmetic(purchase.progress, "sprout")
+        assertEquals(0L, repeated.coinsSpent)
+        assertEquals(45L, repeated.progress.coins)
+        assertEquals(purchase.progress, repeated.progress)
+
+        val equippedStarter = ProgressionRules.equipCosmetic(purchase.progress, CharacterCosmetics.STARTER_ID)
+        assertEquals(CharacterCosmetics.STARTER_ID, equippedStarter.selectedCosmeticId)
+        val unaffordable = ProgressionRules.buyCosmetic(equippedStarter, "dragon")
+        assertEquals(equippedStarter, unaffordable.progress)
+        assertEquals(0L, unaffordable.coinsSpent)
     }
 
     @Test
