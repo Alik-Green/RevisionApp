@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.6.0 — 2026-10-10
+
+- Redesigned dark mode with near-black evergreen surfaces and five role-based bright accents; left the light palette and existing light-mode corner radii unchanged.
+- Standardized dark-mode card and control shapes, refined shared headers and filter chips, and kept course-path and subject accents within the same palette.
+- Replaced synthetic feedback tones with five short CC0 UI sounds for correct/incorrect answers, lesson and quest completion, and streak milestones. Playback remains optional in Settings.
+
 ## v2.5.0 — 2026-10-10
 
 - Removed the Ink & Paper selector so Settings exposes a single colour style; kept the device-following light/dark default and gave dark mode a cool blue-green primary accent.

@@ -31,7 +31,7 @@ newest entry under [Releases](../../releases):
 
 | Asset | What it is |
 | --- | --- |
-| `RevisionApp-2.5.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
+| `RevisionApp-2.6.0.exe` | Windows x86-64 installer, built by `jpackage` through the WiX toolset |
 | `RevisionApp-android-debug.apk` | Android debug build, installable with `adb install` |
 | `SHA256SUMS.txt` | Checksums for both |
 
@@ -126,10 +126,12 @@ streak costs more for every additional missed day, with the price doubling each
 time. Progress and purchases are stored locally.
 
 The single Playful palette follows the device's **light or dark setting**, or
-can be fixed to either mode. Its dark-mode primary is blue-green for clear
-contrast against the dark surfaces. Settings also offers sound effects, enabled
+can be fixed to either mode. The unchanged light theme pairs with a redesigned
+dark palette of near-black evergreen surfaces and role-based lime, aqua, sky,
+amber and coral accents. Settings also offers short CC0 sound effects, enabled
 by default, for answer feedback and lesson, quest and streak milestones; they can
-be switched off at any time.
+be switched off at any time. Asset credits and license details are in
+[`docs/SOUND_ASSETS.md`](docs/SOUND_ASSETS.md).
 Store, course and quest cards use raised, bordered surfaces to stand apart from
 the page background.
 
