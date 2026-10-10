@@ -318,7 +318,6 @@ class AppState(
         }
     }
 
-
     /**
      * Fetches the built-in packs when none are installed, so a fresh install has
      * content without the user having to find the settings screen, and so a first
